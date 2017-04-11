@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/drawables/add_tab.png</file>
+        <file>res/drawables/back_btn.png</file>
+        <file>res/drawables/bookmark_btn.png</file>
+        <file>res/drawables/close.png</file>
+        <file>res/drawables/fwd_btn.png</file>
+        <file>res/drawables/home_btn.png</file>
+        <file>res/drawables/info.png</file>
+        <file>res/drawables/load_btn.png</file>
+        <file>res/drawables/options_btn.png</file>
+        <file>res/drawables/search.png</file>
+        <file>res/drawables/secure.png</file>
+        <file>res/drawables/security-low.png</file>
+        <file>res/drawables/tool_btn.png</file>
+        <file>res/favicons/bing.png</file>
+        <file>res/favicons/duckduckgo.png</file>
+        <file>res/favicons/google.png</file>
+        <file>res/favicons/yahoo.png</file>
+        <file>res/videos/loader.gif</file>
+        <file>res/manager/bookmarks.png</file>
+        <file>res/manager/download.png</file>
+        <file>res/manager/history.png</file>
+        <file>res/manager/password.png</file>
+        <file>res/manager/settings.png</file>
+    </qresource>
+</RCC>
