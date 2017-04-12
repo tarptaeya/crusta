@@ -18,24 +18,22 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#ifndef SEARCHLINEEDIT_H
-#define SEARCHLINEEDIT_H
+#ifndef DEBUGGER_H
+#define DEBUGGER_H
 
-#include <QLineEdit>
-#include <QPushButton>
-#include <QMenu>
-#include <QIcon>
+#include "mainview.h"
+#include <QWebEngineView>
+#include <QWidget>
+#include <QUrl>
 
-class SearchLineEdit{
+class WebDebugger:public QWebEngineView{
+    int start_point;
+    QWidget *parentView=new QWidget();
 public:
-    QLineEdit* text=new QLineEdit();
-    QPushButton* search_btn=new QPushButton();
-    QMenu* menu=new QMenu();
-    void createSearchLineEdit();
-    void createSearchOptions();
-    QLineEdit* initialize();
+    void setParentView(MainView* view);
+    void showDebugger();
+    void hideDebugger();
+    void print(QUrl url);
 };
 
-
-
-#endif // SEARCHLINEEDIT_H
+#endif // DEBUGGER_H

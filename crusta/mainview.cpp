@@ -1,3 +1,23 @@
+/* ============================================================
+* Crusta - Qt5 webengine browser
+* Copyright (C) 2017 Anmol Gautam <tarptaeya@gmail.com>
+*
+* THIS FILE IS A PART OF CRUSTA
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* ============================================================ */
+
 #include "mainview.h"
 
 #include "fullscreennotifier.h"
@@ -7,6 +27,7 @@
 #include "tabwindow.h"
 #include "presentationmodenotifier.h"
 #include "manager.h"
+#include "debugger.h"
 
 #include <QObject>
 #include <QPoint>
@@ -409,10 +430,11 @@ void MainView::showManager(){
 }
 
 void MainView::showInspector(){
-    QWebEngineView* new_view=new QWebEngineView();
-    new_view->load(QUrl("http://localhost:8000"));
-    new_view->show();
-    new_view->setWindowTitle("Crusta DevConsole");
+    WebDebugger* debugger=new WebDebugger();
+    debugger->setParentView(this);
+    debugger->showDebugger();
+    debuggerBox->addWidget(debugger);
+    box->addLayout(debuggerBox);
 }
 
 
