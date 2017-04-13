@@ -26,6 +26,7 @@
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
+#include <QWebEngineProfile>
 #include <QWebEngineSettings>
 #include <QWebEngineFullScreenRequest>
 #include <QString>
@@ -64,6 +65,7 @@ WebView::WebView(){
     connect(this->page(),&QWebEnginePage::titleChanged,this,&WebView::pageTitleChanged);
     connect(this->page(),&QWebEnginePage::loadFinished,this,&WebView::pageLoaded);
     connect(exitFullScreen,&QAction::triggered,this,&WebView::ExitAction);
+    std::cout<<page()->profile()->isOffTheRecord()<<std::endl;
 }
 
 void WebView::createWebView(){

@@ -85,6 +85,14 @@ QWidget* TabWindow::returnTab(){
     return this->tab;
 }
 
+QWidget* TabWindow::returnPrivateTab(){
+    this->vbox->setContentsMargins(0,0,0,0);
+    createControls();
+    this->vbox->addWidget(this->privateView->returnPrivateView());
+    return this->tab;
+}
+
+
 TabWindow* TabWindow::returnThis(){
     this->vbox->setContentsMargins(0,0,0,0);
     createControls();

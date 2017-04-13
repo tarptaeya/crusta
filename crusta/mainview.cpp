@@ -431,10 +431,7 @@ void MainView::showManager(){
 
 void MainView::showInspector(){
     WebDebugger* debugger=new WebDebugger();
-    debugger->setParentView(this);
     debugger->showDebugger();
-    debuggerBox->addWidget(debugger);
-    box->addLayout(debuggerBox);
 }
 
 

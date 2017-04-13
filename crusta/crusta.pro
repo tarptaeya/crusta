@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     popup.cpp \
     manager.cpp \
     historymanager.cpp \
-    debugger.cpp
+    debugger.cpp \
+    privatewebview.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -59,7 +60,8 @@ HEADERS  += \
     popup.h \
     manager.h \
     historymanager.h \
-    debugger.h
+    debugger.h \
+    privatewebview.h
 
 RESOURCES += \
     resource.qrc

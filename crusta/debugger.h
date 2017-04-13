@@ -30,10 +30,8 @@ class WebDebugger:public QWebEngineView{
     int start_point;
     QWidget *parentView=new QWidget();
 public:
-    void setParentView(MainView* view);
     void showDebugger();
     void hideDebugger();
-    void print(QUrl url);
 };
 
 #endif // DEBUGGER_H

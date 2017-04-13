@@ -106,7 +106,6 @@ public:
     QLabel* label=new QLabel();
     QLineEdit* text=new QLineEdit();
     Manager* manager=new Manager();
-    QHBoxLayout* debuggerBox=new QHBoxLayout();
     MainView();
 
     void createView();

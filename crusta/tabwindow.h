@@ -24,6 +24,7 @@
 #include "addresslineedit.h"
 #include "searchlineedit.h"
 #include "webview.h"
+#include "privatewebview.h"
 
 #include <QObject>
 #include <QVBoxLayout>
@@ -48,8 +49,10 @@ public:
     AddressLineEdit* addr_bar=new AddressLineEdit();
     SearchLineEdit* search_bar=new SearchLineEdit();
     WebView* view=new WebView();
+    PrivateWebView* privateView=new PrivateWebView();
     void createControls();
     QWidget* returnTab();
+    QWidget* returnPrivateTab();
     TabWindow* returnThis();
     void setWebView(WebView*);
 };

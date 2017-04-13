@@ -18,13 +18,22 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#include <debugger.h>
+#include "privatewebview.h"
+#include <QWebEnginePage>
+#include <QWebEngineProfile>
 
-void WebDebugger::showDebugger(){
-    load(QUrl("http://localhost:8000"));
-    show();
+PrivateWebView::PrivateWebView(){
+    createPrivateWebView();
 }
 
-void WebDebugger::hideDebugger(){
-    deleteLater();
+void PrivateWebView::createPrivateWebView(){
+    load(QUrl(home_page));
+    page()->profile()->clearAllVisitedLinks();
+    page()->profile()->clearHttpCache();
 }
+
+QWebEngineView* PrivateWebView::returnPrivateView(){
+    return this;
+}
+
+
