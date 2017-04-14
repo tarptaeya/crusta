@@ -297,7 +297,8 @@ void MainView::createMenuBar(){
     this->file_menu->addAction("&New Split Tab");
     this->new_window_action=this->file_menu->addAction("&New Window");
     connect(this->new_window_action,&QAction::triggered,this,&MainView::newWindow);
-    this->file_menu->addAction("&New Private Tab");
+    this->new_private_tab_action=this->file_menu->addAction("&New Private Tab");
+    connect(new_private_tab_action,&QAction::triggered,this,&MainView::addPrivateTab);
     this->file_menu->addAction("&New Private Window");
     this->file_menu->addAction("&Open File");
     this->save_as_pdf=this->file_menu->addAction("&Save Page As PDF");
@@ -389,6 +390,12 @@ void MainView::createTabWindow(){
 void MainView::addNormalTab(){
     TabWindow* tab=new TabWindow();
     this->tabWindow->addTab(tab->returnTab(),"new Tab");
+    this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
+}
+
+void MainView::addPrivateTab(){
+    TabWindow* tab=new TabWindow();
+    this->tabWindow->addTab(tab->returnPrivateTab(),"new Tab");
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
 }
 

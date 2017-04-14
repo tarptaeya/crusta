@@ -23,5 +23,6 @@
         <file>res/manager/history.png</file>
         <file>res/manager/password.png</file>
         <file>res/manager/settings.png</file>
+        <file>res/drawables/icon_3.ico</file>
     </qresource>
 </RCC>

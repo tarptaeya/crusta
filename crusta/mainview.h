@@ -78,6 +78,7 @@ public:
     QMenu* tool_menu=new QMenu();
     QMenu* help_menu=new QMenu();
     QAction* new_tab_action=new QAction();
+    QAction* new_private_tab_action=new QAction();
     QAction* new_window_action=new QAction();
     QAction* save_as_pdf=new QAction();
     QAction* save_page=new QAction();
@@ -114,6 +115,7 @@ public:
     void createMenuBar();
     void createTabWindow();
     void addNormalTab();
+    void addPrivateTab();
     void viewPageSource();
     void saveAsPdf();
     void savePage();

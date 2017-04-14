@@ -55,6 +55,7 @@ public:
     QWidget* returnPrivateTab();
     TabWindow* returnThis();
     void setWebView(WebView*);
+    void setPrivateWebView(PrivateWebView*);
 };
 
 

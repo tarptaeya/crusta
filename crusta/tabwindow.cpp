@@ -20,6 +20,7 @@
 
 #include "tabwindow.h"
 #include "webview.h"
+#include "privatewebview.h"
 
 #include <QObject>
 #include <QVBoxLayout>
@@ -102,4 +103,9 @@ TabWindow* TabWindow::returnThis(){
 void TabWindow::setWebView(WebView* v){
     view=v;
     vbox->addWidget(view);
+}
+
+void TabWindow::setPrivateWebView(PrivateWebView* v){
+    privateView=v;
+    vbox->addWidget(privateView);
 }

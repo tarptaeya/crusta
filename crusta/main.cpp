@@ -19,6 +19,7 @@
 * ============================================================ */
 
 #include "mainview.h"
+#include <QIcon>
 #include <QApplication>
 
 int main(int argc, char *argv[]){
@@ -28,6 +29,6 @@ int main(int argc, char *argv[]){
     Q_INIT_RESOURCE(resource); // initialised the resource file;
     MainView* w=new MainView();
     w->showView();
-
+    a.setWindowIcon(QIcon(":/res/drawables/icon_3.ico"));
     return a.exec();
 }

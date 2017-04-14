@@ -46,24 +46,24 @@
 class PrivateWebView:public QWebEngineView{
     Q_OBJECT
 protected:
-    //QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
+    QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
     QString home_page=QString("https://duckduckgo.com");
-//    QLayout* layout;
-//    QAction* exitFullScreen=new QAction();
-//    QAction* timeAction=new QAction();
-//    FullScreenNotifier* notifier=new FullScreenNotifier();
-//    TimeNotifier* timeNotifier=new TimeNotifier();
-//    QWebEngineView* view=new QWebEngineView();
+    QLayout* layout;
+    QAction* exitFullScreen=new QAction();
+    QAction* timeAction=new QAction();
+    FullScreenNotifier* notifier=new FullScreenNotifier();
+    TimeNotifier* timeNotifier=new TimeNotifier();
+    QWebEngineView* view=new QWebEngineView();
     void createPrivateWebView();
     QWebEngineView* returnPrivateView();
-//    void home();
-//    void spinnerStarted();
-//    void faviconChanged(QIcon fav);
-//    void pageTitleChanged();
-//    void pageLoaded();
-//    void acceptFullScreen(QWebEngineFullScreenRequest request);
-//    void ExitAction();
+    void home();
+    void spinnerStarted();
+    void faviconChanged(QIcon fav);
+    void pageTitleChanged();
+    void pageLoaded();
+    void acceptFullScreen(QWebEngineFullScreenRequest request);
+    void ExitAction();
     PrivateWebView();
 };
 
