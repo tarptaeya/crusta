@@ -48,7 +48,7 @@ class WebView:public QWebEngineView{
 protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
-    QString home_page=QString("https://google.com");
+    QString home_page=QString("http://google.com");
     QLayout* layout;
     QAction* exitFullScreen=new QAction();
     QAction* timeAction=new QAction();
@@ -64,6 +64,7 @@ public:
     void pageLoaded();
     void acceptFullScreen(QWebEngineFullScreenRequest request);
     void ExitAction();
+    void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
     WebView();
 };
 

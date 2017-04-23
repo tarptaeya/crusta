@@ -23,6 +23,7 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "popup.h"
+#include "featurenotifier.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -64,6 +65,7 @@ WebView::WebView(){
     connect(this->page(),&QWebEnginePage::iconChanged,this,&WebView::faviconChanged);
     connect(this->page(),&QWebEnginePage::titleChanged,this,&WebView::pageTitleChanged);
     connect(this->page(),&QWebEnginePage::loadFinished,this,&WebView::pageLoaded);
+    connect(this->page(),&QWebEnginePage::featurePermissionRequested,this,&WebView::permissionHandler);
     connect(exitFullScreen,&QAction::triggered,this,&WebView::ExitAction);
 }
 
@@ -245,4 +247,36 @@ void WebView::pageLoaded(){
         stream<<description<<endl;
     }
     file.close();
+}
+
+void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature){
+    FeatureNotifier* featureNotifier=new FeatureNotifier();
+    featureNotifier->setViewParent(this);
+    switch (feature) {
+    case QWebEnginePage::MouseLock:
+        featureNotifier->createNotifier(QString("Mouse Lock is accepted - Press ESC to exit"));
+        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+        featureNotifier->showNotifier();
+        break;
+    case QWebEnginePage::Geolocation:
+        featureNotifier->createNotifier(QString("Geolocation request is accepted"));
+        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+        featureNotifier->showNotifier();
+        break;
+    case QWebEnginePage::MediaAudioCapture:
+        featureNotifier->createNotifier(QString("Media Audio Capture request is accepted"));
+        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+        featureNotifier->showNotifier();
+        break;
+    case QWebEnginePage::MediaVideoCapture:
+        featureNotifier->createNotifier(QString("Media Video Capture request is accepted"));
+        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+        featureNotifier->showNotifier();
+        break;
+    case QWebEnginePage::MediaAudioVideoCapture:
+        featureNotifier->createNotifier(QString("Media Audio-Video Capture request is accepted"));
+        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+        featureNotifier->showNotifier();
+        break;
+    }
 }

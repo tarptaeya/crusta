@@ -18,21 +18,29 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#include "mainview.h"
-#include <QIcon>
-#include <QApplication>
-#include <QCoreApplication>
-#include <QtWebEngine>
+#ifndef FEATURENOTIFIER_H
+#define FEATURENOTIFIER_H
 
-int main(int argc, char *argv[]){
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication a(argc, argv);
-    QtWebEngine::initialize();
-    a.setApplicationName(QString("Crusta"));
-    a.setApplicationVersion(QString("1.0"));
-    Q_INIT_RESOURCE(resource); // initialised the resource file;
-    MainView* w=new MainView();
-    w->showView();
-    a.setWindowIcon(QIcon(":/res/drawables/icon_3.ico"));
-    return a.exec();
-}
+#include <QObject>
+#include <QLabel>
+#include <QTimer>
+#include <QString>
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include <QEasingCurve>
+#include <QWebEngineView>
+
+class FeatureNotifier:public QObject{
+public:
+    QLabel* label=new QLabel();
+    QTimer* timer=new QTimer();
+    int x;
+    void createNotifier(QString);
+    void showNotifier();
+    void fadeOut();
+    void setViewParent(QWebEngineView* view);
+    void hideNotifier();
+};
+
+
+#endif // FEATURENOTIFIER_H

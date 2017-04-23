@@ -64,6 +64,7 @@ public:
     void pageLoaded();
     void acceptFullScreen(QWebEngineFullScreenRequest request);
     void ExitAction();
+    void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
     PrivateWebView();
 };
 

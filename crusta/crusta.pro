@@ -25,7 +25,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT       +=webenginewidgets
+QT       +=webenginewidgets webengine
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     manager.cpp \
     historymanager.cpp \
     debugger.cpp \
-    privatewebview.cpp
+    privatewebview.cpp \
+    featurenotifier.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -61,7 +62,8 @@ HEADERS  += \
     manager.h \
     historymanager.h \
     debugger.h \
-    privatewebview.h
+    privatewebview.h \
+    featurenotifier.h
 
 RESOURCES += \
     resource.qrc

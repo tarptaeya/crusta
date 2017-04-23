@@ -52,7 +52,9 @@
 void MainView::closeTab(int index){
     if(this->tabWindow->count()==1)QApplication::quit();
     QWidget* widget=this->tabWindow->widget(index);
-    widget->deleteLater();
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    webview->deleteLater();
     this->tabWindow->removeTab(index);
 }
 
