@@ -76,6 +76,7 @@ void TabWindow::createControls(){
     this->options_btn->setIcon(QIcon(":/res/drawables/options_btn.png"));
     hbox->addWidget(this->options_btn);
     vbox->addLayout(hbox);
+    vbox->addWidget(view);
     tab->setLayout(vbox);
 }
 
@@ -86,14 +87,6 @@ QWidget* TabWindow::returnTab(){
     return this->tab;
 }
 
-QWidget* TabWindow::returnPrivateTab(){
-    this->vbox->setContentsMargins(0,0,0,0);
-    createControls();
-    this->vbox->addWidget(this->privateView->returnPrivateView());
-    return this->tab;
-}
-
-
 TabWindow* TabWindow::returnThis(){
     this->vbox->setContentsMargins(0,0,0,0);
     createControls();
@@ -102,10 +95,4 @@ TabWindow* TabWindow::returnThis(){
 
 void TabWindow::setWebView(WebView* v){
     view=v;
-    vbox->addWidget(view);
-}
-
-void TabWindow::setPrivateWebView(PrivateWebView* v){
-    privateView=v;
-    vbox->addWidget(privateView);
 }

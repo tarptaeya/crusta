@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#ifndef TABWINDOW_H
-#define TABWINDOW_H
+#ifndef PRIVATETABWINDOW_H
+#define PRIVATETABWINDOW_H
 
 #include "addresslineedit.h"
 #include "searchlineedit.h"
@@ -33,7 +33,7 @@
 
 
 
-class TabWindow:public QObject{
+class PrivateTabWindow:public QObject{
     void viewHome();
     void updateAddrBar();
 public:
@@ -51,10 +51,10 @@ public:
     WebView* view=new WebView();
     void createControls();
     QWidget* returnTab();
-    TabWindow* returnThis();
+    PrivateTabWindow* returnThis();
     void setWebView(WebView*);
 };
 
 
 
-#endif // TABWINDOW_H
+#endif // PRIVATETABWINDOW_H

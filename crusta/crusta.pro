@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     manager.cpp \
     historymanager.cpp \
     privatewebview.cpp \
-    featurenotifier.cpp
+    featurenotifier.cpp \
+    downloadmanager.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -61,7 +62,9 @@ HEADERS  += \
     manager.h \
     historymanager.h \
     privatewebview.h \
-    featurenotifier.h
+    featurenotifier.h \
+    downloadmanager.h \
+    privatetabwindow.h
 
 RESOURCES += \
     resource.qrc

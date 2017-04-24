@@ -399,9 +399,7 @@ void MainView::addNormalTab(){
 }
 
 void MainView::addPrivateTab(){
-    TabWindow* tab=new TabWindow();
-    this->tabWindow->addTab(tab->returnPrivateTab(),"new Tab");
-    this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
+
 }
 
 void MainView::viewPageSource(){

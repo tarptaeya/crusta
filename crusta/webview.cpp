@@ -91,7 +91,7 @@ void WebView::spinnerStarted(){
         for(int i=0;i<count;i++){
             QWidget* w=tabwidget->widget(i);
             QLayout* l=w->layout();
-            QWebEngineView* v=(QWebEngineView*)l->itemAt(1)->widget();
+            WebView* v=(WebView*)l->itemAt(1)->widget();
             if(v==this){
                 QLabel* spinner=new QLabel();
                 QMovie* loader=new QMovie(":/res/videos/loader.gif");
@@ -201,8 +201,8 @@ QWebEngineView* WebView::createWindow(QWebEnginePage::WebWindowType type){
         view->raise(); // to prevent it from closing when the view which requests this gets closed
         TabWindow* tabwin=new TabWindow();
         tabwin->vbox->setContentsMargins(0,0,0,0);
-        tabwin->createControls();
         tabwin->setWebView(view);
+        tabwin->createControls();
         QWidget* widget=(QWidget*)this->parent();
         QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
         QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();

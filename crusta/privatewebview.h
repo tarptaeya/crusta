@@ -46,7 +46,7 @@
 class PrivateWebView:public QWebEngineView{
     Q_OBJECT
 protected:
-    QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
+    //QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
     QString home_page=QString("https://duckduckgo.com");
     QLayout* layout;

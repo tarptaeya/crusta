@@ -174,50 +174,50 @@ void PrivateWebView::ExitAction(){
     page()->triggerAction(QWebEnginePage::ExitFullScreen);
 }
 
-QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type){
-    switch(type){
-    case QWebEnginePage::WebBrowserTab: {
-        PrivateWebView* view=new PrivateWebView();
-        view->raise(); // to prevent it from closing when the view which requests this gets closed
-        TabWindow* tabwin=new TabWindow();
-        tabwin->vbox->setContentsMargins(0,0,0,0);
-        tabwin->createControls();
-        tabwin->setPrivateWebView(view);
-        QWidget* widget=(QWidget*)this->parent();
-        QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
-        QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
-        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,"New Tab");
-        tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
-        return view;
-    }
-    case QWebEnginePage::WebBrowserBackgroundTab: {
-        std::cout<<"Background Tab Requested"<<std::endl;
-        return new QWebEngineView();
-    }
-    case QWebEnginePage::WebBrowserWindow: {
-        std::cout<<"window Requested"<<std::endl;
-        PrivateWebView* view=new PrivateWebView();
-        connect(view->page(),&QWebEnginePage::windowCloseRequested,view,&PrivateWebView::close);
-        view->setWindowTitle(view->title());
-        view->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        view->show();
-        view->move((this->width()-view->width())/2,(this->height()-view->height())/2);
-        connect(view,SIGNAL(titleChanged(QString)),view,SLOT(setWindowTitle(QString)));
-        return view;
-    }
-    case QWebEnginePage::WebDialog: {
-        PopUp* popup=new PopUp();
-        QWebEngineView* view=new QWebEngineView();
-        popup->setWebView(view);
-        popup->createView();
-        popup->widget->show();
-        connect(view->page(),&QWebEnginePage::windowCloseRequested,popup,&PopUp::close);
-        popup->widget->move((this->width()-view->width())/2,(this->height()-view->height())/2);
-        return view;
-    }
-    }
-    return nullptr;
-}
+//QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type){
+//    switch(type){
+//    case QWebEnginePage::WebBrowserTab: {
+//        PrivateWebView* view=new PrivateWebView();
+//        view->raise(); // to prevent it from closing when the view which requests this gets closed
+//        TabWindow* tabwin=new TabWindow();
+//        tabwin->vbox->setContentsMargins(0,0,0,0);
+//        tabwin->setPrivateWebView(view);
+//        tabwin->createPrivateControls();
+//        QWidget* widget=(QWidget*)this->parent();
+//        QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+//        QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+//        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,"New Tab");
+//        tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
+//        return view;
+//    }
+//    case QWebEnginePage::WebBrowserBackgroundTab: {
+//        std::cout<<"Background Tab Requested"<<std::endl;
+//        return new QWebEngineView();
+//    }
+//    case QWebEnginePage::WebBrowserWindow: {
+//        std::cout<<"window Requested"<<std::endl;
+//        PrivateWebView* view=new PrivateWebView();
+//        connect(view->page(),&QWebEnginePage::windowCloseRequested,view,&PrivateWebView::close);
+//        view->setWindowTitle(view->title());
+//        view->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+//        view->show();
+//        view->move((this->width()-view->width())/2,(this->height()-view->height())/2);
+//        connect(view,SIGNAL(titleChanged(QString)),view,SLOT(setWindowTitle(QString)));
+//        return view;
+//    }
+//    case QWebEnginePage::WebDialog: {
+//        PopUp* popup=new PopUp();
+//        QWebEngineView* view=new QWebEngineView();
+//        popup->setWebView(view);
+//        popup->createView();
+//        popup->widget->show();
+//        connect(view->page(),&QWebEnginePage::windowCloseRequested,popup,&PopUp::close);
+//        popup->widget->move((this->width()-view->width())/2,(this->height()-view->height())/2);
+//        return view;
+//    }
+//    }
+//    return nullptr;
+//}
 
 void PrivateWebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature){
     FeatureNotifier* featureNotifier=new FeatureNotifier();
