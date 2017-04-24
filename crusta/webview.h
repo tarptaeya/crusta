@@ -48,8 +48,10 @@ class WebView:public QWebEngineView{
 protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
+    bool wasFullScreened=false;
     QString home_page=QString("http://google.com");
     QLayout* layout;
+    QWidget* widget;
     QAction* exitFullScreen=new QAction();
     QAction* timeAction=new QAction();
     FullScreenNotifier* notifier=new FullScreenNotifier();

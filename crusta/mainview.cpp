@@ -27,7 +27,6 @@
 #include "tabwindow.h"
 #include "presentationmodenotifier.h"
 #include "manager.h"
-#include "debugger.h"
 
 #include <QObject>
 #include <QPoint>
@@ -53,8 +52,13 @@ void MainView::closeTab(int index){
     if(this->tabWindow->count()==1)QApplication::quit();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
-    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-    webview->deleteLater();
+    WebView* webview=(WebView*)layout->itemAt(1)->widget();
+    if(!webview->wasFullScreened){
+        webview->deleteLater();
+    }
+    else{
+        webview->load(webview->home_page);
+    }
     this->tabWindow->removeTab(index);
 }
 
@@ -368,7 +372,6 @@ void MainView::createMenuBar(){
     this->tool_menu->addAction("&Download Manager");
     this->tool_menu->addAction("&Cookies Manager");
     this->web_inspector_action=this->tool_menu->addAction("&Web Inspector");
-    connect(this->web_inspector_action,&QAction::triggered,this,&MainView::showInspector);
     this->tool_menu->addMenu("&Developer Tools");
     this->help_menu=this->menubar->addMenu("&Help");
     this->help_menu->addAction("&Crusta Help");
@@ -436,11 +439,6 @@ void MainView::showManager(){
     manager=new Manager();
     manager->createManager();
     manager->show();
-}
-
-void MainView::showInspector(){
-    WebDebugger* debugger=new WebDebugger();
-    debugger->showDebugger();
 }
 
 

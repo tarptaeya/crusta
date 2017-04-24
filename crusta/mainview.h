@@ -120,7 +120,6 @@ public:
     void saveAsPdf();
     void savePage();
     void showManager();
-    void showInspector();
 };
 
 

@@ -45,7 +45,6 @@ SOURCES += main.cpp\
     popup.cpp \
     manager.cpp \
     historymanager.cpp \
-    debugger.cpp \
     privatewebview.cpp \
     featurenotifier.cpp
 
@@ -61,7 +60,6 @@ HEADERS  += \
     popup.h \
     manager.h \
     historymanager.h \
-    debugger.h \
     privatewebview.h \
     featurenotifier.h
 

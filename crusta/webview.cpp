@@ -165,8 +165,9 @@ void WebView::pageTitleChanged(){
 void WebView::acceptFullScreen(QWebEngineFullScreenRequest request){
     if(request.toggleOn()){
         request.accept();
-        QWidget* w=(QWidget*)this->parent();
-        layout=w->layout();
+        wasFullScreened=true;
+        widget=(QWidget*)this->parent();
+        layout=widget->layout();
         layout->removeWidget(this);
         addAction(exitFullScreen);
         setParent(0);
@@ -182,6 +183,7 @@ void WebView::acceptFullScreen(QWebEngineFullScreenRequest request){
         request.accept();
         notifier->hideNotifier();
         timeNotifier->hideNotifier();
+        setParent(widget);
         layout->addWidget(this);
         removeAction(exitFullScreen);
         removeAction(timeAction);
