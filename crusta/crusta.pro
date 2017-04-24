@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     historymanager.cpp \
     privatewebview.cpp \
     featurenotifier.cpp \
-    downloadmanager.cpp
+    downloadmanager.cpp \
+    privatetabwindow.cpp
 
 HEADERS  += \
     fullscreennotifier.h \

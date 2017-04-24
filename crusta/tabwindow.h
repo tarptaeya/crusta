@@ -24,7 +24,6 @@
 #include "addresslineedit.h"
 #include "searchlineedit.h"
 #include "webview.h"
-#include "privatewebview.h"
 
 #include <QObject>
 #include <QVBoxLayout>

@@ -25,6 +25,7 @@
 #include "searchlineedit.h"
 #include "addresslineedit.h"
 #include "tabwindow.h"
+#include "privatetabwindow.h"
 #include "presentationmodenotifier.h"
 #include "manager.h"
 
@@ -399,7 +400,9 @@ void MainView::addNormalTab(){
 }
 
 void MainView::addPrivateTab(){
-
+    PrivateTabWindow* privatetab=new PrivateTabWindow();
+    this->tabWindow->addTab(privatetab->returnTab(),"new Tab");
+    this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
 }
 
 void MainView::viewPageSource(){
