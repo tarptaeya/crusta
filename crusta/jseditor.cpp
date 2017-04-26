@@ -29,6 +29,7 @@ JsEditor::JsEditor(){
     hbox->addWidget(cncl_btn);
     vbox->addLayout(hbox);
     connect(run_btn,&QPushButton::clicked,this,&JsEditor::runJs);
+    connect(cncl_btn,&QPushButton::clicked,this,&JsEditor::hide);
     setLayout(vbox);
 }
 
@@ -39,4 +40,5 @@ void JsEditor::setView(QWebEngineView* v){
 void JsEditor::runJs(){
     QString code=editor->toPlainText();
     view->page()->runJavaScript(code);
+    hide();
 }

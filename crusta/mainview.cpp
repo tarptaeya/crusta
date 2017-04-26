@@ -28,6 +28,7 @@
 #include "privatetabwindow.h"
 #include "presentationmodenotifier.h"
 #include "manager.h"
+#include "jseditor.h"
 
 #include <QObject>
 #include <QPoint>
@@ -445,7 +446,12 @@ void MainView::showManager(){
 }
 
 void MainView::showJsCodeEditor(){
-
+    int index=this->tabWindow->currentIndex();
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    jsEditor->setView(webview);
+    jsEditor->show();
 }
 
 

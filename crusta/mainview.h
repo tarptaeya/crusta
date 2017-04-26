@@ -28,6 +28,7 @@
 #include "tabwindow.h"
 #include "presentationmodenotifier.h"
 #include "manager.h"
+#include "jseditor.h"
 
 #include <QObject>
 #include <QPoint>
@@ -109,6 +110,7 @@ public:
     QLabel* label=new QLabel();
     QLineEdit* text=new QLineEdit();
     Manager* manager=new Manager();
+    JsEditor* jsEditor=new JsEditor();
     MainView();
 
     void createView();
