@@ -48,6 +48,7 @@ class PrivateWebView:public QWebEngineView{
 protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
+    bool wasFullScreen=false;
     QString home_page=QString("https://duckduckgo.com");
     QLayout* layout;
     QAction* exitFullScreen=new QAction();

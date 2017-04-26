@@ -373,7 +373,9 @@ void MainView::createMenuBar(){
     this->tool_menu->addAction("&Download Manager");
     this->tool_menu->addAction("&Cookies Manager");
     this->web_inspector_action=this->tool_menu->addAction("&Web Inspector");
-    this->tool_menu->addMenu("&Developer Tools");
+    this->devTools=this->tool_menu->addMenu("&Developer Tools");
+    this->runJsCode=this->devTools->addAction("&Run Javascript Code");
+    connect(this->runJsCode,&QAction::triggered,this,&MainView::showJsCodeEditor);
     this->help_menu=this->menubar->addMenu("&Help");
     this->help_menu->addAction("&Crusta Help");
     this->help_menu->addAction("&Crusta Tour");
@@ -442,7 +444,9 @@ void MainView::showManager(){
     manager->show();
 }
 
+void MainView::showJsCodeEditor(){
 
+}
 
 
 

@@ -77,6 +77,7 @@ public:
     QMenu* bookmark_menu=new QMenu();
     QMenu* tool_menu=new QMenu();
     QMenu* help_menu=new QMenu();
+    QMenu* devTools=new QMenu();
     QAction* new_tab_action=new QAction();
     QAction* new_private_tab_action=new QAction();
     QAction* new_window_action=new QAction();
@@ -97,6 +98,7 @@ public:
     QAction* presentation_action=new QAction();
     QAction* show_all_history=new QAction();
     QAction* web_inspector_action=new QAction();
+    QAction* runJsCode=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
     QAction* fullscreen_action=new QAction();
     int start_findwidget;
@@ -120,6 +122,7 @@ public:
     void saveAsPdf();
     void savePage();
     void showManager();
+    void showJsCodeEditor();
 };
 
 

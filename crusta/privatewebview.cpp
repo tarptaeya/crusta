@@ -143,6 +143,7 @@ void PrivateWebView::pageTitleChanged(){
 
 void PrivateWebView::acceptFullScreen(QWebEngineFullScreenRequest request){
     if(request.toggleOn()){
+        wasFullScreen=true;
         request.accept();
         QWidget* w=(QWidget*)this->parent();
         layout=w->layout();
