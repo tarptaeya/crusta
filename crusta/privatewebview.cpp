@@ -220,6 +220,7 @@ QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type)
 void PrivateWebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature){
     FeatureNotifier* featureNotifier=new FeatureNotifier();
     featureNotifier->setViewParent(this);
+    wasFullScreen=true;
     switch (feature) {
     case QWebEnginePage::MouseLock:
         featureNotifier->createNotifier(QString("Mouse Lock is accepted - Press ESC to exit"));

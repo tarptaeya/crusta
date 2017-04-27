@@ -21,6 +21,8 @@
 #ifndef JSEDITOR_H
 #define JSEDITOR_H
 
+#include "codeeditor.h"
+
 #include <QPlainTextEdit>
 #include <QWebEngineView>
 #include <QVBoxLayout>
@@ -31,7 +33,7 @@
 
 class JsEditor:public QWidget{
 public:
-    QPlainTextEdit* editor=new QPlainTextEdit();
+    CodeEditor* editor=new CodeEditor();
     QVBoxLayout* vbox=new QVBoxLayout();
     QHBoxLayout* hbox=new QHBoxLayout();
     QPushButton* run_btn=new QPushButton();
