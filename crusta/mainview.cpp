@@ -195,6 +195,7 @@ void MainView::hideFindWidget(){
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     webview->findText("");
+    this->findwidget->setParent(0);
     this->text->setText("");
 }
 
