@@ -86,9 +86,7 @@ void Manager::createPages(){
     this->stack=new QStackedWidget();
     history_page->createManager();
     stack->addWidget(history_page);
-}
-
-void Manager::clearHistoryPage(){
-    HistoryManager* history_page=(HistoryManager*)stack->widget(0);
-    history_page->treeview->clear();
+    download_page->createManager();
+    stack->addWidget(download_page);
+    stack->setCurrentIndex(1);
 }

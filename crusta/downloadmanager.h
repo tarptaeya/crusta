@@ -30,6 +30,7 @@
 #include <QTreeWidget>
 
 class DownloadManager:public QWidget{
+public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QLineEdit* searchline=new QLineEdit();
     QPushButton* clear_all=new QPushButton();

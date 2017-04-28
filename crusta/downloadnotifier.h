@@ -18,39 +18,39 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#include "downloadmanager.h"
+#ifndef DOWNLOADNOTIFIER_H
+#define DOWNLOADNOTIFIER_H
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QObject>
 #include <QLabel>
-#include <QComboBox>
-#include <QTreeWidget>
-#include <QString>
-#include <QStringList>
-#include <QFile>
-#include <QTextStream>
-#include <QTreeWidgetItem>
-#include <QDir>
-#include <QIcon>
+#include <QTimer>
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include <QEasingCurve>
+#include <QWebEngineView>
 
-void DownloadManager::createManager(){
-    createHeader();
-    setLayout(vbox);
-    vbox->addWidget(treeview);
-    hbox->addWidget(del_btn);
-    hbox->addWidget(clear_all);
-    vbox->addLayout(hbox);
-}
+class DownloadNotifier:public QObject{
+public:
+    QLabel* label=new QLabel();
+    QTimer* timer=new QTimer();
+    int x;
+    void createNotifier();
+    void showNotifier();
+    void fadeOut();
+    void setViewParent(QWebEngineView* view);
+    void hideNotifier();
+};
 
-void DownloadManager::createHeader(){
-    QStringList labels;
-    labels.push_back("title");
-    labels.push_back("address");
-    labels.push_back("time");
-    treeview->setColumnCount(3);
-    treeview->setHeaderLabels(labels);
-}
+class DownloadFinishedNotifier:public QObject{
+public:
+    QLabel* label=new QLabel();
+    QTimer* timer=new QTimer();
+    int x;
+    void createNotifier();
+    void showNotifier();
+    void fadeOut();
+    void setViewParent(QWebEngineView* view);
+    void hideNotifier();
+};
 
+#endif // DOWNLOADNOTIFIER_H

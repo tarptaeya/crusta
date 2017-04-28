@@ -22,6 +22,7 @@
 #define MANAGER_H
 
 #include "historymanager.h"
+#include "downloadmanager.h"
 
 #include <QWidget>
 #include <QListWidget>
@@ -35,13 +36,13 @@
 class Manager:public QWidget{
 public:
     HistoryManager* history_page=new HistoryManager();
+    DownloadManager* download_page=new DownloadManager();
     QHBoxLayout* hbox=new QHBoxLayout();
     QListWidget* list;
     QStackedWidget* stack;
     void createManager();
     void createOptions();
     void createPages();
-    void clearHistoryPage();
 };
 
 

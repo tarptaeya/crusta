@@ -24,6 +24,7 @@
 #include "timenotifier.h"
 #include "popup.h"
 #include "featurenotifier.h"
+#include "downloadnotifier.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -67,6 +68,7 @@ WebView::WebView(){
     connect(this->page(),&QWebEnginePage::loadFinished,this,&WebView::pageLoaded);
     connect(this->page(),&QWebEnginePage::featurePermissionRequested,this,&WebView::permissionHandler);
     connect(exitFullScreen,&QAction::triggered,this,&WebView::ExitAction);
+    connect(page()->profile(),&QWebEngineProfile::downloadRequested,this,&WebView::download);
 }
 
 void WebView::createWebView(){
@@ -282,4 +284,16 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         featureNotifier->showNotifier();
         break;
     }
+}
+
+void WebView::download(QWebEngineDownloadItem *download_item){
+    download_item->accept();
+    connect(download_item,&QWebEngineDownloadItem::finished,this,&WebView::downloadFinished);
+    downloadNotifier->setViewParent(this);
+    downloadNotifier->showNotifier();
+}
+
+void WebView::downloadFinished(){
+    downloadFinishedNotifier->setViewParent(this);
+    downloadFinishedNotifier->showNotifier();
 }
