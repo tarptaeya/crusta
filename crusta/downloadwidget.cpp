@@ -22,6 +22,9 @@
 #include <QPropertyAnimation>
 
 void DownloadWidget::createDownloadWidget(){
+    setStyleSheet("#widget{border-top:1px solid grey;background-color:#ffffff}");
+    setFixedHeight(50);
+    setFixedWidth(parentView->geometry().width());
     setLayout(hbox);
     hbox->addWidget(hide_btn);
 }
@@ -47,5 +50,4 @@ void DownloadWidget::hideDownloadWidget(){
     animation->setEndValue(QPoint(0,parentView->geometry().height()));
     animation->start();
     setParent(0);
-    hide();
 }

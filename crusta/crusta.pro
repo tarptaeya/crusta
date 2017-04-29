@@ -51,7 +51,9 @@ SOURCES += main.cpp\
     privatetabwindow.cpp \
     jseditor.cpp \
     codeeditor.cpp \
-    downloadnotifier.cpp
+    downloadnotifier.cpp \
+    downloadwidget.cpp \
+    downloaditemwidget.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -71,7 +73,9 @@ HEADERS  += \
     privatetabwindow.h \
     jseditor.h \
     codeeditor.h \
-    downloadnotifier.h
+    downloadnotifier.h \
+    downloadwidget.h \
+    downloaditemwidget.h
 
 RESOURCES += \
     resource.qrc

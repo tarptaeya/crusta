@@ -28,6 +28,7 @@
 #include "tabwindow.h"
 #include "presentationmodenotifier.h"
 #include "manager.h"
+#include "downloadwidget.h"
 #include "jseditor.h"
 
 #include <QObject>
@@ -76,6 +77,7 @@ public:
     QMenu* view_menu=new QMenu();
     QMenu* history_menu=new QMenu();
     QMenu* bookmark_menu=new QMenu();
+    QMenu* download_menu=new QMenu();
     QMenu* tool_menu=new QMenu();
     QMenu* help_menu=new QMenu();
     QMenu* devTools=new QMenu();
@@ -99,6 +101,7 @@ public:
     QAction* presentation_action=new QAction();
     QAction* show_all_history=new QAction();
     QAction* web_inspector_action=new QAction();
+    QAction* download_bar=new QAction();
     QAction* runJsCode=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
     QAction* fullscreen_action=new QAction();
@@ -110,6 +113,7 @@ public:
     QLabel* label=new QLabel();
     QLineEdit* text=new QLineEdit();
     Manager* manager=new Manager();
+    DownloadWidget* downloadWidget=new DownloadWidget();
     JsEditor* jsEditor=new JsEditor();
     MainView();
 
@@ -124,6 +128,7 @@ public:
     void saveAsPdf();
     void savePage();
     void showManager();
+    void showDownloadBar();
     void showJsCodeEditor();
 };
 

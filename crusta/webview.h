@@ -24,6 +24,7 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "downloadnotifier.h"
+#include "downloadwidget.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -60,6 +61,7 @@ public:
     TimeNotifier* timeNotifier=new TimeNotifier();
     DownloadNotifier* downloadNotifier=new DownloadNotifier();
     DownloadFinishedNotifier* downloadFinishedNotifier=new DownloadFinishedNotifier();
+    DownloadWidget* downloadWidget=new DownloadWidget();
     QWebEngineView* view=new QWebEngineView();
     void createWebView();
     QWebEngineView* returnView();
@@ -72,6 +74,7 @@ public:
     void ExitAction();
     void download(QWebEngineDownloadItem* download_item);
     void downloadFinished();
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
     void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
     WebView();
 };

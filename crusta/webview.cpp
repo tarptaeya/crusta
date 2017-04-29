@@ -25,6 +25,7 @@
 #include "popup.h"
 #include "featurenotifier.h"
 #include "downloadnotifier.h"
+#include "downloadwidget.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -291,6 +292,12 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     connect(download_item,&QWebEngineDownloadItem::finished,this,&WebView::downloadFinished);
     downloadNotifier->setViewParent(this);
     downloadNotifier->showNotifier();
+    downloadWidget->setViewParent(this);
+    connect(download_item,&QWebEngineDownloadItem::downloadProgress,this,&WebView::downloadProgress);
+}
+
+void WebView::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
+    std::cout<<bytesReceived<<" "<<bytesTotal<<std::endl;
 }
 
 void WebView::downloadFinished(){

@@ -47,6 +47,8 @@
 #include <QDir>
 #include <QWebEngineDownloadItem>
 
+#include <iostream>
+
 
 
 
@@ -55,12 +57,14 @@ void MainView::closeTab(int index){
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     WebView* webview=(WebView*)layout->itemAt(1)->widget();
-    if(!webview->wasFullScreened){
-        webview->deleteLater();
-    }
-    else{
-        webview->load(webview->home_page);
-    }
+//    if(!webview->wasFullScreened){
+//        webview->deleteLater();
+//    }
+//    else{
+//        webview->load(webview->home_page);
+//    }
+//    this->tabWindow->removeTab(index);
+    webview->load(QUrl("https://"));
     this->tabWindow->removeTab(index);
 }
 
@@ -91,11 +95,11 @@ void MainView::resetZoom(){
 void MainView::fullScreen(){
     if(this->window->isFullScreen()){
         this->window->showMaximized();
-        this->fullscreen_action->setIcon(QIcon());
+        this->fullscreen_action->setText("&Show Full Screen");
     }
     else{
         this->window->showFullScreen();
-        this->fullscreen_action->setIcon(QIcon(":/res/menu/tick.png"));
+        this->fullscreen_action->setText("&Exit Full Screen");
     }
 }
 
@@ -349,7 +353,7 @@ void MainView::createMenuBar(){
     connect(this->reset_zoom_action,&QAction::triggered,this,&MainView::resetZoom);
     this->presentation_action=this->view_menu->addAction("&Presentation Mode");
     connect(this->presentation_action,&QAction::triggered,this,&MainView::enterPresentationMode);
-    this->fullscreen_action=this->view_menu->addAction("&Full Screen");
+    this->fullscreen_action=this->view_menu->addAction("&Show Full Screen");
     connect(this->fullscreen_action,&QAction::triggered,this,&MainView::fullScreen);
     this->view_menu->addMenu("&Text Encoding");
     this->view_menu->addMenu("&Page Style");
@@ -369,10 +373,15 @@ void MainView::createMenuBar(){
     this->bookmark_menu->addAction("&Manage Bookmarks");
     this->bookmark_menu->addMenu("&Recent Bookmarks");
     this->bookmark_menu->addMenu("&Crusta Bookmarks");
+    this->download_menu=this->menubar->addMenu("&Downloads");
+    this->download_menu->addAction("&Download Manager");
+    this->download_bar=this->download_menu->addAction("&Show Download Bar");
+    connect(this->download_bar,&QAction::triggered,this,&MainView::showDownloadBar);
+    this->download_menu->addAction("&Cancel current download");
+    this->download_menu->addAction("&Clear all Downloads");
     this->tool_menu=this->menubar->addMenu("&Tools");
     this->tool_menu->addAction("&Site Info");
     this->tool_menu->addAction("&Crusta Speak");
-    this->tool_menu->addAction("&Download Manager");
     this->tool_menu->addAction("&Cookies Manager");
     this->web_inspector_action=this->tool_menu->addAction("&Web Inspector");
     this->devTools=this->tool_menu->addMenu("&Developer Tools");
@@ -453,6 +462,23 @@ void MainView::showJsCodeEditor(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     jsEditor->setView(webview);
     jsEditor->show();
+}
+
+void MainView::showDownloadBar(){
+    if(this->downloadWidget->parent()==NULL){
+        int index=this->tabWindow->currentIndex();
+        QWidget* widget=this->tabWindow->widget(index);
+        QLayout* layout=widget->layout();
+        QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+        this->downloadWidget->setViewParent(webview);
+        this->downloadWidget->createDownloadWidget();
+        this->downloadWidget->showDownloadWidget();
+        this->download_bar->setText("&Hide Download Bar");
+    }
+    else{
+        this->downloadWidget->hideDownloadWidget();
+        this->download_bar->setText("&Show Download Bar");
+    }
 }
 
 
