@@ -25,14 +25,18 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <QLCDNumber>
+#include <QWebEngineDownloadItem>
 
 class DownloadItemWidget:public QWidget{
+public:
     QLabel* title=new QLabel();
     QPushButton* cancel_btn=new QPushButton();
-    QLCDNumber* progress=new QLCDNumber();
+    QLabel* progress=new QLabel();
     QHBoxLayout* hbox=new QHBoxLayout();
+    QWebEngineDownloadItem* item;
     DownloadItemWidget();
+    void setDownloadItem(QWebEngineDownloadItem* d_item);
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 };
 
 #endif // DOWNLOADITEMWIDGET_H

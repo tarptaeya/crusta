@@ -30,3 +30,16 @@ DownloadItemWidget::DownloadItemWidget(){
     cancel_btn->setIcon(QIcon(":/res/drawables/close.png"));
     hbox->addWidget(cancel_btn);
 }
+
+void DownloadItemWidget::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
+    int p=0;
+    if(item->totalBytes()!=0){
+        p=(bytesReceived*100)/item->totalBytes();
+    }
+    progress->setText(QString::number(p)+QString("%"));
+}
+
+void DownloadItemWidget::setDownloadItem(QWebEngineDownloadItem *d_item){
+    item=d_item;
+}
+

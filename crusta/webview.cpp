@@ -25,7 +25,7 @@
 #include "popup.h"
 #include "featurenotifier.h"
 #include "downloadnotifier.h"
-#include "downloadwidget.h"
+#include "downloaditemwidget.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -184,8 +184,8 @@ void WebView::acceptFullScreen(QWebEngineFullScreenRequest request){
     }
     else{
         request.accept();
-        notifier->hideNotifier();
-        timeNotifier->hideNotifier();
+        notifier->setParent(0);
+        timeNotifier->setParent(0);
         setParent(widget);
         layout->addWidget(this);
         removeAction(exitFullScreen);
@@ -292,12 +292,10 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     connect(download_item,&QWebEngineDownloadItem::finished,this,&WebView::downloadFinished);
     downloadNotifier->setViewParent(this);
     downloadNotifier->showNotifier();
-    downloadWidget->setViewParent(this);
-    connect(download_item,&QWebEngineDownloadItem::downloadProgress,this,&WebView::downloadProgress);
-}
-
-void WebView::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
-    std::cout<<bytesReceived<<" "<<bytesTotal<<std::endl;
+    DownloadItemWidget* downloadItemWidget=new DownloadItemWidget();
+    downloadItemWidget->setDownloadItem(download_item);
+    downloadItemWidget->show();
+    connect(download_item,&QWebEngineDownloadItem::downloadProgress,downloadItemWidget,&DownloadItemWidget::downloadProgress);
 }
 
 void WebView::downloadFinished(){

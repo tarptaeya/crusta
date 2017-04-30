@@ -65,6 +65,8 @@ void MainView::closeTab(int index){
 //    }
 //    this->tabWindow->removeTab(index);
     webview->load(QUrl("https://"));
+    webview->disconnect();
+    webview->deleteLater();
     this->tabWindow->removeTab(index);
 }
 

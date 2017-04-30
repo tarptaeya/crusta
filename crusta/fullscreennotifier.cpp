@@ -53,15 +53,17 @@ void FullScreenNotifier::showNotifier(){
 }
 
 void FullScreenNotifier::fadeOut(){
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
-    this->label->setGraphicsEffect(effect);
-    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
-    a->setDuration(1000);
-    a->setStartValue(1);
-    a->setEndValue(0);
-    a->setEasingCurve(QEasingCurve::OutBack);
-    a->start(QPropertyAnimation::DeleteWhenStopped);
-    connect(a,SIGNAL(finished()),this->label,SLOT(hide()));
+    this->label->setParent(0);
+    this->label->hide();
+//    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
+//    this->label->setGraphicsEffect(effect);
+//    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
+//    a->setDuration(1000);
+//    a->setStartValue(1);
+//    a->setEndValue(0);
+//    a->setEasingCurve(QEasingCurve::OutBack);
+//    a->start(QPropertyAnimation::DeleteWhenStopped);
+//    connect(a,SIGNAL(finished()),this->label,SLOT(deleteLater()));
 }
 
 void FullScreenNotifier::setViewParent(QWebEngineView *view){
