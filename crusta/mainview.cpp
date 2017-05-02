@@ -45,6 +45,7 @@
 #include <QLineEdit>
 #include <QFileDialog>
 #include <QDir>
+#include <QStatusBar>
 #include <QWebEngineDownloadItem>
 
 #include <iostream>
@@ -64,10 +65,10 @@ void MainView::closeTab(int index){
 //        webview->load(webview->home_page);
 //    }
 //    this->tabWindow->removeTab(index);
-    webview->load(QUrl("https://"));
     webview->disconnect();
     webview->deleteLater();
     this->tabWindow->removeTab(index);
+    MainView::addNewTabButton();
 }
 
 void MainView::zoomIn(){
@@ -288,7 +289,15 @@ MainView::MainView(){
     createMenuBar();
     createTabWindow();
     addNormalTab();
+    addNewTabButton();
     this->manager->createManager();
+    this->tabWindow->tabBar()->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
+    connect(this->tabWindow->tabBar(),&QTabBar::tabBarDoubleClicked,this,&MainView::tabAreaDoubleClicked);
+    connect(this->tabWindow->tabBar(),&QTabBar::tabMoved,this,&MainView::addNewTabButton);
+    connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::addNewTabButton);
+    connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
+//    this->menubar->setStyleSheet("background-color:#4444ff");
+//    this->tabWindow->setStyleSheet("background-color:#9999ff");
 }
 
 void MainView::createView(){
@@ -315,13 +324,15 @@ void MainView::createMenuBar(){
     this->new_private_tab_action=this->file_menu->addAction("&New Private Tab");
     connect(new_private_tab_action,&QAction::triggered,this,&MainView::addPrivateTab);
     this->file_menu->addAction("&New Private Window");
-    this->file_menu->addAction("&Open File");
+    this->open_file=this->file_menu->addAction("&Open File");
+    connect(this->open_file,&QAction::triggered,this,&MainView::openLocalFile);
     this->save_as_pdf=this->file_menu->addAction("&Save Page As PDF");
     connect(this->save_as_pdf,&QAction::triggered,this,&MainView::saveAsPdf);
     this->save_page=this->file_menu->addAction("&Save Page");
     connect(this->save_page,&QAction::triggered,this,&MainView::savePage);
-    this->file_menu->addAction("&Send Link");
-    this->file_menu->addAction("&Print");
+    this->capture_screenshot=this->file_menu->addAction("&Capture ScreenShot");
+    this->capture_screenshot->setShortcut(QKeySequence(QKeySequence::Save));
+    connect(this->capture_screenshot,&QAction::triggered,this,&MainView::screenShot);
     this->exit_action=this->file_menu->addAction("&Quit");
     connect(this->exit_action,&QAction::triggered,this,&MainView::quit);
     this->edit_menu=this->menubar->addMenu("&Edit");
@@ -342,9 +353,6 @@ void MainView::createMenuBar(){
     connect(this->find_action,&QAction::triggered,this,&MainView::FindText);
     this->edit_menu->addAction("&Edit Preference");
     this->view_menu=this->menubar->addMenu("&View");
-    this->view_menu->addMenu("&ToolBar");
-    this->view_menu->addMenu("&SideBar");
-    this->view_menu->addAction("&Status Bar");
     this->view_page_source_action=this->view_menu->addAction("&Page Source");
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
     this->zoom_in_action=this->view_menu->addAction("&Zoom In");
@@ -398,7 +406,7 @@ void MainView::createMenuBar(){
     this->help_menu->addAction("&Report Issue");
     this->help_menu->addAction("&License");
     this->box->setMenuBar(this->menubar);
-    this->menubar->setNativeMenuBar(false);
+    this->menubar->setNativeMenuBar(true);
 }
 
 void MainView::createTabWindow(){
@@ -412,12 +420,14 @@ void MainView::addNormalTab(){
     TabWindow* tab=new TabWindow();
     this->tabWindow->addTab(tab->returnTab(),"new Tab");
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
+    MainView::addNewTabButton();
 }
 
 void MainView::addPrivateTab(){
     PrivateTabWindow* privatetab=new PrivateTabWindow();
     this->tabWindow->addTab(privatetab->returnTab(),"new Tab");
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
+    MainView::addNewTabButton();
 }
 
 void MainView::viewPageSource(){
@@ -434,21 +444,30 @@ void MainView::viewPageSource(){
 }
 
 void MainView::saveAsPdf(){
-    QString file_name=QFileDialog::getSaveFileName(this->window,"Crusta : Save File",QDir::homePath(),"Pdf File(*.pdf)");
+    QFileDialog f;
+    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    QString file_name=f.getSaveFileName(this->window,"Crusta : Save File",QDir::homePath(),"Pdf File(*.pdf)",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    if(file_name!=""){
+    if(!file_name.endsWith(".pdf"))file_name+=QString(".pdf");
     webview->page()->printToPdf(file_name);
+    }
 }
 
 void MainView::savePage(){
-    QString file_name=QFileDialog::getSaveFileName(this->window,"Crusta : Save File",QDir::homePath(),"WebPage, Complete");
+    QFileDialog f;
+    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    QString file_name=f.getSaveFileName(this->window,"Crusta : Save File",QDir::homePath(),"WebPage, Complete",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-    webview->page()->save(file_name,QWebEngineDownloadItem::CompleteHtmlSaveFormat);
+    if(file_name!=QString("")){
+        webview->page()->save(file_name,QWebEngineDownloadItem::CompleteHtmlSaveFormat);
+    }
 }
 
 void MainView::showManager(){
@@ -483,8 +502,48 @@ void MainView::showDownloadBar(){
     }
 }
 
+void MainView::openLocalFile(){
+    QFileDialog f;
+    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    QString filename=f.getOpenFileName(this->window,"Crusta : Open File",QDir::homePath(),QString(),nullptr,f.options());
+    int index=this->tabWindow->currentIndex();
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    if(filename!=""){
+    webview->load(QUrl(QString("file://")+filename));
+    }
+}
 
+void MainView::screenShot(){
+    int index=this->tabWindow->currentIndex();
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    QPixmap pmap = webview->grab();
+    QFileDialog f;
+    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    QString filename=f.getSaveFileName(this->window,"Crusta : Open File",QDir::homePath(),QString("Images (*.png *.xpm *.jpg *.bmp)"),nullptr,f.options());
+    if(filename!=""){
+    if(!(filename.endsWith(".png")||filename.endsWith(".jpg")||filename.endsWith(".bmp")||filename.endsWith(".xpm")))filename+=QString(".png");
+    pmap.save(filename);
+    }
+}
 
+void MainView::tabAreaDoubleClicked(int index){
+    if(index==-1){
+        MainView::addNormalTab();
+    }
+}
 
+void MainView::addNewTabButton(){
+    int cnt=this->tabWindow->count();
+    int x=cnt*175+3; //size of a tab;
+    if(newtabbtn->parent()==NULL)newtabbtn->setParent(this->tabWindow->tabBar());
+    this->newtabbtn->move(x,3);
+    //this->newtabbtn->setIcon(QIcon(":/res/drawables/add_tab.png"));
+    this->newtabbtn->setFixedHeight(26);
+    this->newtabbtn->setFixedWidth(30);
+}
 
 

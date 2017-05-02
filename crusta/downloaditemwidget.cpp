@@ -20,6 +20,7 @@
 
 #include "downloaditemwidget.h"
 #include <QIcon>
+#include <iostream>
 
 DownloadItemWidget::DownloadItemWidget(){
     setFixedWidth(170);
@@ -32,10 +33,11 @@ DownloadItemWidget::DownloadItemWidget(){
 }
 
 void DownloadItemWidget::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
-    int p=0;
-    if(item->totalBytes()!=0){
+    qint64 p=0;
+    if(item->totalBytes()!=qint64(0)){
         p=(bytesReceived*100)/item->totalBytes();
     }
+    std::cout<<"downloading "<<bytesReceived<<" of "<<item->totalBytes()<<std::endl;
     progress->setText(QString::number(p)+QString("%"));
 }
 

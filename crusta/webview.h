@@ -73,6 +73,7 @@ public:
     void download(QWebEngineDownloadItem* download_item);
     void downloadFinished();
     void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
+    void showLinkHovered(QString url);
     WebView();
 };
 

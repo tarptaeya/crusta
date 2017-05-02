@@ -70,6 +70,7 @@ WebView::WebView(){
     connect(this->page(),&QWebEnginePage::featurePermissionRequested,this,&WebView::permissionHandler);
     connect(exitFullScreen,&QAction::triggered,this,&WebView::ExitAction);
     connect(page()->profile(),&QWebEngineProfile::downloadRequested,this,&WebView::download);
+    connect(page(),&QWebEnginePage::linkHovered,this,&WebView::showLinkHovered);
 }
 
 void WebView::createWebView(){
@@ -201,7 +202,7 @@ QWebEngineView* WebView::createWindow(QWebEnginePage::WebWindowType type){
     switch(type){
     case QWebEnginePage::WebBrowserTab: {
         WebView* view=new WebView();
-        view->raise(); // to prevent it from closing when the view which requests this gets closed
+        view->raise();
         TabWindow* tabwin=new TabWindow();
         tabwin->vbox->setContentsMargins(0,0,0,0);
         tabwin->setWebView(view);
@@ -301,4 +302,8 @@ void WebView::download(QWebEngineDownloadItem *download_item){
 void WebView::downloadFinished(){
     downloadFinishedNotifier->setViewParent(this);
     downloadFinishedNotifier->showNotifier();
+}
+
+void WebView::showLinkHovered(QString url){
+    //TODO : make a link hovered showing QLabel;
 }

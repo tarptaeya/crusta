@@ -44,11 +44,12 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMainWindow>
 
 
 
 
-class MainView:public QObject{
+class MainView:public QMainWindow{
     void closeTab(int);
     void zoomIn();
     void zoomOut();
@@ -84,8 +85,10 @@ public:
     QAction* new_tab_action=new QAction();
     QAction* new_private_tab_action=new QAction();
     QAction* new_window_action=new QAction();
+    QAction* open_file=new QAction();
     QAction* save_as_pdf=new QAction();
     QAction* save_page=new QAction();
+    QAction* capture_screenshot=new QAction();
     QAction* exit_action=new QAction();
     QAction* undo_action=new QAction();
     QAction* redo_action=new QAction();
@@ -115,6 +118,7 @@ public:
     Manager* manager=new Manager();
     DownloadWidget* downloadWidget=new DownloadWidget();
     JsEditor* jsEditor=new JsEditor();
+    QPushButton* newtabbtn=new QPushButton();
     MainView();
 
     void createView();
@@ -130,6 +134,10 @@ public:
     void showManager();
     void showDownloadBar();
     void showJsCodeEditor();
+    void openLocalFile();
+    void screenShot();
+    void tabAreaDoubleClicked(int index);
+    void addNewTabButton();
 };
 
 

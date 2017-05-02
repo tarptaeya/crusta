@@ -64,6 +64,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
+    setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
 //![constructor]
