@@ -50,6 +50,7 @@ public:
     WebView* view=new WebView();
     void createControls();
     QWidget* returnTab();
+    QWidget* returnTab(WebView *view);
     TabWindow* returnThis();
     void setWebView(WebView*);
 };

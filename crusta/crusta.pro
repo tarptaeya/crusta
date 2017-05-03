@@ -53,7 +53,9 @@ SOURCES += main.cpp\
     codeeditor.cpp \
     downloadnotifier.cpp \
     downloadwidget.cpp \
-    downloaditemwidget.cpp
+    downloaditemwidget.cpp \
+    themeeditor.cpp \
+    webpage.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -75,7 +77,9 @@ HEADERS  += \
     codeeditor.h \
     downloadnotifier.h \
     downloadwidget.h \
-    downloaditemwidget.h
+    downloaditemwidget.h \
+    themeeditor.h \
+    webpage.h
 
 RESOURCES += \
     resource.qrc

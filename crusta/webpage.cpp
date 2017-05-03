@@ -18,30 +18,23 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#ifndef TIMENOTIFIER_H
-#define TIMENOTIFIER_H
+#include "webpage.h"
+#include <QFileDialog>
 
-#include <QObject>
-#include <QLabel>
-#include <QTimer>
-#include <QTime>
-#include <QGraphicsOpacityEffect>
-#include <QPropertyAnimation>
-#include <QEasingCurve>
-#include <QWebEngineView>
-
-class TimeNotifier:public QObject{
-public:
-    QLabel* label=new QLabel();
-    QTimer* timer=new QTimer();
-    QWebEngineView* pview=new QWebEngineView();
-    int x;
-    void createNotifier();
-    void showNotifier();
-    void fadeOut();
-    void setViewParent(QWebEngineView* view);
-    void hideNotifier();
-};
-
-
-#endif // TIMENOTIFIER_H
+QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes){
+    QFileDialog* f=new QFileDialog();
+    f->setOption(QFileDialog::DontUseNativeDialog,true);
+    switch(mode){
+    case(QWebEnginePage::FileSelectOpen):{
+        QString name=f->getOpenFileName(nullptr,QString("Crusta : Upload File"),QDir::homePath(),QString(),nullptr,f->options());
+        QStringList list;
+        list.append(name);
+        return list;
+    }break;
+    case(QWebEnginePage::FileSelectOpenMultiple):{
+        QStringList names=f->getOpenFileNames(nullptr,QString("Crusta : Upload File"),QDir::homePath(),QString(),nullptr,f->options());
+        return names;
+    }break;
+    }
+    return QStringList();
+}

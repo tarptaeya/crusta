@@ -83,7 +83,6 @@ void TabWindow::createControls(){
 QWidget* TabWindow::returnTab(){
     this->vbox->setContentsMargins(0,0,0,0);
     createControls();
-    this->vbox->addWidget(this->view->returnView());
     return this->tab;
 }
 
@@ -95,4 +94,11 @@ TabWindow* TabWindow::returnThis(){
 
 void TabWindow::setWebView(WebView* v){
     view=v;
+}
+
+QWidget* TabWindow::returnTab(WebView* view){
+    this->vbox->setContentsMargins(0,0,0,0);
+    setWebView(view);
+    createControls();
+    return this->tab;
 }

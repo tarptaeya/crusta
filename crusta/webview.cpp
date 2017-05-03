@@ -26,6 +26,7 @@
 #include "featurenotifier.h"
 #include "downloadnotifier.h"
 #include "downloaditemwidget.h"
+#include "mainview.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -71,9 +72,12 @@ WebView::WebView(){
     connect(exitFullScreen,&QAction::triggered,this,&WebView::ExitAction);
     connect(page()->profile(),&QWebEngineProfile::downloadRequested,this,&WebView::download);
     connect(page(),&QWebEnginePage::linkHovered,this,&WebView::showLinkHovered);
+    connect(page(),&QWebEnginePage::windowCloseRequested,this,&WebView::closeTab);
+    //connect(page(),&QWebEnginePage::recentlyAudibleChanged,this,&WebView::audioInfo);
 }
 
 void WebView::createWebView(){
+    setPage(webpage);
     load(QUrl(this->home_page));
 }
 
@@ -135,7 +139,8 @@ void WebView::faviconChanged(QIcon fav){
                 QPixmap pix=fav.pixmap(16,16);
                 QLabel* lab=new QLabel();
                 lab->setPixmap(pix);
-                tabwidget->tabBar()->setTabButton(i,QTabBar::LeftSide,lab);
+                if(!page()->recentlyAudible())
+                    tabwidget->tabBar()->setTabButton(i,QTabBar::LeftSide,lab);
             }
         }
     }
@@ -306,4 +311,42 @@ void WebView::downloadFinished(){
 
 void WebView::showLinkHovered(QString url){
     //TODO : make a link hovered showing QLabel;
+}
+
+void WebView::closeTab(){
+    QWidget* widget=(QWidget*)this->parent();
+    QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+    QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+    for(int i=0;i<tabwidget->count();i++){
+        QWidget* w=tabwidget->widget(i);
+        QLayout* l=w->layout();
+        QWebEngineView* v=(QWebEngineView*)l->itemAt(1)->widget();
+        if(v==this){
+            v->load(QUrl("http://"));
+            v->disconnect();
+            v->deleteLater();
+            tabwidget->removeTab(i);
+            break;
+        }
+    }
+}
+
+void WebView::audioInfo(){
+    if(this->parent()==NULL)return;
+    QWidget* widget=(QWidget*)this->parent();
+    QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+    QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+    for(int i=0;i<tabwidget->count();i++){
+        QWidget* w=tabwidget->widget(i);
+        QLayout* l=w->layout();
+        QWebEngineView* v=(QWebEngineView*)l->itemAt(1)->widget();
+        if(v==this){
+            QIcon ipix=QIcon(":/res/drawables/volume_max.png");
+            QPixmap pix=ipix.pixmap(16,16);
+            QLabel* lab=new QLabel();
+            lab->setPixmap(pix);
+            tabwidget->tabBar()->setTabButton(i,QTabBar::LeftSide,lab);
+            break;
+        }
+    }
 }

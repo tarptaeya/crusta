@@ -18,30 +18,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#ifndef TIMENOTIFIER_H
-#define TIMENOTIFIER_H
+#ifndef WEBPAGE_H
+#define WEBPAGE_H
 
-#include <QObject>
-#include <QLabel>
-#include <QTimer>
-#include <QTime>
-#include <QGraphicsOpacityEffect>
-#include <QPropertyAnimation>
-#include <QEasingCurve>
-#include <QWebEngineView>
+#include <QWebEnginePage>
 
-class TimeNotifier:public QObject{
+class WebPage:public QWebEnginePage{
+protected:
+    QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
 public:
-    QLabel* label=new QLabel();
-    QTimer* timer=new QTimer();
-    QWebEngineView* pview=new QWebEngineView();
-    int x;
-    void createNotifier();
-    void showNotifier();
-    void fadeOut();
-    void setViewParent(QWebEngineView* view);
-    void hideNotifier();
 };
 
-
-#endif // TIMENOTIFIER_H
+#endif // WEBPAGE_H

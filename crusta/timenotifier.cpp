@@ -37,6 +37,7 @@ void TimeNotifier::createNotifier(){
 }
 
 void TimeNotifier::showNotifier(){
+    this->label->setParent(pview);
     createNotifier();
     this->label->setGeometry(0,0,380,80);
     this->label->setAlignment(Qt::AlignCenter);
@@ -56,18 +57,21 @@ void TimeNotifier::showNotifier(){
 }
 
 void TimeNotifier::fadeOut(){
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
-    this->label->setGraphicsEffect(effect);
-    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
-    a->setDuration(1000);
-    a->setStartValue(1);
-    a->setEndValue(0);
-    a->setEasingCurve(QEasingCurve::OutBack);
-    a->start(QPropertyAnimation::DeleteWhenStopped);
-    connect(a,SIGNAL(finished()),this->label,SLOT(hide()));
+    this->label->setParent(0);
+    this->label->hide();
+//    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
+//    this->label->setGraphicsEffect(effect);
+//    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
+//    a->setDuration(1000);
+//    a->setStartValue(1);
+//    a->setEndValue(0);
+//    a->setEasingCurve(QEasingCurve::OutBack);
+//    a->start(QPropertyAnimation::DeleteWhenStopped);
+//    connect(a,SIGNAL(finished()),this->label,SLOT(hide()));
 }
 
 void TimeNotifier::setViewParent(QWebEngineView *view){
+    pview=view;
     this->label->setParent(view);
     this->x=QApplication::desktop()->screenGeometry().width()/2-190;
 }

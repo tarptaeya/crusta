@@ -29,6 +29,7 @@
 #include "presentationmodenotifier.h"
 #include "manager.h"
 #include "jseditor.h"
+#include "themeeditor.h"
 
 #include <QObject>
 #include <QPoint>
@@ -57,7 +58,7 @@ void MainView::closeTab(int index){
     if(this->tabWindow->count()==1)QApplication::quit();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
-    WebView* webview=(WebView*)layout->itemAt(1)->widget();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
 //    if(!webview->wasFullScreened){
 //        webview->deleteLater();
 //    }
@@ -65,7 +66,12 @@ void MainView::closeTab(int index){
 //        webview->load(webview->home_page);
 //    }
 //    this->tabWindow->removeTab(index);
-    webview->disconnect();
+//    webview->disconnect();
+//    if(!webview->page()->isAudioMuted()){
+//        webview->page()->setAudioMuted(true);
+//    }
+    webview->page()->deleteLater();
+    webview->setPage(new QWebEnginePage());
     webview->deleteLater();
     this->tabWindow->removeTab(index);
     MainView::addNewTabButton();
@@ -109,21 +115,36 @@ void MainView::fullScreen(){
 
 void MainView::tabBarContext(QPoint point){
     if(this->tabWindow->tabBar()->tabAt(point)!=-1){
+        int index=this->tabWindow->tabBar()->tabAt(point);
+        QWidget* widget=this->tabWindow->widget(index);
+        QLayout* layout=widget->layout();
+        QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+
         QMenu* contextMenu=new QMenu();
-        contextMenu->addAction("&Reload Tab");
+        QAction* rld_tab=new QAction();
+        rld_tab=contextMenu->addAction("&Reload Tab");
+        connect(rld_tab,&QAction::triggered,webview,&QWebEngineView::reload);
         contextMenu->addAction("&Mute Tab");
         contextMenu->addAction("&Pin Tab");
-        contextMenu->addAction("&Duplicate Tab");
+        QAction* duplicate=new QAction();
+        duplicate=contextMenu->addAction("&Duplicate Tab");
+        connect(duplicate,&QAction::triggered,this,[this,webview]{duplicateTab(webview);});
         contextMenu->addAction("&Open in new Window");
         contextMenu->addAction("&Bookmark Tab");
         contextMenu->addAction("&Bookmark All Tabs");
-        contextMenu->addAction("&Close Other Tabs");
+        QAction* closeoth=new QAction();
+        closeoth=contextMenu->addAction("&Close Other Tabs");
+        connect(closeoth,&QAction::triggered,this,[this,index]{closeOtherTabs(index);});
         contextMenu->exec(contextMenu->mapToGlobal(point));
     }
     else{
         QMenu* barContext=new QMenu();
-        barContext->addAction("&New Tab");
-        barContext->addAction("&Reload All Tabs");
+        QAction* ntab_bar=new QAction();
+        ntab_bar=barContext->addAction("&New Tab");
+        connect(ntab_bar,&QAction::triggered,this,&MainView::addNormalTab);
+        QAction* rlod=new QAction();
+        rlod=barContext->addAction("&Reload All Tabs");
+        connect(rlod,&QAction::triggered,this,&MainView::reloadAllTabs);
         barContext->addAction("&Bookmark All Tabs");
         barContext->addAction("Mute All Tabs");
         barContext->addAction("&Restore All Tabs");
@@ -279,7 +300,7 @@ MainView::MainView(){
     this->box->setContentsMargins(0,0,0,0);
     this->tabWindow->tabBar()->setDocumentMode(true);
     this->tabWindow->setElideMode(Qt::ElideRight);
-    this->tabWindow->setStyleSheet("QTabBar::tab{max-width:175px;min-width:175px}");
+    this->tabWindow->setStyleSheet("QTabBar::tab{max-width:175px;min-width:175px;} QTabWidget::tab-bar{left:35px;}");
     this->tabWindow->tabBar()->setExpanding(false);
     this->tabWindow->tabBar()->setShape(QTabBar::RoundedNorth);
     this->tabWindow->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -351,7 +372,8 @@ void MainView::createMenuBar(){
     this->find_action=this->edit_menu->addAction("&Find");
     this->find_action->setShortcut(QKeySequence(QKeySequence::Find));
     connect(this->find_action,&QAction::triggered,this,&MainView::FindText);
-    this->edit_menu->addAction("&Edit Preference");
+    this->preference=this->edit_menu->addAction("&Edit Preference");
+    connect(this->preference,&QAction::triggered,this,&MainView::editPreference);
     this->view_menu=this->menubar->addMenu("&View");
     this->view_page_source_action=this->view_menu->addAction("&Page Source");
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
@@ -546,4 +568,46 @@ void MainView::addNewTabButton(){
     this->newtabbtn->setFixedWidth(30);
 }
 
+void MainView::editPreference(){
+    ThemeEditor* th=new ThemeEditor();
+    th->setWindowTitle("Theme Editor");
+    th->show();
+}
 
+void MainView::duplicateTab(QWebEngineView* view){
+    TabWindow* tab=new TabWindow();
+    WebView* wview=new WebView();
+    wview->load(view->url());
+    this->tabWindow->addTab(tab->returnTab(wview),"new Tab");
+    this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
+    MainView::addNewTabButton();
+}
+
+void MainView::reloadAllTabs(){
+    int cnt=this->tabWindow->count();
+    for(int i=0;i<cnt;i++){
+        QWidget* widget=this->tabWindow->widget(i);
+        QLayout* layout=widget->layout();
+        QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+        webview->reload();
+    }
+}
+
+void MainView::closeOtherTabs(int index){
+    int cnt=this->tabWindow->count();
+    int i=0;
+    while(i<cnt){
+        if(i!=index){
+            QWidget* widget=this->tabWindow->widget(i);
+            QLayout* layout=widget->layout();
+            QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+            webview->page()->windowCloseRequested();
+            if(index>0)index--;
+            cnt--;
+            i=0;
+            MainView::addNewTabButton();
+            continue;
+        }
+        i++;
+    }
+}

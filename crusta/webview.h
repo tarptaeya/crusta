@@ -24,6 +24,7 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "downloadnotifier.h"
+#include "webpage.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -51,6 +52,7 @@ protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
     bool wasFullScreened=false;
+    WebPage* webpage=new WebPage();
     QString home_page=QString("http://google.com");
     QLayout* layout;
     QWidget* widget;
@@ -74,6 +76,8 @@ public:
     void downloadFinished();
     void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
     void showLinkHovered(QString url);
+    void closeTab();
+    void audioInfo();
     WebView();
 };
 
