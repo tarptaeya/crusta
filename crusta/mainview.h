@@ -106,7 +106,6 @@ public:
     QAction* preference=new QAction();
     QAction* show_all_history=new QAction();
     QAction* web_inspector_action=new QAction();
-    QAction* download_bar=new QAction();
     QAction* runJsCode=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
     QAction* fullscreen_action=new QAction();
@@ -121,6 +120,7 @@ public:
     DownloadWidget* downloadWidget=new DownloadWidget();
     JsEditor* jsEditor=new JsEditor();
     QPushButton* newtabbtn=new QPushButton();
+    QPageLayout currentPageLayout;
     MainView();
 
     void createView();
@@ -134,7 +134,6 @@ public:
     void saveAsPdf();
     void savePage();
     void showManager();
-    void showDownloadBar();
     void showJsCodeEditor();
     void openLocalFile();
     void screenShot();

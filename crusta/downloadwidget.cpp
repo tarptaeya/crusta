@@ -19,35 +19,46 @@
 * ============================================================ */
 
 #include "downloadwidget.h"
-#include <QPropertyAnimation>
 
-void DownloadWidget::createDownloadWidget(){
-    setStyleSheet("#widget{border-top:1px solid grey;background-color:#ffffff}");
-    setFixedHeight(50);
-    setFixedWidth(parentView->geometry().width());
+DownloadWidget::DownloadWidget(){
+    cancel->setText("Cancel");
+    progress->setMaximum(100);
+    progress->setMinimum(0);
     setLayout(hbox);
-    hbox->addWidget(hide_btn);
+    hbox->addWidget(icon);
+    hbox->addLayout(v0box);
+    hbox->addLayout((v1box));
+    v0box->addWidget(name);
+    v0box->addWidget(progress);
+    v1box->addWidget(cancel);
+    v1box->addWidget(fraction);
 }
 
-void DownloadWidget::setViewParent(QWebEngineView *view){
-    parentView=view;
-    setParent(view);
+void DownloadWidget::getName(QString file){
+    name->setText(file);
 }
 
-void DownloadWidget::showDownloadWidget(){
-    show();
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "pos");
-    animation->setDuration(600);
-    animation->setStartValue(QPoint(0,parentView->geometry().height()));
-    animation->setEndValue(QPoint(0,parentView->geometry().height()-50));
-    animation->start();
+void DownloadWidget::getIcon(QIcon ico){
+    icon->setPixmap(ico.pixmap(64,64));
 }
 
-void DownloadWidget::hideDownloadWidget(){
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "pos");
-    animation->setDuration(800);
-    animation->setStartValue(QPoint(0,parentView->geometry().height()-50));
-    animation->setEndValue(QPoint(0,parentView->geometry().height()));
-    animation->start();
-    setParent(0);
+void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
+    int f=0;
+    if(bytesTotal!=0)f=(int)((bytesRecieved*100)/bytesTotal);
+    fraction->setNum(f);
+    progress->setValue(f);
+}
+
+void DownloadWidget::changeLayout(){
+    open->setText("Open");
+    remove->setText("Remove");
+    v0box->removeWidget(progress);
+    v1box->removeWidget(fraction);
+    v1box->removeWidget(cancel);
+    progress->deleteLater();
+    fraction->deleteLater();
+    cancel->disconnect();
+    cancel->deleteLater();
+    v1box->addWidget(open);
+    v1box->addWidget(remove);
 }

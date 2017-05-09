@@ -86,7 +86,6 @@ void Manager::createPages(){
     this->stack=new QStackedWidget();
     history_page->createManager();
     stack->addWidget(history_page);
-    download_page->createManager();
     stack->addWidget(download_page);
     stack->setCurrentIndex(1);
 }

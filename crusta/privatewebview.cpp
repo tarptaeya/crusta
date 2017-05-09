@@ -22,7 +22,6 @@
 #include "privatetabwindow.h"
 #include "popup.h"
 #include "fullscreennotifier.h"
-#include "featurenotifier.h"
 #include "presentationmodenotifier.h"
 
 #include <QWebEnginePage>
@@ -218,36 +217,7 @@ QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type)
 }
 
 void PrivateWebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature){
-    FeatureNotifier* featureNotifier=new FeatureNotifier();
-    featureNotifier->setViewParent(this);
-    wasFullScreen=true;
-    switch (feature) {
-    case QWebEnginePage::MouseLock:
-        featureNotifier->createNotifier(QString("Mouse Lock is accepted - Press ESC to exit"));
-        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
-        break;
-    case QWebEnginePage::Geolocation:
-        featureNotifier->createNotifier(QString("Geolocation request is accepted"));
-        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
-        break;
-    case QWebEnginePage::MediaAudioCapture:
-        featureNotifier->createNotifier(QString("Media Audio Capture request is accepted"));
-        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
-        break;
-    case QWebEnginePage::MediaVideoCapture:
-        featureNotifier->createNotifier(QString("Media Video Capture request is accepted"));
-        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
-        break;
-    case QWebEnginePage::MediaAudioVideoCapture:
-        featureNotifier->createNotifier(QString("Media Audio-Video Capture request is accepted"));
-        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
-        break;
-    }
+
 }
 
 

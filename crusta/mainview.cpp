@@ -48,6 +48,8 @@
 #include <QDir>
 #include <QStatusBar>
 #include <QWebEngineDownloadItem>
+#include <QPrinter>
+#include <QPageSetupDialog>
 
 #include <iostream>
 
@@ -71,8 +73,6 @@ void MainView::closeTab(int index){
 //        webview->page()->setAudioMuted(true);
 //    }
     webview->page()->deleteLater();
-    webview->setPage(new QWebEnginePage());
-    webview->deleteLater();
     this->tabWindow->removeTab(index);
     MainView::addNewTabButton();
 }
@@ -300,7 +300,7 @@ MainView::MainView(){
     this->box->setContentsMargins(0,0,0,0);
     this->tabWindow->tabBar()->setDocumentMode(true);
     this->tabWindow->setElideMode(Qt::ElideRight);
-    this->tabWindow->setStyleSheet("QTabBar::tab{max-width:175px;min-width:175px;} QTabWidget::tab-bar{left:35px;}");
+    this->tabWindow->setStyleSheet("QTabBar::tab{max-width:175px;min-width:175px;} QTabWidget::tab-bar{left:0px;}");
     this->tabWindow->tabBar()->setExpanding(false);
     this->tabWindow->tabBar()->setShape(QTabBar::RoundedNorth);
     this->tabWindow->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -345,6 +345,7 @@ void MainView::createMenuBar(){
     this->new_private_tab_action=this->file_menu->addAction("&New Private Tab");
     connect(new_private_tab_action,&QAction::triggered,this,&MainView::addPrivateTab);
     this->file_menu->addAction("&New Private Window");
+    this->file_menu->addSeparator();
     this->open_file=this->file_menu->addAction("&Open File");
     connect(this->open_file,&QAction::triggered,this,&MainView::openLocalFile);
     this->save_as_pdf=this->file_menu->addAction("&Save Page As PDF");
@@ -361,12 +362,14 @@ void MainView::createMenuBar(){
     connect(this->undo_action,&QAction::triggered,this,&MainView::undoPageAction);
     this->redo_action=this->edit_menu->addAction("&Redo");
     connect(this->redo_action,&QAction::triggered,this,&MainView::redoPageAction);
+    this->edit_menu->addSeparator();
     this->cut_action=this->edit_menu->addAction("&Cut");
     connect(this->cut_action,&QAction::triggered,this,&MainView::cutPageAction);
     this->copy_action=this->edit_menu->addAction("&Copy");
     connect(this->copy_action,&QAction::triggered,this,&MainView::copyPageAction);
     this->paste_action=this->edit_menu->addAction("&Paste");
     connect(this->paste_action,&QAction::triggered,this,&MainView::pastePageAction);
+    this->edit_menu->addSeparator();
     this->selectall_action=this->edit_menu->addAction("&Select All");
     connect(this->selectall_action,&QAction::triggered,this,&MainView::selectAllText);
     this->find_action=this->edit_menu->addAction("&Find");
@@ -383,6 +386,7 @@ void MainView::createMenuBar(){
     connect(this->zoom_out_action,&QAction::triggered,this,&MainView::zoomOut);
     this->reset_zoom_action=this->view_menu->addAction("&Reset Zoom");
     connect(this->reset_zoom_action,&QAction::triggered,this,&MainView::resetZoom);
+    this->view_menu->addSeparator();
     this->presentation_action=this->view_menu->addAction("&Presentation Mode");
     connect(this->presentation_action,&QAction::triggered,this,&MainView::enterPresentationMode);
     this->fullscreen_action=this->view_menu->addAction("&Show Full Screen");
@@ -395,6 +399,7 @@ void MainView::createMenuBar(){
     connect(this->show_all_history,&QAction::triggered,this,&MainView::showManager);
     this->history_menu->addAction("&Clear Recent History");
     this->history_menu->addAction("&Manage History");
+    this->history_menu->addSeparator();
     this->history_menu->addAction("&Restore Previous Session");
     this->history_menu->addMenu("&Recently Closed");
     this->history_menu->addMenu("&Most Visited");
@@ -403,19 +408,19 @@ void MainView::createMenuBar(){
     this->bookmark_menu->addAction("&Bookmark All Tabs");
     this->bookmark_menu->addAction("&Show All Bookmarks");
     this->bookmark_menu->addAction("&Manage Bookmarks");
+    this->bookmark_menu->addSeparator();
     this->bookmark_menu->addMenu("&Recent Bookmarks");
     this->bookmark_menu->addMenu("&Crusta Bookmarks");
     this->download_menu=this->menubar->addMenu("&Downloads");
     this->download_menu->addAction("&Download Manager");
-    this->download_bar=this->download_menu->addAction("&Show Download Bar");
-    connect(this->download_bar,&QAction::triggered,this,&MainView::showDownloadBar);
-    this->download_menu->addAction("&Cancel current download");
     this->download_menu->addAction("&Clear all Downloads");
     this->tool_menu=this->menubar->addMenu("&Tools");
     this->tool_menu->addAction("&Site Info");
     this->tool_menu->addAction("&Crusta Speak");
+    this->tool_menu->addSeparator();
     this->tool_menu->addAction("&Cookies Manager");
     this->web_inspector_action=this->tool_menu->addAction("&Web Inspector");
+    this->tool_menu->addSeparator();
     this->devTools=this->tool_menu->addMenu("&Developer Tools");
     this->runJsCode=this->devTools->addAction("&Run Javascript Code");
     connect(this->runJsCode,&QAction::triggered,this,&MainView::showJsCodeEditor);
@@ -423,9 +428,11 @@ void MainView::createMenuBar(){
     this->help_menu->addAction("&Crusta Help");
     this->help_menu->addAction("&Crusta Tour");
     this->help_menu->addAction("&About Crusta");
+    this->help_menu->addSeparator();
     this->help_menu->addAction("&Keyboard Shortcuts");
     this->help_menu->addAction("&Request Feature");
     this->help_menu->addAction("&Report Issue");
+    this->help_menu->addSeparator();
     this->help_menu->addAction("&License");
     this->box->setMenuBar(this->menubar);
     this->menubar->setNativeMenuBar(true);
@@ -459,13 +466,29 @@ void MainView::viewPageSource(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     QString qurl=webview->url().toString();
     qurl=QString("view-source:")+qurl;
-    QWebEngineView* w=new QWebEngineView();
-    w->load(QUrl(qurl));
-    w->show();
-    w->setWindowTitle(QString("Crusta : ")+webview->title());
+//    QWebEngineView* w=new QWebEngineView();
+//    w->load(QUrl(qurl));
+//    w->show();
+//    w->setWindowTitle(QString("Crusta : ")+webview->title());
+    TabWindow* tab=new TabWindow();
+    index++;
+    this->tabWindow->insertTab(index,tab->returnTab(),"new Tab");
+    this->tabWindow->setCurrentIndex(index);
+    QWidget* wid=this->tabWindow->widget(index);
+    QLayout* lay=wid->layout();
+    QWebEngineView* webv=(QWebEngineView*)lay->itemAt(1)->widget();
+    webv->load(QUrl(qurl));
+    MainView::addNewTabButton();
 }
 
 void MainView::saveAsPdf(){
+    QPrinter printer;
+    printer.setPageLayout(currentPageLayout);
+    QPageSetupDialog dlg(&printer, this);
+    if (dlg.exec() != QDialog::Accepted)
+        return;
+    currentPageLayout.setPageSize(printer.pageLayout().pageSize());
+    currentPageLayout.setOrientation(printer.pageLayout().orientation());
     QFileDialog f;
     f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString file_name=f.getSaveFileName(this->window,"Crusta : Save File",QDir::homePath(),"Pdf File(*.pdf)",nullptr,f.options());
@@ -475,7 +498,7 @@ void MainView::saveAsPdf(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     if(file_name!=""){
     if(!file_name.endsWith(".pdf"))file_name+=QString(".pdf");
-    webview->page()->printToPdf(file_name);
+    webview->page()->printToPdf(file_name,QPageLayout(printer.pageLayout().pageSize(),printer.pageLayout().orientation(),printer.pageLayout().margins()));
     }
 }
 
@@ -505,23 +528,6 @@ void MainView::showJsCodeEditor(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     jsEditor->setView(webview);
     jsEditor->show();
-}
-
-void MainView::showDownloadBar(){
-    if(this->downloadWidget->parent()==NULL){
-        int index=this->tabWindow->currentIndex();
-        QWidget* widget=this->tabWindow->widget(index);
-        QLayout* layout=widget->layout();
-        QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-        this->downloadWidget->setViewParent(webview);
-        this->downloadWidget->createDownloadWidget();
-        this->downloadWidget->showDownloadWidget();
-        this->download_bar->setText("&Hide Download Bar");
-    }
-    else{
-        this->downloadWidget->hideDownloadWidget();
-        this->download_bar->setText("&Show Download Bar");
-    }
 }
 
 void MainView::openLocalFile(){
@@ -560,12 +566,11 @@ void MainView::tabAreaDoubleClicked(int index){
 
 void MainView::addNewTabButton(){
     int cnt=this->tabWindow->count();
-    int x=cnt*175+3; //size of a tab;
+    int x=cnt*175+5; //size of a tab;
     if(newtabbtn->parent()==NULL)newtabbtn->setParent(this->tabWindow->tabBar());
-    this->newtabbtn->move(x,3);
-    //this->newtabbtn->setIcon(QIcon(":/res/drawables/add_tab.png"));
-    this->newtabbtn->setFixedHeight(26);
-    this->newtabbtn->setFixedWidth(30);
+    this->newtabbtn->move(x,5);
+    this->newtabbtn->setFixedHeight(22);
+    this->newtabbtn->setFixedWidth(25);
 }
 
 void MainView::editPreference(){

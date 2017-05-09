@@ -46,12 +46,10 @@ SOURCES += main.cpp\
     manager.cpp \
     historymanager.cpp \
     privatewebview.cpp \
-    featurenotifier.cpp \
     downloadmanager.cpp \
     privatetabwindow.cpp \
     jseditor.cpp \
     codeeditor.cpp \
-    downloadnotifier.cpp \
     downloadwidget.cpp \
     downloaditemwidget.cpp \
     themeeditor.cpp \
@@ -70,12 +68,10 @@ HEADERS  += \
     manager.h \
     historymanager.h \
     privatewebview.h \
-    featurenotifier.h \
     downloadmanager.h \
     privatetabwindow.h \
     jseditor.h \
     codeeditor.h \
-    downloadnotifier.h \
     downloadwidget.h \
     downloaditemwidget.h \
     themeeditor.h \

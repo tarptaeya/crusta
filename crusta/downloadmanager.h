@@ -27,19 +27,15 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
-#include <QTreeWidget>
+#include <QListWidget>
 
 class DownloadManager:public QWidget{
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
-    QLineEdit* searchline=new QLineEdit();
-    QPushButton* clear_all=new QPushButton();
-    QPushButton* del_btn=new QPushButton();
-    QHBoxLayout* hbox=new QHBoxLayout();
-    QHBoxLayout* h1box=new QHBoxLayout();
-    QTreeWidget* treeview=new QTreeWidget();
-    void createManager();
-    void createHeader();
+    QListWidget* listwidget=new QListWidget();
+    QPushButton* removeAll=new QPushButton();
+    DownloadManager();
+    void addDownloadItem(QWidget* w);
 };
 
 #endif // DOWNLOADMANAGER_H

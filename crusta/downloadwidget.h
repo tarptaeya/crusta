@@ -24,18 +24,28 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <QWebEngineView>
+#include <QVBoxLayout>
+#include <QIcon>
+#include <QLabel>
+#include <QProgressBar>
 
 class DownloadWidget:public QWidget {
 public:
-    QWebEngineView* parentView=new QWebEngineView();
     QHBoxLayout* hbox=new QHBoxLayout();
-    QPushButton* hide_btn=new QPushButton();
-    void setViewParent(QWebEngineView* view);
-    void createDownloadWidget();
-    void showDownloadWidget();
-    void hideDownloadWidget();
-    void addToDownloadWidget();
+    QVBoxLayout* v0box=new QVBoxLayout();
+    QVBoxLayout* v1box=new QVBoxLayout();
+    DownloadWidget();
+    QLabel* icon=new QLabel();
+    QLabel* name=new QLabel();
+    QProgressBar* progress=new QProgressBar();
+    QPushButton* cancel=new QPushButton();
+    QPushButton* remove=new QPushButton();
+    QPushButton* open=new QPushButton();
+    QLabel* fraction=new QLabel();
+    void getName(QString);
+    void getIcon(QIcon);
+    void computeFraction(qint64 bytesRecieved,qint64 bytesTotal);
+    void changeLayout();
 };
 
 #endif // DOWNLOADWIDGET_H

@@ -23,10 +23,9 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "popup.h"
-#include "featurenotifier.h"
-#include "downloadnotifier.h"
 #include "downloaditemwidget.h"
 #include "mainview.h"
+#include "downloadmanager.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -51,6 +50,12 @@
 #include <QFile>
 #include <QTextStream>
 #include <QIODevice>
+#include <QRadioButton>
+#include <QFileIconProvider>
+#include <QGroupBox>
+#include <QDesktopServices>
+#include <QDialog>
+#include <QFileDialog>
 
 #include <iostream>
 
@@ -261,52 +266,159 @@ void WebView::pageLoaded(){
 }
 
 void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature){
-    FeatureNotifier* featureNotifier=new FeatureNotifier();
-    featureNotifier->setViewParent(this);
-    wasFullScreened=true;
+    QDialog* dg=new QDialog();
+    QVBoxLayout* vl=new QVBoxLayout();
+    dg->setLayout(vl);
+    QHBoxLayout* h0=new QHBoxLayout();
+    QLabel* permission=new QLabel();
+    h0->addWidget(permission);
+    vl->addLayout(h0);
+    QHBoxLayout* h1=new QHBoxLayout();
+    h1->addWidget(new QLabel());
+    QPushButton* cncl=new QPushButton();
+    QPushButton* ok=new QPushButton();
+    h1->addWidget(cncl);
+    h1->addWidget(ok);
+    vl->addLayout(h1);
+    cncl->setText("No");
+    ok->setText("Yes");
+    connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
+    connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     switch (feature) {
-    case QWebEnginePage::MouseLock:
-        featureNotifier->createNotifier(QString("Mouse Lock is accepted - Press ESC to exit"));
+    case QWebEnginePage::Notifications:{
+        permission->setText("Allow Notifications from this website");
+        if(dg->exec()!=QDialog::Accepted){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
         page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
         break;
-    case QWebEnginePage::Geolocation:
-        featureNotifier->createNotifier(QString("Geolocation request is accepted"));
+    }
+    case QWebEnginePage::MouseLock:{
+        permission->setText("Allow Pointer Lock for this website");
+        if(dg->exec()!=QDialog::Accepted){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
         page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
         break;
-    case QWebEnginePage::MediaAudioCapture:
-        featureNotifier->createNotifier(QString("Media Audio Capture request is accepted"));
+    }
+    case QWebEnginePage::Geolocation:{
+        permission->setText("Allow Geolocation from current website");
+        if(dg->exec()!=QDialog::Accepted){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
         page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
         break;
-    case QWebEnginePage::MediaVideoCapture:
-        featureNotifier->createNotifier(QString("Media Video Capture request is accepted"));
+    }
+    case QWebEnginePage::MediaAudioCapture:{
+        permission->setText("Allow Audio Capture for this site");
+        if(dg->exec()!=QDialog::Accepted){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
         page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
         break;
-    case QWebEnginePage::MediaAudioVideoCapture:
-        featureNotifier->createNotifier(QString("Media Audio-Video Capture request is accepted"));
+    }
+    case QWebEnginePage::MediaVideoCapture:{
+        permission->setText("Allow Video Capture for this site");
+        if(dg->exec()!=QDialog::Accepted){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
         page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
-        featureNotifier->showNotifier();
         break;
+    }
+    case QWebEnginePage::MediaAudioVideoCapture:{
+        permission->setText("Allow Audio/Video Capture for this site");
+        if(dg->exec()!=QDialog::Accepted){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+        page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+        break;
+    }
     }
 }
 
 void WebView::download(QWebEngineDownloadItem *download_item){
-    download_item->accept();
-    connect(download_item,&QWebEngineDownloadItem::finished,this,&WebView::downloadFinished);
-    downloadNotifier->setViewParent(this);
-    downloadNotifier->showNotifier();
-    DownloadItemWidget* downloadItemWidget=new DownloadItemWidget();
-    downloadItemWidget->setDownloadItem(download_item);
-    downloadItemWidget->show();
-    connect(download_item,&QWebEngineDownloadItem::downloadProgress,downloadItemWidget,&DownloadItemWidget::downloadProgress);
+    QString path=download_item->path();
+    QDialog* w=new QDialog();
+    QVBoxLayout* box=new QVBoxLayout();
+    w->setLayout(box);
+    QLabel* yhcto=new QLabel("You have choosen to open");
+    yhcto->setFont(QFont("Ariel",-1,-1,true));
+    box->addWidget(yhcto);
+    QHBoxLayout* hbx=new QHBoxLayout();
+    QFileIconProvider* fip=new QFileIconProvider();
+    QIcon icon=fip->icon(QFileInfo(path));
+    QLabel* ilabel=new QLabel();
+    ilabel->setPixmap(icon.pixmap(64,64));
+    hbx->addWidget(ilabel);
+    hbx->addWidget(new QLabel(path.split('/')[path.split('/').length()-1]+"\n"+"which is : "+download_item->mimeType()));
+    box->addLayout(hbx);
+    QRadioButton* ropen=new QRadioButton();
+    QRadioButton* rsave=new QRadioButton();
+    ropen->setText("Open...");
+    rsave->setText("Save");
+    QGroupBox* gb=new QGroupBox();
+    QVBoxLayout* vgb=new QVBoxLayout();
+    vgb->addWidget(ropen);
+    vgb->addWidget(rsave);
+    rsave->setChecked(true);
+    gb->setLayout(vgb);
+    gb->setFlat(true);
+    gb->setTitle("What should Crusta do with this file?");
+    box->addWidget(gb);
+    QPushButton* cncl_btn=new QPushButton();
+    cncl_btn->setFixedWidth(75);
+    cncl_btn->setText("Cancel");
+    QPushButton* ok_btn=new QPushButton();
+    ok_btn->setFixedWidth(75);
+    ok_btn->setText("Ok");
+    QHBoxLayout* h1bx=new QHBoxLayout();
+    h1bx->addWidget(new QLabel());
+    h1bx->addWidget(cncl_btn);
+    h1bx->addWidget(ok_btn);
+    box->addLayout(h1bx);
+    connect(cncl_btn,&QPushButton::clicked,w,&QDialog::reject);
+    connect(ok_btn,&QPushButton::clicked,w,&QDialog::accept);
+    if(w->exec()!=QDialog::Accepted){
+        download_item->cancel();
+        return;
+    }
+    if(ropen->isChecked()){
+        QString cpath=QDir::tempPath();
+        cpath+="/"+path.split('/')[path.split('/').length()-1];
+        download_item->setPath(cpath);
+        download_item->accept();
+        connect(download_item,&QWebEngineDownloadItem::finished,this,[this,cpath]{downloadFinished(cpath);});
+
+        DownloadWidget* wid=new DownloadWidget();
+        wid->getName(path.split('/')[path.split('/').length()-1]);
+        wid->getIcon(icon);
+        wid->setFixedSize(wid->sizeHint().width(),wid->sizeHint().height());
+        connect(download_item,&QWebEngineDownloadItem::downloadProgress,wid,&DownloadWidget::computeFraction);
+        connect(wid->cancel,&QPushButton::clicked,download_item,&QWebEngineDownloadItem::cancel);
+        connect(download_item,&QWebEngineDownloadItem::finished,wid,&DownloadWidget::changeLayout);
+
+        DownloadManager* dm=new DownloadManager();
+        dm->addDownloadItem(wid);
+        dm->show();
+    }
+    else{
+        QFileDialog f;
+        f.setOption(QFileDialog::DontUseNativeDialog,true);
+        QString fname=f.getSaveFileName(this,"Download File",QDir::homePath(),QString(),nullptr,f.options());
+        if(fname=="")fname=path;
+        download_item->setPath(fname);
+        download_item->accept();
+    }
 }
 
-void WebView::downloadFinished(){
-    downloadFinishedNotifier->setViewParent(this);
-    downloadFinishedNotifier->showNotifier();
+void WebView::downloadFinished(QString path){
+    QDesktopServices::openUrl(path);
 }
 
 void WebView::showLinkHovered(QString url){

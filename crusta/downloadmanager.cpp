@@ -23,34 +23,17 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QLabel>
-#include <QComboBox>
-#include <QTreeWidget>
-#include <QString>
-#include <QStringList>
-#include <QFile>
-#include <QTextStream>
-#include <QTreeWidgetItem>
-#include <QDir>
-#include <QIcon>
+#include <QListWidgetItem>
 
-void DownloadManager::createManager(){
-    createHeader();
+DownloadManager::DownloadManager(){
     setLayout(vbox);
-    vbox->addWidget(treeview);
-    hbox->addWidget(del_btn);
-    hbox->addWidget(clear_all);
-    vbox->addLayout(hbox);
+    vbox->addWidget(listwidget);
+    vbox->addWidget(removeAll);
 }
 
-void DownloadManager::createHeader(){
-    QStringList labels;
-    labels.push_back("title");
-    labels.push_back("address");
-    labels.push_back("time");
-    treeview->setColumnCount(3);
-    treeview->setHeaderLabels(labels);
+void DownloadManager::addDownloadItem(QWidget *w){
+    QListWidgetItem* item=new QListWidgetItem();
+    listwidget->addItem(item);
+    item->setSizeHint(w->size());
+    listwidget->setItemWidget(item,w);
 }
-
