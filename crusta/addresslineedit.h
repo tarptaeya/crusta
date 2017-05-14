@@ -35,6 +35,7 @@ public:
     QPushButton* secure_btn=new QPushButton();
     void createAddressLineEdit();
     QLineEdit* initialize();
+    QString defaultSearch=QString("https://google.com");
 };
 
 

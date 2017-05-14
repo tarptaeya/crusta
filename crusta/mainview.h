@@ -27,7 +27,6 @@
 #include "addresslineedit.h"
 #include "tabwindow.h"
 #include "presentationmodenotifier.h"
-#include "manager.h"
 #include "downloadwidget.h"
 #include "jseditor.h"
 
@@ -80,6 +79,7 @@ public:
     QMenu* history_menu=new QMenu();
     QMenu* bookmark_menu=new QMenu();
     QMenu* download_menu=new QMenu();
+    QMenu* recently_closed=new QMenu();
     QMenu* tool_menu=new QMenu();
     QMenu* help_menu=new QMenu();
     QMenu* devTools=new QMenu();
@@ -107,6 +107,7 @@ public:
     QAction* show_all_history=new QAction();
     QAction* web_inspector_action=new QAction();
     QAction* runJsCode=new QAction();
+    QAction* aboutCr=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
     QAction* fullscreen_action=new QAction();
     int start_findwidget;
@@ -116,7 +117,6 @@ public:
     QCheckBox* match_case_btn=new QCheckBox();
     QLabel* label=new QLabel();
     QLineEdit* text=new QLineEdit();
-    Manager* manager=new Manager();
     DownloadWidget* downloadWidget=new DownloadWidget();
     JsEditor* jsEditor=new JsEditor();
     QPushButton* newtabbtn=new QPushButton();
@@ -133,7 +133,6 @@ public:
     void viewPageSource();
     void saveAsPdf();
     void savePage();
-    void showManager();
     void showJsCodeEditor();
     void openLocalFile();
     void screenShot();
@@ -143,6 +142,8 @@ public:
     void duplicateTab(QWebEngineView*);
     void reloadAllTabs();
     void closeOtherTabs(int index);
+    void restoreTab(QUrl u);
+    void about();
 };
 
 

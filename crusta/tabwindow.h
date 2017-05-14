@@ -53,6 +53,7 @@ public:
     QWidget* returnTab(WebView *view);
     TabWindow* returnThis();
     void setWebView(WebView*);
+    void loadUrl();
 };
 
 

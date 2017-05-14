@@ -25,5 +25,11 @@
         <file>res/manager/settings.png</file>
         <file>res/drawables/icon_3.ico</file>
         <file>res/drawables/volume_max.png</file>
+        <file>res/drawables/back.svg</file>
+        <file>res/drawables/forward.svg</file>
+        <file>res/drawables/reload.svg</file>
+        <file>res/drawables/icon.svg</file>
+        <file>res/drawables/home.svg</file>
+        <file>res/drawables/bookmark.svg</file>
     </qresource>
 </RCC>

@@ -48,36 +48,32 @@ void TabWindow::updateAddrBar(){
 void TabWindow::createControls(){
     QHBoxLayout* hbox=new QHBoxLayout();
     this->back_btn->setFlat(true);
-    this->back_btn->setIcon(QIcon(":/res/drawables/back_btn.png"));
+    this->back_btn->setIcon(QIcon(":/res/drawables/back.svg"));
     connect(this->back_btn,&QPushButton::clicked,this->view->returnView(),&QWebEngineView::back);
     hbox->addWidget(this->back_btn);
     this->fwd_btn->setFlat(true);
-    this->fwd_btn->setIcon(QIcon(":/res/drawables/fwd_btn.png"));
+    this->fwd_btn->setIcon(QIcon(":/res/drawables/forward.svg"));
     connect(this->fwd_btn,&QPushButton::clicked,this->view->returnView(),&QWebEngineView::forward);
     hbox->addWidget(this->fwd_btn);
     this->load_btn->setFlat(true);
-    this->load_btn->setIcon(QIcon(":/res/drawables/load_btn.png"));
+    this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
     connect(this->load_btn,&QPushButton::clicked,this->view->returnView(),&QWebEngineView::reload);
     hbox->addWidget(this->load_btn);
     hbox->addWidget(this->addr_bar->initialize());
     connect(this->view->returnView(),&QWebEngineView::urlChanged,this,&TabWindow::updateAddrBar);
-    hbox->addWidget(this->search_bar->initialize());
+    connect(this->addr_bar->initialize(),&QLineEdit::returnPressed,this,&TabWindow::loadUrl);
+    //hbox->addWidget(this->search_bar->initialize());
     this->home_btn->setFlat(true);
-    this->home_btn->setIcon(QIcon(":/res/drawables/home_btn.png"));
+    this->home_btn->setIcon(QIcon(":/res/drawables/home.svg"));
     connect(this->home_btn,&QPushButton::clicked,this,&TabWindow::viewHome);
     hbox->addWidget(this->home_btn);
     this->bookmark_btn->setFlat(true);
-    this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark_btn.png"));
+    this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
     hbox->addWidget(this->bookmark_btn);
-    this->tool_btn->setFlat(true);
-    this->tool_btn->setIcon(QIcon(":/res/drawables/tool_btn.png"));
-    hbox->addWidget(this->tool_btn);
-    this->options_btn->setFlat(true);
-    this->options_btn->setIcon(QIcon(":/res/drawables/options_btn.png"));
-    hbox->addWidget(this->options_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
     tab->setLayout(vbox);
+    tab->setStyleSheet("QWidget{background-color:white;color:blueviolet;} QLineEdit{border:0.5px solid blueviolet;border-radius:10px;} QMenu::item:selected{color:white;background-color:blueviolet}");
 }
 
 QWidget* TabWindow::returnTab(){
@@ -101,4 +97,34 @@ QWidget* TabWindow::returnTab(WebView* view){
     setWebView(view);
     createControls();
     return this->tab;
+}
+
+void TabWindow::loadUrl(){
+    QString text=this->addr_bar->initialize()->text();
+    QStringList textList=text.split(" ");
+    if(textList.length()==1){
+        if(text.startsWith("crusta://")){
+            this->view->returnView()->load(QUrl(text));
+        }
+        else if(text.startsWith("localhost:")||text=="localhost"){
+            this->view->returnView()->load(QUrl("http://"+text));
+        }
+        else if(text.startsWith("http://localhost")||text.startsWith("http://localhost:")){
+            this->view->returnView()->load(QUrl(text));
+        }
+        else if(text.split('.').length()==1){
+            QString searchStr=this->addr_bar->defaultSearch+QString("/search?q=")+text;
+            this->view->returnView()->load(QUrl(searchStr));
+        }
+        else{
+            if(!(text.startsWith("http://")||text.startsWith("https://"))){
+                text="http://"+text;
+            }
+            this->view->returnView()->load(QUrl(text));
+        }
+    }
+    else{
+        QString searchStr=this->addr_bar->defaultSearch+QString("/search?q=")+text;
+        this->view->returnView()->load(QUrl(searchStr));
+    }
 }

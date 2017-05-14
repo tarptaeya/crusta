@@ -42,6 +42,8 @@
 #include <QTabBar>
 #include <QPixmap>
 #include <QUrl>
+#include <QAuthenticator>
+#include <QPoint>
 
 
 
@@ -51,8 +53,10 @@ protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
     bool wasFullScreened=false;
+    QString link="";
     WebPage* webpage=new WebPage();
-    QString home_page=QString("http://google.com");
+    QString home_page=QString("http://google.com/");
+    QString defaultSearch;
     QLayout* layout;
     QWidget* widget;
     QAction* exitFullScreen=new QAction();
@@ -66,7 +70,6 @@ public:
     void spinnerStarted();
     void faviconChanged(QIcon fav);
     void pageTitleChanged();
-    void pageLoaded();
     void acceptFullScreen(QWebEngineFullScreenRequest request);
     void ExitAction();
     void download(QWebEngineDownloadItem* download_item);
@@ -75,6 +78,8 @@ public:
     void showLinkHovered(QString url);
     void closeTab();
     void audioInfo();
+    void authenticate(QUrl u, QAuthenticator *authenticator);
+    void showContextMenu(QPoint pos);
     WebView();
 };
 

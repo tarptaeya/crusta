@@ -72,13 +72,17 @@ WebView::WebView(){
     connect(this->page(),&QWebEnginePage::loadStarted,this,&WebView::spinnerStarted);
     connect(this->page(),&QWebEnginePage::iconChanged,this,&WebView::faviconChanged);
     connect(this->page(),&QWebEnginePage::titleChanged,this,&WebView::pageTitleChanged);
-    connect(this->page(),&QWebEnginePage::loadFinished,this,&WebView::pageLoaded);
     connect(this->page(),&QWebEnginePage::featurePermissionRequested,this,&WebView::permissionHandler);
     connect(exitFullScreen,&QAction::triggered,this,&WebView::ExitAction);
     connect(page()->profile(),&QWebEngineProfile::downloadRequested,this,&WebView::download);
     connect(page(),&QWebEnginePage::linkHovered,this,&WebView::showLinkHovered);
     connect(page(),&QWebEnginePage::windowCloseRequested,this,&WebView::closeTab);
     //connect(page(),&QWebEnginePage::recentlyAudibleChanged,this,&WebView::audioInfo);
+    connect(page(),&QWebEnginePage::authenticationRequired,this,&WebView::authenticate);
+
+    //context-menu
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this,&WebView::customContextMenuRequested,this,&WebView::showContextMenu);
 }
 
 void WebView::createWebView(){
@@ -120,16 +124,6 @@ void WebView::spinnerStarted(){
 }
 
 void WebView::faviconChanged(QIcon fav){
-    QString name=this->url().toString().split("/")[2];
-    QStringList names=name.split(".");
-    if(names[0]==QString("www")){
-        name=names[1];
-    }
-    else{
-        name=names[0];
-    }
-    QString file_name=QDir::currentPath()+QString("/history/favicons/")+name+QString(".png");
-    fav.pixmap(16,16).save(file_name);
     if(parent()==NULL)return;
     try{
         QWidget* widget=(QWidget*)this->parent();
@@ -251,18 +245,6 @@ QWebEngineView* WebView::createWindow(QWebEnginePage::WebWindowType type){
     }
     }
     return nullptr;
-}
-
-void WebView::pageLoaded(){
-    QString description=this->title()+QString("<<<")+this->url().toString()+QString("<<<")+QDateTime::currentDateTime().toString();
-    QString filename=QDir::currentPath()+QString("/history/hist_data.txt");
-    QFile file(filename);
-    if ( file.open(QIODevice::WriteOnly | QIODevice::Append) )
-    {
-        QTextStream stream(&file);
-        stream<<description<<endl;
-    }
-    file.close();
 }
 
 void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature){
@@ -422,6 +404,7 @@ void WebView::downloadFinished(QString path){
 }
 
 void WebView::showLinkHovered(QString url){
+    link=url;
     //TODO : make a link hovered showing QLabel;
 }
 
@@ -462,3 +445,29 @@ void WebView::audioInfo(){
         }
     }
 }
+
+void WebView::authenticate(QUrl u,QAuthenticator *authenticator){
+    std::cout<<u.toString().toStdString()<<std::endl;
+}
+
+void WebView::showContextMenu(QPoint pos){
+    QMenu* contextMenu=new QMenu();
+    if(link!=""){
+
+    }
+    contextMenu->exec(contextMenu->mapToGlobal(pos));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

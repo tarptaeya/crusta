@@ -43,7 +43,6 @@ SOURCES += main.cpp\
     mainview.cpp \
     timenotifier.cpp \
     popup.cpp \
-    manager.cpp \
     historymanager.cpp \
     privatewebview.cpp \
     downloadmanager.cpp \
@@ -65,7 +64,6 @@ HEADERS  += \
     mainview.h \
     timenotifier.h \
     popup.h \
-    manager.h \
     historymanager.h \
     privatewebview.h \
     downloadmanager.h \

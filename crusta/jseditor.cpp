@@ -31,6 +31,7 @@ JsEditor::JsEditor(){
     connect(run_btn,&QPushButton::clicked,this,&JsEditor::runJs);
     connect(cncl_btn,&QPushButton::clicked,this,&JsEditor::hide);
     setLayout(vbox);
+    setStyleSheet("QWidget{background-color:blueviolet;} QPlainTextEdit{background-color:white;color:blue;} QPushButton{border:0.5px solid;background-color:crimson;color:white;border-radius:0px;border-color:crimson;padding:2px 4px;} QPushButton:hover{background-color:white;color:crimson}");
 }
 
 void JsEditor::setView(QWebEngineView* v){

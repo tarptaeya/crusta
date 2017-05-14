@@ -27,7 +27,6 @@
 #include "tabwindow.h"
 #include "privatetabwindow.h"
 #include "presentationmodenotifier.h"
-#include "manager.h"
 #include "jseditor.h"
 #include "themeeditor.h"
 
@@ -72,9 +71,15 @@ void MainView::closeTab(int index){
 //    if(!webview->page()->isAudioMuted()){
 //        webview->page()->setAudioMuted(true);
 //    }
+    QAction* hist=new QAction();
+    hist->setText(webview->title());
+    hist->setIcon(webview->icon());
+    QUrl u=webview->url();
     webview->page()->deleteLater();
     this->tabWindow->removeTab(index);
     MainView::addNewTabButton();
+    this->recently_closed->addAction(hist);
+    connect(hist,&QAction::triggered,this,[this,u]{restoreTab(u);});
 }
 
 void MainView::zoomIn(){
@@ -300,7 +305,7 @@ MainView::MainView(){
     this->box->setContentsMargins(0,0,0,0);
     this->tabWindow->tabBar()->setDocumentMode(true);
     this->tabWindow->setElideMode(Qt::ElideRight);
-    this->tabWindow->setStyleSheet("QTabBar::tab{max-width:175px;min-width:175px;} QTabWidget::tab-bar{left:0px;}");
+    //this->tabWindow->setStyleSheet("QTabBar::tab{max-width:175px;min-width:175px;} QTabWidget::tab-bar{left:0px;}");
     this->tabWindow->tabBar()->setExpanding(false);
     this->tabWindow->tabBar()->setShape(QTabBar::RoundedNorth);
     this->tabWindow->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -310,15 +315,14 @@ MainView::MainView(){
     createMenuBar();
     createTabWindow();
     addNormalTab();
+
     addNewTabButton();
-    this->manager->createManager();
     this->tabWindow->tabBar()->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
     connect(this->tabWindow->tabBar(),&QTabBar::tabBarDoubleClicked,this,&MainView::tabAreaDoubleClicked);
     connect(this->tabWindow->tabBar(),&QTabBar::tabMoved,this,&MainView::addNewTabButton);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::addNewTabButton);
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
-//    this->menubar->setStyleSheet("background-color:#4444ff");
-//    this->tabWindow->setStyleSheet("background-color:#9999ff");
+    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;} QTabBar{background-color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
 }
 
 void MainView::createView(){
@@ -396,12 +400,11 @@ void MainView::createMenuBar(){
     this->view_menu->addAction("&Reset View");
     this->history_menu=this->menubar->addMenu("&History");
     this->show_all_history=this->history_menu->addAction("&Show All History");
-    connect(this->show_all_history,&QAction::triggered,this,&MainView::showManager);
     this->history_menu->addAction("&Clear Recent History");
     this->history_menu->addAction("&Manage History");
     this->history_menu->addSeparator();
     this->history_menu->addAction("&Restore Previous Session");
-    this->history_menu->addMenu("&Recently Closed");
+    this->recently_closed=this->history_menu->addMenu("&Recently Closed");
     this->history_menu->addMenu("&Most Visited");
     this->bookmark_menu=this->menubar->addMenu("&Bookmarks");
     this->bookmark_menu->addAction("&Bookmark This Page");
@@ -427,7 +430,8 @@ void MainView::createMenuBar(){
     this->help_menu=this->menubar->addMenu("&Help");
     this->help_menu->addAction("&Crusta Help");
     this->help_menu->addAction("&Crusta Tour");
-    this->help_menu->addAction("&About Crusta");
+    this->aboutCr=this->help_menu->addAction("&About Crusta");
+    connect(this->aboutCr,&QAction::triggered,this,&MainView::about);
     this->help_menu->addSeparator();
     this->help_menu->addAction("&Keyboard Shortcuts");
     this->help_menu->addAction("&Request Feature");
@@ -513,12 +517,6 @@ void MainView::savePage(){
     if(file_name!=QString("")){
         webview->page()->save(file_name,QWebEngineDownloadItem::CompleteHtmlSaveFormat);
     }
-}
-
-void MainView::showManager(){
-    manager=new Manager();
-    manager->createManager();
-    manager->show();
 }
 
 void MainView::showJsCodeEditor(){
@@ -615,4 +613,22 @@ void MainView::closeOtherTabs(int index){
         }
         i++;
     }
+}
+
+void MainView::restoreTab(QUrl u){
+    MainView::addNormalTab();
+    int index=this->tabWindow->count()-1;
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    webview->load(u);
+}
+
+void MainView::about(){
+    MainView::addNormalTab();
+    int index=this->tabWindow->count()-1;
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    webview->load(QUrl("http://www.crustabrowser.com/about"));
 }
