@@ -79,7 +79,7 @@ public:
     void closeTab();
     void audioInfo();
     void authenticate(QUrl u, QAuthenticator *authenticator);
-    void showContextMenu(QPoint pos);
+    void showContextMenu(const QPoint &pos);
     WebView();
 };
 

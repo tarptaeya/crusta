@@ -18,24 +18,28 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#include <addresslineedit.h>
-#include <QPushButton>
+#ifndef ADDRESSLINEEDIT_H
+#define ADDRESSLINEEDIT_H
+
 #include <QLineEdit>
+#include <QPushButton>
 #include <QIcon>
+#include <QPoint>
 
 
-void AddressLineEdit::createAddressLineEdit(){
-    this->addr_bar->setTextMargins(15,0,15,0);
-//    this->info_btn->setIcon(QIcon(":/res/drawables/info.png"));
-//    this->info_btn->setFlat(true);
-//    this->info_btn->setParent(this->addr_bar);
-//    this->secure_btn->setIcon(QIcon(":/res/drawables/secure.png"));
-//    this->secure_btn->setFlat(true);
-//    this->secure_btn->setParent(this->addr_bar);
-//    this->secure_btn->move(20,0);
-}
 
-QLineEdit* AddressLineEdit::initialize(){
-    createAddressLineEdit();
-    return this->addr_bar;
-}
+class AddressLineEdit{
+    // TODO :: ADD COMPLETER TO IT
+public:
+    QLineEdit* addr_bar=new QLineEdit();
+    QPushButton* info_btn=new QPushButton();
+    QPushButton* secure_btn=new QPushButton();
+    void createAddressLineEdit();
+    QLineEdit* initialize();
+    void showContextMenu(QPoint& pos);
+    QString defaultSearch=QString("https://google.com");
+};
+
+
+
+#endif // ADDRESSLINEEDIT_H

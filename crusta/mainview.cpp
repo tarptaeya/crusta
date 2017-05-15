@@ -140,7 +140,8 @@ void MainView::tabBarContext(QPoint point){
         QAction* closeoth=new QAction();
         closeoth=contextMenu->addAction("&Close Other Tabs");
         connect(closeoth,&QAction::triggered,this,[this,index]{closeOtherTabs(index);});
-        contextMenu->exec(contextMenu->mapToGlobal(point));
+        contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
+        contextMenu->exec(this->tabWindow->tabBar()->mapToGlobal(point));
     }
     else{
         QMenu* barContext=new QMenu();
@@ -153,7 +154,8 @@ void MainView::tabBarContext(QPoint point){
         barContext->addAction("&Bookmark All Tabs");
         barContext->addAction("Mute All Tabs");
         barContext->addAction("&Restore All Tabs");
-        barContext->exec(barContext->mapToGlobal(point));
+        barContext->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
+        barContext->exec(this->tabWindow->tabBar()->mapToGlobal(point));
     }
 }
 

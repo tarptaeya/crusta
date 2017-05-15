@@ -450,12 +450,56 @@ void WebView::authenticate(QUrl u,QAuthenticator *authenticator){
     std::cout<<u.toString().toStdString()<<std::endl;
 }
 
-void WebView::showContextMenu(QPoint pos){
+void WebView::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
+    std::cout<<page()->action(QWebEnginePage::CopyImageToClipboard)->isEnabled()<<std::endl;
     if(link!=""){
-
+        QAction* open_link_in_new_tab=new QAction("Open Link In New Tab");
+        connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
+        contextMenu->addAction(open_link_in_new_tab);
+        QAction* open_link_in_new_window=new QAction("Open Link In New Window");
+        connect(open_link_in_new_window,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewWindow);});
+        contextMenu->addAction(open_link_in_new_window);
+        contextMenu->addSeparator();
+        QAction* follow_link=new QAction("Follow Link");
+        connect(follow_link,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInThisWindow);});
+        contextMenu->addAction(follow_link);
+        QAction* copy_link=new QAction("Copy Link Address");
+        connect(copy_link,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::CopyLinkToClipboard);});
+        contextMenu->addAction(copy_link);
+        contextMenu->addSeparator();
     }
-    contextMenu->exec(contextMenu->mapToGlobal(pos));
+    else if(this->selectedText()!=""){
+        QString text=this->selectedText();
+        QAction* a_cut=new QAction("Cut");
+        connect(a_cut,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::Cut);});
+        contextMenu->addAction(a_cut);
+        QAction* a_copy=new QAction("Copy");
+        connect(a_copy,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::Copy);});
+        contextMenu->addAction(a_copy);
+        QAction* a_paste=new QAction("Paste");
+        connect(a_paste,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::Paste);});
+        contextMenu->addAction(a_paste);
+        contextMenu->addSeparator();
+    }
+    QAction* back_page=new QAction(QIcon(":/res/drawables/back.svg"),"Back");
+    connect(back_page,&QAction::triggered,this,&WebView::back);
+    contextMenu->addAction(back_page);
+    QAction* forward_page=new QAction(QIcon(":/res/drawables/forward.svg"),"Forward");
+    connect(forward_page,&QAction::triggered,this,&WebView::forward);
+    contextMenu->addAction(forward_page);
+    QAction* reload_page=new QAction(QIcon(":/res/drawables/reload.svg"),"Reload");
+    connect(reload_page,&QAction::triggered,this,&WebView::reload);
+    contextMenu->addAction(reload_page);
+    QAction* reload_and_bypass_cache=new QAction("Reload And Bypass Cache");
+    connect(reload_and_bypass_cache,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::ReloadAndBypassCache);});
+    contextMenu->addAction(reload_and_bypass_cache);
+    contextMenu->addSeparator();
+    QAction* view_page_source=new QAction("View Page Source");
+    connect(view_page_source,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::ViewSource);});
+    contextMenu->addAction(view_page_source);
+    contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
+    contextMenu->exec(this->mapToGlobal(pos));
 }
 
 
