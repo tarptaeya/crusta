@@ -106,6 +106,7 @@ public:
     QAction* preference=new QAction();
     QAction* show_all_history=new QAction();
     QAction* clearAllHist=new QAction();
+    QAction* show_all_bookmarks=new QAction();
     QAction* web_inspector_action=new QAction();
     QAction* runJsCode=new QAction();
     QAction* aboutCr=new QAction();
@@ -147,6 +148,7 @@ public:
     void about();
     void showHistory();
     void clearHistory();
+    void showBookamrks();
 };
 
 

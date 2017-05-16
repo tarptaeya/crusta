@@ -132,7 +132,7 @@ void TabWindow::bookmarkPage(){
     QFile file("bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+"\n";
+    out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+"\n";
     file.close();
     this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
 }

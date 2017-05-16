@@ -30,6 +30,7 @@
 #include "jseditor.h"
 #include "themeeditor.h"
 #include "historymanager.h"
+#include "bookmarkmanager.h"
 
 #include <QObject>
 #include <QPoint>
@@ -413,8 +414,8 @@ void MainView::createMenuBar(){
     this->bookmark_menu=this->menubar->addMenu("&Bookmarks");
     this->bookmark_menu->addAction("&Bookmark This Page");
     this->bookmark_menu->addAction("&Bookmark All Tabs");
-    this->bookmark_menu->addAction("&Show All Bookmarks");
-    this->bookmark_menu->addAction("&Manage Bookmarks");
+    this->show_all_bookmarks=this->bookmark_menu->addAction("&Show All Bookmarks");
+    connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
     this->bookmark_menu->addSeparator();
     this->bookmark_menu->addMenu("&Recent Bookmarks");
     this->bookmark_menu->addMenu("&Crusta Bookmarks");
@@ -649,4 +650,9 @@ void MainView::clearHistory(){
     QTextStream out(&file);
     out <<"";
     file.close();
+}
+
+void MainView::showBookamrks(){
+    BookmarkManager* b=new BookmarkManager(this);
+    b->show();
 }

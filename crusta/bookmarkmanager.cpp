@@ -18,38 +18,32 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#include "historymanager.h"
-#include "webview.h"
+#include "bookmarkmanager.h"
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QLabel>
-#include <QComboBox>
-#include <QTreeWidget>
-#include <QString>
-#include <QStringList>
 #include <QFile>
 #include <QTextStream>
-#include <QTreeWidgetItem>
-#include <QDir>
-#include <QIcon>
-#include <QStringList>
-#include <QString>
-#include <QMenu>
 #include <QIODevice>
 
-#include <iostream>
-
-
-
-
-void HistoryManager::createManager(){
-    setWindowTitle("Crusta : History Manager");
+BookmarkManager::BookmarkManager(MainView *m){
+    mview=m;
+    setLayout(vbox);
     setStyleSheet("QWidget{background-color:blueviolet;color:white} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
-    QFile inputFile("history.txt");
+    vbox->addWidget(display);
+    QStringList header;
+    header.append("Title");
+    header.append("URL");
+    header.append("Description");
+    display->setHeaderLabels(header);
+    setWindowTitle("Crusta : Bookmarks Manager");
+    loadBookmarks();
+    display->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(display,&QTreeWidget::customContextMenuRequested,this,&BookmarkManager::showContextMenu);
+    connect(open,&QAction::triggered,this,&BookmarkManager::openUrl);
+    connect(del,&QAction::triggered,this,&BookmarkManager::clearEntry);
+}
+
+void BookmarkManager::loadBookmarks(){
+    QFile inputFile("bookmarks.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -57,57 +51,29 @@ void HistoryManager::createManager(){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
-          if(!(data[0]=="" || data[1]=="" || data[2]=="")){
+          if(data.count()==1)continue;
+          if(data.count()==2)data.append("");
+          if(!(data[0]=="" || data[1]=="")){
               QTreeWidgetItem* item=new QTreeWidgetItem(data);
-              display_area->insertTopLevelItem(0,item);
+              display->insertTopLevelItem(0,item);
+
           }
        }
        inputFile.close();
     }
 }
 
-HistoryManager::HistoryManager(MainView *m){
-    mview=m;
-    vbox->addWidget(display_area);
-    QHBoxLayout* h1box=new QHBoxLayout();
-    h1box->addWidget(clear_all);
-    clear_all->setFixedWidth(125);
-    h1box->addWidget(new QLabel());
-    vbox->addLayout(h1box);
-    setLayout(vbox);
-    QStringList header;
-    header.append("Title");
-    header.append("URL");
-    header.append("Date");
-    display_area->setColumnCount(header.count());
-    display_area->setHeaderLabels(header);
-    display_area->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(display_area,&QTreeWidget::customContextMenuRequested,this,&HistoryManager::showContextMenu);
-    connect(clear_all,&QPushButton::clicked,this,&HistoryManager::clearAll);
-    connect(open,&QAction::triggered,this,&HistoryManager::openUrl);
-    connect(del,&QAction::triggered,this,&HistoryManager::clearEntry);
-}
-
-void HistoryManager::showContextMenu(const QPoint &pos){
-    if(display_area->itemAt(pos)==NULL)return;
+void BookmarkManager::showContextMenu(const QPoint &pos){
+    if(display->itemAt(pos)==NULL)return;
     QMenu* cmenu=new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
     cmenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
-    cmenu->exec(display_area->mapToGlobal(pos));
+    cmenu->exec(display->mapToGlobal(pos));
 }
 
-void HistoryManager::clearAll(){
-    QFile file("history.txt");
-    file.open(QIODevice::WriteOnly);
-    QTextStream out(&file);
-    out <<"";
-    file.close();
-    display_area->clear();
-}
-
-void HistoryManager::openUrl(){
-    QTreeWidgetItem* item=display_area->currentItem();
+void BookmarkManager::openUrl(){
+    QTreeWidgetItem* item=display->currentItem();
     QUrl url=QUrl(item->text(1));
     mview->addNormalTab();
     int index=mview->tabWindow->count()-1;
@@ -118,10 +84,10 @@ void HistoryManager::openUrl(){
     webview->load(url);
 }
 
-void HistoryManager::clearEntry(){
-    QTreeWidgetItem* item=display_area->currentItem();
+void BookmarkManager::clearEntry(){
+    QTreeWidgetItem* item=display->currentItem();
     QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
-    QFile f("history.txt");
+    QFile f("bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -138,3 +104,4 @@ void HistoryManager::clearEntry(){
     }
     delete item;
 }
+
