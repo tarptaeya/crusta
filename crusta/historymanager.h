@@ -21,7 +21,9 @@
 #ifndef HISTORYMANAGER_H
 #define HISTORYMANAGER_H
 
-#include <QWidget>
+#include "mainview.h"
+
+#include <QDialog>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLineEdit>
@@ -29,16 +31,31 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QPoint>
+#include <QAction>
 
 
 
 
-class HistoryManager:public QWidget{
+class HistoryManager:public QDialog{
 public:
-
+    QTreeWidget* display_area=new QTreeWidget();
+    QPushButton* clear_all=new QPushButton("Clear All");
+    QVBoxLayout* vbox=new QVBoxLayout();
+    QAction* open=new QAction("Open");
+    QAction* del=new QAction("Remove");
+    MainView* mview=new MainView();
+    void createManager();
+    void showContextMenu(const QPoint& pos);
+    void clearAll();
+    void openUrl();
+    void clearEntry();
+    HistoryManager(MainView* m);
 };
 
 
 
 
 #endif // HISTORYMANAGER_H
+

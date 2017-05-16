@@ -29,6 +29,7 @@
 #include "presentationmodenotifier.h"
 #include "jseditor.h"
 #include "themeeditor.h"
+#include "historymanager.h"
 
 #include <QObject>
 #include <QPoint>
@@ -402,8 +403,9 @@ void MainView::createMenuBar(){
     this->view_menu->addAction("&Reset View");
     this->history_menu=this->menubar->addMenu("&History");
     this->show_all_history=this->history_menu->addAction("&Show All History");
-    this->history_menu->addAction("&Clear All History");
-    this->history_menu->addAction("&Manage History");
+    connect(this->show_all_history,&QAction::triggered,this,&MainView::showHistory);
+    this->clearAllHist=this->history_menu->addAction("&Clear All History");
+    connect(this->clearAllHist,&QAction::triggered,this,&MainView::clearHistory);
     this->history_menu->addSeparator();
     this->history_menu->addAction("&Restore Previous Session");
     this->recently_closed=this->history_menu->addMenu("&Recently Closed");
@@ -633,4 +635,18 @@ void MainView::about(){
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     webview->load(QUrl("http://www.crustabrowser.com/about"));
+}
+
+void MainView::showHistory(){
+    HistoryManager* h=new HistoryManager(this);
+    h->createManager();
+    h->show();
+}
+
+void MainView::clearHistory(){
+    QFile file("history.txt");
+    file.open(QIODevice::WriteOnly);
+    QTextStream out(&file);
+    out <<"";
+    file.close();
 }

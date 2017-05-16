@@ -105,6 +105,7 @@ public:
     QAction* presentation_action=new QAction();
     QAction* preference=new QAction();
     QAction* show_all_history=new QAction();
+    QAction* clearAllHist=new QAction();
     QAction* web_inspector_action=new QAction();
     QAction* runJsCode=new QAction();
     QAction* aboutCr=new QAction();
@@ -144,6 +145,8 @@ public:
     void closeOtherTabs(int index);
     void restoreTab(QUrl u);
     void about();
+    void showHistory();
+    void clearHistory();
 };
 
 
