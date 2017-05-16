@@ -54,6 +54,7 @@ public:
     TabWindow* returnThis();
     void setWebView(WebView*);
     void loadUrl();
+    void bookmarkPage();
 };
 
 

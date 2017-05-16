@@ -18,14 +18,17 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#include <addresslineedit.h>
+#include "addresslineedit.h"
 #include <QPushButton>
 #include <QLineEdit>
 #include <QIcon>
+#include <QMenu>
+
+#include <iostream>
 
 
 void AddressLineEdit::createAddressLineEdit(){
-    this->addr_bar->setTextMargins(15,0,15,0);
+    this->setTextMargins(15,0,15,0);
 //    this->info_btn->setIcon(QIcon(":/res/drawables/info.png"));
 //    this->info_btn->setFlat(true);
 //    this->info_btn->setParent(this->addr_bar);
@@ -36,6 +39,38 @@ void AddressLineEdit::createAddressLineEdit(){
 }
 
 QLineEdit* AddressLineEdit::initialize(){
-    createAddressLineEdit();
-    return this->addr_bar;
+    return this;
 }
+
+void AddressLineEdit::showContextMenu(const QPoint& pos){
+    QMenu* contextMenu=new QMenu();
+    QAction* undo=new QAction("Undo");
+    contextMenu->addAction(undo);
+    QAction* redo=new QAction("Redo");
+    contextMenu->addAction(redo);
+    contextMenu->addSeparator();
+    QAction* cut=new QAction("Cut");
+    contextMenu->addAction(cut);
+    QAction* copy=new QAction("Copy");
+    contextMenu->addAction(copy);
+    QAction* paste=new QAction("Paste");
+    contextMenu->addAction(paste);
+    contextMenu->addSeparator();
+    QAction* default_search=new QAction("Search Preference");
+    contextMenu->addAction(default_search);
+    contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{background-color:blueviolet;color:white}");
+    contextMenu->exec(this->mapToGlobal(pos));
+}
+
+AddressLineEdit::AddressLineEdit(){
+    createAddressLineEdit();
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this,&AddressLineEdit::customContextMenuRequested,this,&AddressLineEdit::showContextMenu);
+}
+
+
+
+
+
+
+

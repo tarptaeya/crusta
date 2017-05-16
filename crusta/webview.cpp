@@ -70,6 +70,7 @@ WebView::WebView(){
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows,true);
     connect(this->page(),&QWebEnginePage::fullScreenRequested,this,&WebView::acceptFullScreen);
     connect(this->page(),&QWebEnginePage::loadStarted,this,&WebView::spinnerStarted);
+    connect(this->page(),&QWebEnginePage::loadFinished,this,&WebView::loadFinished);
     connect(this->page(),&QWebEnginePage::iconChanged,this,&WebView::faviconChanged);
     connect(this->page(),&QWebEnginePage::titleChanged,this,&WebView::pageTitleChanged);
     connect(this->page(),&QWebEnginePage::featurePermissionRequested,this,&WebView::permissionHandler);
@@ -502,7 +503,13 @@ void WebView::showContextMenu(const QPoint& pos){
     contextMenu->exec(this->mapToGlobal(pos));
 }
 
-
+void WebView::loadFinished(){
+    QFile file("history.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out << title().toLatin1()+">>>>>"+url().toString().toLatin1()+">>>>>"+QDate::currentDate().toString().toLatin1()+"\n";
+    file.close();
+}
 
 
 

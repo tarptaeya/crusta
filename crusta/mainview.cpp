@@ -167,27 +167,29 @@ void MainView::FindText(){
         QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
         this->hbox=new QHBoxLayout();
         this->findwidget->setParent(webview);
-        this->findwidget->setLayout(this->hbox);
-        this->hbox->addWidget(this->close_findwidget);
-        this->hbox->addWidget(this->label);
-        this->hbox->addWidget(this->text);
-        this->hbox->addWidget(this->match_case_btn);
-        this->hbox->addWidget(new QLabel());
-        this->close_findwidget->setFlat(true);
-        this->close_findwidget->setIcon(QIcon(":/res/drawables/close.png"));
-        this->close_findwidget->setFixedWidth(30);
-        connect(this->close_findwidget,&QPushButton::clicked,this,&MainView::hideFindWidget);
-        this->label->setText(QString("Search"));
-        this->label->setFixedWidth(75);
-        this->text->setFixedWidth(380);
-        connect(this->text,&QLineEdit::returnPressed,this,&MainView::findFindWidget);
-        connect(this->match_case_btn,&QCheckBox::toggled,this,&MainView::findFindWidget);
-        this->match_case_btn->setText("&Match &Case");
-        this->hbox->setAlignment(Qt::AlignLeft);
-        this->findwidget->setFixedHeight(50);
-        this->findwidget->setFixedWidth(webview->geometry().width());
-        this->findwidget->setObjectName("findwidget");
-        this->findwidget->setStyleSheet("#findwidget{border-top:1px solid grey;background-color:#ffffff}");
+        if(findwidget->layout()==NULL){
+            this->findwidget->setLayout(this->hbox);
+            this->hbox->addWidget(this->close_findwidget);
+            this->hbox->addWidget(this->label);
+            this->hbox->addWidget(this->text);
+            this->hbox->addWidget(this->match_case_btn);
+            this->hbox->addWidget(new QLabel());
+            this->close_findwidget->setFlat(true);
+            this->close_findwidget->setIcon(QIcon(":/res/drawables/close.svg"));
+            this->close_findwidget->setFixedWidth(50);
+            connect(this->close_findwidget,&QPushButton::clicked,this,&MainView::hideFindWidget);
+            this->label->setText(QString("Search"));
+            this->label->setFixedWidth(75);
+            this->text->setFixedWidth(380);
+            connect(this->text,&QLineEdit::returnPressed,this,&MainView::findFindWidget);
+            connect(this->match_case_btn,&QCheckBox::toggled,this,&MainView::findFindWidget);
+            this->match_case_btn->setText("&Match &Case");
+            this->hbox->setAlignment(Qt::AlignLeft);
+            this->findwidget->setFixedHeight(50);
+            this->findwidget->setFixedWidth(webview->geometry().width());
+            this->findwidget->setObjectName("findwidget");
+            this->findwidget->setStyleSheet("#findwidget{border-top:1px solid grey;background-color:#ffffff}");
+        }
         this->findwidget->show();
         QPropertyAnimation *animation = new QPropertyAnimation(this->findwidget, "pos");
         animation->setDuration(600);
@@ -324,7 +326,7 @@ MainView::MainView(){
     connect(this->tabWindow->tabBar(),&QTabBar::tabMoved,this,&MainView::addNewTabButton);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::addNewTabButton);
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
-    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;} QTabBar{background-color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
+    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
 }
 
 void MainView::createView(){
@@ -397,12 +399,10 @@ void MainView::createMenuBar(){
     connect(this->presentation_action,&QAction::triggered,this,&MainView::enterPresentationMode);
     this->fullscreen_action=this->view_menu->addAction("&Show Full Screen");
     connect(this->fullscreen_action,&QAction::triggered,this,&MainView::fullScreen);
-    this->view_menu->addMenu("&Text Encoding");
-    this->view_menu->addMenu("&Page Style");
     this->view_menu->addAction("&Reset View");
     this->history_menu=this->menubar->addMenu("&History");
     this->show_all_history=this->history_menu->addAction("&Show All History");
-    this->history_menu->addAction("&Clear Recent History");
+    this->history_menu->addAction("&Clear All History");
     this->history_menu->addAction("&Manage History");
     this->history_menu->addSeparator();
     this->history_menu->addAction("&Restore Previous Session");

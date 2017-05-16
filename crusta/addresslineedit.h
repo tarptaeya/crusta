@@ -24,18 +24,20 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QIcon>
+#include <QPoint>
 
 
 
-class AddressLineEdit{
+class AddressLineEdit:public QLineEdit{
     // TODO :: ADD COMPLETER TO IT
 public:
-    QLineEdit* addr_bar=new QLineEdit();
-    QPushButton* info_btn=new QPushButton();
-    QPushButton* secure_btn=new QPushButton();
+//    QPushButton* info_btn=new QPushButton();
+//    QPushButton* secure_btn=new QPushButton();
     void createAddressLineEdit();
     QLineEdit* initialize();
+    void showContextMenu(const QPoint& pos);
     QString defaultSearch=QString("https://google.com");
+    AddressLineEdit();
 };
 
 

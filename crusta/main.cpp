@@ -33,6 +33,6 @@ int main(int argc, char *argv[]){
     Q_INIT_RESOURCE(resource); // initialised the resource file;
     MainView* w=new MainView();
     w->showView();
-    w->setWindowIcon(QIcon(":/res/drawables/icon.svg"));
+    a.setWindowIcon(QIcon(":/res/drawables/icon_3.ico"));
     return a.exec();
 }

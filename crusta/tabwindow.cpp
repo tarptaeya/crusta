@@ -26,8 +26,11 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QPushButton>
+#include <QFile>
+#include <QTextStream>
+#include <QIODevice>
 
-#include <cstdlib>
+#include <iostream>
 
 
 
@@ -36,13 +39,8 @@ void TabWindow::viewHome(){
 }
 
 void TabWindow::updateAddrBar(){
-    try{
     this->addr_bar->initialize()->setText(this->view->returnView()->url().toString());
     this->addr_bar->initialize()->setCursorPosition(0);
-    }
-    catch(...){
-        return;
-    }
 }
 
 void TabWindow::createControls(){
@@ -69,6 +67,7 @@ void TabWindow::createControls(){
     hbox->addWidget(this->home_btn);
     this->bookmark_btn->setFlat(true);
     this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
+    connect(this->bookmark_btn,&QPushButton::clicked,this,&TabWindow::bookmarkPage);
     hbox->addWidget(this->bookmark_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
@@ -127,4 +126,13 @@ void TabWindow::loadUrl(){
         QString searchStr=this->addr_bar->defaultSearch+QString("/search?q=")+text;
         this->view->returnView()->load(QUrl(searchStr));
     }
+}
+
+void TabWindow::bookmarkPage(){
+    QFile file("bookmarks.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+"\n";
+    file.close();
+    this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
 }

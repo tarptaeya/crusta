@@ -31,5 +31,7 @@
         <file>res/drawables/icon.svg</file>
         <file>res/drawables/home.svg</file>
         <file>res/drawables/bookmark.svg</file>
+        <file>res/drawables/close.svg</file>
+        <file>res/drawables/star.svg</file>
     </qresource>
 </RCC>
