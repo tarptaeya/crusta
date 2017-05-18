@@ -30,7 +30,7 @@
 
 
 
-class AddressLineEdit:public SearchBox{
+class AddressLineEdit:public QLineEdit{
     // TODO :: ADD COMPLETER TO IT
 public:
 //    QPushButton* info_btn=new QPushButton();
