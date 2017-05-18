@@ -24,10 +24,20 @@
 #include <QTextStream>
 #include <QIODevice>
 
+#include <iostream>
+
 BookmarkManager::BookmarkManager(MainView *m){
     mview=m;
     setLayout(vbox);
-    setStyleSheet("QWidget{background-color:blueviolet;color:white} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    setStyleSheet("QWidget{background-color:blueviolet;color:white} QLineEdit{background-color:white;color:blueviolet} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(search);
+    hbox->addWidget(sbtn);
+    search->setPlaceholderText("Search...");
+    search->setFixedWidth(200);
+    sbtn->setFixedWidth(50);
+    vbox->addLayout(hbox);
     vbox->addWidget(display);
     QStringList header;
     header.append("Title");
@@ -40,6 +50,13 @@ BookmarkManager::BookmarkManager(MainView *m){
     connect(display,&QTreeWidget::customContextMenuRequested,this,&BookmarkManager::showContextMenu);
     connect(open,&QAction::triggered,this,&BookmarkManager::openUrl);
     connect(del,&QAction::triggered,this,&BookmarkManager::clearEntry);
+    QHBoxLayout* h1box=new QHBoxLayout();
+    h1box->addWidget(new QLabel("Edit Desription : "));
+    h1box->addWidget(description);
+    h1box->addWidget(save);
+    vbox->addLayout(h1box);
+    connect(save,&QPushButton::clicked,this,&BookmarkManager::saveDescription);
+    connect(sbtn,&QPushButton::clicked,this,&BookmarkManager::searchBookmark);
 }
 
 void BookmarkManager::loadBookmarks(){
@@ -103,5 +120,41 @@ void BookmarkManager::clearEntry(){
         f.close();
     }
     delete item;
+}
+
+void BookmarkManager::saveDescription(){
+    QTreeWidgetItem* item=display->currentItem();
+    QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    item->setText(2,description->text());
+    description->setText("");
+    QString newline=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QFile f("bookmarks.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            if(line!=forbidden)
+                s.append(line + "\n");
+            else
+                s.append(newline+"\n");
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
+}
+
+
+void BookmarkManager::searchBookmark(){
+    QString s_text=search->text();
+    if(s_text==""){
+        display->clear();
+        BookmarkManager::loadBookmarks();
+        return;
+    }
+    QList<QTreeWidgetItem*>items=display->findItems(s_text,Qt::MatchContains,2);
 }
 

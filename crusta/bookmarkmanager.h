@@ -30,6 +30,7 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPoint>
+#include <QLabel>
 
 
 class BookmarkManager:public QDialog{
@@ -38,6 +39,9 @@ public:
     QAction* open=new QAction("Open");
     QAction* del=new QAction("Remove");
     QLineEdit* search=new QLineEdit();
+    QLineEdit* description=new QLineEdit();
+    QPushButton* save=new QPushButton("Save Description");
+    QPushButton* sbtn=new QPushButton("Go");
     QVBoxLayout* vbox=new QVBoxLayout();
     BookmarkManager(MainView* m);
     MainView* mview=new MainView();
@@ -45,6 +49,8 @@ public:
     void showContextMenu(const QPoint& pos);
     void openUrl();
     void clearEntry();
+    void saveDescription();
+    void searchBookmark();
 };
 
 #endif // BOOKMARKMANAGER_H

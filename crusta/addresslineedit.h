@@ -21,6 +21,8 @@
 #ifndef ADDRESSLINEEDIT_H
 #define ADDRESSLINEEDIT_H
 
+#include "searchbox.h"
+
 #include <QLineEdit>
 #include <QPushButton>
 #include <QIcon>
@@ -28,7 +30,7 @@
 
 
 
-class AddressLineEdit:public QLineEdit{
+class AddressLineEdit:public SearchBox{
     // TODO :: ADD COMPLETER TO IT
 public:
 //    QPushButton* info_btn=new QPushButton();
