@@ -41,6 +41,24 @@ void TabWindow::viewHome(){
 void TabWindow::updateAddrBar(){
     this->addr_bar->initialize()->setText(this->view->returnView()->url().toString());
     this->addr_bar->initialize()->setCursorPosition(0);
+    QString s=this->addr_bar->text();
+    QFile inputFile("completer.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          if(line==s)
+              return;
+       }
+       inputFile.close();
+    }
+    QFile file("completer.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out<<s.toLatin1()+"\n";
+    file.close();
 }
 
 void TabWindow::createControls(){

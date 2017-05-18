@@ -53,9 +53,7 @@ SOURCES += main.cpp\
     downloaditemwidget.cpp \
     themeeditor.cpp \
     webpage.cpp \
-    bookmarkmanager.cpp \
-    googlesuggest.cpp \
-    searchbox.cpp
+    bookmarkmanager.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -77,9 +75,7 @@ HEADERS  += \
     downloaditemwidget.h \
     themeeditor.h \
     webpage.h \
-    bookmarkmanager.h \
-    googlesuggest.h \
-    searchbox.h
+    bookmarkmanager.h
 
 RESOURCES += \
     resource.qrc

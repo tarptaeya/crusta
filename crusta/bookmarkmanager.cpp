@@ -23,6 +23,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QIODevice>
+#include <QStringList>
+#include <QString>
 
 #include <iostream>
 
@@ -123,6 +125,8 @@ void BookmarkManager::clearEntry(){
 }
 
 void BookmarkManager::saveDescription(){
+    if(display->currentItem()==NULL)
+        return;
     QTreeWidgetItem* item=display->currentItem();
     QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
     item->setText(2,description->text());
@@ -147,14 +151,27 @@ void BookmarkManager::saveDescription(){
     }
 }
 
-
 void BookmarkManager::searchBookmark(){
-    QString s_text=search->text();
-    if(s_text==""){
-        display->clear();
-        BookmarkManager::loadBookmarks();
-        return;
+    QString key=search->text();
+    display->clear();
+    QFile inputFile("bookmarks.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data.count()==1)continue;
+          if(data.count()==2)data.append("");
+          QString master=data[2];
+          if(master.contains(key)){
+              QTreeWidgetItem* item=new QTreeWidgetItem(data);
+              display->insertTopLevelItem(0,item);
+
+          }
+       }
+       inputFile.close();
     }
-    QList<QTreeWidgetItem*>items=display->findItems(s_text,Qt::MatchContains,2);
 }
 

@@ -23,19 +23,19 @@
 #include <QLineEdit>
 #include <QIcon>
 #include <QMenu>
+#include <QFile>
+#include <QTextStream>
+#include <QIODevice>
+#include <QCompleter>
+#include <QString>
+#include <QStringList>
+#include <QStringListModel>
 
 #include <iostream>
 
 
 void AddressLineEdit::createAddressLineEdit(){
     this->setTextMargins(15,0,15,0);
-//    this->info_btn->setIcon(QIcon(":/res/drawables/info.png"));
-//    this->info_btn->setFlat(true);
-//    this->info_btn->setParent(this->addr_bar);
-//    this->secure_btn->setIcon(QIcon(":/res/drawables/secure.png"));
-//    this->secure_btn->setFlat(true);
-//    this->secure_btn->setParent(this->addr_bar);
-//    this->secure_btn->move(20,0);
 }
 
 QLineEdit* AddressLineEdit::initialize(){
@@ -64,13 +64,52 @@ void AddressLineEdit::showContextMenu(const QPoint& pos){
 
 AddressLineEdit::AddressLineEdit(){
     createAddressLineEdit();
+    setCompleter(cmpleter);
+    createCompleter();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,&AddressLineEdit::customContextMenuRequested,this,&AddressLineEdit::showContextMenu);
+    connect(this,&AddressLineEdit::returnPressed,this,&AddressLineEdit::updateCompleter);
 }
 
+void AddressLineEdit::createCompleter(){
+    QStringListModel* model=new QStringListModel();
+    cmpleter->setModel(model);
+    cmpleter->setCaseSensitivity(Qt::CaseInsensitive);
+    cmpleter->setFilterMode(Qt::MatchContains);
+    QFile inputFile("completer.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          list.append(line);
+       }
+       inputFile.close();
+    }
+    model->setStringList(list);
+}
 
-
-
+void AddressLineEdit::updateCompleter(){
+    QString s=this->text();
+    QFile inputFile("completer.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          if(line.toLower()==s.toLower())
+              return;
+       }
+       inputFile.close();
+    }
+    QFile file("completer.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out<<s.toLatin1()+"\n";
+    file.close();
+}
 
 
 

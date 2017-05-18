@@ -21,25 +21,25 @@
 #ifndef ADDRESSLINEEDIT_H
 #define ADDRESSLINEEDIT_H
 
-#include "searchbox.h"
-
 #include <QLineEdit>
 #include <QPushButton>
 #include <QIcon>
 #include <QPoint>
-
+#include <QCompleter>
+#include <QStringList>
 
 
 class AddressLineEdit:public QLineEdit{
-    // TODO :: ADD COMPLETER TO IT
+    QCompleter* cmpleter=new QCompleter();
 public:
-//    QPushButton* info_btn=new QPushButton();
-//    QPushButton* secure_btn=new QPushButton();
+    QStringList list;
     void createAddressLineEdit();
     QLineEdit* initialize();
     void showContextMenu(const QPoint& pos);
     QString defaultSearch=QString("https://google.com");
     AddressLineEdit();
+    void createCompleter();
+    void updateCompleter();
 };
 
 
