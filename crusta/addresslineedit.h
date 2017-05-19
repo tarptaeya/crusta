@@ -33,7 +33,7 @@
 class AddressLineEdit:public QLineEdit{
     QCompleter* cmpleter=new QCompleter();
 public:
-    QAction* default_search=new QAction("Search Preference");
+    QAction* default_search=new QAction(tr("Search Preference"));
     QStringList list;
     void createAddressLineEdit();
     QLineEdit* initialize();

@@ -47,7 +47,7 @@
 
 
 void HistoryManager::createManager(){
-    setWindowTitle("Crusta : History Manager");
+    setWindowTitle(tr("Crusta : History Manager"));
     setStyleSheet("QWidget{background-color:blueviolet;color:white} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
     QFile inputFile("history.txt");
     if (inputFile.open(QIODevice::ReadOnly))
@@ -76,9 +76,9 @@ HistoryManager::HistoryManager(MainView *m){
     vbox->addLayout(h1box);
     setLayout(vbox);
     QStringList header;
-    header.append("Title");
-    header.append("URL");
-    header.append("Date");
+    header.append(tr("Title"));
+    header.append(tr("URL"));
+    header.append(tr("Date"));
     display_area->setColumnCount(header.count());
     display_area->setHeaderLabels(header);
     display_area->setContextMenuPolicy(Qt::CustomContextMenu);

@@ -34,6 +34,7 @@
 #include <QTreeWidgetItem>
 #include <QPoint>
 #include <QAction>
+#include <QComboBox>
 
 
 
@@ -41,10 +42,11 @@
 class HistoryManager:public QDialog{
 public:
     QTreeWidget* display_area=new QTreeWidget();
-    QPushButton* clear_all=new QPushButton("Clear All");
+    QPushButton* clear_all=new QPushButton(tr("Clear All"));
     QVBoxLayout* vbox=new QVBoxLayout();
-    QAction* open=new QAction("Open");
-    QAction* del=new QAction("Remove");
+    QAction* open=new QAction(tr("Open"));
+    QAction* del=new QAction(tr("Remove"));
+    QComboBox* date=new QComboBox();
     MainView* mview=new MainView();
     void createManager();
     void showContextMenu(const QPoint& pos);

@@ -36,12 +36,12 @@
 class BookmarkManager:public QDialog{
 public:
     QTreeWidget* display=new QTreeWidget();
-    QAction* open=new QAction("Open");
-    QAction* del=new QAction("Remove");
+    QAction* open=new QAction(tr("Open"));
+    QAction* del=new QAction(tr("Remove"));
     QLineEdit* search=new QLineEdit();
     QLineEdit* description=new QLineEdit();
-    QPushButton* save=new QPushButton("Save Description");
-    QPushButton* sbtn=new QPushButton("Go");
+    QPushButton* save=new QPushButton(tr("Save Description"));
+    QPushButton* sbtn=new QPushButton(tr("Go"));
     QVBoxLayout* vbox=new QVBoxLayout();
     BookmarkManager(MainView* m);
     MainView* mview=new MainView();

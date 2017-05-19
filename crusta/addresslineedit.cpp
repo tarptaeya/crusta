@@ -51,16 +51,16 @@ QLineEdit* AddressLineEdit::initialize(){
 
 void AddressLineEdit::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
-    QAction* undo=new QAction("Undo");
+    QAction* undo=new QAction(tr("Undo"));
     contextMenu->addAction(undo);
-    QAction* redo=new QAction("Redo");
+    QAction* redo=new QAction(tr("Redo"));
     contextMenu->addAction(redo);
     contextMenu->addSeparator();
-    QAction* cut=new QAction("Cut");
+    QAction* cut=new QAction(tr("Cut"));
     contextMenu->addAction(cut);
-    QAction* copy=new QAction("Copy");
+    QAction* copy=new QAction(tr("Copy"));
     contextMenu->addAction(copy);
-    QAction* paste=new QAction("Paste");
+    QAction* paste=new QAction(tr("Paste"));
     contextMenu->addAction(paste);
     contextMenu->addSeparator();
     contextMenu->addAction(default_search);
@@ -139,7 +139,7 @@ void AddressLineEdit::loadSearchString(){
 
 void AddressLineEdit::setDefaultSearch(){
     QDialog* w=new QDialog();
-    QLabel* lbl=new QLabel("Search Engine URL");
+    QLabel* lbl=new QLabel(tr("Search Engine URL"));
     QLineEdit* url=new QLineEdit();
     url->setText(defaultSearch);
 
@@ -162,8 +162,8 @@ void AddressLineEdit::setDefaultSearch(){
     hbox->addWidget(lbl);
     hbox->addWidget(url);
     QHBoxLayout* h1box=new QHBoxLayout();
-    QPushButton* cncl=new QPushButton("Cancel");
-    QPushButton* ok=new QPushButton("Save");
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    QPushButton* ok=new QPushButton(tr("Save"));
     h1box->addWidget(new QLabel());
     h1box->addWidget(cncl);
     h1box->addWidget(ok);

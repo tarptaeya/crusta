@@ -50,8 +50,8 @@ void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
 }
 
 void DownloadWidget::changeLayout(){
-    open->setText("Open");
-    remove->setText("Remove");
+    open->setText(tr("Open"));
+    remove->setText(tr("Remove"));
     v0box->removeWidget(progress);
     v1box->removeWidget(fraction);
     v1box->removeWidget(cancel);

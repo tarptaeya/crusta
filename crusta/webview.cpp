@@ -215,7 +215,7 @@ QWebEngineView* WebView::createWindow(QWebEnginePage::WebWindowType type){
         QWidget* widget=(QWidget*)this->parent();
         QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
         QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
-        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,"New Tab");
+        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("New Tab"));
         tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
         return view;
     }
@@ -266,14 +266,14 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
     h1->addWidget(cncl);
     h1->addWidget(ok);
     vl->addLayout(h1);
-    cncl->setText("No");
-    ok->setText("Yes");
+    cncl->setText(tr("No"));
+    ok->setText(tr("Yes"));
     dg->setStyleSheet("QWidget{color:white;background-color:blueviolet} QPushButton{border:0.5px solid;background-color:crimson;color:white;border-radius:0px;border-color:crimson;padding:2px 4px;} QPushButton:hover{background-color:white;color:crimson}");
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     switch (feature) {
     case QWebEnginePage::Notifications:{
-        permission->setText("Allow Notifications from this website");
+        permission->setText(tr("Allow Notifications from this website"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
             return;
@@ -282,7 +282,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MouseLock:{
-        permission->setText("Allow Pointer Lock for this website");
+        permission->setText(tr("Allow Pointer Lock for this website"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
             return;
@@ -291,7 +291,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::Geolocation:{
-        permission->setText("Allow Geolocation from current website");
+        permission->setText(tr("Allow Geolocation from current website"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
             return;
@@ -300,7 +300,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MediaAudioCapture:{
-        permission->setText("Allow Audio Capture for this site");
+        permission->setText(tr("Allow Audio Capture for this site"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
             return;
@@ -309,7 +309,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MediaVideoCapture:{
-        permission->setText("Allow Video Capture for this site");
+        permission->setText(tr("Allow Video Capture for this site"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
             return;
@@ -318,7 +318,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MediaAudioVideoCapture:{
-        permission->setText("Allow Audio/Video Capture for this site");
+        permission->setText(tr("Allow Audio/Video Capture for this site"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
             return;
@@ -335,7 +335,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     w->setWindowFlags(Qt::FramelessWindowHint);
     QVBoxLayout* box=new QVBoxLayout();
     w->setLayout(box);
-    QLabel* yhcto=new QLabel("You have choosen to open");
+    QLabel* yhcto=new QLabel(tr("You have choosen to open"));
     yhcto->setFont(QFont("Ariel",-1,-1,true));
     box->addWidget(yhcto);
     QHBoxLayout* hbx=new QHBoxLayout();
@@ -344,12 +344,12 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     QLabel* ilabel=new QLabel();
     ilabel->setPixmap(icon.pixmap(64,64));
     hbx->addWidget(ilabel);
-    hbx->addWidget(new QLabel(path.split('/')[path.split('/').length()-1]+"\n"+"which is : "+download_item->mimeType()));
+    hbx->addWidget(new QLabel(path.split('/')[path.split('/').length()-1]+"\n"+tr("which is : ")+download_item->mimeType()));
     box->addLayout(hbx);
     QRadioButton* ropen=new QRadioButton();
     QRadioButton* rsave=new QRadioButton();
-    ropen->setText("Open...");
-    rsave->setText("Save");
+    ropen->setText(tr("Open..."));
+    rsave->setText(tr("Save"));
     QGroupBox* gb=new QGroupBox();
     QVBoxLayout* vgb=new QVBoxLayout();
     vgb->addWidget(ropen);
@@ -357,14 +357,14 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     rsave->setChecked(true);
     gb->setLayout(vgb);
     gb->setFlat(true);
-    gb->setTitle("What should Crusta do with this file?");
+    gb->setTitle(tr("What should Crusta do with this file?"));
     box->addWidget(gb);
     QPushButton* cncl_btn=new QPushButton();
     cncl_btn->setFixedWidth(75);
-    cncl_btn->setText("Cancel");
+    cncl_btn->setText(tr("Cancel"));
     QPushButton* ok_btn=new QPushButton();
     ok_btn->setFixedWidth(75);
-    ok_btn->setText("Ok");
+    ok_btn->setText(tr("Ok"));
     QHBoxLayout* h1bx=new QHBoxLayout();
     h1bx->addWidget(new QLabel());
     h1bx->addWidget(cncl_btn);
@@ -387,7 +387,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     else{
         QFileDialog f;
         f.setOption(QFileDialog::DontUseNativeDialog,true);
-        QString fname=f.getSaveFileName(this,"Download File",QDir::homePath(),QString(),nullptr,f.options());
+        QString fname=f.getSaveFileName(this,tr("Download File"),QDir::homePath(),QString(),nullptr,f.options());
         if(fname=="")fname=path;
         download_item->setPath(fname);
         download_item->accept();
@@ -448,48 +448,48 @@ void WebView::authenticate(const QUrl u,QAuthenticator *authenticator){
 void WebView::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
     if(link!=""){
-        QAction* open_link_in_new_tab=new QAction("Open Link In New Tab");
+        QAction* open_link_in_new_tab=new QAction(tr("Open Link In New Tab"));
         connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
         contextMenu->addAction(open_link_in_new_tab);
-        QAction* open_link_in_new_window=new QAction("Open Link In New Window");
+        QAction* open_link_in_new_window=new QAction(tr("Open Link In New Window"));
         connect(open_link_in_new_window,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewWindow);});
         contextMenu->addAction(open_link_in_new_window);
         contextMenu->addSeparator();
-        QAction* follow_link=new QAction("Follow Link");
+        QAction* follow_link=new QAction(tr("Follow Link"));
         connect(follow_link,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInThisWindow);});
         contextMenu->addAction(follow_link);
-        QAction* copy_link=new QAction("Copy Link Address");
+        QAction* copy_link=new QAction(tr("Copy Link Address"));
         connect(copy_link,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::CopyLinkToClipboard);});
         contextMenu->addAction(copy_link);
         contextMenu->addSeparator();
     }
     else if(this->selectedText()!=""){
         QString text=this->selectedText();
-        QAction* a_cut=new QAction("Cut");
+        QAction* a_cut=new QAction(tr("Cut"));
         connect(a_cut,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::Cut);});
         contextMenu->addAction(a_cut);
-        QAction* a_copy=new QAction("Copy");
+        QAction* a_copy=new QAction(tr("Copy"));
         connect(a_copy,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::Copy);});
         contextMenu->addAction(a_copy);
-        QAction* a_paste=new QAction("Paste");
+        QAction* a_paste=new QAction(tr("Paste"));
         connect(a_paste,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::Paste);});
         contextMenu->addAction(a_paste);
         contextMenu->addSeparator();
     }
-    QAction* back_page=new QAction(QIcon(":/res/drawables/back.svg"),"Back");
+    QAction* back_page=new QAction(QIcon(":/res/drawables/back.svg"),tr("Back"));
     connect(back_page,&QAction::triggered,this,&WebView::back);
     contextMenu->addAction(back_page);
-    QAction* forward_page=new QAction(QIcon(":/res/drawables/forward.svg"),"Forward");
+    QAction* forward_page=new QAction(QIcon(":/res/drawables/forward.svg"),tr("Forward"));
     connect(forward_page,&QAction::triggered,this,&WebView::forward);
     contextMenu->addAction(forward_page);
-    QAction* reload_page=new QAction(QIcon(":/res/drawables/reload.svg"),"Reload");
+    QAction* reload_page=new QAction(QIcon(":/res/drawables/reload.svg"),tr("Reload"));
     connect(reload_page,&QAction::triggered,this,&WebView::reload);
     contextMenu->addAction(reload_page);
-    QAction* reload_and_bypass_cache=new QAction("Reload And Bypass Cache");
+    QAction* reload_and_bypass_cache=new QAction(tr("Reload And Bypass Cache"));
     connect(reload_and_bypass_cache,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::ReloadAndBypassCache);});
     contextMenu->addAction(reload_and_bypass_cache);
     contextMenu->addSeparator();
-    QAction* view_page_source=new QAction("View Page Source");
+    QAction* view_page_source=new QAction(tr("View Page Source"));
     connect(view_page_source,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::ViewSource);});
     contextMenu->addAction(view_page_source);
     contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");

@@ -30,7 +30,7 @@
 
 void FullScreenNotifier::createNotifier(){
     this->label->setStyleSheet("background:#ffffff; width:500px;height:20px");
-    this->label->setText("Crusta is now fullscreen - press ESC to exit fullscreen");
+    this->label->setText(tr("Crusta is now fullscreen - press ESC to exit fullscreen"));
 }
 
 void FullScreenNotifier::showNotifier(){

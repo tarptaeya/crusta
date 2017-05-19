@@ -30,7 +30,7 @@
 
 void PresentationModeNotifier::createNotifier(){
     this->label->setStyleSheet("background:#ffffff; width:500px;height:20px");
-    this->label->setText("Crusta switched to Presentation Mode - press ESC to exit Presentation Mode");
+    this->label->setText(tr("Crusta switched to Presentation Mode - press ESC to exit Presentation Mode"));
 }
 
 void PresentationModeNotifier::showNotifier(){
@@ -38,7 +38,7 @@ void PresentationModeNotifier::showNotifier(){
     this->label->setGeometry(0,0,540,80);
     this->label->setAlignment(Qt::AlignCenter);
     this->label->move(this->x,60);
-    this->label->setStyleSheet("border: 3px solid gray;border-radius:20px;background-color:#ffffff;color:gray");
+    this->label->setStyleSheet("border: 3px solid blueviolet;border-radius:20px;background-color:#ffffff;color:blueviolet");
     QGraphicsOpacityEffect* effect=new QGraphicsOpacityEffect();
     this->label->setGraphicsEffect(effect);
     QPropertyAnimation* a=new QPropertyAnimation(effect,"opacity");

@@ -23,8 +23,8 @@
 
 JsEditor::JsEditor(){
     vbox->addWidget(editor);
-    run_btn->setText("&Run Script");
-    cncl_btn->setText("&Cancel");
+    run_btn->setText(tr("&Run Script"));
+    cncl_btn->setText(tr("&Cancel"));
     hbox->addWidget(run_btn);
     hbox->addWidget(cncl_btn);
     vbox->addLayout(hbox);

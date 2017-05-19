@@ -26,13 +26,13 @@ QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldF
     f->setOption(QFileDialog::DontUseNativeDialog,true);
     switch(mode){
     case(QWebEnginePage::FileSelectOpen):{
-        QString name=f->getOpenFileName(nullptr,QString("Crusta : Upload File"),QDir::homePath(),QString(),nullptr,f->options());
+        QString name=f->getOpenFileName(nullptr,QString(tr("Crusta : Upload File")),QDir::homePath(),QString(),nullptr,f->options());
         QStringList list;
         list.append(name);
         return list;
     }break;
     case(QWebEnginePage::FileSelectOpenMultiple):{
-        QStringList names=f->getOpenFileNames(nullptr,QString("Crusta : Upload File"),QDir::homePath(),QString(),nullptr,f->options());
+        QStringList names=f->getOpenFileNames(nullptr,QString(tr("Crusta : Upload Multiple Files")),QDir::homePath(),QString(),nullptr,f->options());
         return names;
     }break;
     }

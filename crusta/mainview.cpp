@@ -63,17 +63,6 @@ void MainView::closeTab(int index){
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-//    if(!webview->wasFullScreened){
-//        webview->deleteLater();
-//    }
-//    else{
-//        webview->load(webview->home_page);
-//    }
-//    this->tabWindow->removeTab(index);
-//    webview->disconnect();
-//    if(!webview->page()->isAudioMuted()){
-//        webview->page()->setAudioMuted(true);
-//    }
     QAction* hist=new QAction();
     hist->setText(webview->title());
     hist->setIcon(webview->icon());
@@ -112,11 +101,11 @@ void MainView::resetZoom(){
 void MainView::fullScreen(){
     if(this->window->isFullScreen()){
         this->window->showMaximized();
-        this->fullscreen_action->setText("&Show Full Screen");
+        this->fullscreen_action->setText(tr("&Show Full Screen"));
     }
     else{
         this->window->showFullScreen();
-        this->fullscreen_action->setText("&Exit Full Screen");
+        this->fullscreen_action->setText(tr("&Exit Full Screen"));
     }
 }
 
@@ -130,18 +119,18 @@ void MainView::tabBarContext(QPoint point){
 
         QMenu* contextMenu=new QMenu();
         QAction* rld_tab=new QAction();
-        rld_tab=contextMenu->addAction("&Reload Tab");
+        rld_tab=contextMenu->addAction(tr("&Reload Tab"));
         connect(rld_tab,&QAction::triggered,webview,&QWebEngineView::reload);
-        contextMenu->addAction("&Mute Tab");
-        contextMenu->addAction("&Pin Tab");
+        contextMenu->addAction(tr("&Mute Tab"));
+        contextMenu->addAction(tr("&Pin Tab"));
         QAction* duplicate=new QAction();
-        duplicate=contextMenu->addAction("&Duplicate Tab");
+        duplicate=contextMenu->addAction(tr("&Duplicate Tab"));
         connect(duplicate,&QAction::triggered,this,[this,webview]{duplicateTab(webview);});
-        contextMenu->addAction("&Open in new Window");
-        contextMenu->addAction("&Bookmark Tab");
-        contextMenu->addAction("&Bookmark All Tabs");
+        contextMenu->addAction(tr("&Open in new Window"));
+        contextMenu->addAction(tr("&Bookmark Tab"));
+        contextMenu->addAction(tr("&Bookmark All Tabs"));
         QAction* closeoth=new QAction();
-        closeoth=contextMenu->addAction("&Close Other Tabs");
+        closeoth=contextMenu->addAction(tr("&Close Other Tabs"));
         connect(closeoth,&QAction::triggered,this,[this,index]{closeOtherTabs(index);});
         contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
         contextMenu->exec(this->tabWindow->tabBar()->mapToGlobal(point));
@@ -149,14 +138,14 @@ void MainView::tabBarContext(QPoint point){
     else{
         QMenu* barContext=new QMenu();
         QAction* ntab_bar=new QAction();
-        ntab_bar=barContext->addAction("&New Tab");
+        ntab_bar=barContext->addAction(tr("&New Tab"));
         connect(ntab_bar,&QAction::triggered,this,&MainView::addNormalTab);
         QAction* rlod=new QAction();
-        rlod=barContext->addAction("&Reload All Tabs");
+        rlod=barContext->addAction(tr("&Reload All Tabs"));
         connect(rlod,&QAction::triggered,this,&MainView::reloadAllTabs);
-        barContext->addAction("&Bookmark All Tabs");
-        barContext->addAction("Mute All Tabs");
-        barContext->addAction("&Restore All Tabs");
+        barContext->addAction(tr("&Bookmark All Tabs"));
+        barContext->addAction(tr("Mute All Tabs"));
+        barContext->addAction(tr("&Restore All Tabs"));
         barContext->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
         barContext->exec(this->tabWindow->tabBar()->mapToGlobal(point));
     }
@@ -181,12 +170,12 @@ void MainView::FindText(){
             this->close_findwidget->setIcon(QIcon(":/res/drawables/close.svg"));
             this->close_findwidget->setFixedWidth(50);
             connect(this->close_findwidget,&QPushButton::clicked,this,&MainView::hideFindWidget);
-            this->label->setText(QString("Search"));
+            this->label->setText(QString(tr("Search")));
             this->label->setFixedWidth(75);
             this->text->setFixedWidth(380);
             connect(this->text,&QLineEdit::returnPressed,this,&MainView::findFindWidget);
             connect(this->match_case_btn,&QCheckBox::toggled,this,&MainView::findFindWidget);
-            this->match_case_btn->setText("&Match &Case");
+            this->match_case_btn->setText(tr("&Match &Case"));
             this->hbox->setAlignment(Qt::AlignLeft);
             this->findwidget->setFixedHeight(50);
             this->findwidget->setFixedWidth(webview->geometry().width());
@@ -314,7 +303,6 @@ MainView::MainView(){
     this->box->setContentsMargins(0,0,0,0);
     this->tabWindow->tabBar()->setDocumentMode(true);
     this->tabWindow->setElideMode(Qt::ElideRight);
-    //this->tabWindow->setStyleSheet("QTabBar::tab{max-width:175px;min-width:175px;} QTabWidget::tab-bar{left:0px;}");
     this->tabWindow->tabBar()->setExpanding(false);
     this->tabWindow->tabBar()->setShape(QTabBar::RoundedNorth);
     this->tabWindow->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -351,101 +339,101 @@ void MainView::newWindow(){
 }
 
 void MainView::createMenuBar(){
-    this->file_menu=this->menubar->addMenu("&File");
-    this->new_tab_action=this->file_menu->addAction("&New Tab");
+    this->file_menu=this->menubar->addMenu(tr("&File"));
+    this->new_tab_action=this->file_menu->addAction(tr("&New Tab"));
     connect(this->new_tab_action,&QAction::triggered,this,&MainView::addNormalTab);
-    this->file_menu->addAction("&New Split Tab");
-    this->new_window_action=this->file_menu->addAction("&New Window");
+    this->file_menu->addAction(tr("&New Split Tab"));
+    this->new_window_action=this->file_menu->addAction(tr("&New Window"));
     connect(this->new_window_action,&QAction::triggered,this,&MainView::newWindow);
-    this->new_private_tab_action=this->file_menu->addAction("&New Private Tab");
+    this->new_private_tab_action=this->file_menu->addAction(tr("&New Private Tab"));
     connect(new_private_tab_action,&QAction::triggered,this,&MainView::addPrivateTab);
-    this->file_menu->addAction("&New Private Window");
+    this->file_menu->addAction(tr("&New Private Window"));
     this->file_menu->addSeparator();
-    this->open_file=this->file_menu->addAction("&Open File");
+    this->open_file=this->file_menu->addAction(tr("&Open File"));
     connect(this->open_file,&QAction::triggered,this,&MainView::openLocalFile);
-    this->save_as_pdf=this->file_menu->addAction("&Save Page As PDF");
+    this->save_as_pdf=this->file_menu->addAction(tr("&Save Page As PDF"));
     connect(this->save_as_pdf,&QAction::triggered,this,&MainView::saveAsPdf);
-    this->save_page=this->file_menu->addAction("&Save Page");
+    this->save_page=this->file_menu->addAction(tr("&Save Page"));
     connect(this->save_page,&QAction::triggered,this,&MainView::savePage);
-    this->capture_screenshot=this->file_menu->addAction("&Capture ScreenShot");
+    this->capture_screenshot=this->file_menu->addAction(tr("&Capture ScreenShot"));
     this->capture_screenshot->setShortcut(QKeySequence(QKeySequence::Save));
     connect(this->capture_screenshot,&QAction::triggered,this,&MainView::screenShot);
-    this->exit_action=this->file_menu->addAction("&Quit");
+    this->exit_action=this->file_menu->addAction(tr("&Quit"));
     connect(this->exit_action,&QAction::triggered,this,&MainView::quit);
-    this->edit_menu=this->menubar->addMenu("&Edit");
-    this->undo_action=this->edit_menu->addAction("&Undo");
+    this->edit_menu=this->menubar->addMenu(tr("&Edit"));
+    this->undo_action=this->edit_menu->addAction(tr("&Undo"));
     connect(this->undo_action,&QAction::triggered,this,&MainView::undoPageAction);
-    this->redo_action=this->edit_menu->addAction("&Redo");
+    this->redo_action=this->edit_menu->addAction(tr("&Redo"));
     connect(this->redo_action,&QAction::triggered,this,&MainView::redoPageAction);
     this->edit_menu->addSeparator();
-    this->cut_action=this->edit_menu->addAction("&Cut");
+    this->cut_action=this->edit_menu->addAction(tr("&Cut"));
     connect(this->cut_action,&QAction::triggered,this,&MainView::cutPageAction);
-    this->copy_action=this->edit_menu->addAction("&Copy");
+    this->copy_action=this->edit_menu->addAction(tr("&Copy"));
     connect(this->copy_action,&QAction::triggered,this,&MainView::copyPageAction);
-    this->paste_action=this->edit_menu->addAction("&Paste");
+    this->paste_action=this->edit_menu->addAction(tr("&Paste"));
     connect(this->paste_action,&QAction::triggered,this,&MainView::pastePageAction);
     this->edit_menu->addSeparator();
-    this->selectall_action=this->edit_menu->addAction("&Select All");
+    this->selectall_action=this->edit_menu->addAction(tr("&Select All"));
     connect(this->selectall_action,&QAction::triggered,this,&MainView::selectAllText);
-    this->find_action=this->edit_menu->addAction("&Find");
+    this->find_action=this->edit_menu->addAction(tr("&Find"));
     this->find_action->setShortcut(QKeySequence(QKeySequence::Find));
     connect(this->find_action,&QAction::triggered,this,&MainView::FindText);
-    this->preference=this->edit_menu->addAction("&Edit Preference");
+    this->preference=this->edit_menu->addAction(tr("&Edit Preference"));
     connect(this->preference,&QAction::triggered,this,&MainView::editPreference);
-    this->view_menu=this->menubar->addMenu("&View");
-    this->view_page_source_action=this->view_menu->addAction("&Page Source");
+    this->view_menu=this->menubar->addMenu(tr("&View"));
+    this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
-    this->zoom_in_action=this->view_menu->addAction("&Zoom In");
+    this->zoom_in_action=this->view_menu->addAction(tr("&Zoom In"));
     connect(this->zoom_in_action,&QAction::triggered,this,&MainView::zoomIn);
-    this->zoom_out_action=this->view_menu->addAction("&Zoom Out");
+    this->zoom_out_action=this->view_menu->addAction(tr("&Zoom Out"));
     connect(this->zoom_out_action,&QAction::triggered,this,&MainView::zoomOut);
-    this->reset_zoom_action=this->view_menu->addAction("&Reset Zoom");
+    this->reset_zoom_action=this->view_menu->addAction(tr("&Reset Zoom"));
     connect(this->reset_zoom_action,&QAction::triggered,this,&MainView::resetZoom);
     this->view_menu->addSeparator();
-    this->presentation_action=this->view_menu->addAction("&Presentation Mode");
+    this->presentation_action=this->view_menu->addAction(tr("&Presentation Mode"));
     connect(this->presentation_action,&QAction::triggered,this,&MainView::enterPresentationMode);
-    this->fullscreen_action=this->view_menu->addAction("&Show Full Screen");
+    this->fullscreen_action=this->view_menu->addAction(tr("&Show Full Screen"));
     connect(this->fullscreen_action,&QAction::triggered,this,&MainView::fullScreen);
-    this->view_menu->addAction("&Reset View");
-    this->history_menu=this->menubar->addMenu("&History");
-    this->show_all_history=this->history_menu->addAction("&Show All History");
+    this->view_menu->addAction(tr("&Reset View"));
+    this->history_menu=this->menubar->addMenu(tr("&History"));
+    this->show_all_history=this->history_menu->addAction(tr("&Show All History"));
     connect(this->show_all_history,&QAction::triggered,this,&MainView::showHistory);
-    this->clearAllHist=this->history_menu->addAction("&Clear All History");
+    this->clearAllHist=this->history_menu->addAction(tr("&Clear All History"));
     connect(this->clearAllHist,&QAction::triggered,this,&MainView::clearHistory);
     this->history_menu->addSeparator();
-    this->restore_session=this->history_menu->addAction("Restore Previous Session");
-    this->recently_closed=this->history_menu->addMenu("&Recently Closed");
-    this->bookmark_menu=this->menubar->addMenu("&Bookmarks");
-    this->bookmark_tab=this->bookmark_menu->addAction("&Bookmark This Page");
+    this->restore_session=this->history_menu->addAction(tr("Restore Previous Session"));
+    this->recently_closed=this->history_menu->addMenu(tr("&Recently Closed"));
+    this->bookmark_menu=this->menubar->addMenu(tr("&Bookmarks"));
+    this->bookmark_tab=this->bookmark_menu->addAction(tr("&Bookmark This Page"));
     connect(this->bookmark_tab,&QAction::triggered,this,&MainView::bookmarkTab);
-    this->bookmark_all_tabs=this->bookmark_menu->addAction("&Bookmark All Tabs");
+    this->bookmark_all_tabs=this->bookmark_menu->addAction(tr("&Bookmark All Tabs"));
     connect(this->bookmark_all_tabs,&QAction::triggered,this,&MainView::bookmarkAllTabs);
-    this->show_all_bookmarks=this->bookmark_menu->addAction("&Show All Bookmarks");
+    this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
     connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
-    this->download_menu=this->menubar->addMenu("&Downloads");
-    this->download_menu->addAction("&Download Manager");
-    this->download_menu->addAction("&Clear all Downloads");
-    this->tool_menu=this->menubar->addMenu("&Tools");
-    this->tool_menu->addAction("&Site Info");
-    this->tool_menu->addAction("&Crusta Speak");
+    this->download_menu=this->menubar->addMenu(tr("&Downloads"));
+    this->download_menu->addAction(tr("&Download Manager"));
+    this->download_menu->addAction(tr("&Clear all Downloads"));
+    this->tool_menu=this->menubar->addMenu(tr("&Tools"));
+    this->tool_menu->addAction(tr("&Site Info"));
+    this->tool_menu->addAction(tr("&Crusta Speak"));
     this->tool_menu->addSeparator();
-    this->tool_menu->addAction("&Cookies Manager");
-    this->web_inspector_action=this->tool_menu->addAction("&Web Inspector");
+    this->tool_menu->addAction(tr("&Cookies Manager"));
+    this->web_inspector_action=this->tool_menu->addAction(tr("&Web Inspector"));
     this->tool_menu->addSeparator();
-    this->devTools=this->tool_menu->addMenu("&Developer Tools");
-    this->runJsCode=this->devTools->addAction("&Run Javascript Code");
+    this->devTools=this->tool_menu->addMenu(tr("&Developer Tools"));
+    this->runJsCode=this->devTools->addAction(tr("&Run Javascript Code"));
     connect(this->runJsCode,&QAction::triggered,this,&MainView::showJsCodeEditor);
-    this->help_menu=this->menubar->addMenu("&Help");
-    this->help_menu->addAction("&Crusta Help");
-    this->help_menu->addAction("&Crusta Tour");
-    this->aboutCr=this->help_menu->addAction("&About Crusta");
+    this->help_menu=this->menubar->addMenu(tr("&Help"));
+    this->help_menu->addAction(tr("&Crusta Help"));
+    this->help_menu->addAction(tr("&Crusta Tour"));
+    this->aboutCr=this->help_menu->addAction(tr("&About Crusta"));
     connect(this->aboutCr,&QAction::triggered,this,&MainView::about);
     this->help_menu->addSeparator();
-    this->help_menu->addAction("&Keyboard Shortcuts");
-    this->help_menu->addAction("&Request Feature");
-    this->help_menu->addAction("&Report Issue");
+    this->help_menu->addAction(tr("&Keyboard Shortcuts"));
+    this->help_menu->addAction(tr("&Request Feature"));
+    this->help_menu->addAction(tr("&Report Issue"));
     this->help_menu->addSeparator();
-    this->help_menu->addAction("&License");
+    this->help_menu->addAction(tr("&License"));
     this->box->setMenuBar(this->menubar);
     this->menubar->setNativeMenuBar(true);
 }
@@ -459,14 +447,14 @@ void MainView::createTabWindow(){
 
 void MainView::addNormalTab(){
     TabWindow* tab=new TabWindow();
-    this->tabWindow->addTab(tab->returnTab(),"new Tab");
+    this->tabWindow->addTab(tab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     MainView::addNewTabButton();
 }
 
 void MainView::addPrivateTab(){
     PrivateTabWindow* privatetab=new PrivateTabWindow();
-    this->tabWindow->addTab(privatetab->returnTab(),"new Tab");
+    this->tabWindow->addTab(privatetab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     MainView::addNewTabButton();
 }
@@ -478,13 +466,9 @@ void MainView::viewPageSource(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     QString qurl=webview->url().toString();
     qurl=QString("view-source:")+qurl;
-//    QWebEngineView* w=new QWebEngineView();
-//    w->load(QUrl(qurl));
-//    w->show();
-//    w->setWindowTitle(QString("Crusta : ")+webview->title());
     TabWindow* tab=new TabWindow();
     index++;
-    this->tabWindow->insertTab(index,tab->returnTab(),"new Tab");
+    this->tabWindow->insertTab(index,tab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(index);
     QWidget* wid=this->tabWindow->widget(index);
     QLayout* lay=wid->layout();
@@ -503,7 +487,7 @@ void MainView::saveAsPdf(){
     currentPageLayout.setOrientation(printer.pageLayout().orientation());
     QFileDialog f;
     f.setOption(QFileDialog::DontUseNativeDialog,true);
-    QString file_name=f.getSaveFileName(this->window,"Crusta : Save File",QDir::homePath(),"Pdf File(*.pdf)",nullptr,f.options());
+    QString file_name=f.getSaveFileName(this->window,tr("Crusta : Save File"),QDir::homePath(),"Pdf File(*.pdf)",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
@@ -517,7 +501,7 @@ void MainView::saveAsPdf(){
 void MainView::savePage(){
     QFileDialog f;
     f.setOption(QFileDialog::DontUseNativeDialog,true);
-    QString file_name=f.getSaveFileName(this->window,"Crusta : Save File",QDir::homePath(),"WebPage, Complete",nullptr,f.options());
+    QString file_name=f.getSaveFileName(this->window,tr("Crusta : Save File"),QDir::homePath(),"WebPage, Complete",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
@@ -539,7 +523,7 @@ void MainView::showJsCodeEditor(){
 void MainView::openLocalFile(){
     QFileDialog f;
     f.setOption(QFileDialog::DontUseNativeDialog,true);
-    QString filename=f.getOpenFileName(this->window,"Crusta : Open File",QDir::homePath(),QString(),nullptr,f.options());
+    QString filename=f.getOpenFileName(this->window,tr("Crusta : Open File"),QDir::homePath(),QString(),nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
@@ -557,7 +541,7 @@ void MainView::screenShot(){
     QPixmap pmap = webview->grab();
     QFileDialog f;
     f.setOption(QFileDialog::DontUseNativeDialog,true);
-    QString filename=f.getSaveFileName(this->window,"Crusta : Open File",QDir::homePath(),QString("Images (*.png *.xpm *.jpg *.bmp)"),nullptr,f.options());
+    QString filename=f.getSaveFileName(this->window,tr("Crusta : Open File"),QDir::homePath(),QString("Images (*.png *.xpm *.jpg *.bmp)"),nullptr,f.options());
     if(filename!=""){
     if(!(filename.endsWith(".png")||filename.endsWith(".jpg")||filename.endsWith(".bmp")||filename.endsWith(".xpm")))filename+=QString(".png");
     pmap.save(filename);
@@ -581,7 +565,7 @@ void MainView::addNewTabButton(){
 
 void MainView::editPreference(){
     ThemeEditor* th=new ThemeEditor();
-    th->setWindowTitle("Theme Editor");
+    th->setWindowTitle(tr("Theme Editor"));
     th->show();
 }
 
@@ -589,7 +573,7 @@ void MainView::duplicateTab(QWebEngineView* view){
     TabWindow* tab=new TabWindow();
     WebView* wview=new WebView();
     wview->load(view->url());
-    this->tabWindow->addTab(tab->returnTab(wview),"new Tab");
+    this->tabWindow->addTab(tab->returnTab(wview),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     MainView::addNewTabButton();
 }

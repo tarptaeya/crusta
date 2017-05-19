@@ -33,7 +33,7 @@
 
 void TimeNotifier::createNotifier(){
     this->label->setStyleSheet("background:#ffffff; width:500px;height:20px");
-    this->label->setText(QString("Current time : ")+QTime::currentTime().toString());
+    this->label->setText(QString(tr("Current time : "))+QTime::currentTime().toString());
 }
 
 void TimeNotifier::showNotifier(){
@@ -42,7 +42,7 @@ void TimeNotifier::showNotifier(){
     this->label->setGeometry(0,0,380,80);
     this->label->setAlignment(Qt::AlignCenter);
     this->label->move(this->x,60);
-    this->label->setStyleSheet("border: 3px solid gray;border-radius:20px;background-color:#ffffff;color:gray");
+    this->label->setStyleSheet("border: 3px solid blueviolet;border-radius:20px;background-color:#ffffff;color:blueviolet");
     QGraphicsOpacityEffect* effect=new QGraphicsOpacityEffect();
     this->label->setGraphicsEffect(effect);
     QPropertyAnimation* a=new QPropertyAnimation(effect,"opacity");
@@ -59,15 +59,6 @@ void TimeNotifier::showNotifier(){
 void TimeNotifier::fadeOut(){
     this->label->setParent(0);
     this->label->hide();
-//    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
-//    this->label->setGraphicsEffect(effect);
-//    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
-//    a->setDuration(1000);
-//    a->setStartValue(1);
-//    a->setEndValue(0);
-//    a->setEasingCurve(QEasingCurve::OutBack);
-//    a->start(QPropertyAnimation::DeleteWhenStopped);
-//    connect(a,SIGNAL(finished()),this->label,SLOT(hide()));
 }
 
 void TimeNotifier::setViewParent(QWebEngineView *view){
