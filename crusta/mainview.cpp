@@ -247,10 +247,6 @@ void MainView::selectAllText(){
     webview->triggerPageAction(QWebEnginePage::SelectAll);
 }
 
-void MainView::quit(){
-    this->window->deleteLater();
-}
-
 void MainView::enterPresentationMode(){
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
@@ -309,6 +305,12 @@ void MainView::pastePageAction(){
 }
 
 MainView::MainView(){
+    QFile file("session.txt");
+    file.open(QIODevice::WriteOnly);
+    QTextStream out(&file);
+    out <<"";
+    file.close();
+
     this->box->setContentsMargins(0,0,0,0);
     this->tabWindow->tabBar()->setDocumentMode(true);
     this->tabWindow->setElideMode(Qt::ElideRight);
@@ -330,6 +332,8 @@ MainView::MainView(){
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::addNewTabButton);
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
     this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
+
+
 }
 
 void MainView::createView(){
@@ -684,6 +688,6 @@ void MainView::bookmarkAllTabs(){
     }
 }
 
-void MainView::saveSession(){
-
+void MainView::quit(){
+    this->window->deleteLater();
 }

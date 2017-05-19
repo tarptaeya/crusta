@@ -44,11 +44,15 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMainWindow>
+#include <QCloseEvent>
 
 
 
 
 class MainView:public QMainWindow{
+    Q_OBJECT
+private:
+    void quit();
 public:
     void closeTab(int);
     void zoomIn();
@@ -60,7 +64,6 @@ public:
     void findFindWidget();
     void hideFindWidget();
     void selectAllText();
-    void quit();
     void enterPresentationMode();
     void undoPageAction();
     void redoPageAction();
@@ -70,7 +73,6 @@ public:
     void bookmarkTab();
     void bookmarkAllTabs();
     void restoreSession();
-    void saveSession();
 public:
     QWidget* window=new QWidget();
     QTabWidget* tabWindow=new QTabWidget();

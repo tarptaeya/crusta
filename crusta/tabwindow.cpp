@@ -132,7 +132,7 @@ void TabWindow::loadUrl(){
             this->view->returnView()->load(QUrl(text));
         }
         else if(text.split('.').length()==1){
-            QString searchStr=this->addr_bar->defaultSearch+QString("/search?q=")+text;
+            QString searchStr=this->addr_bar->defaultSearch+text;
             this->view->returnView()->load(QUrl(searchStr));
         }
         else{
@@ -143,7 +143,7 @@ void TabWindow::loadUrl(){
         }
     }
     else{
-        QString searchStr=this->addr_bar->defaultSearch+QString("/search?q=")+text;
+        QString searchStr=this->addr_bar->defaultSearch+text;
         this->view->returnView()->load(QUrl(searchStr));
     }
 }

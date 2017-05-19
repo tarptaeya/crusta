@@ -27,19 +27,23 @@
 #include <QPoint>
 #include <QCompleter>
 #include <QStringList>
+#include <QAction>
 
 
 class AddressLineEdit:public QLineEdit{
     QCompleter* cmpleter=new QCompleter();
 public:
+    QAction* default_search=new QAction("Search Preference");
     QStringList list;
     void createAddressLineEdit();
     QLineEdit* initialize();
     void showContextMenu(const QPoint& pos);
-    QString defaultSearch=QString("https://google.com");
+    QString defaultSearch;
     AddressLineEdit();
     void createCompleter();
     void updateCompleter();
+    void loadSearchString();
+    void setDefaultSearch();
 };
 
 
