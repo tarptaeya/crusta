@@ -32,9 +32,11 @@
 
 
 
+
 class TabWindow:public QObject{
     void viewHome();
     void updateAddrBar();
+    void updateStar();
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QWidget* tab=new QWidget();

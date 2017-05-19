@@ -58,7 +58,8 @@
 
 
 void MainView::closeTab(int index){
-    if(this->tabWindow->count()==1)QApplication::quit();
+    if(this->tabWindow->count()==1)
+        MainView::quit();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
@@ -408,17 +409,15 @@ void MainView::createMenuBar(){
     this->clearAllHist=this->history_menu->addAction("&Clear All History");
     connect(this->clearAllHist,&QAction::triggered,this,&MainView::clearHistory);
     this->history_menu->addSeparator();
-    this->history_menu->addAction("&Restore Previous Session");
+    this->restore_session=this->history_menu->addAction("Restore Previous Session");
     this->recently_closed=this->history_menu->addMenu("&Recently Closed");
-    this->history_menu->addMenu("&Most Visited");
     this->bookmark_menu=this->menubar->addMenu("&Bookmarks");
-    this->bookmark_menu->addAction("&Bookmark This Page");
-    this->bookmark_menu->addAction("&Bookmark All Tabs");
+    this->bookmark_tab=this->bookmark_menu->addAction("&Bookmark This Page");
+    connect(this->bookmark_tab,&QAction::triggered,this,&MainView::bookmarkTab);
+    this->bookmark_all_tabs=this->bookmark_menu->addAction("&Bookmark All Tabs");
+    connect(this->bookmark_all_tabs,&QAction::triggered,this,&MainView::bookmarkAllTabs);
     this->show_all_bookmarks=this->bookmark_menu->addAction("&Show All Bookmarks");
     connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
-    this->bookmark_menu->addSeparator();
-    this->bookmark_menu->addMenu("&Recent Bookmarks");
-    this->bookmark_menu->addMenu("&Crusta Bookmarks");
     this->download_menu=this->menubar->addMenu("&Downloads");
     this->download_menu->addAction("&Download Manager");
     this->download_menu->addAction("&Clear all Downloads");
@@ -655,4 +654,36 @@ void MainView::clearHistory(){
 void MainView::showBookamrks(){
     BookmarkManager* b=new BookmarkManager(this);
     b->show();
+}
+
+void MainView::bookmarkTab(){
+    int index=this->tabWindow->currentIndex();
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    WebView* webview=(WebView*)layout->itemAt(1)->widget();
+
+    QFile file("bookmarks.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
+    file.close();
+}
+
+void MainView::bookmarkAllTabs(){
+    int cnt=this->tabWindow->count();
+    for(int index=0;index<cnt;index++){
+        QWidget* widget=this->tabWindow->widget(index);
+        QLayout* layout=widget->layout();
+        WebView* webview=(WebView*)layout->itemAt(1)->widget();
+
+        QFile file("bookmarks.txt");
+        file.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream out(&file);
+        out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
+        file.close();
+    }
+}
+
+void MainView::saveSession(){
+
 }

@@ -38,7 +38,7 @@ void FullScreenNotifier::showNotifier(){
     this->label->setGeometry(0,0,380,80);
     this->label->setAlignment(Qt::AlignCenter);
     this->label->move(this->x,60);
-    this->label->setStyleSheet("border: 3px solid gray;border-radius:20px;background-color:#ffffff;color:gray");
+    this->label->setStyleSheet("border: 3px solid blueviolet;border-radius:20px;background-color:white;color:blueviolet");
     QGraphicsOpacityEffect* effect=new QGraphicsOpacityEffect();
     this->label->setGraphicsEffect(effect);
     QPropertyAnimation* a=new QPropertyAnimation(effect,"opacity");
@@ -49,7 +49,7 @@ void FullScreenNotifier::showNotifier(){
     a->start(QPropertyAnimation::DeleteWhenStopped);
     this->label->show();
     connect(this->timer,&QTimer::timeout,this,&FullScreenNotifier::fadeOut);
-    this->timer->start(3000);
+    this->timer->start(4200);
 }
 
 void FullScreenNotifier::fadeOut(){

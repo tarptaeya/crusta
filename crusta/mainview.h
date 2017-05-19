@@ -67,6 +67,10 @@ public:
     void cutPageAction();
     void copyPageAction();
     void pastePageAction();
+    void bookmarkTab();
+    void bookmarkAllTabs();
+    void restoreSession();
+    void saveSession();
 public:
     QWidget* window=new QWidget();
     QTabWidget* tabWindow=new QTabWidget();
@@ -106,6 +110,9 @@ public:
     QAction* preference=new QAction();
     QAction* show_all_history=new QAction();
     QAction* clearAllHist=new QAction();
+    QAction* restore_session=new QAction();
+    QAction* bookmark_tab=new QAction();
+    QAction* bookmark_all_tabs=new QAction();
     QAction* show_all_bookmarks=new QAction();
     QAction* web_inspector_action=new QAction();
     QAction* runJsCode=new QAction();

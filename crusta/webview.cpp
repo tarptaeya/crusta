@@ -252,6 +252,9 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
     QDialog* dg=new QDialog();
     QVBoxLayout* vl=new QVBoxLayout();
     dg->setLayout(vl);
+    dg->setModal(true);
+    dg->setWindowFlags(Qt::FramelessWindowHint);
+    dg->setFixedWidth(400);
     QHBoxLayout* h0=new QHBoxLayout();
     QLabel* permission=new QLabel();
     h0->addWidget(permission);
@@ -265,6 +268,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
     vl->addLayout(h1);
     cncl->setText("No");
     ok->setText("Yes");
+    dg->setStyleSheet("QWidget{color:white;background-color:blueviolet} QPushButton{border:0.5px solid;background-color:crimson;color:white;border-radius:0px;border-color:crimson;padding:2px 4px;} QPushButton:hover{background-color:white;color:crimson}");
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     switch (feature) {
@@ -328,6 +332,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
 void WebView::download(QWebEngineDownloadItem *download_item){
     QString path=download_item->path();
     QDialog* w=new QDialog();
+    w->setWindowFlags(Qt::FramelessWindowHint);
     QVBoxLayout* box=new QVBoxLayout();
     w->setLayout(box);
     QLabel* yhcto=new QLabel("You have choosen to open");
@@ -365,6 +370,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     h1bx->addWidget(cncl_btn);
     h1bx->addWidget(ok_btn);
     box->addLayout(h1bx);
+    w->setStyleSheet("QDialog{background-color:deepskyblue;color:blueviolet} QLabel{color:blueviolet} QGroupBox{color:blueviolet;} QRadioButton{color:blueviolet;} QPushButton{border:0.5px solid blueviolet;padding:4px 8px;color:white;background-color:blueviolet} QPushButton:hover{background-color:white;color:blueviolet}");
     connect(cncl_btn,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok_btn,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
@@ -377,18 +383,6 @@ void WebView::download(QWebEngineDownloadItem *download_item){
         download_item->setPath(cpath);
         download_item->accept();
         connect(download_item,&QWebEngineDownloadItem::finished,this,[this,cpath]{downloadFinished(cpath);});
-
-        DownloadWidget* wid=new DownloadWidget();
-        wid->getName(path.split('/')[path.split('/').length()-1]);
-        wid->getIcon(icon);
-        wid->setFixedSize(wid->sizeHint().width(),wid->sizeHint().height());
-        connect(download_item,&QWebEngineDownloadItem::downloadProgress,wid,&DownloadWidget::computeFraction);
-        connect(wid->cancel,&QPushButton::clicked,download_item,&QWebEngineDownloadItem::cancel);
-        connect(download_item,&QWebEngineDownloadItem::finished,wid,&DownloadWidget::changeLayout);
-
-        DownloadManager* dm=new DownloadManager();
-        dm->addDownloadItem(wid);
-        dm->show();
     }
     else{
         QFileDialog f;
@@ -447,13 +441,12 @@ void WebView::audioInfo(){
     }
 }
 
-void WebView::authenticate(QUrl u,QAuthenticator *authenticator){
-    std::cout<<u.toString().toStdString()<<std::endl;
+void WebView::authenticate(const QUrl u,QAuthenticator *authenticator){
+    std::cout<<"yes"<<std::endl;
 }
 
 void WebView::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
-    std::cout<<page()->action(QWebEnginePage::CopyImageToClipboard)->isEnabled()<<std::endl;
     if(link!=""){
         QAction* open_link_in_new_tab=new QAction("Open Link In New Tab");
         connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});

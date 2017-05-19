@@ -29,6 +29,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QIODevice>
+#include <QString>
 
 #include <iostream>
 
@@ -77,6 +78,7 @@ void TabWindow::createControls(){
     hbox->addWidget(this->load_btn);
     hbox->addWidget(this->addr_bar->initialize());
     connect(this->view->returnView(),&QWebEngineView::urlChanged,this,&TabWindow::updateAddrBar);
+    connect(this->view->returnView(),&QWebEngineView::loadFinished,this,&TabWindow::updateStar);
     connect(this->addr_bar->initialize(),&QLineEdit::returnPressed,this,&TabWindow::loadUrl);
     //hbox->addWidget(this->search_bar->initialize());
     this->home_btn->setFlat(true);
@@ -153,4 +155,27 @@ void TabWindow::bookmarkPage(){
     out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+"\n";
     file.close();
     this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
+}
+
+void TabWindow::updateStar(){
+    QString s=this->addr_bar->text();
+    QFile input("bookmarks.txt");
+    if (input.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&input);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data.count()==1)continue;
+          if(data.count()==2)data.append("");
+          if(data[1]==s){
+              this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
+              input.close();
+              return;
+          }
+       }
+       input.close();
+    }
+    this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
 }

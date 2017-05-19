@@ -78,7 +78,7 @@ public:
     void showLinkHovered(QString url);
     void closeTab();
     void audioInfo();
-    void authenticate(QUrl u, QAuthenticator *authenticator);
+    void authenticate(const QUrl u, QAuthenticator *authenticator);
     void showContextMenu(const QPoint &pos);
     void loadFinished();
     WebView();
