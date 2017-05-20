@@ -73,6 +73,7 @@ public:
     void bookmarkTab();
     void bookmarkAllTabs();
     void restoreSession();
+    void showPageInfo();
 public:
     QWidget* window=new QWidget();
     QTabWidget* tabWindow=new QTabWidget();
@@ -118,6 +119,7 @@ public:
     QAction* show_all_bookmarks=new QAction();
     QAction* web_inspector_action=new QAction();
     QAction* runJsCode=new QAction();
+    QAction* sitei=new QAction();
     QAction* aboutCr=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
     QAction* fullscreen_action=new QAction();

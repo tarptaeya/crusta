@@ -30,6 +30,7 @@
 #include <QTextStream>
 #include <QIODevice>
 #include <QString>
+#include <QWebEngineProfile>
 
 #include <iostream>
 

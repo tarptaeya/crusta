@@ -31,6 +31,7 @@
 #include "themeeditor.h"
 #include "historymanager.h"
 #include "bookmarkmanager.h"
+#include "siteinfo.h"
 
 #include <QObject>
 #include <QPoint>
@@ -414,7 +415,8 @@ void MainView::createMenuBar(){
     this->download_menu->addAction(tr("&Download Manager"));
     this->download_menu->addAction(tr("&Clear all Downloads"));
     this->tool_menu=this->menubar->addMenu(tr("&Tools"));
-    this->tool_menu->addAction(tr("&Site Info"));
+    this->sitei=this->tool_menu->addAction(tr("&Site Info"));
+    connect(this->sitei,&QAction::triggered,this,&MainView::showPageInfo);
     this->tool_menu->addAction(tr("&Crusta Speak"));
     this->tool_menu->addSeparator();
     this->tool_menu->addAction(tr("&Cookies Manager"));
@@ -674,4 +676,13 @@ void MainView::bookmarkAllTabs(){
 
 void MainView::quit(){
     this->window->deleteLater();
+}
+
+void MainView::showPageInfo(){
+    int index=this->tabWindow->currentIndex();
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    SiteInfoWidget* sw=new SiteInfoWidget(webview);
+    sw->exec();
 }

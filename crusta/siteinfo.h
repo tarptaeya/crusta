@@ -18,19 +18,25 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#ifndef WEBPAGE_H
-#define WEBPAGE_H
+#ifndef SITEINFO_H
+#define SITEINFO_H
 
-#include <QWebEnginePage>
-#include <QString>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QWebEngineView>
 
-class WebPage:public QWebEnginePage{
-protected:
-    QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
+
+
+class SiteInfoWidget:public QDialog{
 public:
-    QString agent;
-    void loadUAString();
-    WebPage();
+    QVBoxLayout* vbox=new QVBoxLayout();
+    SiteInfoWidget(QWebEngineView *view);
 };
 
-#endif // WEBPAGE_H
+
+
+#endif // SITEINFO_H

@@ -53,6 +53,7 @@ public:
     void clearAll();
     void openUrl();
     void clearEntry();
+    void setFilterDate();
     HistoryManager(MainView* m);
 };
 

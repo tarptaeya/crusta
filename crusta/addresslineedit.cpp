@@ -64,6 +64,7 @@ void AddressLineEdit::showContextMenu(const QPoint& pos){
     contextMenu->addAction(paste);
     contextMenu->addSeparator();
     contextMenu->addAction(default_search);
+    contextMenu->addAction(changeUAstring);
     contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{background-color:blueviolet;color:white}");
     contextMenu->exec(this->mapToGlobal(pos));
 }
@@ -76,6 +77,7 @@ AddressLineEdit::AddressLineEdit(){
     connect(this,&AddressLineEdit::customContextMenuRequested,this,&AddressLineEdit::showContextMenu);
     connect(this,&AddressLineEdit::returnPressed,this,&AddressLineEdit::updateCompleter);
     connect(default_search,&QAction::triggered,this,&AddressLineEdit::setDefaultSearch);
+    connect(changeUAstring,&QAction::triggered,this,&AddressLineEdit::setUAString);
 }
 
 void AddressLineEdit::createCompleter(){
@@ -205,5 +207,96 @@ void AddressLineEdit::setDefaultSearch(){
     }
 }
 
+void AddressLineEdit::setUAString(){
+    QDialog* w=new QDialog();
+    QLabel* lbl=new QLabel(tr("HTTP USER AGENT"));
+    QLineEdit* ua=new QLineEdit();
+    QString http;
+    QFile inputFile("preference.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data[0]=="UA String"){
+              http=data[1];
+              break;
+          }
+       }
+       inputFile.close();
+    }
+    ua->setText(http);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(lbl);
+    hbox->addWidget(ua);
+    QHBoxLayout* h1box=new QHBoxLayout();
+    QPushButton* restore=new QPushButton(tr("Restore"));
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    QPushButton* ok=new QPushButton(tr("Save"));
+    h1box->addWidget(restore);
+    h1box->addWidget(new QLabel());
+    h1box->addWidget(cncl);
+    h1box->addWidget(ok);
+    cncl->setFixedWidth(100);
+    ok->setFixedWidth(100);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    vbox->addLayout(hbox);
+    vbox->addLayout(h1box);
+    w->setLayout(vbox);
+    w->setFixedWidth(500);
+    w->setWindowFlags(Qt::FramelessWindowHint);
+    w->setStyleSheet("QWidget{background-color:blueviolet;color:white} QLabel{color:white} QLineEdit{color:blueviolet;background-color:white} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
+    connect(ok,&QPushButton::clicked,w,&QDialog::accept);
+    connect(restore,&QPushButton::clicked,this,[this,w]{restoreUAString();w->reject();});
+    if(w->exec()!=QDialog::Accepted){
+        return;
+    }
+    if(ua->text()=="")
+        return;
+    QString new_string=ua->text();
+    QFile f("preference.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            QStringList data=line.split(">>>>>");
+            if(data[0]=="UA String")
+                s.append(data[0]+">>>>>"+new_string + "\n");
+            else
+                s.append(line+"\n");
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
+}
+
+void AddressLineEdit::restoreUAString(){
+    QString new_string="";
+    QFile f("preference.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            QStringList data=line.split(">>>>>");
+            if(data[0]=="UA String")
+                s.append(data[0]+">>>>>"+new_string + "\n");
+            else
+                s.append(line+"\n");
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
+}
 
 

@@ -34,6 +34,7 @@ class AddressLineEdit:public QLineEdit{
     QCompleter* cmpleter=new QCompleter();
 public:
     QAction* default_search=new QAction(tr("Search Preference"));
+    QAction* changeUAstring=new QAction(tr("Edit UA String"));
     QStringList list;
     void createAddressLineEdit();
     QLineEdit* initialize();
@@ -44,6 +45,8 @@ public:
     void updateCompleter();
     void loadSearchString();
     void setDefaultSearch();
+    void setUAString();
+    void restoreUAString();
 };
 
 

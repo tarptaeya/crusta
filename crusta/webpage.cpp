@@ -20,6 +20,12 @@
 
 #include "webpage.h"
 #include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
+#include <QIODevice>
+#include <QWebEngineProfile>
+
+#include <iostream>
 
 QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes){
     QFileDialog* f=new QFileDialog();
@@ -37,4 +43,27 @@ QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldF
     }break;
     }
     return QStringList();
+}
+
+void WebPage::loadUAString(){
+    QFile inputFile("preference.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data[0]=="UA String"){
+              agent=data[1];
+              break;
+          }
+       }
+       inputFile.close();
+    }
+    profile()->setHttpUserAgent(agent);
+}
+
+WebPage::WebPage(){
+    loadUAString();
 }

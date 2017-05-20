@@ -40,6 +40,7 @@
 #include <QString>
 #include <QMenu>
 #include <QIODevice>
+#include <QDate>
 
 #include <iostream>
 
@@ -48,7 +49,7 @@
 
 void HistoryManager::createManager(){
     setWindowTitle(tr("Crusta : History Manager"));
-    setStyleSheet("QWidget{background-color:blueviolet;color:white} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    setStyleSheet("QWidget{background-color:blueviolet;color:white} QComboBox{background-color:white;color:blueviolet} QComboBox QAbstractItemView{background-color:white;color:blueviolet} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
     QFile inputFile("history.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
@@ -68,6 +69,17 @@ void HistoryManager::createManager(){
 
 HistoryManager::HistoryManager(MainView *m){
     mview=m;
+    QHBoxLayout* h2box=new QHBoxLayout();
+    h2box->addWidget(new QLabel());
+    h2box->addWidget(date);
+    date->addItem(tr("All Time"));
+    date->addItem(tr("Today"));
+    date->addItem(tr("Yesterday"));
+    date->addItem(tr("This Week"));
+    date->addItem(tr("This Month"));
+    date->addItem(tr("Last 3 Months"));
+    connect(date,&QComboBox::currentTextChanged,this,&HistoryManager::setFilterDate);
+    vbox->addLayout(h2box);
     vbox->addWidget(display_area);
     QHBoxLayout* h1box=new QHBoxLayout();
     h1box->addWidget(clear_all);
@@ -137,4 +149,67 @@ void HistoryManager::clearEntry(){
         f.close();
     }
     delete item;
+}
+
+void HistoryManager::setFilterDate(){
+    QDate filterDate=QDate::currentDate();
+    switch (date->currentIndex()) {
+    case 1:
+        filterDate=filterDate.addDays(0);
+        break;
+    case 2:
+        filterDate=filterDate.addDays(-1);
+        break;
+    case 3:
+        filterDate=filterDate.addDays(-7);
+        break;
+    case 4:
+        filterDate=filterDate.addMonths(-1);
+        break;
+    case 5:
+        filterDate=filterDate.addMonths(-3);
+        break;
+    case 0:
+        display_area->clear();
+        QFile inputFile("history.txt");
+        if (inputFile.open(QIODevice::ReadOnly))
+        {
+           QTextStream in(&inputFile);
+           while (!in.atEnd())
+           {
+              QString line = in.readLine();
+              QStringList data=line.split(">>>>>");
+              if(!(data[0]=="" || data[1]=="" || data[2]=="")){
+                  QTreeWidgetItem* item=new QTreeWidgetItem(data);
+                  display_area->insertTopLevelItem(0,item);
+              }
+           }
+           inputFile.close();
+        }
+        return;
+    }
+    display_area->clear();
+    int index=date->currentIndex();
+    QFile inputFile("history.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(!(data[0]=="" || data[1]=="" || data[2]=="")){
+              QDate itemDate=QDate::fromString(data[2]);
+              if(itemDate>=filterDate && index!=2){
+                    QTreeWidgetItem* item=new QTreeWidgetItem(data);
+                    display_area->insertTopLevelItem(0,item);
+              }
+              if(itemDate==filterDate && index==2){
+                    QTreeWidgetItem* item=new QTreeWidgetItem(data);
+                    display_area->insertTopLevelItem(0,item);
+              }
+          }
+       }
+       inputFile.close();
+    }
 }
