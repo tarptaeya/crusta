@@ -74,6 +74,7 @@ public:
     void bookmarkAllTabs();
     void restoreSession();
     void showPageInfo();
+    void changeSpinner(int index);
 public:
     QWidget* window=new QWidget();
     QTabWidget* tabWindow=new QTabWidget();

@@ -320,6 +320,8 @@ MainView::MainView(){
     connect(this->tabWindow->tabBar(),&QTabBar::tabMoved,this,&MainView::addNewTabButton);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::addNewTabButton);
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
+    connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::changeSpinner);
+
     this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
 
 
@@ -685,4 +687,27 @@ void MainView::showPageInfo(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     SiteInfoWidget* sw=new SiteInfoWidget(webview);
     sw->exec();
+}
+
+void MainView::changeSpinner(int index){
+    int cnt=this->tabWindow->count();
+    for(int i=0;i<cnt;i++){
+        QWidget* widget=this->tabWindow->widget(i);
+        QLayout* layout=widget->layout();
+        QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+        if(!webview->icon().isNull())
+            continue;
+        QLabel* lbl=new QLabel();
+        if(i!=index){
+            QMovie* mov=new QMovie(":/res/videos/passive_loader.gif");
+            lbl->setMovie(mov);
+            mov->start();
+        }
+        else{
+            QMovie* mov=new QMovie(":/res/videos/loader.gif");
+            lbl->setMovie(mov);
+            mov->start();
+        }
+        this->tabWindow->tabBar()->setTabButton(i,QTabBar::LeftSide,lbl);
+    }
 }
