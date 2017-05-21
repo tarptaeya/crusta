@@ -122,8 +122,12 @@ QWidget* TabWindow::returnTab(WebView* view){
 void TabWindow::loadUrl(){
     QString text=this->addr_bar->initialize()->text();
     QStringList textList=text.split(" ");
-    if(textList.length()==1){
-        if(text.startsWith("crusta://")){
+    if(text.startsWith("javascript:")){
+        QString script=text.split(":")[1];
+        this->view->returnView()->page()->runJavaScript(script);
+    }
+    else if(textList.length()==1){
+        if(text.startsWith("crusta://")||text.startsWith("file://")){
             this->view->returnView()->load(QUrl(text));
         }
         else if(text.startsWith("localhost:")||text=="localhost"){

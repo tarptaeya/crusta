@@ -80,6 +80,7 @@ WebView::WebView(){
     connect(page(),&QWebEnginePage::windowCloseRequested,this,&WebView::closeTab);
     //connect(page(),&QWebEnginePage::recentlyAudibleChanged,this,&WebView::audioInfo);
     connect(page(),&QWebEnginePage::authenticationRequired,this,&WebView::authenticate);
+    connect(page(),&WebPage::windowCloseRequested,this,&WebView::closeTab);
 
     //context-menu
     setContextMenuPolicy(Qt::CustomContextMenu);
