@@ -55,7 +55,7 @@ public:
     bool wasFullScreened=false;
     QString link="";
     WebPage* webpage=new WebPage();
-    QString home_page=QString("http://google.com/");
+    QString home_page;
     QString defaultSearch;
     QLayout* layout;
     QWidget* widget;

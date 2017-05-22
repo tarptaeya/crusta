@@ -331,7 +331,8 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
 }
 
 void WebView::download(QWebEngineDownloadItem *download_item){
-    std::cout<<download_item->mimeType().toStdString()<<std::endl;
+    std::cout<<download_item->id()<<std::endl;
+
     QString path=download_item->path();
     QDialog* w=new QDialog();
     w->setWindowFlags(Qt::FramelessWindowHint);

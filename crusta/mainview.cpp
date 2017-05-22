@@ -453,6 +453,75 @@ void MainView::addNormalTab(){
     TabWindow* tab=new TabWindow();
     this->tabWindow->addTab(tab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
+    int cnt=this->tabWindow->count();
+    if(cnt==1){
+        QWidget* widget=this->tabWindow->widget(0);
+        QLayout* layout=widget->layout();
+        WebView* webview=(WebView*)layout->itemAt(1)->widget();
+        QString home;
+        QFile inputFile("preference.txt");
+        if (inputFile.open(QIODevice::ReadOnly))
+        {
+           QTextStream in(&inputFile);
+           while (!in.atEnd())
+           {
+              QString line = in.readLine();
+              QStringList data=line.split(">>>>>");
+              if(data[0]=="Home Page"){
+                  home=data[1];
+                  break;
+              }
+           }
+           inputFile.close();
+        }
+        if(home.isEmpty()){
+            QDialog* w=new QDialog();
+            QLabel* lbl=new QLabel(tr("Home Page Url"));
+            QLineEdit* url=new QLineEdit();
+            QHBoxLayout* hbox=new QHBoxLayout();
+            hbox->addWidget(lbl);
+            hbox->addWidget(url);
+            QHBoxLayout* h1box=new QHBoxLayout();
+            QPushButton* ok=new QPushButton(tr("Save"));
+            h1box->addWidget(new QLabel());
+            h1box->addWidget(ok);
+            ok->setFixedWidth(100);
+            QVBoxLayout* vbox=new QVBoxLayout();
+            vbox->addLayout(hbox);
+            vbox->addLayout(h1box);
+            w->setLayout(vbox);
+            w->setFixedWidth(500);
+            w->setWindowFlags(Qt::FramelessWindowHint);
+            w->setStyleSheet("QWidget{background-color:blueviolet;color:white} QLabel{color:white} QLineEdit{color:blueviolet;background-color:white} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+            connect(ok,&QPushButton::clicked,w,&QDialog::accept);
+            if(w->exec()!=QDialog::Accepted){
+                return;
+            }
+            if(url->text()=="")
+                return;
+            home=url->text();
+            QFile f("preference.txt");
+            if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+            {
+                QString s;
+                QTextStream t(&f);
+                while(!t.atEnd())
+                {
+                    QString line = t.readLine();
+                    QStringList data=line.split(">>>>>");
+                    if(data[0]=="Home Page")
+                        s.append(data[0]+">>>>>"+home+"\n");
+                    else
+                        s.append(line+"\n");
+                }
+                f.resize(0);
+                t << s;
+                f.close();
+            }
+        }
+        webview->home_page=home;
+        webview->load(home);
+    }
     MainView::addNewTabButton();
 }
 
