@@ -301,6 +301,14 @@ MainView::MainView(){
     out <<"";
     file.close();
 
+    QFile f("preference.txt");
+    if(!f.exists()){
+        f.open(QIODevice::WriteOnly);
+        QTextStream in(&f);
+        in<<"Search String>>>>>\nUA String>>>>>\nHome Page>>>>>\n";
+        f.close();
+    }
+
     this->box->setContentsMargins(0,0,0,0);
     this->tabWindow->tabBar()->setDocumentMode(true);
     this->tabWindow->setElideMode(Qt::ElideRight);
@@ -322,7 +330,7 @@ MainView::MainView(){
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::changeSpinner);
 
-    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
+    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet;height:32px} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
 
 
 }

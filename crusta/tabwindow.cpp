@@ -84,6 +84,7 @@ void TabWindow::createControls(){
     //hbox->addWidget(this->search_bar->initialize());
     this->home_btn->setFlat(true);
     this->home_btn->setIcon(QIcon(":/res/drawables/home.svg"));
+    this->home_btn->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this->home_btn,&QPushButton::clicked,this,&TabWindow::viewHome);
     hbox->addWidget(this->home_btn);
     this->bookmark_btn->setFlat(true);
