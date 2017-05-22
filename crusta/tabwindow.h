@@ -29,6 +29,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QPushButton>
+#include <QPoint>
 
 
 
@@ -37,6 +38,8 @@ class TabWindow:public QObject{
     void viewHome();
     void updateAddrBar();
     void updateStar();
+    void setHomePage();
+    void homeContext(const QPoint& pos);
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QWidget* tab=new QWidget();

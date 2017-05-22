@@ -92,7 +92,7 @@ void WebView::createWebView(){
     load(QUrl(this->home_page));
 }
 
-QWebEngineView* WebView::returnView(){
+WebView* WebView::returnView(){
     return this;
 }
 

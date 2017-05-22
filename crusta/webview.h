@@ -65,7 +65,7 @@ public:
     TimeNotifier* timeNotifier=new TimeNotifier();
     QWebEngineView* view=new QWebEngineView();
     void createWebView();
-    QWebEngineView* returnView();
+    WebView *returnView();
     void home();
     void spinnerStarted();
     void faviconChanged(QIcon fav);

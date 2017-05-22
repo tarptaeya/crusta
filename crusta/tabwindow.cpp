@@ -31,6 +31,9 @@
 #include <QIODevice>
 #include <QString>
 #include <QWebEngineProfile>
+#include <QDialog>
+#include <QStringList>
+#include <QStringListModel>
 
 #include <iostream>
 
@@ -85,6 +88,7 @@ void TabWindow::createControls(){
     this->home_btn->setFlat(true);
     this->home_btn->setIcon(QIcon(":/res/drawables/home.svg"));
     this->home_btn->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this->home_btn,&QPushButton::customContextMenuRequested,this,&TabWindow::homeContext);
     connect(this->home_btn,&QPushButton::clicked,this,&TabWindow::viewHome);
     hbox->addWidget(this->home_btn);
     this->bookmark_btn->setFlat(true);
@@ -190,4 +194,84 @@ void TabWindow::updateStar(){
        input.close();
     }
     this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
+}
+
+void TabWindow::homeContext(const QPoint& pos){
+    QMenu* menu=new QMenu();
+    QAction* go_home=new QAction(tr("Home"));
+    QAction* set_home=new QAction(tr("Set Home Page"));
+    connect(go_home,&QAction::triggered,this->view->returnView(),&WebView::home);
+    connect(set_home,&QAction::triggered,this,&TabWindow::setHomePage);
+    menu->addAction(go_home);
+    menu->addAction(set_home);
+    menu->exec(this->home_btn->mapToGlobal(pos));
+}
+
+void TabWindow::setHomePage(){
+    QDialog* w=new QDialog();
+    QLabel* lbl=new QLabel(tr("Home Page URL"));
+    QLineEdit* url=new QLineEdit();
+    url->setText(this->view->returnView()->home_page);
+    connect(url,&QLineEdit::returnPressed,w,&QDialog::accept);
+
+    QCompleter* c=new QCompleter();
+    QStringListModel* m=new QStringListModel();
+    QStringList l;
+    l.append("https://google.com");
+    l.append("https://duckduckgo.com");
+    l.append("https://bing.com");
+    l.append("https://qwant.com");
+    l.append("https://www.yandex.com");
+    l.append("https://www.ecosia.org");
+    l.append("https://www.baidu.com");
+    m->setStringList(l);
+    c->setModel(m);
+    c->setFilterMode(Qt::MatchContains);
+    url->setCompleter(c);
+
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(lbl);
+    hbox->addWidget(url);
+    QHBoxLayout* h1box=new QHBoxLayout();
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    QPushButton* ok=new QPushButton(tr("Save"));
+    h1box->addWidget(new QLabel());
+    h1box->addWidget(cncl);
+    h1box->addWidget(ok);
+    cncl->setFixedWidth(100);
+    ok->setFixedWidth(100);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    vbox->addLayout(hbox);
+    vbox->addLayout(h1box);
+    w->setLayout(vbox);
+    w->setFixedWidth(500);
+    w->setWindowFlags(Qt::FramelessWindowHint);
+    w->setStyleSheet("QWidget{background-color:blueviolet;color:white} QLabel{color:white} QLineEdit{color:blueviolet;background-color:white} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
+    connect(ok,&QPushButton::clicked,w,&QDialog::accept);
+    if(w->exec()!=QDialog::Accepted){
+        return;
+    }
+    if(url->text()=="")
+        return;
+    QString new_string=url->text();
+    QFile f("preference.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            QStringList data=line.split(">>>>>");
+            if(data[0]=="Home Page")
+                s.append(data[0]+">>>>>"+new_string + "\n");
+            else
+                s.append(line+"\n");
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
+    this->view->returnView()->home_page=new_string;
 }
