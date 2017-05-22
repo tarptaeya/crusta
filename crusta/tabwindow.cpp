@@ -91,6 +91,9 @@ void TabWindow::createControls(){
     this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
     connect(this->bookmark_btn,&QPushButton::clicked,this,&TabWindow::bookmarkPage);
     hbox->addWidget(this->bookmark_btn);
+    this->menu_btn->setFlat(true);
+    this->menu_btn->setIcon(QIcon(":/res/drawables/menu.svg"));
+    hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
     tab->setLayout(vbox);

@@ -216,6 +216,9 @@ QWebEngineView* WebView::createWindow(QWebEnginePage::WebWindowType type){
         QWidget* widget=(QWidget*)this->parent();
         QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
         QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+        std::cout<<tabwidget->parent()->metaObject()->className()<<std::endl;
+        Window* win=(Window*)tabwidget->parentWidget();
+        tabwin->menu_btn->setMenu(win->menu);
         tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("New Tab"));
         tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
         return view;

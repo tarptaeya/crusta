@@ -46,9 +46,8 @@ public:
     QPushButton* home_btn=new QPushButton();
     QPushButton* bookmark_btn=new QPushButton();
     QPushButton* tool_btn=new QPushButton();
-    QPushButton* options_btn=new QPushButton();
+    QPushButton* menu_btn=new QPushButton();
     AddressLineEdit* addr_bar=new AddressLineEdit();
-    SearchLineEdit* search_bar=new SearchLineEdit();
     WebView* view=new WebView();
     void createControls();
     QWidget* returnTab();

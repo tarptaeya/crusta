@@ -48,6 +48,13 @@
 
 
 
+class Window:public QWidget{
+public:
+    QMenu* menu=new QMenu();
+};
+
+
+
 
 class MainView:public QMainWindow{
     Q_OBJECT
@@ -76,10 +83,11 @@ public:
     void showPageInfo();
     void changeSpinner(int index);
 public:
-    QWidget* window=new QWidget();
-    QTabWidget* tabWindow=new QTabWidget();
+    Window* window=new Window();
+    QTabWidget* tabWindow=new QTabWidget(this);
     QVBoxLayout* box=new QVBoxLayout();
     QMenuBar* menubar=new QMenuBar();
+    QMenu* menu=new QMenu();
     QPushButton* add_btn=new QPushButton();
     QMenu* file_menu=new QMenu();
     QMenu* edit_menu=new QMenu();

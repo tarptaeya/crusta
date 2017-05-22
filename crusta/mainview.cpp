@@ -350,7 +350,7 @@ void MainView::newWindow(){
 }
 
 void MainView::createMenuBar(){
-    this->file_menu=this->menubar->addMenu(tr("&File"));
+    this->file_menu=this->menu->addMenu(tr("&File"));
     this->new_tab_action=this->file_menu->addAction(tr("&New Tab"));
     connect(this->new_tab_action,&QAction::triggered,this,&MainView::addNormalTab);
     this->file_menu->addAction(tr("&New Split Tab"));
@@ -371,7 +371,7 @@ void MainView::createMenuBar(){
     connect(this->capture_screenshot,&QAction::triggered,this,&MainView::screenShot);
     this->exit_action=this->file_menu->addAction(tr("&Quit"));
     connect(this->exit_action,&QAction::triggered,this,&MainView::quit);
-    this->edit_menu=this->menubar->addMenu(tr("&Edit"));
+    this->edit_menu=this->menu->addMenu(tr("&Edit"));
     this->undo_action=this->edit_menu->addAction(tr("&Undo"));
     connect(this->undo_action,&QAction::triggered,this,&MainView::undoPageAction);
     this->redo_action=this->edit_menu->addAction(tr("&Redo"));
@@ -391,7 +391,7 @@ void MainView::createMenuBar(){
     connect(this->find_action,&QAction::triggered,this,&MainView::FindText);
     this->preference=this->edit_menu->addAction(tr("&Edit Preference"));
     connect(this->preference,&QAction::triggered,this,&MainView::editPreference);
-    this->view_menu=this->menubar->addMenu(tr("&View"));
+    this->view_menu=this->menu->addMenu(tr("&View"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
     this->zoom_in_action=this->view_menu->addAction(tr("&Zoom In"));
@@ -406,7 +406,7 @@ void MainView::createMenuBar(){
     this->fullscreen_action=this->view_menu->addAction(tr("&Show Full Screen"));
     connect(this->fullscreen_action,&QAction::triggered,this,&MainView::fullScreen);
     this->view_menu->addAction(tr("&Reset View"));
-    this->history_menu=this->menubar->addMenu(tr("&History"));
+    this->history_menu=this->menu->addMenu(tr("&History"));
     this->show_all_history=this->history_menu->addAction(tr("&Show All History"));
     connect(this->show_all_history,&QAction::triggered,this,&MainView::showHistory);
     this->clearAllHist=this->history_menu->addAction(tr("&Clear All History"));
@@ -414,17 +414,17 @@ void MainView::createMenuBar(){
     this->history_menu->addSeparator();
     this->restore_session=this->history_menu->addAction(tr("Restore Previous Session"));
     this->recently_closed=this->history_menu->addMenu(tr("&Recently Closed"));
-    this->bookmark_menu=this->menubar->addMenu(tr("&Bookmarks"));
+    this->bookmark_menu=this->menu->addMenu(tr("&Bookmarks"));
     this->bookmark_tab=this->bookmark_menu->addAction(tr("&Bookmark This Page"));
     connect(this->bookmark_tab,&QAction::triggered,this,&MainView::bookmarkTab);
     this->bookmark_all_tabs=this->bookmark_menu->addAction(tr("&Bookmark All Tabs"));
     connect(this->bookmark_all_tabs,&QAction::triggered,this,&MainView::bookmarkAllTabs);
     this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
     connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
-    this->download_menu=this->menubar->addMenu(tr("&Downloads"));
+    this->download_menu=this->menu->addMenu(tr("&Downloads"));
     this->download_menu->addAction(tr("&Download Manager"));
     this->download_menu->addAction(tr("&Clear all Downloads"));
-    this->tool_menu=this->menubar->addMenu(tr("&Tools"));
+    this->tool_menu=this->menu->addMenu(tr("&Tools"));
     this->sitei=this->tool_menu->addAction(tr("&Site Info"));
     connect(this->sitei,&QAction::triggered,this,&MainView::showPageInfo);
     this->tool_menu->addAction(tr("&Crusta Speak"));
@@ -435,7 +435,7 @@ void MainView::createMenuBar(){
     this->devTools=this->tool_menu->addMenu(tr("&Developer Tools"));
     this->runJsCode=this->devTools->addAction(tr("&Run Javascript Code"));
     connect(this->runJsCode,&QAction::triggered,this,&MainView::showJsCodeEditor);
-    this->help_menu=this->menubar->addMenu(tr("&Help"));
+    this->help_menu=this->menu->addMenu(tr("&Help"));
     this->help_menu->addAction(tr("&Crusta Help"));
     this->help_menu->addAction(tr("&Crusta Tour"));
     this->aboutCr=this->help_menu->addAction(tr("&About Crusta"));
@@ -446,8 +446,9 @@ void MainView::createMenuBar(){
     this->help_menu->addAction(tr("&Report Issue"));
     this->help_menu->addSeparator();
     this->help_menu->addAction(tr("&License"));
-    this->box->setMenuBar(this->menubar);
-    this->menubar->setNativeMenuBar(true);
+    this->window->menu=this->menu;
+    //this->box->setMenuBar(this->menubar);
+    //this->menubar->setNativeMenuBar(true);
 }
 
 void MainView::createTabWindow(){
@@ -459,6 +460,7 @@ void MainView::createTabWindow(){
 
 void MainView::addNormalTab(){
     TabWindow* tab=new TabWindow();
+    tab->menu_btn->setMenu(menu);
     this->tabWindow->addTab(tab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     int cnt=this->tabWindow->count();
@@ -548,6 +550,7 @@ void MainView::viewPageSource(){
     QString qurl=webview->url().toString();
     qurl=QString("view-source:")+qurl;
     TabWindow* tab=new TabWindow();
+    tab->menu_btn->setMenu(menu);
     index++;
     this->tabWindow->insertTab(index,tab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(index);
@@ -652,6 +655,7 @@ void MainView::editPreference(){
 
 void MainView::duplicateTab(QWebEngineView* view){
     TabWindow* tab=new TabWindow();
+    tab->menu_btn->setMenu(menu);
     WebView* wview=new WebView();
     wview->load(view->url());
     this->tabWindow->addTab(tab->returnTab(wview),tr("new Tab"));

@@ -11,5 +11,6 @@
         <file>res/drawables/close.svg</file>
         <file>res/drawables/star.svg</file>
         <file>res/videos/passive_loader.gif</file>
+        <file>res/drawables/menu.svg</file>
     </qresource>
 </RCC>
