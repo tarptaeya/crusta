@@ -149,7 +149,7 @@ void AddressLineEdit::setDefaultSearch(){
     QStringListModel* m=new QStringListModel();
     QStringList l;
     l.append("https://google.com/search?q=");
-    l.append("https://duckduckgo.com");
+    l.append("https://duckduckgo.com/");
     l.append("https://bing.com/search?q=");
     l.append("https://qwant.com/?q=");
     l.append("https://www.yandex.com/search/?text=");
