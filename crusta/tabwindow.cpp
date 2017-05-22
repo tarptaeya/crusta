@@ -147,6 +147,9 @@ void TabWindow::loadUrl(){
             this->view->returnView()->load(QUrl(text));
         }
     }
+    else if(text.startsWith("http://")||text.startsWith("https://")){
+        this->view->returnView()->load(QUrl(text));
+    }
     else{
         QString searchStr=this->addr_bar->defaultSearch+text;
         this->view->returnView()->load(QUrl(searchStr));
