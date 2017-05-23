@@ -59,7 +59,7 @@ void PrivateWebView::createPrivateWebView(){
     load(QUrl(home_page));
 }
 
-QWebEngineView* PrivateWebView::returnPrivateView(){
+PrivateWebView* PrivateWebView::returnPrivateView(){
     return this;
 }
 

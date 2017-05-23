@@ -25,8 +25,16 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QPushButton>
+#include <QFile>
+#include <QTextStream>
+#include <QIODevice>
+#include <QString>
+#include <QWebEngineProfile>
+#include <QDialog>
+#include <QStringList>
+#include <QStringListModel>
 
-#include <cstdlib>
+#include <iostream>
 
 
 
@@ -35,55 +43,69 @@ void PrivateTabWindow::viewHome(){
 }
 
 void PrivateTabWindow::updateAddrBar(){
-    try{
     this->addr_bar->initialize()->setText(this->view->returnPrivateView()->url().toString());
     this->addr_bar->initialize()->setCursorPosition(0);
+    QString s=this->addr_bar->text();
+    QFile inputFile("completer.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          if(line==s)
+              return;
+       }
+       inputFile.close();
     }
-    catch(...){
-        return;
-    }
+    QFile file("completer.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out<<s.toLatin1()+"\n";
+    file.close();
 }
 
 void PrivateTabWindow::createControls(){
     QHBoxLayout* hbox=new QHBoxLayout();
     this->back_btn->setFlat(true);
-    this->back_btn->setIcon(QIcon(":/res/drawables/back_btn.png"));
+    this->back_btn->setIcon(QIcon(":/res/drawables/back.svg"));
     connect(this->back_btn,&QPushButton::clicked,this->view->returnPrivateView(),&QWebEngineView::back);
     hbox->addWidget(this->back_btn);
     this->fwd_btn->setFlat(true);
-    this->fwd_btn->setIcon(QIcon(":/res/drawables/fwd_btn.png"));
+    this->fwd_btn->setIcon(QIcon(":/res/drawables/forward.svg"));
     connect(this->fwd_btn,&QPushButton::clicked,this->view->returnPrivateView(),&QWebEngineView::forward);
     hbox->addWidget(this->fwd_btn);
     this->load_btn->setFlat(true);
-    this->load_btn->setIcon(QIcon(":/res/drawables/load_btn.png"));
+    this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
     connect(this->load_btn,&QPushButton::clicked,this->view->returnPrivateView(),&QWebEngineView::reload);
     hbox->addWidget(this->load_btn);
     hbox->addWidget(this->addr_bar->initialize());
     connect(this->view->returnPrivateView(),&QWebEngineView::urlChanged,this,&PrivateTabWindow::updateAddrBar);
-    hbox->addWidget(this->search_bar->initialize());
+    connect(this->view->returnPrivateView(),&QWebEngineView::loadFinished,this,&PrivateTabWindow::updateStar);
+    connect(this->addr_bar->initialize(),&QLineEdit::returnPressed,this,&PrivateTabWindow::loadUrl);
+    //hbox->addWidget(this->search_bar->initialize());
     this->home_btn->setFlat(true);
-    this->home_btn->setIcon(QIcon(":/res/drawables/home_btn.png"));
+    this->home_btn->setIcon(QIcon(":/res/drawables/home.svg"));
+    this->home_btn->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this->home_btn,&QPushButton::customContextMenuRequested,this,&PrivateTabWindow::homeContext);
     connect(this->home_btn,&QPushButton::clicked,this,&PrivateTabWindow::viewHome);
     hbox->addWidget(this->home_btn);
     this->bookmark_btn->setFlat(true);
-    this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark_btn.png"));
+    this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
+    connect(this->bookmark_btn,&QPushButton::clicked,this,&PrivateTabWindow::bookmarkPage);
     hbox->addWidget(this->bookmark_btn);
-    this->tool_btn->setFlat(true);
-    this->tool_btn->setIcon(QIcon(":/res/drawables/tool_btn.png"));
-    hbox->addWidget(this->tool_btn);
-    this->options_btn->setFlat(true);
-    this->options_btn->setIcon(QIcon(":/res/drawables/options_btn.png"));
-    hbox->addWidget(this->options_btn);
+    this->menu_btn->setFlat(true);
+    this->menu_btn->setIcon(QIcon(":/res/drawables/menu.svg"));
+    hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
     tab->setLayout(vbox);
-    tab->setStyleSheet("background-color:#999");
+    tab->setStyleSheet("QWidget{background-color:black} QLineEdit{border:0.5px solid black;border-radius:10px;background-color:white;color:black}");
 }
 
 QWidget* PrivateTabWindow::returnTab(){
     this->vbox->setContentsMargins(0,0,0,0);
     createControls();
-    this->vbox->addWidget(this->view->returnPrivateView());
     return this->tab;
 }
 
@@ -95,4 +117,160 @@ PrivateTabWindow* PrivateTabWindow::returnThis(){
 
 void PrivateTabWindow::setWebView(PrivateWebView* v){
     view=v;
+}
+
+QWidget* PrivateTabWindow::returnTab(PrivateWebView* view){
+    this->vbox->setContentsMargins(0,0,0,0);
+    setWebView(view);
+    createControls();
+    return this->tab;
+}
+
+void PrivateTabWindow::loadUrl(){
+    QString text=this->addr_bar->initialize()->text();
+    QStringList textList=text.split(" ");
+    if(text.startsWith("javascript:")){
+        QString script=text.split(":")[1];
+        this->view->returnPrivateView()->page()->runJavaScript(script);
+    }
+    else if(textList.length()==1){
+        if(text.startsWith("crusta://")||text.startsWith("file://")){
+            this->view->returnPrivateView()->load(QUrl(text));
+        }
+        else if(text.startsWith("localhost:")||text=="localhost"){
+            this->view->returnPrivateView()->load(QUrl("http://"+text));
+        }
+        else if(text.startsWith("http://localhost")||text.startsWith("http://localhost:")){
+            this->view->returnPrivateView()->load(QUrl(text));
+        }
+        else if(text.split('.').length()==1){
+            QString searchStr=this->addr_bar->defaultSearch+text;
+            this->view->returnPrivateView()->load(QUrl(searchStr));
+        }
+        else{
+            if(!(text.startsWith("http://")||text.startsWith("https://"))){
+                text="http://"+text;
+            }
+            this->view->returnPrivateView()->load(QUrl(text));
+        }
+    }
+    else if(text.startsWith("http://")||text.startsWith("https://")){
+        this->view->returnPrivateView()->load(QUrl(text));
+    }
+    else{
+        QString searchStr=this->addr_bar->defaultSearch+text;
+        this->view->returnPrivateView()->load(QUrl(searchStr));
+    }
+}
+
+void PrivateTabWindow::bookmarkPage(){
+    QFile file("bookmarks.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out << this->view->returnPrivateView()->title().toLatin1()+">>>>>"+this->view->returnPrivateView()->url().toString().toLatin1()+">>>>>"+"\n";
+    file.close();
+    this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
+}
+
+void PrivateTabWindow::updateStar(){
+    QString s=this->addr_bar->text();
+    QFile input("bookmarks.txt");
+    if (input.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&input);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data.count()==1)continue;
+          if(data.count()==2)data.append("");
+          if(data[1]==s){
+              this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
+              input.close();
+              return;
+          }
+       }
+       input.close();
+    }
+    this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
+}
+
+void PrivateTabWindow::homeContext(const QPoint& pos){
+    QMenu* menu=new QMenu();
+    QAction* go_home=new QAction(tr("Home"));
+    QAction* set_home=new QAction(tr("Set Home Page"));
+    connect(go_home,&QAction::triggered,this->view->returnPrivateView(),&PrivateWebView::home);
+    connect(set_home,&QAction::triggered,this,&PrivateTabWindow::setHomePage);
+    menu->addAction(go_home);
+    menu->addAction(set_home);
+    menu->exec(this->home_btn->mapToGlobal(pos));
+}
+
+void PrivateTabWindow::setHomePage(){
+    QDialog* w=new QDialog();
+    QLabel* lbl=new QLabel(tr("Home Page URL"));
+    QLineEdit* url=new QLineEdit();
+    url->setText(this->view->returnPrivateView()->home_page);
+    connect(url,&QLineEdit::returnPressed,w,&QDialog::accept);
+
+    QCompleter* c=new QCompleter();
+    QStringListModel* m=new QStringListModel();
+    QStringList l;
+    l.append("https://google.com");
+    l.append("https://duckduckgo.com");
+    l.append("https://bing.com");
+    l.append("https://qwant.com");
+    l.append("https://www.yandex.com");
+    l.append("https://www.ecosia.org");
+    l.append("https://www.baidu.com");
+    m->setStringList(l);
+    c->setModel(m);
+    c->setFilterMode(Qt::MatchContains);
+    url->setCompleter(c);
+
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(lbl);
+    hbox->addWidget(url);
+    QHBoxLayout* h1box=new QHBoxLayout();
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    QPushButton* ok=new QPushButton(tr("Save"));
+    h1box->addWidget(new QLabel());
+    h1box->addWidget(cncl);
+    h1box->addWidget(ok);
+    cncl->setFixedWidth(100);
+    ok->setFixedWidth(100);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    vbox->addLayout(hbox);
+    vbox->addLayout(h1box);
+    w->setLayout(vbox);
+    w->setFixedWidth(500);
+    w->setWindowFlags(Qt::FramelessWindowHint);
+    w->setStyleSheet("QWidget{background-color:blueviolet;color:white} QLabel{color:white} QLineEdit{color:blueviolet;background-color:white} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
+    connect(ok,&QPushButton::clicked,w,&QDialog::accept);
+    if(w->exec()!=QDialog::Accepted){
+        return;
+    }
+    if(url->text()=="")
+        return;
+    QString new_string=url->text();
+    QFile f("preference.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            QStringList data=line.split(">>>>>");
+            if(data[0]=="Home Page")
+                s.append(data[0]+">>>>>"+new_string + "\n");
+            else
+                s.append(line+"\n");
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
+    this->view->returnPrivateView()->home_page=new_string;
 }

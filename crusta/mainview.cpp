@@ -538,7 +538,8 @@ void MainView::addNormalTab(){
 
 void MainView::addPrivateTab(){
     PrivateTabWindow* privatetab=new PrivateTabWindow();
-    this->tabWindow->addTab(privatetab->returnTab(),tr("new Tab"));
+    privatetab->menu_btn->setMenu(menu);
+    this->tabWindow->addTab(privatetab->returnTab(),tr("Private Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     MainView::addNewTabButton();
 }

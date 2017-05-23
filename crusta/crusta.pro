@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     themeeditor.cpp \
     webpage.cpp \
     bookmarkmanager.cpp \
-    siteinfo.cpp
+    siteinfo.cpp \
+    privateaddresslineedit.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -77,7 +78,8 @@ HEADERS  += \
     themeeditor.h \
     webpage.h \
     bookmarkmanager.h \
-    siteinfo.h
+    siteinfo.h \
+    privateaddresslineedit.h
 
 RESOURCES += \
     resource.qrc

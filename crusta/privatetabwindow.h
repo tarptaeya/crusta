@@ -35,6 +35,9 @@
 class PrivateTabWindow:public QObject{
     void viewHome();
     void updateAddrBar();
+    void updateStar();
+    void setHomePage();
+    void homeContext(const QPoint& pos);
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QWidget* tab=new QWidget();
@@ -44,14 +47,16 @@ public:
     QPushButton* home_btn=new QPushButton();
     QPushButton* bookmark_btn=new QPushButton();
     QPushButton* tool_btn=new QPushButton();
-    QPushButton* options_btn=new QPushButton();
+    QPushButton* menu_btn=new QPushButton();
     AddressLineEdit* addr_bar=new AddressLineEdit();
-    SearchLineEdit* search_bar=new SearchLineEdit();
     PrivateWebView* view=new PrivateWebView();
     void createControls();
     QWidget* returnTab();
+    QWidget* returnTab(PrivateWebView *view);
     PrivateTabWindow* returnThis();
     void setWebView(PrivateWebView*);
+    void loadUrl();
+    void bookmarkPage();
 };
 
 

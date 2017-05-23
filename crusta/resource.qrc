@@ -12,11 +12,5 @@
         <file>res/drawables/star.svg</file>
         <file>res/videos/passive_loader.gif</file>
         <file>res/drawables/menu.svg</file>
-        <file>res/drawables/star_hover.svg</file>
-        <file>res/drawables/menu_hover.svg</file>
-        <file>res/drawables/home_hover.svg</file>
-        <file>res/drawables/forward_hover.svg</file>
-        <file>res/drawables/bookmark_hover.svg</file>
-        <file>res/drawables/back_hover.svg</file>
     </qresource>
 </RCC>

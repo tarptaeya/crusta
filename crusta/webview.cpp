@@ -338,6 +338,19 @@ void WebView::download(QWebEngineDownloadItem *download_item){
         return;
     }
 
+    if(download_item->path().endsWith(".pdf")){
+        QString path=download_item->path();
+        QString cpath=QDir::tempPath();
+        cpath+="/"+path.split('/')[path.split('/').length()-1];
+        download_item->setPath(cpath);
+        download_item->accept();
+        QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
+        viewer_file->cd("../3rd_party/pdfjs/web");
+        connect(download_item,&QWebEngineDownloadItem::downloadProgress,this,&WebView::handleBeforePdf);
+        connect(download_item,&QWebEngineDownloadItem::finished,this,[this,cpath,viewer_file]{this->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
+        return;
+    }
+
     QString path=download_item->path();
     QDialog* w=new QDialog();
     w->setWindowFlags(Qt::FramelessWindowHint);
@@ -400,6 +413,15 @@ void WebView::download(QWebEngineDownloadItem *download_item){
         download_item->setPath(fname);
         download_item->accept();
     }
+}
+
+void WebView::handleBeforePdf(qint64 recieved,qint64 total){
+    if(total==0)
+        return;
+    this->page()->runJavaScript("document.body.innerHTML = ''");
+    this->page()->runJavaScript("document.write('Loading ...');");
+    this->page()->runJavaScript("document.write("+QString::number((recieved*100)/total)+");");
+    this->page()->runJavaScript("document.write('%')");
 }
 
 void WebView::downloadFinished(QString path){
