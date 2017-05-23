@@ -60,9 +60,9 @@
        cy="1036.5354"
        cx="5.4806895"
        id="ellipse4274"
-       style="fill:#8a2be2;fill-opacity:1;fill-rule:evenodd" />
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd" />
     <ellipse
-       style="fill:#8a2be2;fill-opacity:1;fill-rule:evenodd"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd"
        id="ellipse4282"
        cx="5.4806895"
        cy="1025.4622"
@@ -74,6 +74,6 @@
        cy="1047.0494"
        cx="5.5925407"
        id="ellipse4284"
-       style="fill:#8a2be2;fill-opacity:1;fill-rule:evenodd" />
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd" />
   </g>
 </svg>

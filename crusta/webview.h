@@ -44,6 +44,8 @@
 #include <QUrl>
 #include <QAuthenticator>
 #include <QPoint>
+#include <QSet>
+
 
 
 

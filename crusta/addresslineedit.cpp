@@ -65,7 +65,6 @@ void AddressLineEdit::showContextMenu(const QPoint& pos){
     contextMenu->addSeparator();
     contextMenu->addAction(default_search);
     contextMenu->addAction(changeUAstring);
-    contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{background-color:blueviolet;color:white}");
     contextMenu->exec(this->mapToGlobal(pos));
 }
 

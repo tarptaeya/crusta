@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -56,7 +56,7 @@
      transform="translate(0,-1020.3622)">
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:#8a2be2;fill-opacity:1;stroke:none;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1"
        id="path4136"
        sodipodi:sides="5"
        sodipodi:cx="16.767178"

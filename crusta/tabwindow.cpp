@@ -101,7 +101,7 @@ void TabWindow::createControls(){
     vbox->addLayout(hbox);
     vbox->addWidget(view);
     tab->setLayout(vbox);
-    tab->setStyleSheet("QWidget{background-color:white;color:blueviolet;} QLineEdit{border:0.5px solid blueviolet;border-radius:10px;} QMenu::item:selected{color:white;background-color:blueviolet}");
+    tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;}");
 }
 
 QWidget* TabWindow::returnTab(){

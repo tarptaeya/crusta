@@ -465,6 +465,7 @@ void MainView::addNormalTab(){
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     int cnt=this->tabWindow->count();
     if(cnt==1){
+        this->tabWindow->setTabText(0,tr("Connecting..."));
         QWidget* widget=this->tabWindow->widget(0);
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();

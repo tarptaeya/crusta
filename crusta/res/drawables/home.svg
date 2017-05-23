@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,33 +55,33 @@
      id="layer1"
      transform="translate(0,-1020.3622)">
     <rect
-       style="opacity:1;fill:#8a2be2;fill-opacity:1;stroke:none;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1"
        id="rect4172"
        width="25.16643"
        height="2.3488665"
        x="3.5792253"
        y="1049.1185" />
     <path
-       style="fill:#8a2be2;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 0.9041919,1031.8487 c 0.1377454,-0.1341 15.1226441,-11.0874 15.3909091,-11.25 0.149984,-0.091 1.655349,0.9608 7.742487,5.4096 4.155965,3.0374 7.538416,5.5399 7.516555,5.5611 -0.02186,0.021 -3.396446,-1.4285 -7.499079,-3.2216 -4.102635,-1.793 -7.54232,-3.236 -7.643747,-3.2065 -0.101426,0.029 -3.580179,1.5474 -7.7305602,3.3731 -8.21386947,3.6133 -7.9444723,3.4978 -7.7765649,3.3343 z"
        id="path4180"
        inkscape:connector-curvature="0" />
     <rect
-       style="opacity:1;fill:#8a2be2;fill-opacity:1;stroke:none;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1"
        id="rect4182"
        width="8.3888102"
        height="13.869499"
        x="11.856185"
        y="1035.8082" />
     <ellipse
-       style="fill:#8a2be2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="path4188"
        cx="15.994664"
        cy="1035.6405"
        rx="4.1384792"
        ry="2.516643" />
     <rect
-       style="opacity:1;fill:#8a2be2;fill-opacity:1;stroke:none;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1"
        id="rect4190"
        width="3.3555241"
        height="6.2636447"
