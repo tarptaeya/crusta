@@ -50,7 +50,6 @@ SOURCES += main.cpp\
     jseditor.cpp \
     codeeditor.cpp \
     downloadwidget.cpp \
-    downloaditemwidget.cpp \
     themeeditor.cpp \
     webpage.cpp \
     bookmarkmanager.cpp \
@@ -74,7 +73,6 @@ HEADERS  += \
     jseditor.h \
     codeeditor.h \
     downloadwidget.h \
-    downloaditemwidget.h \
     themeeditor.h \
     webpage.h \
     bookmarkmanager.h \

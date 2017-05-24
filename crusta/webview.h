@@ -24,6 +24,7 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "webpage.h"
+#include "downloadwidget.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>

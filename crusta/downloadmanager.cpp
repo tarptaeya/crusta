@@ -33,7 +33,7 @@ DownloadManager::DownloadManager(){
 
 void DownloadManager::addDownloadItem(QWidget *w){
     QListWidgetItem* item=new QListWidgetItem();
-    listwidget->addItem(item);
+    listwidget->insertItem(0,item);
     item->setSizeHint(w->size());
     listwidget->setItemWidget(item,w);
 }

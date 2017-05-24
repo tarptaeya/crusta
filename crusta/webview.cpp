@@ -23,7 +23,6 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "popup.h"
-#include "downloaditemwidget.h"
 #include "mainview.h"
 #include "downloadmanager.h"
 
@@ -400,6 +399,12 @@ void WebView::download(QWebEngineDownloadItem *download_item){
         download_item->cancel();
         return;
     }
+
+    DownloadWidget* dw=new DownloadWidget();
+    dw->getIcon(icon);
+    dw->setFixedHeight(dw->sizeHint().height());
+    connect(download_item,&QWebEngineDownloadItem::downloadProgress,dw,&DownloadWidget::computeFraction);
+    connect(dw->cancel,&QPushButton::clicked,download_item,&QWebEngineDownloadItem::cancel);
     if(ropen->isChecked()){
         QString cpath=QDir::tempPath();
         cpath+="/"+path.split('/')[path.split('/').length()-1];
@@ -415,6 +420,21 @@ void WebView::download(QWebEngineDownloadItem *download_item){
         download_item->setPath(fname);
         download_item->accept();
     }
+    connect(download_item,&QWebEngineDownloadItem::stateChanged,dw,&DownloadWidget::stateChanged);
+    QString name=download_item->path().split('/')[download_item->path().split('/').length()-1];
+    dw->getName(name);
+    QWidget* widget=(QWidget*)this->parent();
+    QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+    QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+    Window* win=(Window*)tabwidget->parentWidget();
+    win->d_manager->addDownloadItem(dw);
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile file(exec_dir->absolutePath()+"/downloads.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream in(&file);
+    in << download_item->path()+"\n";
+    file.close();
 }
 
 void WebView::handleBeforePdf(qint64 recieved,qint64 total){

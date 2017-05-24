@@ -28,6 +28,7 @@
 #include "tabwindow.h"
 #include "presentationmodenotifier.h"
 #include "downloadwidget.h"
+#include "downloadmanager.h"
 #include "jseditor.h"
 
 #include <QObject>
@@ -51,6 +52,7 @@
 class Window:public QWidget{
 public:
     QMenu* menu=new QMenu();
+    DownloadManager* d_manager=new DownloadManager();
 };
 
 
@@ -126,6 +128,7 @@ public:
     QAction* bookmark_tab=new QAction();
     QAction* bookmark_all_tabs=new QAction();
     QAction* show_all_bookmarks=new QAction();
+    QAction* show_all_downloads=new QAction();
     QAction* web_inspector_action=new QAction();
     QAction* runJsCode=new QAction();
     QAction* sitei=new QAction();
@@ -143,6 +146,7 @@ public:
     JsEditor* jsEditor=new JsEditor();
     QPushButton* newtabbtn=new QPushButton();
     QPageLayout currentPageLayout;
+    DownloadManager* d_manager=new DownloadManager();
     MainView();
 
     void createView();
@@ -169,6 +173,7 @@ public:
     void showHistory();
     void clearHistory();
     void showBookamrks();
+    void showDownloads();
 };
 
 

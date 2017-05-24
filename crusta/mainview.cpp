@@ -422,7 +422,8 @@ void MainView::createMenuBar(){
     this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
     connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
     this->download_menu=this->menu->addMenu(tr("&Downloads"));
-    this->download_menu->addAction(tr("&Download Manager"));
+    this->show_all_downloads=this->download_menu->addAction(tr("&Download Manager"));
+    connect(this->show_all_downloads,&QAction::triggered,this,&MainView::showDownloads);
     this->download_menu->addAction(tr("&Clear all Downloads"));
     this->tool_menu=this->menu->addMenu(tr("&Tools"));
     this->sitei=this->tool_menu->addAction(tr("&Site Info"));
@@ -793,4 +794,9 @@ void MainView::changeSpinner(int index){
         }
         this->tabWindow->tabBar()->setTabButton(i,QTabBar::LeftSide,lbl);
     }
+}
+
+void MainView::showDownloads(){
+    this->d_manager=this->window->d_manager;
+    this->d_manager->show();
 }

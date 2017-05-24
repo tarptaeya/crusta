@@ -20,8 +20,11 @@
 
 #include "downloadwidget.h"
 
+#include <QLabel>
+
 DownloadWidget::DownloadWidget(){
-    cancel->setText("Cancel");
+    cancel->setText(tr("Cancel"));
+    cancel->setFixedWidth(75);
     progress->setMaximum(100);
     progress->setMinimum(0);
     setLayout(hbox);
@@ -45,13 +48,15 @@ void DownloadWidget::getIcon(QIcon ico){
 void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
     int f=0;
     if(bytesTotal!=0)f=(int)((bytesRecieved*100)/bytesTotal);
-    fraction->setNum(f);
+    //fraction->setNum(f);
     progress->setValue(f);
 }
 
-void DownloadWidget::changeLayout(){
+void DownloadWidget::changeLayout_Completed(){
     open->setText(tr("Open"));
+    open->setFixedWidth(75);
     remove->setText(tr("Remove"));
+    remove->setFixedWidth(75);
     v0box->removeWidget(progress);
     v1box->removeWidget(fraction);
     v1box->removeWidget(cancel);
@@ -61,4 +66,40 @@ void DownloadWidget::changeLayout(){
     cancel->deleteLater();
     v1box->addWidget(open);
     v1box->addWidget(remove);
+}
+
+void DownloadWidget::changeLayout_Canceled(){
+    v0box->removeWidget(progress);
+    v1box->removeWidget(fraction);
+    v1box->removeWidget(cancel);
+    progress->deleteLater();
+    fraction->deleteLater();
+    cancel->disconnect();
+    cancel->deleteLater();
+    v0box->addWidget(new QLabel(tr("Download Canceled ...")));
+}
+
+void DownloadWidget::changeLayout_Interrupted(){
+    v0box->removeWidget(progress);
+    v1box->removeWidget(fraction);
+    v1box->removeWidget(cancel);
+    progress->deleteLater();
+    fraction->deleteLater();
+    cancel->disconnect();
+    cancel->deleteLater();
+    v0box->addWidget(new QLabel(tr("Download Interrupted ...")));
+}
+
+void DownloadWidget::stateChanged(QWebEngineDownloadItem::DownloadState state){
+    switch(state){
+    case QWebEngineDownloadItem::DownloadCompleted:
+        this->changeLayout_Completed();
+        return;
+    case QWebEngineDownloadItem::DownloadCancelled:
+        this->changeLayout_Canceled();
+        return;
+    default:
+        this->changeLayout_Interrupted();
+        return;
+    }
 }

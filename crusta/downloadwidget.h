@@ -28,6 +28,7 @@
 #include <QIcon>
 #include <QLabel>
 #include <QProgressBar>
+#include <QWebEngineDownloadItem>
 
 class DownloadWidget:public QWidget {
 public:
@@ -45,7 +46,10 @@ public:
     void getName(QString);
     void getIcon(QIcon);
     void computeFraction(qint64 bytesRecieved,qint64 bytesTotal);
-    void changeLayout();
+    void changeLayout_Completed();
+    void changeLayout_Canceled();
+    void changeLayout_Interrupted();
+    void stateChanged(QWebEngineDownloadItem::DownloadState state);
 };
 
 #endif // DOWNLOADWIDGET_H
