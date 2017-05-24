@@ -48,7 +48,6 @@
 
 
 
-
 class WebView:public QWebEngineView{
     Q_OBJECT
 protected:

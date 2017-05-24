@@ -332,9 +332,11 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
 }
 
 void WebView::download(QWebEngineDownloadItem *download_item){
+    if(download_item->url().toString()!=link && download_item->url().toString().endsWith(".pdf")){
+        return;
+    }
 
     if(download_item->state()!=QWebEngineDownloadItem::DownloadRequested){
-        download_item->accept();
         return;
     }
 
@@ -418,14 +420,16 @@ void WebView::download(QWebEngineDownloadItem *download_item){
 void WebView::handleBeforePdf(qint64 recieved,qint64 total){
     if(total==0)
         return;
-    this->page()->runJavaScript("document.body.innerHTML = ''");
-    this->page()->runJavaScript("document.write('Loading ...');");
-    this->page()->runJavaScript("document.write("+QString::number((recieved*100)/total)+");");
-    this->page()->runJavaScript("document.write('%')");
+    returnView()->page()->runJavaScript("document.body.innerHTML = ''");
+    returnView()->page()->runJavaScript("document.write('Loading ...');");
+    returnView()->page()->runJavaScript("document.write("+QString::number((recieved*100)/total)+");");
+    returnView()->page()->runJavaScript("document.write('%')");
 }
 
 void WebView::downloadFinished(QString path){
-    QDesktopServices::openUrl(path);
+    QUrl u;
+    u=QUrl::fromLocalFile(path);
+    QDesktopServices::openUrl(u);
 }
 
 void WebView::showLinkHovered(QString url){

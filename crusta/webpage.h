@@ -23,6 +23,8 @@
 
 #include <QWebEnginePage>
 #include <QString>
+#include <QWebEngineProfile>
+
 
 class WebPage:public QWebEnginePage{
 protected:
