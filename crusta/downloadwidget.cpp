@@ -21,6 +21,12 @@
 #include "downloadwidget.h"
 
 #include <QLabel>
+#include <QUrl>
+#include <QDesktopServices>
+#include <QDir>
+#include <QCoreApplication>
+#include <QTextStream>
+#include <QDateTime>
 
 DownloadWidget::DownloadWidget(){
     cancel->setText(tr("Cancel"));
@@ -29,9 +35,11 @@ DownloadWidget::DownloadWidget(){
     progress->setMinimum(0);
     setLayout(hbox);
     hbox->addWidget(icon);
+    icon->setFixedWidth(150);
     hbox->addLayout(v0box);
     hbox->addLayout((v1box));
     v0box->addWidget(name);
+    name->setAlignment(Qt::AlignLeft);
     v0box->addWidget(progress);
     v1box->addWidget(cancel);
     v1box->addWidget(fraction);
@@ -48,15 +56,17 @@ void DownloadWidget::getIcon(QIcon ico){
 void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
     int f=0;
     if(bytesTotal!=0)f=(int)((bytesRecieved*100)/bytesTotal);
-    //fraction->setNum(f);
+    fraction->setNum(bytesTotal/1000000.0);
     progress->setValue(f);
 }
 
 void DownloadWidget::changeLayout_Completed(){
     open->setText(tr("Open"));
     open->setFixedWidth(75);
+    connect(open,&QPushButton::clicked,this,&DownloadWidget::openFile);
     remove->setText(tr("Remove"));
     remove->setFixedWidth(75);
+    connect(remove,&QPushButton::clicked,this,&DownloadWidget::removeWidget);
     v0box->removeWidget(progress);
     v1box->removeWidget(fraction);
     v1box->removeWidget(cancel);
@@ -66,6 +76,29 @@ void DownloadWidget::changeLayout_Completed(){
     cancel->deleteLater();
     v1box->addWidget(open);
     v1box->addWidget(remove);
+    v0box->addWidget(new QLabel(tr("Completed ")+QDateTime::currentDateTime().toString()));
+
+    QString forbidden=path;
+    QDir d=QDir(QCoreApplication::applicationDirPath());
+    d.cd("../crusta_db");
+    QFile f(d.absolutePath()+"/downloads.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            if(line.split(">>>>>")[0]!=forbidden)
+                s.append(line + "\n");
+            else{
+                s.append(path+">>>>>"+"Completed"+">>>>>"+QDateTime::currentDateTime().toString().toLatin1()+"\n");
+            }
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
 }
 
 void DownloadWidget::changeLayout_Canceled(){
@@ -76,7 +109,34 @@ void DownloadWidget::changeLayout_Canceled(){
     fraction->deleteLater();
     cancel->disconnect();
     cancel->deleteLater();
-    v0box->addWidget(new QLabel(tr("Download Canceled ...")));
+    v0box->addWidget(new QLabel(tr("Download Canceled ...")+QDateTime::currentDateTime().toString()));
+
+    remove->setText(tr("Remove"));
+    remove->setFixedWidth(75);
+    connect(remove,&QPushButton::clicked,this,&DownloadWidget::removeWidget);
+    v1box->addWidget(remove);
+
+    QString forbidden=path;
+    QDir d=QDir(QCoreApplication::applicationDirPath());
+    d.cd("../crusta_db");
+    QFile f(d.absolutePath()+"/downloads.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            if(line.split(">>>>>")[0]!=forbidden)
+                s.append(line + "\n");
+            else{
+                s.append(path+">>>>>"+"Canceled"+">>>>>"+QDateTime::currentDateTime().toString().toLatin1()+"\n");
+            }
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
 }
 
 void DownloadWidget::changeLayout_Interrupted(){
@@ -87,7 +147,34 @@ void DownloadWidget::changeLayout_Interrupted(){
     fraction->deleteLater();
     cancel->disconnect();
     cancel->deleteLater();
-    v0box->addWidget(new QLabel(tr("Download Interrupted ...")));
+    v0box->addWidget(new QLabel(tr("Download Interrupted ...")+QDateTime::currentDateTime().toString()));
+
+    remove->setText(tr("Remove"));
+    remove->setFixedWidth(75);
+    connect(remove,&QPushButton::clicked,this,&DownloadWidget::removeWidget);
+    v1box->addWidget(remove);
+
+    QString forbidden=path;
+    QDir d=QDir(QCoreApplication::applicationDirPath());
+    d.cd("../crusta_db");
+    QFile f(d.absolutePath()+"/downloads.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            if(line.split(">>>>>")[0]!=forbidden)
+                s.append(line + "\n");
+            else{
+                s.append(path+">>>>>"+"Interrupted"+">>>>>"+QDateTime::currentDateTime().toString().toLatin1()+"\n");
+            }
+        }
+        f.resize(0);
+        t << s;
+        f.close();
+    }
 }
 
 void DownloadWidget::stateChanged(QWebEngineDownloadItem::DownloadState state){
@@ -101,5 +188,33 @@ void DownloadWidget::stateChanged(QWebEngineDownloadItem::DownloadState state){
     default:
         this->changeLayout_Interrupted();
         return;
+    }
+}
+
+void DownloadWidget::openFile(){
+    QUrl u;
+    u=QUrl::fromLocalFile(path);
+    QDesktopServices::openUrl(u);
+}
+
+void DownloadWidget::removeWidget(){
+    item->setHidden(true);
+    QString forbidden=path;
+    QDir d=QDir(QCoreApplication::applicationDirPath());
+    d.cd("../crusta_db");
+    QFile f(d.absolutePath()+"/downloads.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            if(line.split(">>>>>")[0]!=forbidden)
+                s.append(line + "\n");
+        }
+        f.resize(0);
+        t << s;
+        f.close();
     }
 }

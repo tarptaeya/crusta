@@ -44,6 +44,7 @@ void DownloadManager::addDownloadItem(DownloadWidget *w){
     QListWidgetItem* item=new QListWidgetItem();
     listwidget->insertItem(0,item);
     item->setSizeHint(w->size());
+    w->item=item;
     listwidget->setItemWidget(item,w);
 }
 
@@ -58,12 +59,19 @@ void DownloadManager::loadDownloads(){
        {
           QString line = in.readLine();
           DownloadWidget* w=new DownloadWidget();
-          w->getName(line.split('/')[line.split('/').length()-1]);
+          w->getName(line.split(">>>>>")[0].split('/')[line.split('/').length()-1]);
           QFileIconProvider* fip=new QFileIconProvider();
-          QIcon icon=fip->icon(QFileInfo(line));
+          QIcon icon=fip->icon(QFileInfo(line.split(">>>>>")[0]));
           w->getIcon(icon);
           w->path=line;
-          w->changeLayout_Completed();
+          if(line.split(">>>>>").length()<3)
+              continue;
+          if(line.split(">>>>>")[1]=="Completed")
+              w->changeLayout_Completed();
+          else if(line.split(">>>>>")[1]=="Canceled")
+              w->changeLayout_Canceled();
+          else
+              w->changeLayout_Interrupted();
           w->setFixedHeight(w->sizeHint().height());
           this->addDownloadItem(w);
        }

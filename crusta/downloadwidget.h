@@ -29,6 +29,7 @@
 #include <QLabel>
 #include <QProgressBar>
 #include <QWebEngineDownloadItem>
+#include <QListWidgetItem>
 
 class DownloadWidget:public QWidget {
 public:
@@ -44,6 +45,7 @@ public:
     QPushButton* open=new QPushButton();
     QLabel* fraction=new QLabel();
     QString path;
+    QListWidgetItem* item=new QListWidgetItem();
     void getName(QString);
     void getIcon(QIcon);
     void computeFraction(qint64 bytesRecieved,qint64 bytesTotal);
@@ -51,6 +53,8 @@ public:
     void changeLayout_Canceled();
     void changeLayout_Interrupted();
     void stateChanged(QWebEngineDownloadItem::DownloadState state);
+    void openFile();
+    void removeWidget();
 };
 
 #endif // DOWNLOADWIDGET_H

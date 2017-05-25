@@ -328,7 +328,7 @@ MainView::MainView(){
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::changeSpinner);
 
-    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet;height:30px} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
+    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid blueviolet;height:30px} QPushButton{background-color:#dbdbdb;} QPushButton:hover{background-color:white;}");
 
 
 }

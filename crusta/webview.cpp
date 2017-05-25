@@ -423,6 +423,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     connect(download_item,&QWebEngineDownloadItem::stateChanged,dw,&DownloadWidget::stateChanged);
     QString name=download_item->path().split('/')[download_item->path().split('/').length()-1];
     dw->getName(name);
+    dw->path=download_item->path();
     QWidget* widget=(QWidget*)this->parent();
     QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
     QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
