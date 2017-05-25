@@ -97,7 +97,7 @@ SiteInfoWidget::SiteInfoWidget(QWebEngineView* view){
     h5box->addWidget(new QLabel());
     vbox->addLayout(h5box);
     ok->setText(tr("OK"));
-    setStyleSheet("QWidget{color:white;background-color:blueviolet} QPushButton{border:0.5px solid;background-color:crimson;color:white;border-radius:0px;border-color:crimson;padding:2px 4px;} QPushButton:hover{background-color:white;color:crimson}");
+    setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
     connect(ok,&QPushButton::clicked,this,&QDialog::accept);
     setWindowFlags(Qt::FramelessWindowHint);
     setFixedSize(this->sizeHint());

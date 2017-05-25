@@ -31,7 +31,7 @@
 BookmarkManager::BookmarkManager(MainView *m){
     mview=m;
     setLayout(vbox);
-    setStyleSheet("QWidget{background-color:blueviolet;color:white} QLineEdit{background-color:white;color:blueviolet} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    setStyleSheet("QWidget{background-color:white;color:black} QLineEdit{background-color:white;color:black;border:1px solid black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(search);
@@ -87,7 +87,7 @@ void BookmarkManager::showContextMenu(const QPoint &pos){
     QMenu* cmenu=new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
-    cmenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
+    cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
     cmenu->exec(display->mapToGlobal(pos));
 }
 

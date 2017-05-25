@@ -22,6 +22,8 @@
 #ifndef DOWNLOADMANAGER_H
 #define DOWNLOADMANAGER_H
 
+#include "downloadwidget.h"
+
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QLineEdit>
@@ -35,7 +37,8 @@ public:
     QListWidget* listwidget=new QListWidget();
     QPushButton* removeAll=new QPushButton();
     DownloadManager();
-    void addDownloadItem(QWidget* w);
+    void addDownloadItem(DownloadWidget *w);
+    void loadDownloads();
 };
 
 #endif // DOWNLOADMANAGER_H

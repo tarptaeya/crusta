@@ -269,7 +269,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
     vl->addLayout(h1);
     cncl->setText(tr("No"));
     ok->setText(tr("Yes"));
-    dg->setStyleSheet("QWidget{color:white;background-color:blueviolet} QPushButton{border:0.5px solid;background-color:crimson;color:white;border-radius:0px;border-color:crimson;padding:2px 4px;} QPushButton:hover{background-color:white;color:crimson}");
+    dg->setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     switch (feature) {
@@ -392,7 +392,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     h1bx->addWidget(cncl_btn);
     h1bx->addWidget(ok_btn);
     box->addLayout(h1bx);
-    w->setStyleSheet("QDialog{background-color:deepskyblue;color:blueviolet} QLabel{color:blueviolet} QGroupBox{color:blueviolet;} QRadioButton{color:blueviolet;} QPushButton{border:0.5px solid blueviolet;padding:4px 8px;color:white;background-color:blueviolet} QPushButton:hover{background-color:white;color:blueviolet}");
+    w->setStyleSheet("QDialog{background-color:white;color:black} QLabel{color:black} QGroupBox{color:black;} QRadioButton{color:black;} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl_btn,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok_btn,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
@@ -546,7 +546,6 @@ void WebView::showContextMenu(const QPoint& pos){
     QAction* view_page_source=new QAction(tr("View Page Source"));
     connect(view_page_source,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::ViewSource);});
     contextMenu->addAction(view_page_source);
-    contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
     contextMenu->exec(this->mapToGlobal(pos));
 }
 

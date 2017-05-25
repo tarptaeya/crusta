@@ -43,6 +43,7 @@ public:
     QPushButton* remove=new QPushButton();
     QPushButton* open=new QPushButton();
     QLabel* fraction=new QLabel();
+    QString path;
     void getName(QString);
     void getIcon(QIcon);
     void computeFraction(qint64 bytesRecieved,qint64 bytesTotal);

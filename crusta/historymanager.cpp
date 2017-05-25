@@ -49,7 +49,7 @@
 
 void HistoryManager::createManager(){
     setWindowTitle(tr("Crusta : History Manager"));
-    setStyleSheet("QWidget{background-color:blueviolet;color:white} QComboBox{background-color:white;color:blueviolet} QComboBox QAbstractItemView{background-color:white;color:blueviolet} QTreeWidget{background-color:white;color:blueviolet} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+    setStyleSheet("QWidget{background-color:white;color:black} QComboBox{background-color:white;color:black} QComboBox QAbstractItemView{background-color:white;color:black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     QFile inputFile("history.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
@@ -105,7 +105,7 @@ void HistoryManager::showContextMenu(const QPoint &pos){
     QMenu* cmenu=new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
-    cmenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
+    cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
     cmenu->exec(display_area->mapToGlobal(pos));
 }
 

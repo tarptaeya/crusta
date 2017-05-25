@@ -42,7 +42,7 @@ void TimeNotifier::showNotifier(){
     this->label->setGeometry(0,0,380,80);
     this->label->setAlignment(Qt::AlignCenter);
     this->label->move(this->x,60);
-    this->label->setStyleSheet("border: 3px solid blueviolet;border-radius:20px;background-color:#ffffff;color:blueviolet");
+    this->label->setStyleSheet("border: 3px solid black;border-radius:20px;background-color:#ffffff;color:black");
     QGraphicsOpacityEffect* effect=new QGraphicsOpacityEffect();
     this->label->setGraphicsEffect(effect);
     QPropertyAnimation* a=new QPropertyAnimation(effect,"opacity");

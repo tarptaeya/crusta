@@ -38,7 +38,7 @@ void FullScreenNotifier::showNotifier(){
     this->label->setGeometry(0,0,380,80);
     this->label->setAlignment(Qt::AlignCenter);
     this->label->move(this->x,60);
-    this->label->setStyleSheet("border: 3px solid blueviolet;border-radius:20px;background-color:white;color:blueviolet");
+    this->label->setStyleSheet("border: 3px solid black;border-radius:20px;background-color:white;color:black");
     QGraphicsOpacityEffect* effect=new QGraphicsOpacityEffect();
     this->label->setGraphicsEffect(effect);
     QPropertyAnimation* a=new QPropertyAnimation(effect,"opacity");
@@ -55,15 +55,6 @@ void FullScreenNotifier::showNotifier(){
 void FullScreenNotifier::fadeOut(){
     this->label->setParent(0);
     this->label->hide();
-//    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
-//    this->label->setGraphicsEffect(effect);
-//    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
-//    a->setDuration(1000);
-//    a->setStartValue(1);
-//    a->setEndValue(0);
-//    a->setEasingCurve(QEasingCurve::OutBack);
-//    a->start(QPropertyAnimation::DeleteWhenStopped);
-//    connect(a,SIGNAL(finished()),this->label,SLOT(deleteLater()));
 }
 
 void FullScreenNotifier::setViewParent(QWebEngineView *view){

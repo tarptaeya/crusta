@@ -133,7 +133,6 @@ void MainView::tabBarContext(QPoint point){
         QAction* closeoth=new QAction();
         closeoth=contextMenu->addAction(tr("&Close Other Tabs"));
         connect(closeoth,&QAction::triggered,this,[this,index]{closeOtherTabs(index);});
-        contextMenu->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
         contextMenu->exec(this->tabWindow->tabBar()->mapToGlobal(point));
     }
     else{
@@ -147,7 +146,6 @@ void MainView::tabBarContext(QPoint point){
         barContext->addAction(tr("&Bookmark All Tabs"));
         barContext->addAction(tr("Mute All Tabs"));
         barContext->addAction(tr("&Restore All Tabs"));
-        barContext->setStyleSheet("QMenu{background-color:white;color:blueviolet} QMenu::selected{color:white;background-color:blueviolet}");
         barContext->exec(this->tabWindow->tabBar()->mapToGlobal(point));
     }
 }
@@ -181,7 +179,7 @@ void MainView::FindText(){
             this->findwidget->setFixedHeight(50);
             this->findwidget->setFixedWidth(webview->geometry().width());
             this->findwidget->setObjectName("findwidget");
-            this->findwidget->setStyleSheet("#findwidget{border-top:1px solid grey;background-color:#ffffff}");
+            this->findwidget->setStyleSheet("#findwidget{border-top:1px solid black;background-color:#ffffff}");
         }
         this->findwidget->show();
         QPropertyAnimation *animation = new QPropertyAnimation(this->findwidget, "pos");
@@ -330,7 +328,7 @@ MainView::MainView(){
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::changeSpinner);
 
-    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet;height:32px} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
+    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:blueviolet;} QTabBar::close-button{color:blueviolet;} QTabBar::tab:selected{background-color:white;color:blueviolet;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:white;background-color:deepskyblue;top:2px;border:0.5px solid blueviolet;height:30px} QPushButton{background-color:deepskyblue;} QPushButton:hover{background-color:white;}");
 
 
 }
@@ -448,8 +446,6 @@ void MainView::createMenuBar(){
     this->help_menu->addSeparator();
     this->help_menu->addAction(tr("&License"));
     this->window->menu=this->menu;
-    //this->box->setMenuBar(this->menubar);
-    //this->menubar->setNativeMenuBar(true);
 }
 
 void MainView::createTabWindow(){
@@ -504,7 +500,7 @@ void MainView::addNormalTab(){
             w->setLayout(vbox);
             w->setFixedWidth(500);
             w->setWindowFlags(Qt::FramelessWindowHint);
-            w->setStyleSheet("QWidget{background-color:blueviolet;color:white} QLabel{color:white} QLineEdit{color:blueviolet;background-color:white} QPushButton{border:0.5px solid crimson;padding:4px 8px;color:white;background-color:crimson} QPushButton:hover{background-color:white;color:crimson}");
+            w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
             connect(ok,&QPushButton::clicked,w,&QDialog::accept);
             if(w->exec()!=QDialog::Accepted){
                 return;

@@ -19,21 +19,54 @@
 * ============================================================ */
 
 #include "downloadmanager.h"
+#include "downloadwidget.h"
 
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QListWidgetItem>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileIconProvider>
+#include <QTextStream>
+#include <QFile>
+
+#include <iostream>
 
 DownloadManager::DownloadManager(){
     setLayout(vbox);
     vbox->addWidget(listwidget);
     vbox->addWidget(removeAll);
+    loadDownloads();
 }
 
-void DownloadManager::addDownloadItem(QWidget *w){
+void DownloadManager::addDownloadItem(DownloadWidget *w){
     QListWidgetItem* item=new QListWidgetItem();
     listwidget->insertItem(0,item);
     item->setSizeHint(w->size());
     listwidget->setItemWidget(item,w);
+}
+
+void DownloadManager::loadDownloads(){
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile inputFile(exec_dir->absolutePath()+"/downloads.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          DownloadWidget* w=new DownloadWidget();
+          w->getName(line.split('/')[line.split('/').length()-1]);
+          QFileIconProvider* fip=new QFileIconProvider();
+          QIcon icon=fip->icon(QFileInfo(line));
+          w->getIcon(icon);
+          w->path=line;
+          w->changeLayout_Completed();
+          w->setFixedHeight(w->sizeHint().height());
+          this->addDownloadItem(w);
+       }
+       inputFile.close();
+    }
 }
