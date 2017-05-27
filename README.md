@@ -1,10 +1,8 @@
 # Crusta Browser #
 
-Crusta is a full feature fast , secure and new webbrowser.It aims to provide a better internet experience to the user.
-Development is under progress and will be launched by July this year
+Crusta Browser is fast, secure, modern and powerful webbrowser with split-tabs and one-click controls, built on the top of Qt5 to give you the best internet experience you deserve.
+Try out the new open source Crusta Browser, it's free to use and always be.
 
-for more information visit http://www.crustabrowser.com
+We would be happy to recieve a pull request from you. You can always contribute to Crusta Browser by forking the Github repository. You can also contribute by making new Themes and Translations for Crusta Browser. Crusta Browser is a open source projected licensed under GPLv3.
 
-follow crusta on twitter https://twitter.com/CrustaBrowser
-
-find crusta latest updates at http://crustabrowser.blogspot.com/
+You can always contact Crusta Browser at : contact@crustabrowser.com
