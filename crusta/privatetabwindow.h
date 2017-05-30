@@ -21,8 +21,7 @@
 #ifndef PRIVATETABWINDOW_H
 #define PRIVATETABWINDOW_H
 
-#include "addresslineedit.h"
-#include "searchlineedit.h"
+#include "privateaddresslineedit.h"
 #include "privatewebview.h"
 
 #include <QObject>
@@ -48,7 +47,7 @@ public:
     QPushButton* bookmark_btn=new QPushButton();
     QPushButton* tool_btn=new QPushButton();
     QPushButton* menu_btn=new QPushButton();
-    AddressLineEdit* addr_bar=new AddressLineEdit();
+    PrivateAddressLineEdit* addr_bar=new PrivateAddressLineEdit();
     PrivateWebView* view=new PrivateWebView();
     void createControls();
     QWidget* returnTab();

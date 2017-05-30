@@ -26,6 +26,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QFile>
+#include <QMenu>
 #include <QTextStream>
 #include <QIODevice>
 #include <QString>
@@ -33,6 +34,7 @@
 #include <QDialog>
 #include <QStringList>
 #include <QStringListModel>
+#include <QCompleter>
 
 #include <iostream>
 
@@ -45,24 +47,6 @@ void PrivateTabWindow::viewHome(){
 void PrivateTabWindow::updateAddrBar(){
     this->addr_bar->initialize()->setText(this->view->returnPrivateView()->url().toString());
     this->addr_bar->initialize()->setCursorPosition(0);
-    QString s=this->addr_bar->text();
-    QFile inputFile("completer.txt");
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       while (!in.atEnd())
-       {
-          QString line = in.readLine();
-          if(line==s)
-              return;
-       }
-       inputFile.close();
-    }
-    QFile file("completer.txt");
-    file.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream out(&file);
-    out<<s.toLatin1()+"\n";
-    file.close();
 }
 
 void PrivateTabWindow::createControls(){
@@ -263,7 +247,7 @@ void PrivateTabWindow::setHomePage(){
         {
             QString line = t.readLine();
             QStringList data=line.split(">>>>>");
-            if(data[0]=="Home Page")
+            if(data[0]=="Incognito Home Page")
                 s.append(data[0]+">>>>>"+new_string + "\n");
             else
                 s.append(line+"\n");
