@@ -323,7 +323,7 @@ PrivateMainView::PrivateMainView(){
 }
 
 void PrivateMainView::createView(){
-    this->window->setWindowTitle("Crusta");
+    this->window->setWindowTitle("Crusta - Private Mode");
     this->window->setLayout(box);
 }
 
@@ -413,8 +413,10 @@ void PrivateMainView::createMenuBar(){
     this->devTools=this->tool_menu->addMenu(tr("&Developer Tools"));
     this->runJsCode=this->devTools->addAction(tr("&Run Javascript Code"));
     this->viewSource=this->devTools->addAction(tr("View Page Source"));
+    this->changUA=this->devTools->addAction(tr("Edit User Agent"));
     connect(this->viewSource,&QAction::triggered,this,&PrivateMainView::viewPageSource);
     connect(this->runJsCode,&QAction::triggered,this,&PrivateMainView::showJsCodeEditor);
+    connect(this->changUA,&QAction::triggered,this,&PrivateMainView::changeUAfx);
     this->help_menu=this->menu->addMenu(tr("&Help"));
     this->help_menu->addAction(tr("&Crusta Help"));
     this->help_menu->addAction(tr("&Crusta Tour"));
@@ -755,4 +757,10 @@ void PrivateMainView::changeSpinner(int index){
 void PrivateMainView::showDownloads(){
     this->d_manager=this->window->d_manager;
     this->d_manager->show();
+}
+
+void PrivateMainView::changeUAfx(){
+    PrivateAddressLineEdit* pad=new PrivateAddressLineEdit();
+    pad->setUAString();
+    pad->deleteLater();
 }

@@ -133,6 +133,7 @@ public:
     QAction* web_inspector_action=new QAction();
     QAction* viewSource=new QAction();
     QAction* runJsCode=new QAction();
+    QAction* changeUA=new QAction();
     QAction* sitei=new QAction();
     QAction* aboutCr=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
@@ -176,6 +177,7 @@ public:
     void showBookamrks();
     void showDownloads();
     void openIncognito();
+    void changeUAfx();
 };
 
 

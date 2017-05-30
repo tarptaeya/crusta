@@ -221,8 +221,19 @@ QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type)
         return view;
     }
     case QWebEnginePage::WebBrowserBackgroundTab: {
-        std::cout<<"Background Tab Requested"<<std::endl;
-        return new QWebEngineView();
+        PrivateWebView* view=new PrivateWebView();
+        view->raise();
+        PrivateTabWindow* tabwin=new PrivateTabWindow();
+        tabwin->vbox->setContentsMargins(0,0,0,0);
+        tabwin->setWebView(view);
+        tabwin->createControls();
+        QWidget* widget=(QWidget*)this->parent();
+        QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+        QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+        PWindow* win=(PWindow*)tabwidget->parentWidget();
+        tabwin->menu_btn->setMenu(win->menu);
+        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("New Tab"));
+        return view;
     }
     case QWebEnginePage::WebBrowserWindow: {
         std::cout<<"window Requested"<<std::endl;

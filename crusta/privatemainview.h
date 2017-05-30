@@ -131,6 +131,7 @@ public:
     QAction* web_inspector_action=new QAction();
     QAction* viewSource=new QAction();
     QAction* runJsCode=new QAction();
+    QAction* changUA=new QAction();
     QAction* sitei=new QAction();
     QAction* aboutCr=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
@@ -171,6 +172,7 @@ public:
     void about();
     void showBookamrks();
     void showDownloads();
+    void changeUAfx();
 };
 
 #endif // PRIVATEMAINVIEW_H

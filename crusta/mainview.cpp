@@ -433,8 +433,10 @@ void MainView::createMenuBar(){
     this->devTools=this->tool_menu->addMenu(tr("&Developer Tools"));
     this->runJsCode=this->devTools->addAction(tr("&Run Javascript Code"));
     this->viewSource=this->devTools->addAction(tr("View Page Source"));
+    this->changeUA=this->devTools->addAction(tr("Edit User Agent"));
     connect(this->viewSource,&QAction::triggered,this,&MainView::viewPageSource);
     connect(this->runJsCode,&QAction::triggered,this,&MainView::showJsCodeEditor);
+    connect(this->changeUA,&QAction::triggered,this,&MainView::changeUAfx);
     this->help_menu=this->menu->addMenu(tr("&Help"));
     this->help_menu->addAction(tr("&Crusta Help"));
     this->help_menu->addAction(tr("&Crusta Tour"));
@@ -794,4 +796,10 @@ void MainView::showDownloads(){
 void MainView::openIncognito(){
     PrivateMainView* pmainview=new PrivateMainView();
     pmainview->showView();
+}
+
+void MainView::changeUAfx(){
+    AddressLineEdit* ad=new AddressLineEdit();
+    ad->setUAString();
+    ad->deleteLater();
 }
