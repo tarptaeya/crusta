@@ -23,11 +23,14 @@
 
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
+#include "webpage.h"
+#include "downloadwidget.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
 #include <QWebEngineFullScreenRequest>
+#include <QWebEngineDownloadItem>
 #include <QString>
 #include <QLayout>
 #include <QAction>
@@ -40,6 +43,9 @@
 #include <QTabBar>
 #include <QPixmap>
 #include <QUrl>
+#include <QAuthenticator>
+#include <QPoint>
+#include <QSet>
 
 
 
@@ -48,9 +54,13 @@ class PrivateWebView:public QWebEngineView{
 protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
-    bool wasFullScreen=false;
-    QString home_page=QString("https://duckduckgo.com");
+    bool wasFullScreened=false;
+    QString link="";
+    PrivateWebPage* privatewebpage=new PrivateWebPage(new Profile());
+    QString home_page;
+    QString defaultSearch;
     QLayout* layout;
+    QWidget* widget;
     QAction* exitFullScreen=new QAction();
     QAction* timeAction=new QAction();
     FullScreenNotifier* notifier=new FullScreenNotifier();
@@ -62,12 +72,18 @@ public:
     void spinnerStarted();
     void faviconChanged(QIcon fav);
     void pageTitleChanged();
-    void pageLoaded();
     void acceptFullScreen(QWebEngineFullScreenRequest request);
     void ExitAction();
+    void download(QWebEngineDownloadItem* download_item);
+    void downloadFinished(QString);
     void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
+    void showLinkHovered(QString url);
+    void closeTab();
+    void audioInfo();
+    void authenticate(const QUrl u, QAuthenticator *authenticator);
+    void showContextMenu(const QPoint &pos);
+    void handleBeforePdf(qint64,qint64);
     PrivateWebView();
 };
-
 
 #endif // PRIVATEVIEW_H

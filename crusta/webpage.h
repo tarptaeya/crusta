@@ -26,6 +26,11 @@
 #include <QWebEngineProfile>
 
 
+class Profile:public QWebEngineProfile{
+public:
+    Profile();
+};
+
 class WebPage:public QWebEnginePage{
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
@@ -33,6 +38,17 @@ public:
     QString agent;
     void loadUAString();
     WebPage();
+};
+
+
+
+class PrivateWebPage:public QWebEnginePage{
+protected:
+    QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
+public:
+    QString agent;
+    void loadUAString();
+    PrivateWebPage(QWebEngineProfile* profile,QObject* parent=0);
 };
 
 #endif // WEBPAGE_H

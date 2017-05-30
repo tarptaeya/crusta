@@ -27,6 +27,14 @@
 
 #include <iostream>
 
+
+
+Profile::Profile(){
+    setPersistentCookiesPolicy(QWebEngineProfile::NoPersistentCookies);
+}
+
+
+
 QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes){
     QFileDialog* f=new QFileDialog();
     f->setOption(QFileDialog::DontUseNativeDialog,true);
@@ -65,5 +73,48 @@ void WebPage::loadUAString(){
 }
 
 WebPage::WebPage(){
+    loadUAString();
+}
+
+
+
+QStringList PrivateWebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes){
+    QFileDialog* f=new QFileDialog();
+    f->setOption(QFileDialog::DontUseNativeDialog,true);
+    switch(mode){
+    case(QWebEnginePage::FileSelectOpen):{
+        QString name=f->getOpenFileName(nullptr,QString(tr("Crusta : Upload File")),QDir::homePath(),QString(),nullptr,f->options());
+        QStringList list;
+        list.append(name);
+        return list;
+    }break;
+    case(QWebEnginePage::FileSelectOpenMultiple):{
+        QStringList names=f->getOpenFileNames(nullptr,QString(tr("Crusta : Upload Multiple Files")),QDir::homePath(),QString(),nullptr,f->options());
+        return names;
+    }break;
+    }
+    return QStringList();
+}
+
+void PrivateWebPage::loadUAString(){
+    QFile inputFile("preference.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data[0]=="Incognito UA String"){
+              agent=data[1];
+              break;
+          }
+       }
+       inputFile.close();
+    }
+    profile()->setHttpUserAgent(agent);
+}
+
+PrivateWebPage::PrivateWebPage(QWebEngineProfile *profile, QObject *parent):QWebEnginePage(profile,parent){
     loadUAString();
 }
