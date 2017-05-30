@@ -36,8 +36,15 @@
 DownloadManager::DownloadManager(){
     setLayout(vbox);
     vbox->addWidget(listwidget);
-    vbox->addWidget(removeAll);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(removeAll);
+    removeAll->setText(tr("OK"));
+    connect(removeAll,&QPushButton::clicked,this,&QDialog::accept);
+    hbox->addWidget(new QLabel());
+    vbox->addLayout(hbox);
     loadDownloads();
+    setStyleSheet("QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
 }
 
 void DownloadManager::addDownloadItem(DownloadWidget *w){

@@ -22,6 +22,7 @@
 #define BOOKMARKMANAGER_H
 
 #include "mainview.h"
+#include "privatemainview.h"
 
 #include <QDialog>
 #include <QTreeWidget>
@@ -45,6 +46,26 @@ public:
     QVBoxLayout* vbox=new QVBoxLayout();
     BookmarkManager(MainView* m);
     MainView* mview=new MainView();
+    void loadBookmarks();
+    void showContextMenu(const QPoint& pos);
+    void openUrl();
+    void clearEntry();
+    void saveDescription();
+    void searchBookmark();
+};
+
+class PrivateBookmarkManager:public QDialog{
+public:
+    QTreeWidget* display=new QTreeWidget();
+    QAction* open=new QAction(tr("Open"));
+    QAction* del=new QAction(tr("Remove"));
+    QLineEdit* search=new QLineEdit();
+    QLineEdit* description=new QLineEdit();
+    QPushButton* save=new QPushButton(tr("Save Description"));
+    QPushButton* sbtn=new QPushButton(tr("Go"));
+    QVBoxLayout* vbox=new QVBoxLayout();
+    PrivateBookmarkManager(PrivateMainView* m);
+    PrivateMainView* mview=new PrivateMainView();
     void loadBookmarks();
     void showContextMenu(const QPoint& pos);
     void openUrl();

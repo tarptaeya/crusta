@@ -24,14 +24,14 @@
 
 #include "downloadwidget.h"
 
-#include <QWidget>
+#include <QDialog>
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QListWidget>
 
-class DownloadManager:public QWidget{
+class DownloadManager:public QDialog{
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QListWidget* listwidget=new QListWidget();

@@ -18,14 +18,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#ifndef MAINVIEW_H
-#define MAINVIEW_H
+#ifndef PRIVATEMAINVIEW_H
+#define PRIVATEMAINVIEW_H
 
 #include "fullscreennotifier.h"
-#include "webview.h"
-#include "searchlineedit.h"
-#include "addresslineedit.h"
-#include "tabwindow.h"
+#include "privatewebview.h"
+#include "privateaddresslineedit.h"
+#include "privatetabwindow.h"
 #include "presentationmodenotifier.h"
 #include "downloadwidget.h"
 #include "downloadmanager.h"
@@ -49,7 +48,7 @@
 
 
 
-class Window:public QWidget{
+class PWindow:public QWidget{
 public:
     QMenu* menu=new QMenu();
     DownloadManager* d_manager=new DownloadManager();
@@ -58,7 +57,7 @@ public:
 
 
 
-class MainView:public QMainWindow{
+class PrivateMainView:public QMainWindow{
     Q_OBJECT
 private:
     void quit();
@@ -85,7 +84,7 @@ public:
     void showPageInfo();
     void changeSpinner(int index);
 public:
-    Window* window=new Window();
+    PWindow* window=new PWindow();
     QTabWidget* tabWindow=new QTabWidget(this);
     QVBoxLayout* box=new QVBoxLayout();
     QMenuBar* menubar=new QMenuBar();
@@ -104,7 +103,6 @@ public:
     QAction* new_tab_action=new QAction();
     QAction* new_private_tab_action=new QAction();
     QAction* new_window_action=new QAction();
-    QAction* incognito=new QAction();
     QAction* open_file=new QAction();
     QAction* save_as_pdf=new QAction();
     QAction* save_page=new QAction();
@@ -149,7 +147,7 @@ public:
     QPushButton* newtabbtn=new QPushButton();
     QPageLayout currentPageLayout;
     DownloadManager* d_manager=new DownloadManager();
-    MainView();
+    PrivateMainView();
 
     void createView();
     void showView();
@@ -171,14 +169,8 @@ public:
     void closeOtherTabs(int index);
     void restoreTab(QUrl u);
     void about();
-    void showHistory();
-    void clearHistory();
     void showBookamrks();
     void showDownloads();
-    void openIncognito();
 };
 
-
-
-
-#endif // MAINVIEW_H
+#endif // PRIVATEMAINVIEW_H

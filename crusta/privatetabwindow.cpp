@@ -100,7 +100,7 @@ void PrivateTabWindow::createControls(){
     vbox->addLayout(hbox);
     vbox->addWidget(view);
     tab->setLayout(vbox);
-    tab->setStyleSheet("QWidget{background-color:black} QLineEdit{border:0.5px solid black;border-radius:10px;background-color:white;color:black}");
+    tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;background-color:white;color:black}");
 }
 
 QWidget* PrivateTabWindow::returnTab(){
