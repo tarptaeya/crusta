@@ -22,7 +22,11 @@ You can always contact Crusta Browser at : contact@crustabrowser.com
 
 ```qmake crusta.pro```
 
-4. execute the file
+4. Execute make
+
+```make```
+
+5. execute the crusta executable
 
 ```./crusta```
 
