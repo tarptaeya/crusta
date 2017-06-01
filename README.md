@@ -8,6 +8,25 @@ We would be happy to recieve a pull request from you. You can always contribute 
 
 You can always contact Crusta Browser at : contact@crustabrowser.com
 
+## How to Compile ##
+
+1. Clone the repository via
+
+```$ git clone git://github.com/CrustaBrowser/CrustaBrowser.git```
+
+2. Change directory to CrustaBrowser/crusta
+
+```cd CrustaBrowser/crusta```
+
+3. Run QMake
+
+```qmake crusta.pro```
+
+4. execute the file
+
+```./crusta```
+
+
 ## Screen-shots ##
 
 normal mode->
