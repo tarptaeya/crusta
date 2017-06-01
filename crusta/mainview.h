@@ -49,9 +49,15 @@
 
 
 
+class MainView;
+
+
+
 class Window:public QWidget{
+    void closeEvent(QCloseEvent *event);
 public:
     QMenu* menu=new QMenu();
+    MainView* parentView;
     DownloadManager* d_manager=new DownloadManager();
 };
 
@@ -179,6 +185,7 @@ public:
     void openIncognito();
     void changeUAfx();
     void spiltModefx();
+    void closeWindow();
 };
 
 

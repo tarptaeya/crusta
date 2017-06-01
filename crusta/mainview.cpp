@@ -294,6 +294,9 @@ void MainView::pastePageAction(){
 }
 
 MainView::MainView(){
+
+    this->window->parentView=this;
+
     QFile file("session.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream out(&file);
@@ -367,8 +370,8 @@ void MainView::createMenuBar(){
     this->capture_screenshot=this->file_menu->addAction(tr("&Capture ScreenShot"));
     this->capture_screenshot->setShortcut(QKeySequence(QKeySequence::Save));
     connect(this->capture_screenshot,&QAction::triggered,this,&MainView::screenShot);
-    this->exit_action=this->file_menu->addAction(tr("&Quit"));
-    connect(this->exit_action,&QAction::triggered,this,&MainView::quit);
+    this->exit_action=this->file_menu->addAction(tr("&Exit"));
+    connect(this->exit_action,&QAction::triggered,this,&MainView::closeWindow);
     this->edit_menu=this->menu->addMenu(tr("&Edit"));
     this->undo_action=this->edit_menu->addAction(tr("&Undo"));
     connect(this->undo_action,&QAction::triggered,this,&MainView::undoPageAction);
@@ -806,10 +809,50 @@ void MainView::changeUAfx(){
 }
 
 void MainView::spiltModefx(){
+    if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
+        if(this->box->count()==2){
+            this->box->itemAt(1)->widget()->deleteLater();
+            this->box->removeItem(this->box->itemAt(1));
+            this->split_mode_action->setText(tr("&Split Mode"));
+            return;
+        }
+        else{
+            Window* p=(Window*)this->window->parent();
+            p->layout()->itemAt(1)->widget()->deleteLater();
+            p->layout()->removeItem(p->layout()->itemAt(1));
+            return;
+        }
+    }
     box->setContentsMargins(0,0,0,0);
     box->setSpacing(0);
     MainView* newSplitView=new MainView();
     box->addWidget(newSplitView->window);
     newSplitView->split_mode_action->setText(tr("&Exit Split Mode"));
     this->split_mode_action->setText(tr("&Exit Split Mode"));
+}
+
+void MainView::closeWindow(){
+    if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
+        if(this->box->count()==2){
+            this->box->itemAt(1)->widget()->deleteLater();
+            this->box->removeItem(this->box->itemAt(1));
+            this->split_mode_action->setText(tr("&Split Mode"));
+            return;
+        }
+        else{
+            Window* p=(Window*)this->window->parent();
+            p->layout()->itemAt(1)->widget()->deleteLater();
+            p->layout()->removeItem(p->layout()->itemAt(1));
+            return;
+        }
+    }
+    int cnt=this->tabWindow->count();
+    for(int i=0;i<cnt;i++){
+        this->closeTab(0);
+    }
+}
+
+void Window::closeEvent(QCloseEvent *event){
+    this->parentView->closeWindow();
+    event->accept();
 }

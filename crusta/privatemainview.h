@@ -48,9 +48,15 @@
 
 
 
+class PrivateMainView;
+
+
+
 class PWindow:public QWidget{
+    void closeEvent(QCloseEvent *event);
 public:
     QMenu* menu=new QMenu();
+    PrivateMainView* pview;
     DownloadManager* d_manager=new DownloadManager();
 };
 
@@ -174,6 +180,7 @@ public:
     void showDownloads();
     void changeUAfx();
     void splitModefx();
+    void closeWindow();
 };
 
 #endif // PRIVATEMAINVIEW_H
