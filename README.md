@@ -10,6 +10,8 @@ You can always contact Crusta Browser at : contact@crustabrowser.com
 
 ## Screen-shots ##
 
+normal mode->
+
 ![shot-1](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crusta.png)
 
 
@@ -19,6 +21,7 @@ You can always contact Crusta Browser at : contact@crustabrowser.com
 
 
 
+split mode ->
 
 ![shot-3](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crustasplit.png)
 
