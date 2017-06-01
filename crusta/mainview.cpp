@@ -351,7 +351,8 @@ void MainView::createMenuBar(){
     this->file_menu=this->menu->addMenu(tr("&File"));
     this->new_tab_action=this->file_menu->addAction(tr("&New Tab"));
     connect(this->new_tab_action,&QAction::triggered,this,&MainView::addNormalTab);
-    this->file_menu->addAction(tr("&New Split Tab"));
+    this->split_mode_action=this->file_menu->addAction(tr("&Split Mode"));
+    connect(this->split_mode_action,&QAction::triggered,this,&MainView::spiltModefx);
     this->new_window_action=this->file_menu->addAction(tr("&New Window"));
     connect(this->new_window_action,&QAction::triggered,this,&MainView::newWindow);
     this->incognito=this->file_menu->addAction(tr("&New Private Window"));
@@ -802,4 +803,13 @@ void MainView::changeUAfx(){
     AddressLineEdit* ad=new AddressLineEdit();
     ad->setUAString();
     ad->deleteLater();
+}
+
+void MainView::spiltModefx(){
+    box->setContentsMargins(0,0,0,0);
+    box->setSpacing(0);
+    MainView* newSplitView=new MainView();
+    box->addWidget(newSplitView->window);
+    newSplitView->split_mode_action->setText(tr("&Exit Split Mode"));
+    this->split_mode_action->setText(tr("&Exit Split Mode"));
 }

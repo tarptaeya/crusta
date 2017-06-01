@@ -86,7 +86,7 @@ public:
 public:
     PWindow* window=new PWindow();
     QTabWidget* tabWindow=new QTabWidget(this);
-    QVBoxLayout* box=new QVBoxLayout();
+    QHBoxLayout* box=new QHBoxLayout();
     QMenuBar* menubar=new QMenuBar();
     QMenu* menu=new QMenu();
     QPushButton* add_btn=new QPushButton();
@@ -101,7 +101,7 @@ public:
     QMenu* help_menu=new QMenu();
     QMenu* devTools=new QMenu();
     QAction* new_tab_action=new QAction();
-    QAction* new_private_tab_action=new QAction();
+    QAction* split_mode_action=new QAction();
     QAction* new_window_action=new QAction();
     QAction* open_file=new QAction();
     QAction* save_as_pdf=new QAction();
@@ -173,6 +173,7 @@ public:
     void showBookamrks();
     void showDownloads();
     void changeUAfx();
+    void splitModefx();
 };
 
 #endif // PRIVATEMAINVIEW_H

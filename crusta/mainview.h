@@ -87,7 +87,7 @@ public:
 public:
     Window* window=new Window();
     QTabWidget* tabWindow=new QTabWidget(this);
-    QVBoxLayout* box=new QVBoxLayout();
+    QHBoxLayout* box=new QHBoxLayout();
     QMenuBar* menubar=new QMenuBar();
     QMenu* menu=new QMenu();
     QPushButton* add_btn=new QPushButton();
@@ -102,7 +102,7 @@ public:
     QMenu* help_menu=new QMenu();
     QMenu* devTools=new QMenu();
     QAction* new_tab_action=new QAction();
-    QAction* new_private_tab_action=new QAction();
+    QAction* split_mode_action=new QAction();
     QAction* new_window_action=new QAction();
     QAction* incognito=new QAction();
     QAction* open_file=new QAction();
@@ -178,6 +178,7 @@ public:
     void showDownloads();
     void openIncognito();
     void changeUAfx();
+    void spiltModefx();
 };
 
 

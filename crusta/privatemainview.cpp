@@ -340,7 +340,8 @@ void PrivateMainView::createMenuBar(){
     this->file_menu=this->menu->addMenu(tr("&File"));
     this->new_tab_action=this->file_menu->addAction(tr("&New Tab"));
     connect(this->new_tab_action,&QAction::triggered,this,&PrivateMainView::addNormalTab);
-    this->file_menu->addAction(tr("&New Split Tab"));
+    this->split_mode_action=this->file_menu->addAction(tr("&Split Tab Mode"));
+    connect(this->split_mode_action,&QAction::triggered,this,&PrivateMainView::splitModefx);
     this->file_menu->addSeparator();
     this->open_file=this->file_menu->addAction(tr("&Open File"));
     connect(this->open_file,&QAction::triggered,this,&PrivateMainView::openLocalFile);
@@ -763,4 +764,13 @@ void PrivateMainView::changeUAfx(){
     PrivateAddressLineEdit* pad=new PrivateAddressLineEdit();
     pad->setUAString();
     pad->deleteLater();
+}
+
+void PrivateMainView::splitModefx(){
+    box->setContentsMargins(0,0,0,0);
+    box->setSpacing(0);
+    PrivateMainView* psplitView=new PrivateMainView();
+    box->addWidget(psplitView->window);
+    psplitView->split_mode_action->setText(tr("&Exit Split Mode"));
+    this->split_mode_action->setText(tr("&Exit Split Mode"));
 }
