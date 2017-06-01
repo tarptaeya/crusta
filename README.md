@@ -7,3 +7,22 @@ Try out the new open source Crusta Browser, it's free to use and always be.
 We would be happy to recieve a pull request from you. You can always contribute to Crusta Browser by forking the Github repository. You can also contribute by making new Themes and Translations for Crusta Browser. Crusta Browser is a open source projected licensed under GPLv3.
 
 You can always contact Crusta Browser at : contact@crustabrowser.com
+
+## Screen-shots ##
+
+![shot-1](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crusta.png)
+
+
+
+
+![shot-2](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crusta2.png)
+
+
+
+
+![shot-3](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crustasplit.png)
+
+
+
+
+![shot-4](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/splitmode.png)
