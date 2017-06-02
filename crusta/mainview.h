@@ -156,6 +156,7 @@ public:
     QPushButton* newtabbtn=new QPushButton();
     QPageLayout currentPageLayout;
     DownloadManager* d_manager=new DownloadManager();
+    MainView* splitWindow;
     MainView();
 
     void createView();
@@ -186,6 +187,7 @@ public:
     void changeUAfx();
     void spiltModefx();
     void closeWindow();
+    void openUrl(QString url);
 };
 
 

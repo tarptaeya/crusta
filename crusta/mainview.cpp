@@ -60,8 +60,6 @@
 
 
 void MainView::closeTab(int index){
-    if(this->tabWindow->count()==1)
-        MainView::quit();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
@@ -69,6 +67,16 @@ void MainView::closeTab(int index){
     hist->setText(webview->title());
     hist->setIcon(webview->icon());
     QUrl u=webview->url();
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile file(exec_dir->absolutePath()+"/session.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream in(&file);
+    in << u.toString().toLatin1()+"\n";
+    file.close();
+    webview->load(QUrl("http://"));
+    if(this->tabWindow->count()==1)
+        MainView::quit();
     webview->page()->deleteLater();
     this->tabWindow->removeTab(index);
     MainView::addNewTabButton();
@@ -297,12 +305,6 @@ MainView::MainView(){
 
     this->window->parentView=this;
 
-    QFile file("session.txt");
-    file.open(QIODevice::WriteOnly);
-    QTextStream out(&file);
-    out <<"";
-    file.close();
-
     QFile f("preference.txt");
     if(!f.exists()){
         f.open(QIODevice::WriteOnly);
@@ -406,7 +408,6 @@ void MainView::createMenuBar(){
     connect(this->presentation_action,&QAction::triggered,this,&MainView::enterPresentationMode);
     this->fullscreen_action=this->view_menu->addAction(tr("&Show Full Screen"));
     connect(this->fullscreen_action,&QAction::triggered,this,&MainView::fullScreen);
-    this->view_menu->addAction(tr("&Reset View"));
     this->history_menu=this->menu->addMenu(tr("&History"));
     this->show_all_history=this->history_menu->addAction(tr("&Show All History"));
     connect(this->show_all_history,&QAction::triggered,this,&MainView::showHistory);
@@ -414,6 +415,7 @@ void MainView::createMenuBar(){
     connect(this->clearAllHist,&QAction::triggered,this,&MainView::clearHistory);
     this->history_menu->addSeparator();
     this->restore_session=this->history_menu->addAction(tr("Restore Previous Session"));
+    connect(this->restore_session,&QAction::triggered,this,&MainView::restoreSession);
     this->recently_closed=this->history_menu->addMenu(tr("&Recently Closed"));
     this->bookmark_menu=this->menu->addMenu(tr("&Bookmarks"));
     this->bookmark_tab=this->bookmark_menu->addAction(tr("&Bookmark This Page"));
@@ -811,38 +813,31 @@ void MainView::changeUAfx(){
 void MainView::spiltModefx(){
     if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
         if(this->box->count()==2){
-            this->box->itemAt(1)->widget()->deleteLater();
-            this->box->removeItem(this->box->itemAt(1));
+            this->box->removeWidget(this->splitWindow->window);
+            this->splitWindow->closeWindow();
             this->split_mode_action->setText(tr("&Split Mode"));
-            return;
-        }
-        else{
-            Window* p=(Window*)this->window->parent();
-            p->layout()->itemAt(1)->widget()->deleteLater();
-            p->layout()->removeItem(p->layout()->itemAt(1));
             return;
         }
     }
     box->setContentsMargins(0,0,0,0);
     box->setSpacing(0);
-    MainView* newSplitView=new MainView();
-    box->addWidget(newSplitView->window);
-    newSplitView->split_mode_action->setText(tr("&Exit Split Mode"));
+    this->splitWindow=new MainView();
+    box->addWidget(this->splitWindow->window);
     this->split_mode_action->setText(tr("&Exit Split Mode"));
 }
 
 void MainView::closeWindow(){
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile file(exec_dir->absolutePath()+"/session.txt");
+    file.open(QIODevice::WriteOnly);
+    QTextStream in(&file);
+    in << "";
+    file.close();
     if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
         if(this->box->count()==2){
-            this->box->itemAt(1)->widget()->deleteLater();
-            this->box->removeItem(this->box->itemAt(1));
+            this->splitWindow->closeWindow();
             this->split_mode_action->setText(tr("&Split Mode"));
-            return;
-        }
-        else{
-            Window* p=(Window*)this->window->parent();
-            p->layout()->itemAt(1)->widget()->deleteLater();
-            p->layout()->removeItem(p->layout()->itemAt(1));
             return;
         }
     }
@@ -855,4 +850,28 @@ void MainView::closeWindow(){
 void Window::closeEvent(QCloseEvent *event){
     this->parentView->closeWindow();
     event->accept();
+}
+
+void MainView::restoreSession(){
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile inputFile(exec_dir->absolutePath()+"/session.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          this->openUrl(line);
+       }
+       inputFile.close();
+    }
+}
+void MainView::openUrl(QString url){
+    this->addNormalTab();
+    int index=this->tabWindow->count()-1;
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    webview->load(QUrl(url));
 }
