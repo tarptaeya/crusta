@@ -541,6 +541,10 @@ void WebView::showContextMenu(const QPoint& pos){
         connect(a_paste,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::Paste);});
         contextMenu->addAction(a_paste);
         contextMenu->addSeparator();
+        QAction* crusta_speak=new QAction(tr("Crusta Speak"));
+        connect(crusta_speak,&QAction::triggered,this,&WebView::espeak);
+        contextMenu->addAction(crusta_speak);
+        contextMenu->addSeparator();
     }
     QAction* back_page=new QAction(QIcon(":/res/drawables/back.svg"),tr("Back"));
     connect(back_page,&QAction::triggered,this,&WebView::back);
@@ -567,6 +571,11 @@ void WebView::loadFinished(){
     QTextStream out(&file);
     out << title().toLatin1()+">>>>>"+url().toString().toLatin1()+">>>>>"+QDate::currentDate().toString().toLatin1()+"\n";
     file.close();
+}
+
+void WebView::espeak(){
+    QString txt=this->selectedText();
+    system("espeak \""+txt.toLatin1()+"\"&");
 }
 
 

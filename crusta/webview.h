@@ -84,6 +84,7 @@ public:
     void showContextMenu(const QPoint &pos);
     void loadFinished();
     void handleBeforePdf(qint64,qint64);
+    void espeak();
     WebView();
 };
 
