@@ -53,6 +53,7 @@
 #include <QWebEngineDownloadItem>
 #include <QPrinter>
 #include <QPageSetupDialog>
+#include <QMessageBox>
 
 #include <iostream>
 
@@ -901,7 +902,42 @@ void MainView::openUrl(QString url){
 }
 
 void MainView::openDebugger(){
+    QString a=QCoreApplication::arguments().last();
+    if(!a.contains("--remote-debugging-port=")){
+        QMessageBox* notify=new QMessageBox(this->window);
+        notify->setWindowFlag(Qt::FramelessWindowHint);
+        notify->setStyleSheet("QMessageBox{background-color:white;color:black} QLabel{color:black} QPushButton{border:0.5px solid black;width:100px;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+        notify->setText("Enable Debugging Mode By Launching Crusta With Argument '--remote-debugging-port=<port>' ");
+        notify->exec();
+        return;
+    }
+
+    QDialog* w=new QDialog();
+    QLabel* lbl=new QLabel(tr("REMOTE DEBUGGING PORT :"));
+    QLineEdit* port=new QLineEdit();
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(lbl);
+    hbox->addWidget(port);
+    QHBoxLayout* h1box=new QHBoxLayout();
+    QPushButton* ok=new QPushButton(tr("OK"));
+    h1box->addWidget(new QLabel());
+    h1box->addWidget(ok);
+    ok->setFixedWidth(100);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    vbox->addLayout(hbox);
+    vbox->addLayout(h1box);
+    w->setLayout(vbox);
+    w->setFixedWidth(500);
+    w->setWindowFlags(Qt::FramelessWindowHint);
+    w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    connect(ok,&QPushButton::clicked,w,&QDialog::accept);
+    if(w->exec()!=QDialog::Accepted){
+        return;
+    }
+    if(port->text()=="")
+        return;
+    QString _port=port->text();
     QWebEngineView* debugger=new QWebEngineView();
-    debugger->load(QUrl("http://localhost:9413"));
+    debugger->load(QUrl("http://localhost:"+_port));
     debugger->show();
 }

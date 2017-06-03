@@ -26,7 +26,6 @@
 
 QT       += core gui
 QT       += webenginewidgets webengine
-QT       += texttospeech
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
