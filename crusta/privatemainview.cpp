@@ -411,6 +411,7 @@ void PrivateMainView::createMenuBar(){
     this->tool_menu->addSeparator();
     this->tool_menu->addAction(tr("&Cookies Manager"));
     this->web_inspector_action=this->tool_menu->addAction(tr("&Web Inspector"));
+    connect(this->web_inspector_action,&QAction::triggered,this,&PrivateMainView::openDebugger);
     this->tool_menu->addSeparator();
     this->runJsCode=this->tool_menu->addAction(tr("&Run Javascript Code"));
     this->viewSource=this->tool_menu->addAction(tr("View Page Source"));
@@ -836,4 +837,10 @@ void PrivateMainView::closeWindow(){
 void PWindow::closeEvent(QCloseEvent* event){
     this->pview->closeWindow();
     event->accept();
+}
+
+void PrivateMainView::openDebugger(){
+    QWebEngineView* debugger=new QWebEngineView();
+    debugger->load(QUrl("http://localhost:9413"));
+    debugger->show();
 }

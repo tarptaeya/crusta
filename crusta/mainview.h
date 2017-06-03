@@ -188,6 +188,7 @@ public:
     void spiltModefx();
     void closeWindow();
     void openUrl(QString url);
+    void openDebugger();
 };
 
 

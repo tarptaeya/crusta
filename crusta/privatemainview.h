@@ -181,6 +181,7 @@ public:
     void changeUAfx();
     void splitModefx();
     void closeWindow();
+    void openDebugger();
 };
 
 #endif // PRIVATEMAINVIEW_H

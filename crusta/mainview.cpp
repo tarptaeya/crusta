@@ -435,6 +435,7 @@ void MainView::createMenuBar(){
     this->tool_menu->addSeparator();
     this->tool_menu->addAction(tr("&Cookies Manager"));
     this->web_inspector_action=this->tool_menu->addAction(tr("&Web Inspector"));
+    connect(this->web_inspector_action,&QAction::triggered,this,&MainView::openDebugger);
     this->tool_menu->addSeparator();
     this->runJsCode=this->tool_menu->addAction(tr("&Run Javascript Code"));
     this->viewSource=this->tool_menu->addAction(tr("View Page Source"));
@@ -897,4 +898,10 @@ void MainView::openUrl(QString url){
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     webview->load(QUrl(url));
+}
+
+void MainView::openDebugger(){
+    QWebEngineView* debugger=new QWebEngineView();
+    debugger->load(QUrl("http://localhost:9413"));
+    debugger->show();
 }

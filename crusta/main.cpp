@@ -28,6 +28,11 @@ int main(int argc, char *argv[]){
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);
     QtWebEngine::initialize();
+
+    #ifdef QT_DEBUG
+        qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "9413");
+    #endif
+
     a.setApplicationName(QString("Crusta"));
     a.setApplicationVersion(QString("1.0.0"));
     Q_INIT_RESOURCE(resource); // initialised the resource file;
