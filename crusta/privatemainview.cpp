@@ -351,7 +351,7 @@ void PrivateMainView::createMenuBar(){
     this->save_page=this->file_menu->addAction(tr("&Save Page"));
     connect(this->save_page,&QAction::triggered,this,&PrivateMainView::savePage);
     this->capture_screenshot=this->file_menu->addAction(tr("&Capture ScreenShot"));
-    this->capture_screenshot->setShortcut(QKeySequence(QKeySequence::Save));
+    this->capture_screenshot->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_K));
     connect(this->capture_screenshot,&QAction::triggered,this,&PrivateMainView::screenShot);
     this->exit_action=this->file_menu->addAction(tr("&Quit"));
     connect(this->exit_action,&QAction::triggered,this,&PrivateMainView::closeWindow);
@@ -412,10 +412,9 @@ void PrivateMainView::createMenuBar(){
     this->tool_menu->addAction(tr("&Cookies Manager"));
     this->web_inspector_action=this->tool_menu->addAction(tr("&Web Inspector"));
     this->tool_menu->addSeparator();
-    this->devTools=this->tool_menu->addMenu(tr("&Developer Tools"));
-    this->runJsCode=this->devTools->addAction(tr("&Run Javascript Code"));
-    this->viewSource=this->devTools->addAction(tr("View Page Source"));
-    this->changUA=this->devTools->addAction(tr("Edit User Agent"));
+    this->runJsCode=this->tool_menu->addAction(tr("&Run Javascript Code"));
+    this->viewSource=this->tool_menu->addAction(tr("View Page Source"));
+    this->changUA=this->tool_menu->addAction(tr("Edit User Agent"));
     connect(this->viewSource,&QAction::triggered,this,&PrivateMainView::viewPageSource);
     connect(this->runJsCode,&QAction::triggered,this,&PrivateMainView::showJsCodeEditor);
     connect(this->changUA,&QAction::triggered,this,&PrivateMainView::changeUAfx);
@@ -430,6 +429,29 @@ void PrivateMainView::createMenuBar(){
     this->help_menu->addAction(tr("&Report Issue"));
     this->help_menu->addSeparator();
     this->help_menu->addAction(tr("&License"));
+
+    this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
+    this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));
+    this->open_file->setShortcut(QKeySequence(QKeySequence::Open));
+    this->save_as_pdf->setShortcut(QKeySequence(QKeySequence::Print));
+    this->save_page->setShortcut(QKeySequence(QKeySequence::Save));
+    this->exit_action->setShortcut(QKeySequence(QKeySequence::Quit));
+
+    this->undo_action->setShortcut(QKeySequence(QKeySequence::Undo));
+    this->redo_action->setShortcut(QKeySequence(QKeySequence::Redo));
+    this->cut_action->setShortcut(QKeySequence(QKeySequence::Cut));
+    this->copy_action->setShortcut(QKeySequence(QKeySequence::Copy));
+    this->paste_action->setShortcut(QKeySequence(QKeySequence::Paste));
+    this->selectall_action->setShortcut(QKeySequence(QKeySequence::SelectAll));
+
+    this->zoom_in_action->setShortcut(QKeySequence(QKeySequence::ZoomIn));
+    this->zoom_out_action->setShortcut(QKeySequence(QKeySequence::ZoomOut));
+    this->fullscreen_action->setShortcut(QKeySequence(QKeySequence::FullScreen));
+
+    this->show_all_history->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_H));
+    this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
+    this->show_all_downloads->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_J));
+
     this->window->menu=this->menu;
 }
 
