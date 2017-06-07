@@ -216,7 +216,7 @@ QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type)
         QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
         PWindow* win=(PWindow*)tabwidget->parentWidget();
         tabwin->menu_btn->setMenu(win->menu);
-        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("New Tab"));
+        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("Connecting..."));
         tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
         return view;
     }
@@ -232,7 +232,7 @@ QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type)
         QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
         PWindow* win=(PWindow*)tabwidget->parentWidget();
         tabwin->menu_btn->setMenu(win->menu);
-        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("New Tab"));
+        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("Connecting"));
         return view;
     }
     case QWebEnginePage::WebBrowserWindow: {

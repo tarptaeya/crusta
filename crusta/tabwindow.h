@@ -22,7 +22,6 @@
 #define TABWINDOW_H
 
 #include "addresslineedit.h"
-#include "searchlineedit.h"
 #include "webview.h"
 
 #include <QObject>

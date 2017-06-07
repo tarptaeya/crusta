@@ -19,129 +19,92 @@
 * ============================================================ */
 
 #include "themeeditor.h"
-#include <QVBoxLayout>
-
-void ThemeEditor::createTabTheme(){
-    QVBoxLayout* tbox =new QVBoxLayout();
-    tab->setLayout(tbox);
-    tab->setTitle("Tabs");
-
-    QHBoxLayout* t0box=new QHBoxLayout();
-    t0box->addWidget(new QLabel(tr("active tab width")));
-    t0box->addWidget(atabwidth);
-    atabwidth->setMaximum(300);
-    atabwidth->setMinimum(75);
-    atabwidth->setSingleStep(1);
-    atabwidth->setValue(175);
-    tbox->addLayout(t0box);
-
-    QHBoxLayout* t1box=new QHBoxLayout();
-    t1box->addWidget(new QLabel(tr("passive tab width")));
-    t1box->addWidget(ptabwidth);
-    ptabwidth->setMaximum(300);
-    ptabwidth->setMinimum(75);
-    ptabwidth->setSingleStep(1);
-    ptabwidth->setValue(175);
-    tbox->addLayout(t1box);
-
-    QHBoxLayout* t2box=new QHBoxLayout();
-    t2box->addWidget(new QLabel(tr("active tab color")));
-    t2box->addWidget(atabcolor);
-    t2box->addWidget(atc);
-    tbox->addLayout(t2box);
-
-    QHBoxLayout* t3box=new QHBoxLayout();
-    t3box->addWidget(new QLabel(tr("passive tab color")));
-    t3box->addWidget(ptabcolor);
-    t3box->addWidget(ptc);
-    tbox->addLayout(t3box);
-
-    QHBoxLayout* t4box=new QHBoxLayout();
-    t4box->addWidget(new QLabel(tr("active tab hovered")));
-    t4box->addWidget(atabhover);
-    t4box->addWidget(ath);
-    tbox->addLayout(t4box);
-
-    QHBoxLayout* t5box=new QHBoxLayout();
-    t5box->addWidget(new QLabel(tr("passive tab hovered")));
-    t5box->addWidget(ptabhover);
-    t5box->addWidget(pth);
-    tbox->addLayout(t5box);
-
-    vbox->addWidget(tab);
-}
-
-void ThemeEditor::createTabBarTheme(){
-    QVBoxLayout* tbbox=new QVBoxLayout();
-    tabbar->setLayout(tbbox);
-    tabbar->setTitle(tr("Window"));
-
-    QHBoxLayout* tb0box=new QHBoxLayout();
-    tb0box->addWidget(new QLabel(tr("left")));
-    tb0box->addWidget(left);
-    left->setMaximum(100);
-    left->setMinimum(0);
-    left->setSingleStep(1);
-    left->setValue(35);
-    tbbox->addLayout(tb0box);
-
-    QHBoxLayout* tb1box=new QHBoxLayout();
-    tb1box->addWidget(new QLabel(tr("color")));
-    tb1box->addWidget(color);
-    tb1box->addWidget(tbc);
-    tbbox->addLayout(tb1box);
-
-    vbox->addWidget(tabbar);
-}
+#include <QLabel>
+#include <QDir>
 
 ThemeEditor::ThemeEditor(){
-    this->setLayout(vbox);
-    createTabTheme();
-    createTabBarTheme();
-    connect(atc,&QPushButton::clicked,this,&ThemeEditor::m_atc);
-    connect(ptc,&QPushButton::clicked,this,&ThemeEditor::m_ptc);
-    connect(ath,&QPushButton::clicked,this,&ThemeEditor::m_ath);
-    connect(pth,&QPushButton::clicked,this,&ThemeEditor::m_pth);
-    connect(tbc,&QPushButton::clicked,this,&ThemeEditor::m_tbc);
+    setWindowFlag(Qt::FramelessWindowHint);
+    setLayout(vbox);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(color);
+    color->setPlaceholderText("enter a valid css color or hex code");
+    hbox->addWidget(cdg);
+    cdg->setText(tr("Pick Color"));
+    connect(cdg,&QPushButton::clicked,this,&ThemeEditor::setColor);
+    hbox->addWidget(new QLabel());
+    vbox->addLayout(hbox);
+    QHBoxLayout* h1box=new QHBoxLayout();
+    h1box->addWidget(restore);
+    restore->setText(tr("Restore"));
+    connect(restore,&QPushButton::clicked,this,&ThemeEditor::restoreTheme);
+    h1box->addWidget(new QLabel());
+    h1box->addWidget(cncl);
+    cncl->setText(tr("Cancel"));
+    connect(cncl,&QPushButton::clicked,this,&QDialog::reject);
+    h1box->addWidget(ok);
+    ok->setText(tr("OK"));
+    connect(ok,&QPushButton::clicked,this,&ThemeEditor::saveTheme);
+    vbox->addLayout(h1box);
+    setFixedWidth(500);
+    setStyleSheet("QDialog{background-color:white;color:black} QLabel{color:black} QLineEdit{padding:3px 8px;color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
 }
 
-void ThemeEditor::m_atc(){
-    QColorDialog* cd=new QColorDialog();
-    cd->setOption(QColorDialog::DontUseNativeDialog,true);
-    QColor colour=cd->getColor(Qt::white,this,QString(tr("Crusta : pick-color")),cd->options());
-    if(colour.isValid()){
-        atabcolor->setText(colour.name());
+void ThemeEditor::restoreTheme(){
+    this->accept();
+    QString  _col="blueviolet";
+    QString theme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:"+_col+";} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid "+_col+";height:30px} QPushButton{background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile f(exec_dir->absolutePath()+"/preference.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            if(line.split(">>>>>")[0]!="theme")
+                s.append(line + "\n");
+            else{
+                s.append(line.split(">>>>>")[0]+">>>>>"+theme+"\n");
+            }
+        }
+        f.resize(0);
+        t << s;
+        f.close();
     }
+    _parent->loadTheme();
 }
 
-void ThemeEditor::m_ptc(){
-    QColorDialog* cd=new QColorDialog();
-    cd->setOption(QColorDialog::DontUseNativeDialog,true);
-    QColor colour=cd->getColor(Qt::white,this,QString(tr("Crusta : pick-color")),cd->options());
-    if(colour.isValid()){
-        ptabcolor->setText(colour.name());
+void ThemeEditor::saveTheme(){
+    this->accept();
+    QString  _col=color->text();
+    QString theme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:"+_col+";} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid "+_col+";height:30px} QPushButton{background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile f(exec_dir->absolutePath()+"/preference.txt");
+    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&f);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            if(line.split(">>>>>")[0]!="theme")
+                s.append(line + "\n");
+            else{
+                s.append(line.split(">>>>>")[0]+">>>>>"+theme+"\n");
+            }
+        }
+        f.resize(0);
+        t << s;
+        f.close();
     }
+    _parent->loadTheme();
 }
 
-void ThemeEditor::m_ath(){
-    QColorDialog* cd=new QColorDialog();
-    cd->setOption(QColorDialog::DontUseNativeDialog,true);
-    QColor colour=cd->getColor(Qt::white,this,QString(tr("Crusta : pick-color")),cd->options());
-    if(colour.isValid()){
-        atabhover->setText(colour.name());
-    }
-}
-
-void ThemeEditor::m_pth(){
-    QColorDialog* cd=new QColorDialog();
-    cd->setOption(QColorDialog::DontUseNativeDialog,true);
-    QColor colour=cd->getColor(Qt::white,this,QString(tr("Crusta : pick-color")),cd->options());
-    if(colour.isValid()){
-        ptabhover->setText(colour.name());
-    }
-}
-
-void ThemeEditor::m_tbc(){
+void ThemeEditor::setColor(){
     QColorDialog* cd=new QColorDialog();
     cd->setOption(QColorDialog::DontUseNativeDialog,true);
     QColor colour=cd->getColor(Qt::white,this,QString(tr("Crusta : pick-color")),cd->options());
@@ -149,7 +112,3 @@ void ThemeEditor::m_tbc(){
         color->setText(colour.name());
     }
 }
-
-
-
-

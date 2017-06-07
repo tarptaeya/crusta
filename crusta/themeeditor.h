@@ -21,44 +21,31 @@
 #ifndef THEMEEDITOR_H
 #define THEMEEDITOR_H
 
-#include <QWidget>
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QLabel>
-#include <QGroupBox>
+#include <QDialog>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QPushButton>
+#include <QLineEdit>
 #include <QColorDialog>
+#include "mainview.h"
 
-class ThemeEditor:public QWidget{
-public:
-    QGroupBox* tab =new QGroupBox();
-    QSpinBox* atabwidth=new QSpinBox();
-    QSpinBox* ptabwidth=new QSpinBox();
-    QLineEdit* atabcolor=new QLineEdit();
-    QPushButton* atc=new QPushButton();
-    QLineEdit* ptabcolor=new QLineEdit();
-    QPushButton* ptc=new QPushButton();
-    QLineEdit* atabhover=new QLineEdit();
-    QPushButton* ath=new QPushButton();
-    QLineEdit* ptabhover=new QLineEdit();
-    QPushButton* pth=new QPushButton();
 
-    QGroupBox* tabbar =new QGroupBox();
-    QSpinBox* left=new QSpinBox();
+class ThemeEditor:public QDialog{
+private:
     QLineEdit* color=new QLineEdit();
-    QPushButton* tbc=new QPushButton();
-
     QVBoxLayout* vbox=new QVBoxLayout();
-
+    QPushButton* restore=new QPushButton();
+    QPushButton* ok=new QPushButton();
+    QPushButton* cncl=new QPushButton();
+    QPushButton* cdg=new QPushButton();
+    void saveTheme();
+    void restoreTheme();
+    void setColor();
+public:
     ThemeEditor();
-    void createTabTheme();
-    void createTabBarTheme();
-    void m_atc();
-    void m_ptc();
-    void m_ath();
-    void m_pth();
-    void m_tbc();
+    MainView* _parent=new MainView();
 };
+
+
 
 #endif // THEMEEDITOR_H

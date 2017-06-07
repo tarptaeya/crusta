@@ -23,7 +23,6 @@
 
 #include "fullscreennotifier.h"
 #include "webview.h"
-#include "searchlineedit.h"
 #include "addresslineedit.h"
 #include "tabwindow.h"
 #include "privatetabwindow.h"
@@ -303,14 +302,17 @@ void MainView::pastePageAction(){
 }
 
 MainView::MainView(){
+    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:crimson;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid crimson;height:30px} QPushButton{background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
 
     this->window->parentView=this;
 
-    QFile f("preference.txt");
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile f(exec_dir->absolutePath()+"/preference.txt");
     if(!f.exists()){
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
-        in<<"Search String>>>>>\nUA String>>>>>\nHome Page>>>>>\n";
+        in<<"Search String>>>>>\nUA String>>>>>\nHome Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
         f.close();
     }
 
@@ -335,7 +337,7 @@ MainView::MainView(){
     connect(this->newtabbtn,&QPushButton::clicked,this,&MainView::addNormalTab);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::changeSpinner);
 
-    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:crimson;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid crimson;height:30px} QPushButton{background-color:#dbdbdb;} QPushButton:hover{background-color:white;}");
+    loadTheme();
 
 }
 
@@ -393,7 +395,7 @@ void MainView::createMenuBar(){
     this->find_action=this->edit_menu->addAction(tr("&Find"));
     this->find_action->setShortcut(QKeySequence(QKeySequence::Find));
     connect(this->find_action,&QAction::triggered,this,&MainView::FindText);
-    this->preference=this->edit_menu->addAction(tr("&Edit Preference"));
+    this->preference=this->edit_menu->addAction(tr("&Edit Theme"));
     connect(this->preference,&QAction::triggered,this,&MainView::editPreference);
     this->view_menu=this->menu->addMenu(tr("&View"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
@@ -673,8 +675,8 @@ void MainView::addNewTabButton(){
 
 void MainView::editPreference(){
     ThemeEditor* th=new ThemeEditor();
-    th->setWindowTitle(tr("Theme Editor"));
-    th->show();
+    th->_parent=this;
+    th->exec();
 }
 
 void MainView::duplicateTab(QWebEngineView* view){
@@ -938,4 +940,25 @@ void MainView::openDebugger(){
     QWebEngineView* debugger=new QWebEngineView();
     debugger->load(QUrl("http://localhost:"+_port));
     debugger->show();
+}
+
+void MainView::loadTheme(){
+    QString theme;
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../crusta_db");
+    QFile inputFile(exec_dir->absolutePath()+"/preference.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          if(line.split(">>>>>").length()<2)
+              continue;
+          if(line.split(">>>>>")[0]=="theme")
+              theme=line.split(">>>>>")[1];
+       }
+       inputFile.close();
+    }
+    this->tabWindow->setStyleSheet(theme);
 }

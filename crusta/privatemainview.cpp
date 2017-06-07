@@ -374,8 +374,6 @@ void PrivateMainView::createMenuBar(){
     this->find_action=this->edit_menu->addAction(tr("&Find"));
     this->find_action->setShortcut(QKeySequence(QKeySequence::Find));
     connect(this->find_action,&QAction::triggered,this,&PrivateMainView::FindText);
-    this->preference=this->edit_menu->addAction(tr("&Edit Preference"));
-    connect(this->preference,&QAction::triggered,this,&PrivateMainView::editPreference);
     this->view_menu=this->menu->addMenu(tr("&View"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&PrivateMainView::viewPageSource);
@@ -644,12 +642,6 @@ void PrivateMainView::addNewTabButton(){
     this->newtabbtn->setFlat(false);
     this->newtabbtn->setFixedHeight(22);
     this->newtabbtn->setFixedWidth(25);
-}
-
-void PrivateMainView::editPreference(){
-    ThemeEditor* th=new ThemeEditor();
-    th->setWindowTitle(tr("Theme Editor"));
-    th->show();
 }
 
 void PrivateMainView::duplicateTab(QWebEngineView* view){

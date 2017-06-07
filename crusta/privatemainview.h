@@ -126,7 +126,6 @@ public:
     QAction* zoom_out_action=new QAction();
     QAction* reset_zoom_action=new QAction();
     QAction* presentation_action=new QAction();
-    QAction* preference=new QAction();
     QAction* show_all_history=new QAction();
     QAction* clearAllHist=new QAction();
     QAction* restore_session=new QAction();
@@ -170,7 +169,6 @@ public:
     void screenShot();
     void tabAreaDoubleClicked(int index);
     void addNewTabButton();
-    void editPreference();
     void duplicateTab(QWebEngineView*);
     void reloadAllTabs();
     void closeOtherTabs(int index);

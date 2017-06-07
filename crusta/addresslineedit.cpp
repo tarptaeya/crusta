@@ -74,6 +74,7 @@ void AddressLineEdit::showContextMenu(const QPoint& pos){
 }
 
 AddressLineEdit::AddressLineEdit(){
+    setPlaceholderText("Search or enter address");
     createAddressLineEdit();
     setCompleter(cmpleter);
     createCompleter();

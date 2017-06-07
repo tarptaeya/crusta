@@ -35,7 +35,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     fullscreennotifier.cpp \
-    searchlineedit.cpp \
     addresslineedit.cpp \
     presentationmodenotifier.cpp \
     webview.cpp \
@@ -59,7 +58,6 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     fullscreennotifier.h \
-    searchlineedit.h \
     addresslineedit.h \
     presentationmodenotifier.h \
     webview.h \

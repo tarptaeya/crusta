@@ -23,7 +23,6 @@
 
 #include "fullscreennotifier.h"
 #include "webview.h"
-#include "searchlineedit.h"
 #include "addresslineedit.h"
 #include "tabwindow.h"
 #include "presentationmodenotifier.h"
@@ -158,6 +157,7 @@ public:
     DownloadManager* d_manager=new DownloadManager();
     MainView* splitWindow;
     MainView();
+    QString defaultTheme;
 
     void createView();
     void showView();
@@ -189,6 +189,7 @@ public:
     void closeWindow();
     void openUrl(QString url);
     void openDebugger();
+    void loadTheme();
 };
 
 

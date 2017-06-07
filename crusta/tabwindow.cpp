@@ -34,6 +34,7 @@
 #include <QDialog>
 #include <QStringList>
 #include <QStringListModel>
+#include <QMenu>
 
 #include <iostream>
 
