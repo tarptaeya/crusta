@@ -517,7 +517,7 @@ void PrivateWebView::showContextMenu(const QPoint& pos){
         QAction* open_link_in_new_tab=new QAction(tr("Open Link In New Private Tab"));
         connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
         contextMenu->addAction(open_link_in_new_tab);
-        QAction* open_link_in_new_window=new QAction(tr("Open Link In New Normal Window"));
+        QAction* open_link_in_new_window=new QAction(tr("Open Link as PopUp"));
         connect(open_link_in_new_window,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewWindow);});
         contextMenu->addAction(open_link_in_new_window);
         contextMenu->addSeparator();

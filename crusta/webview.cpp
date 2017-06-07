@@ -235,7 +235,6 @@ QWebEngineView* WebView::createWindow(QWebEnginePage::WebWindowType type){
         return view;
     }
     case QWebEnginePage::WebBrowserWindow: {
-        std::cout<<"window Requested"<<std::endl;
         QWebEngineView* view=new QWebEngineView();
         connect(view->page(),&QWebEnginePage::windowCloseRequested,view,&QWebEngineView::close);
         view->setWindowTitle(view->title());
@@ -512,7 +511,7 @@ void WebView::showContextMenu(const QPoint& pos){
         QAction* open_link_in_new_tab=new QAction(tr("Open Link In New Tab"));
         connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
         contextMenu->addAction(open_link_in_new_tab);
-        QAction* open_link_in_new_window=new QAction(tr("Open Link In New Window"));
+        QAction* open_link_in_new_window=new QAction(tr("Open Link as PopUp"));
         connect(open_link_in_new_window,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewWindow);});
         contextMenu->addAction(open_link_in_new_window);
         contextMenu->addSeparator();

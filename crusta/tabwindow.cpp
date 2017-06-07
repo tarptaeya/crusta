@@ -35,6 +35,7 @@
 #include <QStringList>
 #include <QStringListModel>
 #include <QMenu>
+#include <QDir>
 
 #include <iostream>
 
@@ -45,7 +46,14 @@ void TabWindow::viewHome(){
 }
 
 void TabWindow::updateAddrBar(){
-    this->addr_bar->initialize()->setText(this->view->returnView()->url().toString());
+    QString url=this->view->returnView()->url().toString();
+    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    exec_dir->cd("../web");
+    QString forbidden="file://"+exec_dir->absolutePath()+"/index.html";
+    if(forbidden==url){
+        return;
+    }
+    this->addr_bar->initialize()->setText(url);
     this->addr_bar->initialize()->setCursorPosition(0);
     QString s=this->addr_bar->text();
     QFile inputFile("completer.txt");

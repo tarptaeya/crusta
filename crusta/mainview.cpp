@@ -132,7 +132,6 @@ void MainView::tabBarContext(QPoint point){
         rld_tab=contextMenu->addAction(tr("&Reload Tab"));
         connect(rld_tab,&QAction::triggered,webview,&QWebEngineView::reload);
         contextMenu->addAction(tr("&Mute Tab"));
-        contextMenu->addAction(tr("&Pin Tab"));
         QAction* duplicate=new QAction();
         duplicate=contextMenu->addAction(tr("&Duplicate Tab"));
         connect(duplicate,&QAction::triggered,this,[this,webview]{duplicateTab(webview);});
@@ -563,6 +562,14 @@ void MainView::addNormalTab(){
         }
         webview->home_page=home;
         webview->load(home);
+    }
+    else{
+        QWidget* widget=this->tabWindow->widget(cnt-1);
+        QLayout* layout=widget->layout();
+        WebView* webview=(WebView*)layout->itemAt(1)->widget();
+        QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+        exec_dir->cd("../web");
+        webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
     }
     MainView::addNewTabButton();
 }

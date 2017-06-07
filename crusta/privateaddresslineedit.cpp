@@ -72,6 +72,7 @@ void PrivateAddressLineEdit::showContextMenu(const QPoint& pos){
 }
 
 PrivateAddressLineEdit::PrivateAddressLineEdit(){
+    setPlaceholderText(tr("Search or enter address"));
     createAddressLineEdit();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,&PrivateAddressLineEdit::customContextMenuRequested,this,&PrivateAddressLineEdit::showContextMenu);
