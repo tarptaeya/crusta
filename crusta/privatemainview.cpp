@@ -117,11 +117,12 @@ void PrivateMainView::tabBarContext(QPoint point){
         QAction* rld_tab=new QAction();
         rld_tab=contextMenu->addAction(tr("&Reload Tab"));
         connect(rld_tab,&QAction::triggered,webview,&QWebEngineView::reload);
-        contextMenu->addAction(tr("&Mute Tab"));
+        QAction* mute_tab=new QAction(tr("&Toggle Audio"));
+        contextMenu->addAction(mute_tab);
+        connect(mute_tab,&QAction::triggered,this,[this,webview]{webview->page()->setAudioMuted(!webview->page()->isAudioMuted());});
         QAction* duplicate=new QAction();
         duplicate=contextMenu->addAction(tr("&Duplicate Tab"));
         connect(duplicate,&QAction::triggered,this,[this,webview]{duplicateTab(webview);});
-        contextMenu->addAction(tr("&Open in new Window"));
         contextMenu->addAction(tr("&Bookmark Tab"));
         contextMenu->addAction(tr("&Bookmark All Tabs"));
         QAction* closeoth=new QAction();
@@ -835,6 +836,15 @@ void PrivateMainView::closeWindow(){
 void PWindow::closeEvent(QCloseEvent* event){
     this->pview->closeWindow();
     event->accept();
+}
+
+void PrivateMainView::openUrl(QString url){
+    this->addNormalTab();
+    int index=this->tabWindow->count()-1;
+    QWidget* widget=this->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
+    webview->load(QUrl(url));
 }
 
 void PrivateMainView::openDebugger(){

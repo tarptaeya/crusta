@@ -180,6 +180,7 @@ public:
     void splitModefx();
     void closeWindow();
     void openDebugger();
+    void openUrl(QString);
 };
 
 #endif // PRIVATEMAINVIEW_H

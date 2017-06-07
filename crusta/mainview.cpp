@@ -131,13 +131,14 @@ void MainView::tabBarContext(QPoint point){
         QAction* rld_tab=new QAction();
         rld_tab=contextMenu->addAction(tr("&Reload Tab"));
         connect(rld_tab,&QAction::triggered,webview,&QWebEngineView::reload);
-        contextMenu->addAction(tr("&Mute Tab"));
+        QAction* mute_tab=new QAction(tr("&Toggle Audio"));
+        contextMenu->addAction(mute_tab);
+        connect(mute_tab,&QAction::triggered,this,[this,webview]{webview->page()->setAudioMuted(!webview->page()->isAudioMuted());});
         QAction* duplicate=new QAction();
         duplicate=contextMenu->addAction(tr("&Duplicate Tab"));
         connect(duplicate,&QAction::triggered,this,[this,webview]{duplicateTab(webview);});
-        contextMenu->addAction(tr("&Open in new Window"));
-        contextMenu->addAction(tr("&Bookmark Tab"));
-        contextMenu->addAction(tr("&Bookmark All Tabs"));
+        contextMenu->addAction(this->bookmark_tab);
+        contextMenu->addAction(this->bookmark_all_tabs);
         QAction* closeoth=new QAction();
         closeoth=contextMenu->addAction(tr("&Close Other Tabs"));
         connect(closeoth,&QAction::triggered,this,[this,index]{closeOtherTabs(index);});
@@ -151,9 +152,7 @@ void MainView::tabBarContext(QPoint point){
         QAction* rlod=new QAction();
         rlod=barContext->addAction(tr("&Reload All Tabs"));
         connect(rlod,&QAction::triggered,this,&MainView::reloadAllTabs);
-        barContext->addAction(tr("&Bookmark All Tabs"));
-        barContext->addAction(tr("Mute All Tabs"));
-        barContext->addAction(tr("&Restore All Tabs"));
+        barContext->addAction(this->bookmark_all_tabs);
         barContext->exec(this->tabWindow->tabBar()->mapToGlobal(point));
     }
 }
@@ -899,6 +898,7 @@ void MainView::restoreSession(){
        inputFile.close();
     }
 }
+
 void MainView::openUrl(QString url){
     this->addNormalTab();
     int index=this->tabWindow->count()-1;

@@ -544,6 +544,9 @@ void PrivateWebView::showContextMenu(const QPoint& pos){
         QAction* crusta_speak=new QAction(tr("Crusta Speak"));
         connect(crusta_speak,&QAction::triggered,this,&PrivateWebView::espeak);
         contextMenu->addAction(crusta_speak);
+        QAction* a_search=new QAction(tr("Search"));
+        connect(a_search,&QAction::triggered,this,[this,text]{this->search(text);});
+        contextMenu->addAction(a_search);
         contextMenu->addSeparator();
     }
     QAction* back_page=new QAction(QIcon(":/res/drawables/back.svg"),tr("Back"));
@@ -570,6 +573,29 @@ void PrivateWebView::espeak(){
     system("espeak \""+txt.toLatin1()+"\"&");
 }
 
+void PrivateWebView::search(QString text){
+    QFile inputFile("preference.txt");
+    QString srch;
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data[0]=="Search String"){
+              srch=data[1];
+              inputFile.close();
+          }
+       }
+       inputFile.close();
+    }
+    QWidget* widget=(QWidget*)this->parent();
+    QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+    QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+    PWindow* win=(PWindow*)tabwidget->parentWidget();
+    win->pview->openUrl(srch+text);
+}
 
 
 
