@@ -78,7 +78,6 @@ WebView::WebView(){
     connect(page(),&QWebEnginePage::linkHovered,this,&WebView::showLinkHovered);
     connect(page(),&QWebEnginePage::windowCloseRequested,this,&WebView::closeTab);
     //connect(page(),&QWebEnginePage::recentlyAudibleChanged,this,&WebView::audioInfo);
-    connect(page(),&QWebEnginePage::authenticationRequired,this,&WebView::authenticate);
     connect(page(),&WebPage::windowCloseRequested,this,&WebView::closeTab);
 
     //context-menu
@@ -505,10 +504,6 @@ void WebView::audioInfo(){
             break;
         }
     }
-}
-
-void WebView::authenticate(const QUrl u,QAuthenticator *authenticator){
-    std::cout<<"yes"<<std::endl;
 }
 
 void WebView::showContextMenu(const QPoint& pos){

@@ -50,15 +50,20 @@ QLineEdit* PrivateAddressLineEdit::initialize(){
 void PrivateAddressLineEdit::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
     QAction* undo=new QAction(tr("Undo"));
+    connect(undo,&QAction::triggered,this,&QLineEdit::undo);
     contextMenu->addAction(undo);
     QAction* redo=new QAction(tr("Redo"));
+    connect(redo,&QAction::triggered,this,&QLineEdit::redo);
     contextMenu->addAction(redo);
     contextMenu->addSeparator();
     QAction* cut=new QAction(tr("Cut"));
+    connect(cut,&QAction::triggered,this,&QLineEdit::cut);
     contextMenu->addAction(cut);
     QAction* copy=new QAction(tr("Copy"));
+    connect(copy,&QAction::triggered,this,&QLineEdit::copy);
     contextMenu->addAction(copy);
     QAction* paste=new QAction(tr("Paste"));
+    connect(paste,&QAction::triggered,this,&QLineEdit::paste);
     contextMenu->addAction(paste);
     contextMenu->addSeparator();
     contextMenu->addAction(default_search);

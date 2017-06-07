@@ -80,7 +80,6 @@ public:
     void showLinkHovered(QString url);
     void closeTab();
     void audioInfo();
-    void authenticate(const QUrl u, QAuthenticator *authenticator);
     void showContextMenu(const QPoint &pos);
     void loadFinished();
     void handleBeforePdf(qint64,qint64);

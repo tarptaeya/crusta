@@ -24,6 +24,8 @@
 #include <QWebEnginePage>
 #include <QString>
 #include <QWebEngineProfile>
+#include <QMessageBox>
+#include <QWebEngineCertificateError>
 
 
 class Profile:public QWebEngineProfile{
@@ -34,6 +36,7 @@ public:
 class WebPage:public QWebEnginePage{
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
+    virtual bool certificateError(const QWebEngineCertificateError &error);
 public:
     QString agent;
     void loadUAString();
@@ -45,6 +48,7 @@ public:
 class PrivateWebPage:public QWebEnginePage{
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
+    virtual bool certificateError(const QWebEngineCertificateError &error);
 public:
     QString agent;
     void loadUAString();

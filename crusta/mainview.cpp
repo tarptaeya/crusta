@@ -432,9 +432,7 @@ void MainView::createMenuBar(){
     this->tool_menu=this->menu->addMenu(tr("&Tools"));
     this->sitei=this->tool_menu->addAction(tr("&Site Info"));
     connect(this->sitei,&QAction::triggered,this,&MainView::showPageInfo);
-    this->tool_menu->addAction(tr("&Crusta Speak"));
     this->tool_menu->addSeparator();
-    this->tool_menu->addAction(tr("&Cookies Manager"));
     this->web_inspector_action=this->tool_menu->addAction(tr("&Web Inspector"));
     connect(this->web_inspector_action,&QAction::triggered,this,&MainView::openDebugger);
     this->tool_menu->addSeparator();

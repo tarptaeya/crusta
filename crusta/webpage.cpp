@@ -76,6 +76,23 @@ WebPage::WebPage(){
     loadUAString();
 }
 
+bool WebPage::certificateError(const QWebEngineCertificateError &error){
+    if (error.isOverridable()) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(error.errorDescription());
+        msgBox.setInformativeText(tr("If you wish so, you may continue with an unverified certificate. "
+                                     "Accepting an unverified certificate means "
+                                     "you may not be connected with the host you tried to connect to.\n"
+                                     "Do you wish to override the security check and continue?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        return msgBox.exec() == QMessageBox::Yes;
+    }
+    QMessageBox::critical(view(), tr("Certificate Error"), error.errorDescription(), QMessageBox::Ok, QMessageBox::NoButton);
+    return false;
+}
+
 
 
 QStringList PrivateWebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes){
@@ -117,4 +134,21 @@ void PrivateWebPage::loadUAString(){
 
 PrivateWebPage::PrivateWebPage(QWebEngineProfile *profile, QObject *parent):QWebEnginePage(profile,parent){
     loadUAString();
+}
+
+bool PrivateWebPage::certificateError(const QWebEngineCertificateError &error){
+    if (error.isOverridable()) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(error.errorDescription());
+        msgBox.setInformativeText(tr("If you wish so, you may continue with an unverified certificate. "
+                                     "Accepting an unverified certificate means "
+                                     "you may not be connected with the host you tried to connect to.\n"
+                                     "Do you wish to override the security check and continue?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        return msgBox.exec() == QMessageBox::Yes;
+    }
+    QMessageBox::critical(view(), tr("Certificate Error"), error.errorDescription(), QMessageBox::Ok, QMessageBox::NoButton);
+    return false;
 }
