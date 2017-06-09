@@ -34,6 +34,7 @@
 #include <QTextStream>
 #include <QCompleter>
 #include <QStringListModel>
+#include <QDir>
 
 #include <iostream>
 
@@ -81,7 +82,7 @@ PrivateAddressLineEdit::PrivateAddressLineEdit(){
 }
 
 void PrivateAddressLineEdit::loadSearchString(){
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -147,7 +148,7 @@ void PrivateAddressLineEdit::setDefaultSearch(){
         return;
     QString new_string=url->text();
     defaultSearch=new_string;
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -172,7 +173,7 @@ void PrivateAddressLineEdit::setUAString(){
     QLabel* lbl=new QLabel(tr("HTTP USER AGENT"));
     QLineEdit* ua=new QLineEdit();
     QString http;
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -217,7 +218,7 @@ void PrivateAddressLineEdit::setUAString(){
     if(ua->text()=="")
         return;
     QString new_string=ua->text();
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -239,7 +240,7 @@ void PrivateAddressLineEdit::setUAString(){
 
 void PrivateAddressLineEdit::restoreUAString(){
     QString new_string="";
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

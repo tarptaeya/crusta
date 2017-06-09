@@ -26,6 +26,7 @@
 #include <QIODevice>
 #include <QStringList>
 #include <QString>
+#include <QDir>
 
 #include <iostream>
 
@@ -63,7 +64,7 @@ BookmarkManager::BookmarkManager(MainView *m){
 }
 
 void BookmarkManager::loadBookmarks(){
-    QFile inputFile("bookmarks.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -107,7 +108,7 @@ void BookmarkManager::openUrl(){
 void BookmarkManager::clearEntry(){
     QTreeWidgetItem* item=display->currentItem();
     QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
-    QFile f("bookmarks.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -133,7 +134,7 @@ void BookmarkManager::saveDescription(){
     item->setText(2,description->text());
     description->setText("");
     QString newline=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
-    QFile f("bookmarks.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -155,7 +156,7 @@ void BookmarkManager::saveDescription(){
 void BookmarkManager::searchBookmark(){
     QString key=search->text();
     display->clear();
-    QFile inputFile("bookmarks.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -213,7 +214,7 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
 }
 
 void PrivateBookmarkManager::loadBookmarks(){
-    QFile inputFile("bookmarks.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -257,7 +258,7 @@ void PrivateBookmarkManager::openUrl(){
 void PrivateBookmarkManager::clearEntry(){
     QTreeWidgetItem* item=display->currentItem();
     QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
-    QFile f("bookmarks.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -283,7 +284,7 @@ void PrivateBookmarkManager::saveDescription(){
     item->setText(2,description->text());
     description->setText("");
     QString newline=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
-    QFile f("bookmarks.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -305,7 +306,7 @@ void PrivateBookmarkManager::saveDescription(){
 void PrivateBookmarkManager::searchBookmark(){
     QString key=search->text();
     display->clear();
-    QFile inputFile("bookmarks.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);

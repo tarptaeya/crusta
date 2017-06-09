@@ -79,9 +79,7 @@ void DownloadWidget::changeLayout_Completed(){
     v0box->addWidget(new QLabel(tr("Completed ")+QDateTime::currentDateTime().toString()));
 
     QString forbidden=path;
-    QDir d=QDir(QCoreApplication::applicationDirPath());
-    d.cd("../crusta_db");
-    QFile f(d.absolutePath()+"/downloads.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/downloads.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -117,9 +115,7 @@ void DownloadWidget::changeLayout_Canceled(){
     v1box->addWidget(remove);
 
     QString forbidden=path;
-    QDir d=QDir(QCoreApplication::applicationDirPath());
-    d.cd("../crusta_db");
-    QFile f(d.absolutePath()+"/downloads.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/downloads.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -155,9 +151,7 @@ void DownloadWidget::changeLayout_Interrupted(){
     v1box->addWidget(remove);
 
     QString forbidden=path;
-    QDir d=QDir(QCoreApplication::applicationDirPath());
-    d.cd("../crusta_db");
-    QFile f(d.absolutePath()+"/downloads.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/downloads.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -200,9 +194,7 @@ void DownloadWidget::openFile(){
 void DownloadWidget::removeWidget(){
     item->setHidden(true);
     QString forbidden=path;
-    QDir d=QDir(QCoreApplication::applicationDirPath());
-    d.cd("../crusta_db");
-    QFile f(d.absolutePath()+"/downloads.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/downloads.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

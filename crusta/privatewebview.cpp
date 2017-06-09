@@ -440,9 +440,7 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
     QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
     PWindow* win=(PWindow*)tabwidget->parentWidget();
     win->d_manager->addDownloadItem(dw);
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile file(exec_dir->absolutePath()+"/downloads.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/downloads.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream in(&file);
     in << download_item->path()+"\n";
@@ -574,7 +572,7 @@ void PrivateWebView::espeak(){
 }
 
 void PrivateWebView::search(QString text){
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     QString srch;
     if (inputFile.open(QIODevice::ReadOnly))
     {

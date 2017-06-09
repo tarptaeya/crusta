@@ -291,7 +291,7 @@ PrivateMainView::PrivateMainView(){
 
     this->window->pview=this;
 
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(!f.exists()){
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
@@ -472,7 +472,7 @@ void PrivateMainView::addNormalTab(){
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
         QString home;
-        QFile inputFile("preference.txt");
+        QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
@@ -513,7 +513,7 @@ void PrivateMainView::addNormalTab(){
             if(url->text()=="")
                 return;
             home=url->text();
-            QFile f("preference.txt");
+            QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
             if(f.open(QIODevice::ReadWrite | QIODevice::Text))
             {
                 QString s;
@@ -720,7 +720,7 @@ void PrivateMainView::bookmarkTab(){
     QLayout* layout=widget->layout();
     WebView* webview=(WebView*)layout->itemAt(1)->widget();
 
-    QFile file("bookmarks.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
     out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
@@ -734,7 +734,7 @@ void PrivateMainView::bookmarkAllTabs(){
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
 
-        QFile file("bookmarks.txt");
+        QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream out(&file);
         out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";

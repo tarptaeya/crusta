@@ -36,6 +36,7 @@
 #include <QVBoxLayout>
 #include <QCompleter>
 #include <QStringListModel>
+#include <QDir>
 
 #include <iostream>
 
@@ -90,7 +91,7 @@ void AddressLineEdit::createCompleter(){
     cmpleter->setModel(model);
     cmpleter->setCaseSensitivity(Qt::CaseInsensitive);
     cmpleter->setFilterMode(Qt::MatchContains);
-    QFile inputFile("completer.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/completer.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -106,7 +107,7 @@ void AddressLineEdit::createCompleter(){
 
 void AddressLineEdit::updateCompleter(){
     QString s=this->text();
-    QFile inputFile("completer.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/completer.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -118,7 +119,7 @@ void AddressLineEdit::updateCompleter(){
        }
        inputFile.close();
     }
-    QFile file("completer.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/completer.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
     out<<s.toLatin1()+"\n";
@@ -126,7 +127,7 @@ void AddressLineEdit::updateCompleter(){
 }
 
 void AddressLineEdit::loadSearchString(){
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -192,7 +193,7 @@ void AddressLineEdit::setDefaultSearch(){
         return;
     QString new_string=url->text();
     defaultSearch=new_string;
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -217,7 +218,7 @@ void AddressLineEdit::setUAString(){
     QLabel* lbl=new QLabel(tr("HTTP USER AGENT"));
     QLineEdit* ua=new QLineEdit();
     QString http;
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -262,7 +263,7 @@ void AddressLineEdit::setUAString(){
     if(ua->text()=="")
         return;
     QString new_string=ua->text();
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -284,7 +285,7 @@ void AddressLineEdit::setUAString(){
 
 void AddressLineEdit::restoreUAString(){
     QString new_string="";
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

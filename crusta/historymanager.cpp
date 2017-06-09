@@ -50,7 +50,7 @@
 void HistoryManager::createManager(){
     setWindowTitle(tr("Crusta : History Manager"));
     setStyleSheet("QWidget{background-color:white;color:black} QComboBox{background-color:white;color:black} QComboBox QAbstractItemView{background-color:white;color:black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
-    QFile inputFile("history.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -110,7 +110,7 @@ void HistoryManager::showContextMenu(const QPoint &pos){
 }
 
 void HistoryManager::clearAll(){
-    QFile file("history.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream out(&file);
     out <<"";
@@ -133,7 +133,7 @@ void HistoryManager::openUrl(){
 void HistoryManager::clearEntry(){
     QTreeWidgetItem* item=display_area->currentItem();
     QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
-    QFile f("history.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/history.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -171,7 +171,7 @@ void HistoryManager::setFilterDate(){
         break;
     case 0:
         display_area->clear();
-        QFile inputFile("history.txt");
+        QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
@@ -190,7 +190,7 @@ void HistoryManager::setFilterDate(){
     }
     display_area->clear();
     int index=date->currentIndex();
-    QFile inputFile("history.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);

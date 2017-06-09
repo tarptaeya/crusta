@@ -67,9 +67,7 @@ void MainView::closeTab(int index){
     hist->setText(webview->title());
     hist->setIcon(webview->icon());
     QUrl u=webview->url();
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile file(exec_dir->absolutePath()+"/session.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/session.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream in(&file);
     in << u.toString().toLatin1()+"\n";
@@ -304,9 +302,7 @@ MainView::MainView(){
 
     this->window->parentView=this;
 
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile f(exec_dir->absolutePath()+"/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(!f.exists()){
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
@@ -499,7 +495,7 @@ void MainView::addNormalTab(){
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
         QString home;
-        QFile inputFile("preference.txt");
+        QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
@@ -540,7 +536,7 @@ void MainView::addNormalTab(){
             if(url->text()=="")
                 return;
             home=url->text();
-            QFile f("preference.txt");
+            QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
             if(f.open(QIODevice::ReadWrite | QIODevice::Text))
             {
                 QString s;
@@ -749,7 +745,7 @@ void MainView::showHistory(){
 }
 
 void MainView::clearHistory(){
-    QFile file("history.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream out(&file);
     out <<"";
@@ -767,7 +763,7 @@ void MainView::bookmarkTab(){
     QLayout* layout=widget->layout();
     WebView* webview=(WebView*)layout->itemAt(1)->widget();
 
-    QFile file("bookmarks.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
     out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
@@ -781,7 +777,7 @@ void MainView::bookmarkAllTabs(){
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
 
-        QFile file("bookmarks.txt");
+        QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream out(&file);
         out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
@@ -858,9 +854,7 @@ void MainView::spiltModefx(){
 }
 
 void MainView::closeWindow(){
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile file(exec_dir->absolutePath()+"/session.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/session.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream in(&file);
     in << "";
@@ -884,9 +878,7 @@ void Window::closeEvent(QCloseEvent *event){
 }
 
 void MainView::restoreSession(){
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile inputFile(exec_dir->absolutePath()+"/session.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/session.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -951,9 +943,7 @@ void MainView::openDebugger(){
 
 void MainView::loadTheme(){
     QString theme;
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile inputFile(exec_dir->absolutePath()+"/preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);

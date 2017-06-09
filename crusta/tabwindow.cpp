@@ -56,7 +56,7 @@ void TabWindow::updateAddrBar(){
     this->addr_bar->initialize()->setText(url);
     this->addr_bar->initialize()->setCursorPosition(0);
     QString s=this->addr_bar->text();
-    QFile inputFile("completer.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/completer.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -68,7 +68,7 @@ void TabWindow::updateAddrBar(){
        }
        inputFile.close();
     }
-    QFile file("completer.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/completer.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
     out<<s.toLatin1()+"\n";
@@ -174,7 +174,7 @@ void TabWindow::loadUrl(){
 }
 
 void TabWindow::bookmarkPage(){
-    QFile file("bookmarks.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
     out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+"\n";
@@ -184,7 +184,7 @@ void TabWindow::bookmarkPage(){
 
 void TabWindow::updateStar(){
     QString s=this->addr_bar->text();
-    QFile input("bookmarks.txt");
+    QFile input(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if (input.open(QIODevice::ReadOnly))
     {
        QTextStream in(&input);
@@ -264,7 +264,7 @@ void TabWindow::setHomePage(){
     if(url->text()=="")
         return;
     QString new_string=url->text();
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

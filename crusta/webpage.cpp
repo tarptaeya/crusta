@@ -23,6 +23,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QIODevice>
+#include <QDir>
 #include <QWebEngineProfile>
 
 #include <iostream>
@@ -54,7 +55,7 @@ QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldF
 }
 
 void WebPage::loadUAString(){
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -114,7 +115,7 @@ QStringList PrivateWebPage::chooseFiles(FileSelectionMode mode, const QStringLis
 }
 
 void PrivateWebPage::loadUAString(){
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);

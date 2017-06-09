@@ -56,9 +56,7 @@ void DownloadManager::addDownloadItem(DownloadWidget *w){
 }
 
 void DownloadManager::loadDownloads(){
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile inputFile(exec_dir->absolutePath()+"/downloads.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/downloads.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);

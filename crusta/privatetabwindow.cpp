@@ -156,7 +156,7 @@ void PrivateTabWindow::loadUrl(){
 }
 
 void PrivateTabWindow::bookmarkPage(){
-    QFile file("bookmarks.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
     out << this->view->returnPrivateView()->title().toLatin1()+">>>>>"+this->view->returnPrivateView()->url().toString().toLatin1()+">>>>>"+"\n";
@@ -166,7 +166,7 @@ void PrivateTabWindow::bookmarkPage(){
 
 void PrivateTabWindow::updateStar(){
     QString s=this->addr_bar->text();
-    QFile input("bookmarks.txt");
+    QFile input(QDir::homePath()+"bookmarks.txt");
     if (input.open(QIODevice::ReadOnly))
     {
        QTextStream in(&input);
@@ -246,7 +246,7 @@ void PrivateTabWindow::setHomePage(){
     if(url->text()=="")
         return;
     QString new_string=url->text();
-    QFile f("preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

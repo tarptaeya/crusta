@@ -20,6 +20,7 @@
 
 #include "mainview.h"
 #include <QIcon>
+#include <QDir>
 #include <QApplication>
 #include <QCoreApplication>
 #include <QtWebEngine>
@@ -31,6 +32,9 @@ int main(int argc, char *argv[]){
     a.setApplicationName(QString("Crusta"));
     a.setApplicationVersion(QString("1.0.0"));
     Q_INIT_RESOURCE(resource); // initialised the resource file;
+    if(!QDir(QDir::homePath()+"/.crusta_db").exists()){
+        QDir().mkdir(QDir::homePath()+"/.crusta_db");
+    }
     MainView* w=new MainView();
     w->showView();
     a.setWindowIcon(QIcon(":/res/drawables/icon_3.ico"));

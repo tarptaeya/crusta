@@ -438,9 +438,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
     Window* win=(Window*)tabwidget->parentWidget();
     win->d_manager->addDownloadItem(dw);
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../crusta_db");
-    QFile file(exec_dir->absolutePath()+"/downloads.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/downloads.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream in(&file);
     in << download_item->path()+"\n";
@@ -563,7 +561,7 @@ void WebView::showContextMenu(const QPoint& pos){
 }
 
 void WebView::loadFinished(){
-    QFile file("history.txt");
+    QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
     out << title().toLatin1()+">>>>>"+url().toString().toLatin1()+">>>>>"+QDate::currentDate().toString().toLatin1()+"\n";
@@ -576,7 +574,7 @@ void WebView::espeak(){
 }
 
 void WebView::search(QString text){
-    QFile inputFile("preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
     QString srch;
     if (inputFile.open(QIODevice::ReadOnly))
     {
