@@ -346,35 +346,6 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
         return;
     }
 
-    if(download_item->path().endsWith(".pdf")){
-        QString path=download_item->path();
-        QString cpath=QDir::tempPath();
-        cpath+="/"+path.split('/')[path.split('/').length()-1];
-        download_item->setPath(cpath);
-
-
-        PrivateWebView* view=new PrivateWebView();
-        PrivateTabWindow* tabwin=new PrivateTabWindow();
-        tabwin->vbox->setContentsMargins(0,0,0,0);
-        tabwin->setWebView(view);
-        tabwin->createControls();
-        QWidget* widget=(QWidget*)this->parent();
-        QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
-        QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
-        PWindow* win=(PWindow*)tabwidget->parentWidget();
-        tabwin->menu_btn->setMenu(win->menu);
-        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("Connecting..."));
-        tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
-
-
-        download_item->accept();
-        QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
-        viewer_file->cd("../3rd_party/pdfjs/web");
-        connect(download_item,&QWebEngineDownloadItem::downloadProgress,view,&PrivateWebView::handleBeforePdf);
-        connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
-        return;
-    }
-
     QString path=download_item->path();
     QDialog* w=new QDialog();
     w->setWindowFlags(Qt::FramelessWindowHint);
@@ -429,6 +400,34 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
     connect(download_item,&QWebEngineDownloadItem::downloadProgress,dw,&DownloadWidget::computeFraction);
     connect(dw->cancel,&QPushButton::clicked,download_item,&QWebEngineDownloadItem::cancel);
     if(ropen->isChecked()){
+        if(download_item->path().endsWith(".pdf")){
+            QString path=download_item->path();
+            QString cpath=QDir::tempPath();
+            cpath+="/"+path.split('/')[path.split('/').length()-1];
+            download_item->setPath(cpath);
+
+
+            PrivateWebView* view=new PrivateWebView();
+            PrivateTabWindow* tabwin=new PrivateTabWindow();
+            tabwin->vbox->setContentsMargins(0,0,0,0);
+            tabwin->setWebView(view);
+            tabwin->createControls();
+            QWidget* widget=(QWidget*)this->parent();
+            QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+            QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+            PWindow* win=(PWindow*)tabwidget->parentWidget();
+            tabwin->menu_btn->setMenu(win->menu);
+            tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("Connecting..."));
+            tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
+
+
+            download_item->accept();
+            QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
+            viewer_file->cd("../3rd_party/pdfjs/web");
+            connect(download_item,&QWebEngineDownloadItem::downloadProgress,view,&PrivateWebView::handleBeforePdf);
+            connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
+            return;
+        }
         QString cpath=QDir::tempPath();
         cpath+="/"+path.split('/')[path.split('/').length()-1];
         download_item->setPath(cpath);
@@ -438,7 +437,7 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
     else{
         QFileDialog f;
         f.setOption(QFileDialog::DontUseNativeDialog,true);
-        QString fname=f.getSaveFileName(this,tr("Download File"),QDir::homePath(),QString(),nullptr,f.options());
+        QString fname=f.getSaveFileName(this,tr("Download File"),path,QString(),nullptr,f.options());
         if(fname=="")fname=path;
         download_item->setPath(fname);
         download_item->accept();
@@ -521,13 +520,16 @@ void PrivateWebView::authenticate(const QUrl u,QAuthenticator *authenticator){
     std::cout<<"yes"<<std::endl;
 }
 
+void PrivateWebView::downloadLink(){
+    this->page()->triggerAction(QWebEnginePage::DownloadLinkToDisk);
+}
+
+void PrivateWebView::downloadImage(){
+    this->page()->triggerAction(QWebEnginePage::DownloadImageToDisk);
+}
+
 void PrivateWebView::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
-    if(link.endsWith(".pdf")){
-        QAction* download_pdf=new QAction(tr("Download PDF"));
-        contextMenu->addAction(download_pdf);
-        contextMenu->addSeparator();
-    }
     if(link!="" && !link.endsWith(".pdf")){
         QAction* open_link_in_new_tab=new QAction(tr("Open Link In New Private Tab"));
         connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
@@ -562,6 +564,17 @@ void PrivateWebView::showContextMenu(const QPoint& pos){
         QAction* a_search=new QAction(tr("Search"));
         connect(a_search,&QAction::triggered,this,[this,text]{this->search(text);});
         contextMenu->addAction(a_search);
+        contextMenu->addSeparator();
+    }
+    if(link!=""){
+        QMenu* download=new QMenu(tr("Download"));
+        contextMenu->addMenu(download);
+        QAction* download_img=new QAction(tr("Download Image"));
+        connect(download_img,&QAction::triggered,this,&PrivateWebView::downloadImage);
+        download->addAction(download_img);
+        QAction* download_link=new QAction(tr("Download Link"));
+        connect(download_link,&QAction::triggered,this,&PrivateWebView::downloadLink);
+        download->addAction(download_link);
         contextMenu->addSeparator();
     }
     QAction* back_page=new QAction(QIcon(":/res/drawables/back.svg"),tr("Back"));

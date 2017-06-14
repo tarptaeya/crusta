@@ -85,6 +85,8 @@ public:
     void handleBeforePdf(qint64,qint64);
     void espeak();
     void search(QString text);
+    void downloadLink();
+    void downloadImage();
     PrivateWebView();
 };
 
