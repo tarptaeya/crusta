@@ -53,6 +53,14 @@ void PrivateTabWindow::updateAddrBar(){
     if(forbidden==url){
         return;
     }
+    QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
+    viewer_file->cd("../3rd_party/pdfjs/web");
+    QString forbidden_="file://"+viewer_file->absolutePath()+"/viewer.html?file";
+    if(forbidden_==url.split("=")[0]){
+        this->addr_bar->initialize()->setText(url.split("/")[url.split("/").length()-1]);
+        this->addr_bar->initialize()->setCursorPosition(0);
+        return;
+    }
     this->addr_bar->initialize()->setText(url);
     this->addr_bar->initialize()->setCursorPosition(0);
 }

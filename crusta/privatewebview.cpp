@@ -342,10 +342,6 @@ void PrivateWebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePag
 }
 
 void PrivateWebView::download(QWebEngineDownloadItem *download_item){
-    if(download_item->url().toString()!=link && download_item->url().toString().endsWith(".pdf")){
-        return;
-    }
-
     if(download_item->state()!=QWebEngineDownloadItem::DownloadRequested){
         return;
     }
@@ -355,11 +351,27 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
         QString cpath=QDir::tempPath();
         cpath+="/"+path.split('/')[path.split('/').length()-1];
         download_item->setPath(cpath);
+
+
+        PrivateWebView* view=new PrivateWebView();
+        PrivateTabWindow* tabwin=new PrivateTabWindow();
+        tabwin->vbox->setContentsMargins(0,0,0,0);
+        tabwin->setWebView(view);
+        tabwin->createControls();
+        QWidget* widget=(QWidget*)this->parent();
+        QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+        QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+        PWindow* win=(PWindow*)tabwidget->parentWidget();
+        tabwin->menu_btn->setMenu(win->menu);
+        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("Connecting..."));
+        tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
+
+
         download_item->accept();
         QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
         viewer_file->cd("../3rd_party/pdfjs/web");
-        connect(download_item,&QWebEngineDownloadItem::downloadProgress,this,&PrivateWebView::handleBeforePdf);
-        connect(download_item,&QWebEngineDownloadItem::finished,this,[this,cpath,viewer_file]{this->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
+        connect(download_item,&QWebEngineDownloadItem::downloadProgress,view,&PrivateWebView::handleBeforePdf);
+        connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
         return;
     }
 
@@ -511,7 +523,12 @@ void PrivateWebView::authenticate(const QUrl u,QAuthenticator *authenticator){
 
 void PrivateWebView::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
-    if(link!=""){
+    if(link.endsWith(".pdf")){
+        QAction* download_pdf=new QAction(tr("Download PDF"));
+        contextMenu->addAction(download_pdf);
+        contextMenu->addSeparator();
+    }
+    if(link!="" && !link.endsWith(".pdf")){
         QAction* open_link_in_new_tab=new QAction(tr("Open Link In New Private Tab"));
         connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
         contextMenu->addAction(open_link_in_new_tab);

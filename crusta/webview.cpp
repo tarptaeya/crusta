@@ -340,24 +340,37 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
 }
 
 void WebView::download(QWebEngineDownloadItem *download_item){
-    if(download_item->url().toString()!=link && download_item->url().toString().endsWith(".pdf")){
-        return;
-    }
-
     if(download_item->state()!=QWebEngineDownloadItem::DownloadRequested){
         return;
     }
 
     if(download_item->path().endsWith(".pdf")){
+        std::cout<<"yes"<<std::endl;
         QString path=download_item->path();
         QString cpath=QDir::tempPath();
         cpath+="/"+path.split('/')[path.split('/').length()-1];
         download_item->setPath(cpath);
+
+
+        WebView* view=new WebView();
+        TabWindow* tabwin=new TabWindow();
+        tabwin->vbox->setContentsMargins(0,0,0,0);
+        tabwin->setWebView(view);
+        tabwin->createControls();
+        QWidget* widget=(QWidget*)this->parent();
+        QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
+        QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
+        Window* win=(Window*)tabwidget->parentWidget();
+        tabwin->menu_btn->setMenu(win->menu);
+        tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("Connecting..."));
+        tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
+
+
         download_item->accept();
         QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
         viewer_file->cd("../3rd_party/pdfjs/web");
-        connect(download_item,&QWebEngineDownloadItem::downloadProgress,this,&WebView::handleBeforePdf);
-        connect(download_item,&QWebEngineDownloadItem::finished,this,[this,cpath,viewer_file]{this->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
+        connect(download_item,&QWebEngineDownloadItem::downloadProgress,view,&WebView::handleBeforePdf);
+        connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
         return;
     }
 
@@ -503,9 +516,19 @@ void WebView::audioInfo(){
     }
 }
 
+void WebView::downloadPdf(){
+
+}
+
 void WebView::showContextMenu(const QPoint& pos){
     QMenu* contextMenu=new QMenu();
-    if(link!=""){
+    if(link.endsWith(".pdf")){
+        QAction* download_pdf=new QAction(tr("Download PDF"));
+        connect(download_pdf,&QAction::triggered,this,&WebView::downloadPdf);
+        contextMenu->addAction(download_pdf);
+        contextMenu->addSeparator();
+    }
+    if(link!="" && !link.endsWith(".pdf")){
         QAction* open_link_in_new_tab=new QAction(tr("Open Link In New Tab"));
         connect(open_link_in_new_tab,&QAction::triggered,this,[this]{triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
         contextMenu->addAction(open_link_in_new_tab);
