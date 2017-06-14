@@ -37,6 +37,7 @@ class PrivateTabWindow:public QObject{
     void updateStar();
     void setHomePage();
     void homeContext(const QPoint& pos);
+    QProgressBar* pbar=new QProgressBar();
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QWidget* tab=new QWidget();
@@ -56,6 +57,7 @@ public:
     void setWebView(PrivateWebView*);
     void loadUrl();
     void bookmarkPage();
+    void pageProgress(int p);
 };
 
 

@@ -117,7 +117,16 @@ void TabWindow::createControls(){
     hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
+    vbox->addWidget(pbar);
+    pbar->setMaximum(0);
+    pbar->setMaximum(100);
+    pbar->hide();
+    pbar->setMaximumHeight(5);
+    pbar->setTextVisible(false);
     tab->setLayout(vbox);
+    connect(view,&QWebEngineView::loadStarted,pbar,&QProgressBar::show);
+    connect(view,&QWebEngineView::loadFinished,pbar,&QProgressBar::hide);
+    connect(view,&QWebEngineView::loadProgress,this,&TabWindow::pageProgress);
     tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;}");
 }
 
@@ -291,4 +300,8 @@ void TabWindow::setHomePage(){
         f.close();
     }
     this->view->returnView()->home_page=new_string;
+}
+
+void TabWindow::pageProgress(int p){
+    pbar->setValue(p);
 }

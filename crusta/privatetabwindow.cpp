@@ -99,6 +99,16 @@ void PrivateTabWindow::createControls(){
     hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
+    vbox->addWidget(pbar);
+    pbar->setMaximum(0);
+    pbar->setMaximum(100);
+    pbar->hide();
+    pbar->setMaximumHeight(5);
+    pbar->setTextVisible(false);
+    tab->setLayout(vbox);
+    connect(view,&QWebEngineView::loadStarted,pbar,&QProgressBar::show);
+    connect(view,&QWebEngineView::loadFinished,pbar,&QProgressBar::hide);
+    connect(view,&QWebEngineView::loadProgress,this,&PrivateTabWindow::pageProgress);
     tab->setLayout(vbox);
     tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;background-color:white;color:black}");
 }
@@ -273,4 +283,8 @@ void PrivateTabWindow::setHomePage(){
         f.close();
     }
     this->view->returnPrivateView()->home_page=new_string;
+}
+
+void PrivateTabWindow::pageProgress(int p){
+    pbar->setValue(p);
 }
