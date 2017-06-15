@@ -64,8 +64,8 @@ void MainView::closeTab(int index){
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     QAction* hist=new QAction();
-    hist->setText(webview->title());
-    hist->setIcon(webview->icon());
+    hist->setText(webview->page()->title());
+    hist->setIcon(webview->page()->icon());
     QUrl u=webview->url();
     QFile file(QDir::homePath()+"/.crusta_db/session.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);

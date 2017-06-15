@@ -68,6 +68,7 @@ public:
     QWebEngineView* view=new QWebEngineView();
     void createPrivateWebView();
     PrivateWebView *returnPrivateView();
+    QLabel* correction=new QLabel();
     void home();
     void spinnerStarted();
     void faviconChanged(QIcon fav);
@@ -87,6 +88,7 @@ public:
     void search(QString text);
     void downloadLink();
     void downloadImage();
+    void loadCompleted();
     PrivateWebView();
 };
 

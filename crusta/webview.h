@@ -66,6 +66,7 @@ public:
     FullScreenNotifier* notifier=new FullScreenNotifier();
     TimeNotifier* timeNotifier=new TimeNotifier();
     QWebEngineView* view=new QWebEngineView();
+    QLabel* correction=new QLabel();
     void createWebView();
     WebView *returnView();
     void home();

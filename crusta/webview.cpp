@@ -175,7 +175,7 @@ void WebView::acceptFullScreen(QWebEngineFullScreenRequest request){
         wasFullScreened=true;
         widget=(QWidget*)this->parent();
         layout=widget->layout();
-        layout->removeWidget(this);
+        layout->replaceWidget(this,correction);
         addAction(exitFullScreen);
         setParent(0);
         showFullScreen();
@@ -191,7 +191,7 @@ void WebView::acceptFullScreen(QWebEngineFullScreenRequest request){
         notifier->setParent(0);
         timeNotifier->setParent(0);
         setParent(widget);
-        layout->addWidget(this);
+        layout->replaceWidget(correction,this);
         removeAction(exitFullScreen);
         removeAction(timeAction);
     }
@@ -592,6 +592,9 @@ void WebView::showContextMenu(const QPoint& pos){
 }
 
 void WebView::loadFinished(){
+    if(this->icon().isNull()){
+        this->faviconChanged(QIcon());
+    }
     QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);

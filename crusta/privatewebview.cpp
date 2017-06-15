@@ -69,7 +69,7 @@ PrivateWebView::PrivateWebView(){
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows,true);
     connect(this->page(),&QWebEnginePage::fullScreenRequested,this,&PrivateWebView::acceptFullScreen);
     connect(this->page(),&QWebEnginePage::loadStarted,this,&PrivateWebView::spinnerStarted);
-    connect(this->page(),&QWebEnginePage::loadFinished,this,&PrivateWebView::loadFinished);
+    connect(this->page(),&QWebEnginePage::loadFinished,this,&PrivateWebView::loadCompleted);
     connect(this->page(),&QWebEnginePage::iconChanged,this,&PrivateWebView::faviconChanged);
     connect(this->page(),&QWebEnginePage::titleChanged,this,&PrivateWebView::pageTitleChanged);
     connect(this->page(),&QWebEnginePage::featurePermissionRequested,this,&PrivateWebView::permissionHandler);
@@ -176,7 +176,7 @@ void PrivateWebView::acceptFullScreen(QWebEngineFullScreenRequest request){
         wasFullScreened=true;
         widget=(QWidget*)this->parent();
         layout=widget->layout();
-        layout->removeWidget(this);
+        layout->replaceWidget(this,correction);
         addAction(exitFullScreen);
         setParent(0);
         showFullScreen();
@@ -192,7 +192,7 @@ void PrivateWebView::acceptFullScreen(QWebEngineFullScreenRequest request){
         notifier->setParent(0);
         timeNotifier->setParent(0);
         setParent(widget);
-        layout->addWidget(this);
+        layout->replaceWidget(correction,this);
         removeAction(exitFullScreen);
         removeAction(timeAction);
     }
@@ -625,6 +625,11 @@ void PrivateWebView::search(QString text){
     win->pview->openUrl(srch+text);
 }
 
+void PrivateWebView::loadCompleted(){
+    if(this->icon().isNull()){
+        this->faviconChanged(QIcon());
+    }
+}
 
 
 
