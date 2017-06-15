@@ -58,6 +58,8 @@ public:
     void loadUrl();
     void bookmarkPage();
     void pageProgress(int p);
+    void loadCompleted();
+    void loadBegin();
 };
 
 

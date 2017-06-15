@@ -124,8 +124,8 @@ void TabWindow::createControls(){
     pbar->setMaximumHeight(5);
     pbar->setTextVisible(false);
     tab->setLayout(vbox);
-    connect(view,&QWebEngineView::loadStarted,pbar,&QProgressBar::show);
-    connect(view,&QWebEngineView::loadFinished,pbar,&QProgressBar::hide);
+    connect(view,&QWebEngineView::loadStarted,this,&TabWindow::loadBegin);
+    connect(view,&QWebEngineView::loadFinished,this,&TabWindow::loadCompleted);
     connect(view,&QWebEngineView::loadProgress,this,&TabWindow::pageProgress);
     tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;}");
 }
@@ -304,4 +304,18 @@ void TabWindow::setHomePage(){
 
 void TabWindow::pageProgress(int p){
     pbar->setValue(p);
+}
+
+void TabWindow::loadBegin(){
+    pbar->show();
+    this->load_btn->setIcon(QIcon(":/res/drawables/close.svg"));
+    load_btn->disconnect();
+    connect(load_btn,&QPushButton::clicked,view,&QWebEngineView::stop);
+}
+
+void TabWindow::loadCompleted(){
+    pbar->hide();
+    load_btn->disconnect();
+    this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
+    connect(load_btn,&QPushButton::clicked,view,&QWebEngineView::reload);
 }
