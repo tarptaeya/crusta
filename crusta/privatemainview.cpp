@@ -797,34 +797,20 @@ void PrivateMainView::splitModefx(){
             this->split_mode_action->setText(tr("&Split Mode"));
             return;
         }
-        else{
-            PWindow* p=(PWindow*)this->window->parent();
-            p->layout()->itemAt(1)->widget()->deleteLater();
-            p->layout()->removeItem(p->layout()->itemAt(1));
-            return;
-        }
     }
     box->setContentsMargins(0,0,0,0);
     box->setSpacing(0);
-    PrivateMainView* psplitView=new PrivateMainView();
+    psplitView=new PrivateMainView();
     box->addWidget(psplitView->window);
-    psplitView->split_mode_action->setText(tr("&Exit Split Mode"));
+    psplitView->split_mode_action->setVisible(false);
     this->split_mode_action->setText(tr("&Exit Split Mode"));
 }
 
 void PrivateMainView::closeWindow(){
     if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
         if(this->box->count()==2){
-            this->box->itemAt(1)->widget()->deleteLater();
-            this->box->removeItem(this->box->itemAt(1));
+            this->psplitView->closeWindow();
             this->split_mode_action->setText(tr("&Split Mode"));
-            return;
-        }
-        else{
-            PWindow* p=(PWindow*)this->window->parent();
-            p->layout()->itemAt(1)->widget()->deleteLater();
-            p->layout()->removeItem(p->layout()->itemAt(1));
-            return;
         }
     }
     int cnt=this->tabWindow->count();

@@ -28,6 +28,8 @@
 #include <QTextStream>
 #include <QDateTime>
 
+#include <iostream>
+
 DownloadWidget::DownloadWidget(){
     cancel->setText(tr("Cancel"));
     cancel->setFixedWidth(75);
@@ -187,6 +189,7 @@ void DownloadWidget::stateChanged(QWebEngineDownloadItem::DownloadState state){
 
 void DownloadWidget::openFile(){
     QUrl u;
+    path=path.split(">>>>>")[0];
     u=QUrl::fromLocalFile(path);
     QDesktopServices::openUrl(u);
 }

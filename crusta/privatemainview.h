@@ -153,6 +153,7 @@ public:
     QPushButton* newtabbtn=new QPushButton();
     QPageLayout currentPageLayout;
     DownloadManager* d_manager=new DownloadManager();
+    PrivateMainView* psplitView;
     PrivateMainView();
 
     void createView();

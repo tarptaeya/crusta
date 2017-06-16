@@ -845,11 +845,14 @@ void MainView::spiltModefx(){
             this->split_mode_action->setText(tr("&Split Mode"));
             return;
         }
+        this->split_mode_action->setText(tr("&Split Mode"));
+        return;
     }
     box->setContentsMargins(0,0,0,0);
     box->setSpacing(0);
     this->splitWindow=new MainView();
     box->addWidget(this->splitWindow->window);
+    this->splitWindow->split_mode_action->setVisible(false);
     this->split_mode_action->setText(tr("&Exit Split Mode"));
 }
 
@@ -863,7 +866,6 @@ void MainView::closeWindow(){
         if(this->box->count()==2){
             this->splitWindow->closeWindow();
             this->split_mode_action->setText(tr("&Split Mode"));
-            return;
         }
     }
     int cnt=this->tabWindow->count();

@@ -53,6 +53,8 @@ void DownloadManager::addDownloadItem(DownloadWidget *w){
     item->setSizeHint(w->size());
     w->item=item;
     listwidget->setItemWidget(item,w);
+    this->setMinimumWidth(w->width()+200);
+    this->setMinimumHeight(w->height()*5);
 }
 
 void DownloadManager::loadDownloads(){
