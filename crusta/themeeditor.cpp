@@ -23,7 +23,7 @@
 #include <QDir>
 
 ThemeEditor::ThemeEditor(){
-    setWindowFlag(Qt::FramelessWindowHint);
+    setWindowTitle("Crusta : Edit Theme");
     setLayout(vbox);
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());

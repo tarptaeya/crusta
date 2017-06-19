@@ -99,6 +99,6 @@ SiteInfoWidget::SiteInfoWidget(QWebEngineView* view){
     ok->setText(tr("OK"));
     setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
     connect(ok,&QPushButton::clicked,this,&QDialog::accept);
-    setWindowFlags(Qt::FramelessWindowHint);
+    setWindowTitle("Crusta : SiteInfo");
     setFixedSize(this->sizeHint());
 }

@@ -527,7 +527,7 @@ void MainView::addNormalTab(){
             vbox->addLayout(h1box);
             w->setLayout(vbox);
             w->setFixedWidth(500);
-            w->setWindowFlags(Qt::FramelessWindowHint);
+            w->setWindowTitle("Crusta : Set Home Page");
             w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
             connect(ok,&QPushButton::clicked,w,&QDialog::accept);
             if(w->exec()!=QDialog::Accepted){
@@ -591,8 +591,8 @@ void MainView::viewPageSource(){
 void MainView::saveAsPdf(){
     QPrinter printer;
     printer.setPageLayout(currentPageLayout);
-    QPageSetupDialog dlg(&printer, this);
-    if (dlg.exec() != QDialog::Accepted)
+    QPageSetupDialog dlg(&printer);
+    if (dlg.exec() != QPageSetupDialog::Accepted)
         return;
     currentPageLayout.setPageSize(printer.pageLayout().pageSize());
     currentPageLayout.setOrientation(printer.pageLayout().orientation());
@@ -906,7 +906,7 @@ void MainView::openDebugger(){
     QString a=QCoreApplication::arguments().last();
     if(!a.contains("--remote-debugging-port=")){
         QMessageBox* notify=new QMessageBox(this->window);
-        notify->setWindowFlag(Qt::FramelessWindowHint);
+        notify->setWindowTitle("Crusta : Debugger");
         notify->setStyleSheet("QMessageBox{background-color:white;color:black} QLabel{color:black} QPushButton{border:0.5px solid black;width:100px;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
         notify->setText("Enable Debugging Mode By Launching Crusta With Argument '--remote-debugging-port=<port>' ");
         notify->exec();
@@ -929,7 +929,7 @@ void MainView::openDebugger(){
     vbox->addLayout(h1box);
     w->setLayout(vbox);
     w->setFixedWidth(500);
-    w->setWindowFlags(Qt::FramelessWindowHint);
+    w->setWindowTitle("Crusta : Debugger");
     w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){

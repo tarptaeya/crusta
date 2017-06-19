@@ -21,6 +21,7 @@
 #include "mainview.h"
 #include <QIcon>
 #include <QDir>
+#include <QFont>
 #include <QApplication>
 #include <QCoreApplication>
 #include <QtWebEngine>
@@ -35,6 +36,9 @@ int main(int argc, char *argv[]){
     if(!QDir(QDir::homePath()+"/.crusta_db").exists()){
         QDir().mkdir(QDir::homePath()+"/.crusta_db");
     }
+    QFont f;
+    f.setPointSize(10);
+    a.setFont(f);
     MainView* w=new MainView();
     w->showView();
     a.setWindowIcon(QIcon(":/res/drawables/icon_3.ico"));

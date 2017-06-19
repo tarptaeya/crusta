@@ -263,7 +263,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
     QVBoxLayout* vl=new QVBoxLayout();
     dg->setLayout(vl);
     dg->setModal(true);
-    dg->setWindowFlags(Qt::FramelessWindowHint);
+    dg->setWindowTitle("Crusta : Premission Requested by WebPage");
     dg->setFixedWidth(400);
     QHBoxLayout* h0=new QHBoxLayout();
     QLabel* permission=new QLabel();
@@ -346,7 +346,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
 
     QString path=download_item->path();
     QDialog* w=new QDialog();
-    w->setWindowFlags(Qt::FramelessWindowHint);
+    w->setWindowTitle("Crusta : Download Requested");
     QVBoxLayout* box=new QVBoxLayout();
     w->setLayout(box);
     QLabel* yhcto=new QLabel(tr("You have choosen to open"));
