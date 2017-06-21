@@ -425,7 +425,10 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
             QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
             viewer_file->cd("../3rd_party/pdfjs/web");
             connect(download_item,&QWebEngineDownloadItem::downloadProgress,view,&PrivateWebView::handleBeforePdf);
-            connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
+            if(viewer_file->absolutePath().startsWith("/"))
+                connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
+            else
+                connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file:///"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
             return;
         }
         QString cpath=QDir::tempPath();

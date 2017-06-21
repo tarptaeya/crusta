@@ -564,7 +564,10 @@ void MainView::addNormalTab(){
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
         QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
         exec_dir->cd("../web");
-        webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
+        if(exec_dir->absolutePath().startsWith("/"))
+            webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
+        else
+            webview->load(QUrl("file:///"+exec_dir->absolutePath()+"/index.html"));
     }
     MainView::addNewTabButton();
 }
@@ -639,9 +642,12 @@ void MainView::openLocalFile(){
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-    if(filename!=""){
-    webview->load(QUrl(QString("file://")+filename));
+    if(filename=="") return;
+    if(!filename.startsWith("/")){
+        webview->load(QUrl(QString("file:///")+filename));
     }
+    else
+        webview->load(QUrl(QString("file://")+filename));
 }
 
 void MainView::screenShot(){
