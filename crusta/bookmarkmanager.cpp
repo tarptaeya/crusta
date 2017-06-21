@@ -33,7 +33,7 @@
 BookmarkManager::BookmarkManager(MainView *m){
     mview=m;
     setLayout(vbox);
-    setStyleSheet("QWidget{background-color:white;color:black} QLineEdit{background-color:white;color:black;border:1px solid black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //setStyleSheet("QWidget{background-color:white;color:black} QLineEdit{background-color:white;color:black;border:1px solid black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(search);
@@ -89,7 +89,7 @@ void BookmarkManager::showContextMenu(const QPoint &pos){
     QMenu* cmenu=new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
-    cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
+    //cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
     cmenu->exec(display->mapToGlobal(pos));
 }
 
@@ -183,7 +183,7 @@ void BookmarkManager::searchBookmark(){
 PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
     mview=m;
     setLayout(vbox);
-    setStyleSheet("QWidget{background-color:white;color:black} QLineEdit{background-color:white;color:black;border:1px solid black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //setStyleSheet("QWidget{background-color:white;color:black} QLineEdit{background-color:white;color:black;border:1px solid black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(search);
@@ -239,7 +239,7 @@ void PrivateBookmarkManager::showContextMenu(const QPoint &pos){
     QMenu* cmenu=new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
-    cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
+    //cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
     cmenu->exec(display->mapToGlobal(pos));
 }
 

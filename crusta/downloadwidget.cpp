@@ -37,7 +37,7 @@ DownloadWidget::DownloadWidget(){
     progress->setMinimum(0);
     setLayout(hbox);
     hbox->addWidget(icon);
-    icon->setFixedWidth(150);
+    icon->setFixedWidth(30);
     hbox->addLayout(v0box);
     hbox->addLayout((v1box));
     v0box->addWidget(name);
@@ -52,13 +52,12 @@ void DownloadWidget::getName(QString file){
 }
 
 void DownloadWidget::getIcon(QIcon ico){
-    icon->setPixmap(ico.pixmap(64,64));
+    icon->setPixmap(ico.pixmap(16,16));
 }
 
 void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
     int f=0;
     if(bytesTotal!=0)f=(int)((bytesRecieved*100)/bytesTotal);
-    fraction->setNum(bytesTotal/1000000.0);
     progress->setValue(f);
 }
 

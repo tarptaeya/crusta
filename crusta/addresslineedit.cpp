@@ -78,6 +78,7 @@ AddressLineEdit::AddressLineEdit(){
     setPlaceholderText("Search or enter address");
     createAddressLineEdit();
     setCompleter(cmpleter);
+    cmpleter->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     createCompleter();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,&AddressLineEdit::customContextMenuRequested,this,&AddressLineEdit::showContextMenu);
@@ -172,6 +173,7 @@ void AddressLineEdit::setDefaultSearch(){
     QHBoxLayout* h1box=new QHBoxLayout();
     QPushButton* cncl=new QPushButton(tr("Cancel"));
     QPushButton* ok=new QPushButton(tr("Save"));
+    ok->setDefault(true);
     h1box->addWidget(new QLabel());
     h1box->addWidget(cncl);
     h1box->addWidget(ok);
@@ -183,9 +185,10 @@ void AddressLineEdit::setDefaultSearch(){
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Set Default Search Engine");
-    w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
+    connect(url,&QLineEdit::returnPressed,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
         return;
     }
@@ -247,15 +250,17 @@ void AddressLineEdit::setUAString(){
     h1box->addWidget(ok);
     cncl->setFixedWidth(100);
     ok->setFixedWidth(100);
+    ok->setDefault(true);
     QVBoxLayout* vbox=new QVBoxLayout();
     vbox->addLayout(hbox);
     vbox->addLayout(h1box);
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Edit HTTP User Agent String");
-    w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border:1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border:1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
+    connect(ua,&QLineEdit::returnPressed,w,&QDialog::accept);
     connect(restore,&QPushButton::clicked,this,[this,w]{restoreUAString();w->reject();});
     if(w->exec()!=QDialog::Accepted){
         return;

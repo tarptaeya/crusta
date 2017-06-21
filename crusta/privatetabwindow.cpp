@@ -118,7 +118,7 @@ void PrivateTabWindow::createControls(){
     connect(view,&QWebEngineView::loadFinished,this,&PrivateTabWindow::loadCompleted);
     connect(view,&QWebEngineView::loadProgress,this,&PrivateTabWindow::pageProgress);
     tab->setLayout(vbox);
-    tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;background-color:white;color:black}");
+    tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;background-color:white;color:black} QPushButton{border: none} QPushButton::hover{background-color: #f2f2f2}");
 }
 
 QWidget* PrivateTabWindow::returnTab(){
@@ -263,7 +263,7 @@ void PrivateTabWindow::setHomePage(){
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Set Home Page");
-    w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border:1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border:1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){

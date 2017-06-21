@@ -184,7 +184,7 @@ void MainView::FindText(){
             this->findwidget->setFixedHeight(50);
             this->findwidget->setFixedWidth(webview->geometry().width());
             this->findwidget->setObjectName("findwidget");
-            this->findwidget->setStyleSheet("#findwidget{border-top:1px solid black;background-color:#ffffff}");
+            //this->findwidget->setStyleSheet("#findwidget{border-top:1px solid black;background-color:#ffffff}");
         }
         this->findwidget->show();
         QPropertyAnimation *animation = new QPropertyAnimation(this->findwidget, "pos");
@@ -298,7 +298,7 @@ void MainView::pastePageAction(){
 }
 
 MainView::MainView(){
-    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:crimson;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid crimson;height:30px} QPushButton{background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
+    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:crimson;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid crimson;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
 
     this->window->parentView=this;
 
@@ -528,7 +528,7 @@ void MainView::addNormalTab(){
             w->setLayout(vbox);
             w->setFixedWidth(500);
             w->setWindowTitle("Crusta : Set Home Page");
-            w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+            //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
             connect(ok,&QPushButton::clicked,w,&QDialog::accept);
             if(w->exec()!=QDialog::Accepted){
                 return;
@@ -913,7 +913,7 @@ void MainView::openDebugger(){
     if(!a.contains("--remote-debugging-port=")){
         QMessageBox* notify=new QMessageBox(this->window);
         notify->setWindowTitle("Crusta : Debugger");
-        notify->setStyleSheet("QMessageBox{background-color:white;color:black} QLabel{color:black} QPushButton{border:0.5px solid black;width:100px;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+        //notify->setStyleSheet("QMessageBox{background-color:white;color:black} QLabel{color:black} QPushButton{border:0.5px solid black;width:100px;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
         notify->setText("Enable Debugging Mode By Launching Crusta With Argument '--remote-debugging-port=<port>' ");
         notify->exec();
         return;
@@ -936,7 +936,7 @@ void MainView::openDebugger(){
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Debugger");
-    w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
         return;

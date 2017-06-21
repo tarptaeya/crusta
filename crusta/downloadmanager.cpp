@@ -44,7 +44,7 @@ DownloadManager::DownloadManager(){
     hbox->addWidget(new QLabel());
     vbox->addLayout(hbox);
     loadDownloads();
-    setStyleSheet("QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //setStyleSheet("QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
 }
 
 void DownloadManager::addDownloadItem(DownloadWidget *w){

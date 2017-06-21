@@ -93,11 +93,12 @@ SiteInfoWidget::SiteInfoWidget(QWebEngineView* view){
     h5box->addWidget(new QLabel());
     QPushButton* ok=new QPushButton();
     ok->setFixedWidth(100);
+    ok->setDefault(false);
     h5box->addWidget(ok);
     h5box->addWidget(new QLabel());
     vbox->addLayout(h5box);
     ok->setText(tr("OK"));
-    setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
+    //setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
     connect(ok,&QPushButton::clicked,this,&QDialog::accept);
     setWindowTitle("Crusta : SiteInfo");
     setFixedSize(this->sizeHint());

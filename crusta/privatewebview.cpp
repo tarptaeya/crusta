@@ -280,7 +280,7 @@ void PrivateWebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePag
     vl->addLayout(h1);
     cncl->setText(tr("No"));
     ok->setText(tr("Yes"));
-    dg->setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
+    //dg->setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     switch (feature) {
@@ -386,7 +386,7 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
     h1bx->addWidget(cncl_btn);
     h1bx->addWidget(ok_btn);
     box->addLayout(h1bx);
-    w->setStyleSheet("QDialog{background-color:white;color:black} QLabel{color:black} QGroupBox{color:black;} QRadioButton{color:black;} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //w->setStyleSheet("QDialog{background-color:white;color:black} QLabel{color:black} QGroupBox{color:black;} QRadioButton{color:black;} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl_btn,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok_btn,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
