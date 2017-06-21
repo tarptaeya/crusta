@@ -607,7 +607,9 @@ void WebView::loadFinished(){
 
 void WebView::espeak(){
     QString txt=this->selectedText();
-    system("espeak \""+txt.toLatin1()+"\"&");
+    c_speech->tts->setText(txt);
+    c_speech->show();
+    c_speech->speak();
 }
 
 void WebView::search(QString text){

@@ -25,7 +25,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT       += webenginewidgets webengine
+QT       += webenginewidgets webengine texttospeech
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     bookmarkmanager.cpp \
     siteinfo.cpp \
     privateaddresslineedit.cpp \
-    privatemainview.cpp
+    privatemainview.cpp \
+    crustaspeech.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -77,7 +78,8 @@ HEADERS  += \
     bookmarkmanager.h \
     siteinfo.h \
     privateaddresslineedit.h \
-    privatemainview.h
+    privatemainview.h \
+    crustaspeech.h
 
 RESOURCES += \
     resource.qrc

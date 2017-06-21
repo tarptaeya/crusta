@@ -24,6 +24,7 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "webpage.h"
+#include "crustaspeech.h"
 #include "downloadwidget.h"
 
 #include <QWebEngineView>
@@ -67,6 +68,7 @@ public:
     TimeNotifier* timeNotifier=new TimeNotifier();
     QWebEngineView* view=new QWebEngineView();
     QLabel* correction=new QLabel();
+    CrustaSpeech* c_speech=new CrustaSpeech();
     void createWebView();
     WebView *returnView();
     void home();

@@ -601,7 +601,9 @@ void PrivateWebView::showContextMenu(const QPoint& pos){
 
 void PrivateWebView::espeak(){
     QString txt=this->selectedText();
-    system("espeak \""+txt.toLatin1()+"\"&");
+    c_speech->tts->setText(txt);
+    c_speech->show();
+    c_speech->speak();
 }
 
 void PrivateWebView::search(QString text){

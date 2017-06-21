@@ -24,6 +24,7 @@
 #include "fullscreennotifier.h"
 #include "timenotifier.h"
 #include "webpage.h"
+#include "crustaspeech.h"
 #include "downloadwidget.h"
 
 #include <QWebEngineView>
@@ -69,6 +70,7 @@ public:
     void createPrivateWebView();
     PrivateWebView *returnPrivateView();
     QLabel* correction=new QLabel();
+    CrustaSpeech* c_speech=new CrustaSpeech();
     void home();
     void spinnerStarted();
     void faviconChanged(QIcon fav);
