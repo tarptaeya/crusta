@@ -273,6 +273,7 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
     h1->addWidget(new QLabel());
     QPushButton* cncl=new QPushButton();
     QPushButton* ok=new QPushButton();
+    ok->setDefault(true);
     h1->addWidget(cncl);
     h1->addWidget(ok);
     vl->addLayout(h1);
@@ -380,6 +381,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     QPushButton* ok_btn=new QPushButton();
     ok_btn->setFixedWidth(75);
     ok_btn->setText(tr("Ok"));
+    ok_btn->setDefault(true);
     QHBoxLayout* h1bx=new QHBoxLayout();
     h1bx->addWidget(new QLabel());
     h1bx->addWidget(cncl_btn);

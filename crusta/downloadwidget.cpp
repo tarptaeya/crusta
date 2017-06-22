@@ -45,6 +45,7 @@ DownloadWidget::DownloadWidget(){
     v0box->addWidget(progress);
     v1box->addWidget(cancel);
     v1box->addWidget(fraction);
+    setFixedWidth(500);
 }
 
 void DownloadWidget::getName(QString file){
@@ -53,6 +54,9 @@ void DownloadWidget::getName(QString file){
 
 void DownloadWidget::getIcon(QIcon ico){
     icon->setPixmap(ico.pixmap(16,16));
+    if(ico.pixmap(16,16).isNull()){
+        open->setDisabled(true);
+    }
 }
 
 void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
@@ -204,6 +208,7 @@ void DownloadWidget::removeWidget(){
         while(!t.atEnd())
         {
             QString line = t.readLine();
+            std::cout<<line.toStdString()<<std::endl;
             if(line.split(">>>>>")[0]!=forbidden)
                 s.append(line + "\n");
         }

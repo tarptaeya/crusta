@@ -48,6 +48,7 @@
 
 
 void HistoryManager::createManager(){
+    display_area->clear();
     setWindowTitle(tr("Crusta : History Manager"));
     //setStyleSheet("QWidget{background-color:white;color:black} QComboBox{background-color:white;color:black} QComboBox QAbstractItemView{background-color:white;color:black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");

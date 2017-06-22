@@ -280,6 +280,7 @@ void PrivateWebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePag
     vl->addLayout(h1);
     cncl->setText(tr("No"));
     ok->setText(tr("Yes"));
+    ok->setDefault(true);
     //dg->setStyleSheet("QWidget{color:black;background-color:white} QPushButton{border:0.5px solid;background-color:black;color:white;border-radius:0px;border-color:black;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
@@ -381,6 +382,7 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
     QPushButton* ok_btn=new QPushButton();
     ok_btn->setFixedWidth(75);
     ok_btn->setText(tr("Ok"));
+    ok_btn->setDefault(true);
     QHBoxLayout* h1bx=new QHBoxLayout();
     h1bx->addWidget(new QLabel());
     h1bx->addWidget(cncl_btn);

@@ -47,7 +47,7 @@ public:
     QAction* open=new QAction(tr("Open"));
     QAction* del=new QAction(tr("Remove"));
     QComboBox* date=new QComboBox();
-    MainView* mview=new MainView();
+    MainView* mview;
     void createManager();
     void showContextMenu(const QPoint& pos);
     void clearAll();
