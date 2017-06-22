@@ -65,7 +65,7 @@ public:
     QPushButton* sbtn=new QPushButton(tr("Go"));
     QVBoxLayout* vbox=new QVBoxLayout();
     PrivateBookmarkManager(PrivateMainView* m);
-    PrivateMainView* mview=new PrivateMainView();
+    PrivateMainView* mview;
     void loadBookmarks();
     void showContextMenu(const QPoint& pos);
     void openUrl();

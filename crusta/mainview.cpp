@@ -299,8 +299,10 @@ void MainView::pastePageAction(){
 
 MainView::MainView(){
     defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:crimson;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid crimson;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
-
     this->window->parentView=this;
+
+    limitCompleterFile();
+    limitHistoryFile();
 
     QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(!f.exists()){
@@ -966,4 +968,73 @@ void MainView::loadTheme(){
        inputFile.close();
     }
     this->tabWindow->setStyleSheet(theme);
+}
+
+void MainView::limitCompleterFile(){
+    QFile inputFile(QDir::homePath()+"/.crusta_db/completer.txt");
+    while(inputFile.size()>500000){  //limit file to 500kb
+        QString s="";
+        if (inputFile.open(QIODevice::ReadOnly)){
+           QTextStream in(&inputFile);
+           int cnt=0;
+           while (!in.atEnd()){
+              QString line = in.readLine();
+              if(cnt!=0)
+                  s.append(line+"\n");
+              cnt++;
+           }
+           inputFile.close();
+        }
+        QFile file(QDir::homePath()+"/.crusta_db/completer.txt");
+        file.open(QIODevice::WriteOnly);
+        QTextStream out(&file);
+        out<<s.toLatin1();
+        file.close();
+    }
+}
+
+void MainView::limitHistoryFile(){
+    QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
+    while(inputFile.size()>1000000){  // limit file to 1Mb
+        QString s="";
+        if (inputFile.open(QIODevice::ReadOnly)){
+           QTextStream in(&inputFile);
+           int cnt=0;
+           while (!in.atEnd()){
+              QString line = in.readLine();
+              if(cnt!=0)
+                  s.append(line+"\n");
+              cnt++;
+           }
+           inputFile.close();
+        }
+        QFile file(QDir::homePath()+"/.crusta_db/history.txt");
+        file.open(QIODevice::WriteOnly);
+        QTextStream out(&file);
+        out<<s.toLatin1();
+        file.close();
+    }
+}
+
+void MainView::limitDownloadFile(){
+    QFile inputFile(QDir::homePath()+"/.crusta_db/downloads.txt");
+    while(inputFile.size()>500000){  //limit file to 500kb
+        QString s="";
+        if (inputFile.open(QIODevice::ReadOnly)){
+           QTextStream in(&inputFile);
+           int cnt=0;
+           while (!in.atEnd()){
+              QString line = in.readLine();
+              if(cnt!=0)
+                  s.append(line+"\n");
+              cnt++;
+           }
+           inputFile.close();
+        }
+        QFile file(QDir::homePath()+"/.crusta_db/downloads.txt");
+        file.open(QIODevice::WriteOnly);
+        QTextStream out(&file);
+        out<<s.toLatin1();
+        file.close();
+    }
 }

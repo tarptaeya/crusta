@@ -89,6 +89,9 @@ public:
     void restoreSession();
     void showPageInfo();
     void changeSpinner(int index);
+    void limitCompleterFile();
+    void limitHistoryFile();
+    void limitDownloadFile();
 public:
     Window* window=new Window();
     QTabWidget* tabWindow=new QTabWidget(this);

@@ -54,9 +54,6 @@ void DownloadWidget::getName(QString file){
 
 void DownloadWidget::getIcon(QIcon ico){
     icon->setPixmap(ico.pixmap(16,16));
-    if(ico.pixmap(16,16).isNull()){
-        open->setDisabled(true);
-    }
 }
 
 void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
@@ -208,8 +205,8 @@ void DownloadWidget::removeWidget(){
         while(!t.atEnd())
         {
             QString line = t.readLine();
-            std::cout<<line.toStdString()<<std::endl;
-            if(line.split(">>>>>")[0]!=forbidden)
+            std::cout<<line.toStdString()<<" "<<forbidden.toStdString()<<std::endl;
+            if(line.split(">>>>>")[0]!=forbidden.split(">>>>>")[0])
                 s.append(line + "\n");
         }
         f.resize(0);
