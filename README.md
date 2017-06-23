@@ -1,5 +1,4 @@
-![Crusta's Logo](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/crusta/res/main.png) 
-# Crusta Browser #
+![Banner](https://github.com/CrustaBrowser/CrustaBrowser/banner.png) 
 
 Crusta Browser is fast, secure, modern and powerful webbrowser with split-tabs and one-click controls, built on the top of Qt5 to give you the best internet experience you deserve.
 Try out the new open source Crusta Browser, it's free to use and always be.
