@@ -532,7 +532,7 @@ void PrivateMainView::addNormalTab(){
                 f.close();
             }
         }
-        webview->home_page=home;
+        //webview->home_page=home;  //unexpected crashing on windows due to this line
         webview->load(home);
     }
     else{

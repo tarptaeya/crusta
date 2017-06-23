@@ -135,7 +135,7 @@ void TabWindow::createControls(){
     connect(view,&QWebEngineView::loadStarted,this,&TabWindow::loadBegin);
     connect(view,&QWebEngineView::loadFinished,this,&TabWindow::loadCompleted);
     connect(view,&QWebEngineView::loadProgress,this,&TabWindow::pageProgress);
-    tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;} QPushButton{border: none} QPushButton::hover{background-color: #f2f2f2;}");
+    tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;} QPushButton{border: none;margin-left:10px;} QPushButton::hover{background-color: #f0f0f0;}");
 }
 
 QWidget* TabWindow::returnTab(){
