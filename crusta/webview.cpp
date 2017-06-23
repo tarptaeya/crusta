@@ -344,7 +344,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     if(download_item->state()!=QWebEngineDownloadItem::DownloadRequested){
         return;
     }
-
+    std::cout<<download_item->mimeType().toStdString()<<std::endl;
     QString path=download_item->path();
     QDialog* w=new QDialog();
     w->setWindowTitle("Crusta : Download Requested");
@@ -354,11 +354,24 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     yhcto->setFont(QFont("Ariel",-1,-1,true));
     box->addWidget(yhcto);
     QHBoxLayout* hbx=new QHBoxLayout();
-    QFileIconProvider* fip=new QFileIconProvider();
-    QIcon icon=fip->icon(QFileInfo(path));
+    QIcon icon;
+    if(download_item->mimeType().contains("audio"))
+        icon=QIcon(":/res/drawables/music_download.png");
+    else if(download_item->mimeType().contains("pdf"))
+        icon=QIcon(":/res/drawables/pdf_download.png");
+    else if(download_item->mimeType().contains("image"))
+        icon=QIcon(":/res/drawables/image_download.png");
+    else if(download_item->mimeType().contains("zip"))
+        icon=QIcon(":/res/drawables/zip_download.png");
+    else if(download_item->mimeType().contains("x-msdownload"))
+        icon=QIcon(":/res/drawables/exe_download.png");
+    else if(download_item->mimeType().contains("video"))
+        icon=QIcon(":/res/drawables/video_download.png");
+    else
+        icon=QIcon(":/res/drawables/file_download.png");
     w->setWindowIcon(icon);
     QLabel* ilabel=new QLabel();
-    ilabel->setPixmap(icon.pixmap(16,16));
+    ilabel->setPixmap(icon.pixmap(64,64));
     hbx->addWidget(ilabel);
     hbx->addWidget(new QLabel(path.split('/')[path.split('/').length()-1]+"\n"+tr("which is : ")+download_item->mimeType()));
     box->addLayout(hbx);

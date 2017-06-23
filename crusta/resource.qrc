@@ -12,5 +12,12 @@
         <file>res/drawables/star.svg</file>
         <file>res/videos/passive_loader.gif</file>
         <file>res/drawables/menu.svg</file>
+        <file>res/drawables/music_download.png</file>
+        <file>res/drawables/pdf_download.png</file>
+        <file>res/drawables/image_download.png</file>
+        <file>res/drawables/zip_download.png</file>
+        <file>res/drawables/exe_download.png</file>
+        <file>res/drawables/file_download.png</file>
+        <file>res/drawables/video_download.png</file>
     </qresource>
 </RCC>
