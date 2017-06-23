@@ -19,6 +19,7 @@
 * ============================================================ */
 
 #include "mainview.h"
+#include "permissions.h"
 #include "privatemainview.h"
 
 #include "fullscreennotifier.h"
@@ -393,6 +394,8 @@ void MainView::createMenuBar(){
     connect(this->find_action,&QAction::triggered,this,&MainView::FindText);
     this->preference=this->edit_menu->addAction(tr("&Edit Theme"));
     connect(this->preference,&QAction::triggered,this,&MainView::editPreference);
+    this->edit_permissions=this->edit_menu->addAction(tr("&Edit Permissions"));
+    connect(this->edit_permissions,&QAction::triggered,this,&MainView::editPermissions);
     this->view_menu=this->menu->addMenu(tr("&View"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
@@ -1037,4 +1040,9 @@ void MainView::limitDownloadFile(){
         out<<s.toLatin1();
         file.close();
     }
+}
+
+void MainView::editPermissions(){
+    PermissionDialog* pdg=new PermissionDialog();
+    pdg->show();
 }

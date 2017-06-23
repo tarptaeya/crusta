@@ -22,6 +22,7 @@
 #define MAINVIEW_H
 
 #include "fullscreennotifier.h"
+#include "permissions.h"
 #include "webview.h"
 #include "addresslineedit.h"
 #include "tabwindow.h"
@@ -125,6 +126,7 @@ public:
     QAction* paste_action=new QAction();
     QAction* selectall_action=new QAction();
     QAction* find_action=new QAction();
+    QAction *edit_permissions=new QAction();
     QAction* view_page_source_action=new QAction();
     QAction* zoom_in_action=new QAction();
     QAction* zoom_out_action=new QAction();
@@ -193,6 +195,7 @@ public:
     void openUrl(QString url);
     void openDebugger();
     void loadTheme();
+    void editPermissions();
 };
 
 

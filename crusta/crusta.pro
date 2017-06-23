@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     siteinfo.cpp \
     privateaddresslineedit.cpp \
     privatemainview.cpp \
-    crustaspeech.cpp
+    crustaspeech.cpp \
+    permissions.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -79,7 +80,8 @@ HEADERS  += \
     siteinfo.h \
     privateaddresslineedit.h \
     privatemainview.h \
-    crustaspeech.h
+    crustaspeech.h \
+    permissions.h
 
 RESOURCES += \
     resource.qrc

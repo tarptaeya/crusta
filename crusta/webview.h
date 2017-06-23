@@ -55,7 +55,12 @@ class WebView:public QWebEngineView{
 protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
-    bool wasFullScreened=false;
+    int notif;
+    int mouse;
+    int geo;
+    int audio;
+    int video;
+    int av;
     QString link="";
     WebPage* webpage=new WebPage();
     QString home_page;
@@ -90,6 +95,7 @@ public:
     void search(QString text);
     void downloadLink();
     void downloadImage();
+    void loadPermissions();
     WebView();
 };
 

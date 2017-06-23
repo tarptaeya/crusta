@@ -172,7 +172,6 @@ void WebView::pageTitleChanged(){
 void WebView::acceptFullScreen(QWebEngineFullScreenRequest request){
     if(request.toggleOn()){
         request.accept();
-        wasFullScreened=true;
         widget=(QWidget*)this->parent();
         layout=widget->layout();
         layout->replaceWidget(this,correction);
@@ -259,6 +258,7 @@ QWebEngineView* WebView::createWindow(QWebEnginePage::WebWindowType type){
 }
 
 void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature){
+    loadPermissions();
     QDialog* dg=new QDialog();
     QVBoxLayout* vl=new QVBoxLayout();
     dg->setLayout(vl);
@@ -284,6 +284,15 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     switch (feature) {
     case QWebEnginePage::Notifications:{
+        if(notif==0){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+            return;
+        }
+        else if(notif==2){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
         permission->setText(tr("Allow Notifications from this website"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
@@ -293,6 +302,15 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MouseLock:{
+        if(mouse==0){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+            return;
+        }
+        else if(mouse==2){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
         permission->setText(tr("Allow Pointer Lock for this website"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
@@ -302,6 +320,15 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::Geolocation:{
+        if(geo==0){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+            return;
+        }
+        else if(geo==2){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
         permission->setText(tr("Allow Geolocation from current website"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
@@ -311,6 +338,15 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MediaAudioCapture:{
+        if(audio==0){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+            return;
+        }
+        else if(audio==2){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
         permission->setText(tr("Allow Audio Capture for this site"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
@@ -320,6 +356,15 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MediaVideoCapture:{
+        if(video==0){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+            return;
+        }
+        else if(video==2){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
         permission->setText(tr("Allow Video Capture for this site"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
@@ -329,6 +374,15 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         break;
     }
     case QWebEnginePage::MediaAudioVideoCapture:{
+        if(av==0){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionGrantedByUser);
+            return;
+        }
+        else if(av==2){
+            page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
         permission->setText(tr("Allow Audio/Video Capture for this site"));
         if(dg->exec()!=QDialog::Accepted){
             page()->setFeaturePermission(securityOrigin,feature,QWebEnginePage::PermissionDeniedByUser);
@@ -652,7 +706,55 @@ void WebView::search(QString text){
     win->parentView->openUrl(srch+text);
 }
 
-
+void WebView::loadPermissions(){
+    QStringList slist;
+    QFile f(QDir::homePath()+"/.crusta_db/permissions.txt");
+    if(f.exists()){
+        f.open(QIODevice::ReadOnly);
+        QTextStream in(&f);
+        while (!in.atEnd()){
+           QString line = in.readLine();
+           slist.append(line);
+        }
+        f.close();
+    }
+    if(slist[0]=="0")
+        notif=0;
+    else if(slist[0]=="1")
+        notif=1;
+    else
+        notif=2;
+    if(slist[1]=="0")
+        mouse=0;
+    else if(slist[1]=="1")
+        mouse=1;
+    else
+        mouse=2;
+    if(slist[2]=="0")
+        geo=0;
+    else if(slist[2]=="1")
+        geo=1;
+    else
+        geo=2;
+    if(slist[3]=="0")
+        audio=0;
+    else if(slist[3]=="1")
+        audio=1;
+    else
+        audio=2;
+    if(slist[4]=="0")
+        video=0;
+    else if(slist[4]=="1")
+        video=1;
+    else
+        video=2;
+    if(slist[5]=="0")
+        av=0;
+    else if(slist[5]=="1")
+        av=1;
+    else
+        av=2;
+}
 
 
 

@@ -78,7 +78,7 @@ AddressLineEdit::AddressLineEdit(){
     setPlaceholderText("Search or enter address");
     createAddressLineEdit();
     setCompleter(cmpleter);
-    cmpleter->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
+    cmpleter->setCompletionMode(QCompleter::PopupCompletion);
     createCompleter();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,&AddressLineEdit::customContextMenuRequested,this,&AddressLineEdit::showContextMenu);
