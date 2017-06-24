@@ -577,7 +577,7 @@ void PrivateMainView::saveAsPdf(){
     currentPageLayout.setPageSize(printer.pageLayout().pageSize());
     currentPageLayout.setOrientation(printer.pageLayout().orientation());
     QFileDialog f;
-    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString file_name=f.getSaveFileName(this->window,tr("Crusta : Save File"),QDir::homePath(),"Pdf File(*.pdf)",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
@@ -591,7 +591,7 @@ void PrivateMainView::saveAsPdf(){
 
 void PrivateMainView::savePage(){
     QFileDialog f;
-    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString file_name=f.getSaveFileName(this->window,tr("Crusta : Save File"),QDir::homePath(),"WebPage, Complete",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
@@ -613,7 +613,7 @@ void PrivateMainView::showJsCodeEditor(){
 
 void PrivateMainView::openLocalFile(){
     QFileDialog f;
-    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString filename=f.getOpenFileName(this->window,tr("Crusta : Open File"),QDir::homePath(),QString(),nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
@@ -633,7 +633,7 @@ void PrivateMainView::screenShot(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     QPixmap pmap = webview->grab();
     QFileDialog f;
-    f.setOption(QFileDialog::DontUseNativeDialog,true);
+    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString filename=f.getSaveFileName(this->window,tr("Crusta : Open File"),QDir::homePath(),QString("Images (*.png *.xpm *.jpg *.bmp)"),nullptr,f.options());
     if(filename!=""){
     if(!(filename.endsWith(".png")||filename.endsWith(".jpg")||filename.endsWith(".bmp")||filename.endsWith(".xpm")))filename+=QString(".png");

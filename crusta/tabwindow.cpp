@@ -126,6 +126,7 @@ void TabWindow::createControls(){
     vbox->addLayout(hbox);
     vbox->addWidget(view);
     vbox->addWidget(pbar);
+    vbox->setSpacing(0);
     pbar->setMaximum(0);
     pbar->setMaximum(100);
     pbar->hide();
