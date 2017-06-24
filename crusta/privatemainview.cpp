@@ -418,7 +418,6 @@ void PrivateMainView::createMenuBar(){
     connect(this->changUA,&QAction::triggered,this,&PrivateMainView::changeUAfx);
     this->help_menu=this->menu->addMenu(tr("&Help"));
     this->help_menu->addAction(tr("&Crusta Help"));
-    this->help_menu->addAction(tr("&Crusta Tour"));
     this->aboutCr=this->help_menu->addAction(tr("&About Crusta"));
     connect(this->aboutCr,&QAction::triggered,this,&PrivateMainView::about);
     this->help_menu->addSeparator();

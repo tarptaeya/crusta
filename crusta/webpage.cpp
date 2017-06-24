@@ -38,7 +38,7 @@ Profile::Profile(){
 
 QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes){
     QFileDialog* f=new QFileDialog();
-    f->setOption(QFileDialog::DontUseNativeDialog,true);
+    //f->setOption(QFileDialog::DontUseNativeDialog,true);
     switch(mode){
     case(QWebEnginePage::FileSelectOpen):{
         QString name=f->getOpenFileName(nullptr,QString(tr("Crusta : Upload File")),QDir::homePath(),QString(),nullptr,f->options());
@@ -98,7 +98,7 @@ bool WebPage::certificateError(const QWebEngineCertificateError &error){
 
 QStringList PrivateWebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes){
     QFileDialog* f=new QFileDialog();
-    f->setOption(QFileDialog::DontUseNativeDialog,true);
+    //f->setOption(QFileDialog::DontUseNativeDialog,true);
     switch(mode){
     case(QWebEnginePage::FileSelectOpen):{
         QString name=f->getOpenFileName(nullptr,QString(tr("Crusta : Upload File")),QDir::homePath(),QString(),nullptr,f->options());

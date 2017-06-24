@@ -27,6 +27,7 @@
 #include <QCoreApplication>
 #include <QTextStream>
 #include <QDateTime>
+#include <QMessageBox>
 
 #include <iostream>
 
@@ -191,6 +192,16 @@ void DownloadWidget::openFile(){
     QUrl u;
     path=path.split(">>>>>")[0];
     u=QUrl::fromLocalFile(path);
+    QFile f(path);
+    if(!f.exists()){
+        QMessageBox msgBox;
+        msgBox.setText("File not found");
+        msgBox.setInformativeText(tr("the requested file not found. It might be replaced or deleted"));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        return;
+    }
     QDesktopServices::openUrl(u);
 }
 
