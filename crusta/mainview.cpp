@@ -444,17 +444,9 @@ void MainView::createMenuBar(){
     connect(this->viewSource,&QAction::triggered,this,&MainView::viewPageSource);
     connect(this->runJsCode,&QAction::triggered,this,&MainView::showJsCodeEditor);
     connect(this->changeUA,&QAction::triggered,this,&MainView::changeUAfx);
-    this->help_menu=this->menu->addMenu(tr("&Help"));
-    this->help_menu->addAction(tr("&Crusta Help"));
-    this->aboutCr=this->help_menu->addAction(tr("&About Crusta"));
-    connect(this->aboutCr,&QAction::triggered,this,&MainView::about);
-    this->help_menu->addSeparator();
-    this->help_menu->addAction(tr("&Keyboard Shortcuts"));
-    this->help_menu->addAction(tr("&Request Feature"));
-    this->help_menu->addAction(tr("&Report Issue"));
-    this->help_menu->addSeparator();
-    this->help_menu->addAction(tr("&License"));
-
+    QAction* help_=new QAction(tr("Help"));
+    this->menu->addAction(help_);
+    connect(help_,&QAction::triggered,this,&MainView::help);
     this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
     this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));
     this->incognito->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_N));
@@ -568,7 +560,7 @@ void MainView::addNormalTab(){
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
         QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-        exec_dir->cd("../web");
+        exec_dir->cd("web");
         if(exec_dir->absolutePath().startsWith("/"))
             webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
         else
@@ -740,13 +732,13 @@ void MainView::restoreTab(QUrl u){
     webview->load(u);
 }
 
-void MainView::about(){
+void MainView::help(){
     MainView::addNormalTab();
     int index=this->tabWindow->count()-1;
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-    webview->load(QUrl("http://www.crustabrowser.com/about"));
+    webview->load(QUrl("http://www.crustabrowser.com/help"));
 }
 
 void MainView::showHistory(){

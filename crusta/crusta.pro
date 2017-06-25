@@ -85,3 +85,6 @@ HEADERS  += \
 
 RESOURCES += \
     resource.qrc
+
+RC_FILE = crusta.rc
+

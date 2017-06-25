@@ -416,17 +416,9 @@ void PrivateMainView::createMenuBar(){
     connect(this->viewSource,&QAction::triggered,this,&PrivateMainView::viewPageSource);
     connect(this->runJsCode,&QAction::triggered,this,&PrivateMainView::showJsCodeEditor);
     connect(this->changUA,&QAction::triggered,this,&PrivateMainView::changeUAfx);
-    this->help_menu=this->menu->addMenu(tr("&Help"));
-    this->help_menu->addAction(tr("&Crusta Help"));
-    this->aboutCr=this->help_menu->addAction(tr("&About Crusta"));
-    connect(this->aboutCr,&QAction::triggered,this,&PrivateMainView::about);
-    this->help_menu->addSeparator();
-    this->help_menu->addAction(tr("&Keyboard Shortcuts"));
-    this->help_menu->addAction(tr("&Request Feature"));
-    this->help_menu->addAction(tr("&Report Issue"));
-    this->help_menu->addSeparator();
-    this->help_menu->addAction(tr("&License"));
-
+    QAction* help_=new QAction(tr("Help"));
+    this->menu->addAction(help_);
+    connect(help_,&QAction::triggered,this,&PrivateMainView::help);
     this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
     this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));
     this->open_file->setShortcut(QKeySequence(QKeySequence::Open));
@@ -539,7 +531,7 @@ void PrivateMainView::addNormalTab(){
         QLayout* layout=widget->layout();
         PrivateWebView* webview=(PrivateWebView*)layout->itemAt(1)->widget();
         QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-        exec_dir->cd("../web");
+        exec_dir->cd("web");
         if(exec_dir->absolutePath().startsWith("/"))
             webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
         else
@@ -704,13 +696,13 @@ void PrivateMainView::restoreTab(QUrl u){
     webview->load(u);
 }
 
-void PrivateMainView::about(){
+void PrivateMainView::help(){
     PrivateMainView::addNormalTab();
     int index=this->tabWindow->count()-1;
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-    webview->load(QUrl("http://www.crustabrowser.com/about"));
+    webview->load(QUrl("http://www.crustabrowser.com/help"));
 }
 
 void PrivateMainView::showBookamrks(){

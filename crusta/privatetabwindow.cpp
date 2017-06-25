@@ -48,7 +48,7 @@ void PrivateTabWindow::viewHome(){
 void PrivateTabWindow::updateAddrBar(){
     QString url=this->view->returnPrivateView()->url().toString();
     QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
-    exec_dir->cd("../web");
+    exec_dir->cd("web");
     QString forbidden;
     if(exec_dir->absolutePath().startsWith("/"))
         forbidden="file://"+exec_dir->absolutePath()+"/index.html";
@@ -58,7 +58,7 @@ void PrivateTabWindow::updateAddrBar(){
         return;
     }
     QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
-    viewer_file->cd("../3rd_party/pdfjs/web");
+    viewer_file->cd("3rd_party/pdfjs/web");
     QString forbidden_;
     if(viewer_file->absolutePath().startsWith("/"))
         forbidden_="file://"+viewer_file->absolutePath()+"/viewer.html?file";

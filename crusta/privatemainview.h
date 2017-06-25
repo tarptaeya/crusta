@@ -174,7 +174,7 @@ public:
     void reloadAllTabs();
     void closeOtherTabs(int index);
     void restoreTab(QUrl u);
-    void about();
+    void help();
     void showBookamrks();
     void showDownloads();
     void changeUAfx();

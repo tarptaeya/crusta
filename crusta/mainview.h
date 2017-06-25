@@ -183,7 +183,7 @@ public:
     void reloadAllTabs();
     void closeOtherTabs(int index);
     void restoreTab(QUrl u);
-    void about();
+    void help();
     void showHistory();
     void clearHistory();
     void showBookamrks();

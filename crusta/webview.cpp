@@ -491,7 +491,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
 
             download_item->accept();
             QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
-            viewer_file->cd("../3rd_party/pdfjs/web");
+            viewer_file->cd("3rd_party/pdfjs/web");
             connect(download_item,&QWebEngineDownloadItem::downloadProgress,view,&WebView::handleBeforePdf);
             if(viewer_file->absolutePath().startsWith("/"))
                 connect(download_item,&QWebEngineDownloadItem::finished,view,[view,cpath,viewer_file]{view->load(QUrl("file://"+viewer_file->absolutePath()+"/viewer.html?file="+cpath));});
