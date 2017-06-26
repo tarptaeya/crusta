@@ -27,8 +27,9 @@
 #include <QStringList>
 #include <QString>
 #include <QDir>
+#include <QHeaderView>
 
-#include <iostream>
+
 
 BookmarkManager::BookmarkManager(MainView *m){
     mview=m;
@@ -51,6 +52,9 @@ BookmarkManager::BookmarkManager(MainView *m){
     setWindowTitle(tr("Crusta : Bookmarks Manager"));
     loadBookmarks();
     display->setContextMenuPolicy(Qt::CustomContextMenu);
+    display->header()->resizeSection(0,200);
+    display->header()->resizeSection(1,300);
+    display->header()->resizeSection(2,200);
     connect(display,&QTreeWidget::customContextMenuRequested,this,&BookmarkManager::showContextMenu);
     connect(open,&QAction::triggered,this,&BookmarkManager::openUrl);
     connect(del,&QAction::triggered,this,&BookmarkManager::clearEntry);
@@ -61,6 +65,8 @@ BookmarkManager::BookmarkManager(MainView *m){
     vbox->addLayout(h1box);
     connect(save,&QPushButton::clicked,this,&BookmarkManager::saveDescription);
     connect(sbtn,&QPushButton::clicked,this,&BookmarkManager::searchBookmark);
+    setMinimumWidth(750);
+    setMinimumHeight(400);
 }
 
 void BookmarkManager::loadBookmarks(){

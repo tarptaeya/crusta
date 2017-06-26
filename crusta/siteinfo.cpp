@@ -19,7 +19,6 @@
 * ============================================================ */
 
 #include "siteinfo.h"
-
 #include <QWebEngineProfile>
 
 SiteInfoWidget::SiteInfoWidget(QWebEngineView* view){

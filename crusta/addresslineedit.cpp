@@ -38,7 +38,6 @@
 #include <QStringListModel>
 #include <QDir>
 
-#include <iostream>
 
 
 void AddressLineEdit::createAddressLineEdit(){

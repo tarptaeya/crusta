@@ -56,9 +56,6 @@
 #include <QDialog>
 #include <QFileDialog>
 
-#include <iostream>
-
-
 
 
 WebView::WebView(){
@@ -398,7 +395,6 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     if(download_item->state()!=QWebEngineDownloadItem::DownloadRequested){
         return;
     }
-    std::cout<<download_item->mimeType().toStdString()<<std::endl;
     QString path=download_item->path();
     QDialog* w=new QDialog();
     w->setWindowTitle("Crusta : Download Requested");

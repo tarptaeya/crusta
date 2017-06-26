@@ -55,9 +55,6 @@
 #include <QPageSetupDialog>
 #include <QMessageBox>
 
-#include <iostream>
-
-
 
 
 void MainView::closeTab(int index){

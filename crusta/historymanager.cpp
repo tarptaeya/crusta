@@ -41,9 +41,7 @@
 #include <QMenu>
 #include <QIODevice>
 #include <QDate>
-
-#include <iostream>
-
+#include <QHeaderView>
 
 
 
@@ -95,10 +93,15 @@ HistoryManager::HistoryManager(MainView *m){
     display_area->setColumnCount(header.count());
     display_area->setHeaderLabels(header);
     display_area->setContextMenuPolicy(Qt::CustomContextMenu);
+    display_area->header()->resizeSection(0,200);
+    display_area->header()->resizeSection(1,300);
+    display_area->header()->resizeSection(2,100);
     connect(display_area,&QTreeWidget::customContextMenuRequested,this,&HistoryManager::showContextMenu);
     connect(clear_all,&QPushButton::clicked,this,&HistoryManager::clearAll);
     connect(open,&QAction::triggered,this,&HistoryManager::openUrl);
     connect(del,&QAction::triggered,this,&HistoryManager::clearEntry);
+    setMinimumWidth(650);
+    setMinimumHeight(400);
 }
 
 void HistoryManager::showContextMenu(const QPoint &pos){

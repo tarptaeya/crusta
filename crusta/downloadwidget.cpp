@@ -29,7 +29,7 @@
 #include <QDateTime>
 #include <QMessageBox>
 
-#include <iostream>
+
 
 DownloadWidget::DownloadWidget(){
     cancel->setText(tr("Cancel"));
@@ -216,7 +216,6 @@ void DownloadWidget::removeWidget(){
         while(!t.atEnd())
         {
             QString line = t.readLine();
-            std::cout<<line.toStdString()<<" "<<forbidden.toStdString()<<std::endl;
             if(line.split(">>>>>")[0]!=forbidden.split(">>>>>")[0])
                 s.append(line + "\n");
         }

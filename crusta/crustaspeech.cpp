@@ -26,6 +26,7 @@ CrustaSpeech::CrustaSpeech(){
     if(speech->availableVoices().size()!=0)
         speech->setVoice(speech->availableVoices()[0]);
     setLayout(vbox);
+    setWindowTitle(tr("Crusta Speech"));
     vbox->addWidget(tts);
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(start_btn);

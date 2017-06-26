@@ -26,8 +26,6 @@
 #include <QDir>
 #include <QWebEngineProfile>
 
-#include <iostream>
-
 
 
 Profile::Profile(){

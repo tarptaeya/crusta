@@ -56,9 +56,6 @@
 #include <QDialog>
 #include <QFileDialog>
 
-#include <iostream>
-
-
 
 
 PrivateWebView::PrivateWebView(){
@@ -78,7 +75,6 @@ PrivateWebView::PrivateWebView(){
     connect(page(),&QWebEnginePage::linkHovered,this,&PrivateWebView::showLinkHovered);
     connect(page(),&QWebEnginePage::windowCloseRequested,this,&PrivateWebView::closeTab);
     //connect(page(),&QWebEnginePage::recentlyAudibleChanged,this,&PrivateWebView::audioInfo);
-    connect(page(),&QWebEnginePage::authenticationRequired,this,&PrivateWebView::authenticate);
     connect(page(),&WebPage::windowCloseRequested,this,&PrivateWebView::closeTab);
 
     //context-menu
@@ -236,7 +232,6 @@ QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type)
         return view;
     }
     case QWebEnginePage::WebBrowserWindow: {
-        std::cout<<"window Requested"<<std::endl;
         QWebEngineView* view=new QWebEngineView();
         connect(view->page(),&QWebEnginePage::windowCloseRequested,view,&QWebEngineView::close);
         view->setWindowTitle(view->title());
@@ -532,10 +527,6 @@ void PrivateWebView::audioInfo(){
             break;
         }
     }
-}
-
-void PrivateWebView::authenticate(const QUrl u,QAuthenticator *authenticator){
-    std::cout<<"yes"<<std::endl;
 }
 
 void PrivateWebView::downloadLink(){

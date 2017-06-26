@@ -37,8 +37,6 @@
 #include <QMenu>
 #include <QDir>
 
-#include <iostream>
-
 
 
 void TabWindow::viewHome(){

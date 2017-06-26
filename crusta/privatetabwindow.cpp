@@ -37,8 +37,6 @@
 #include <QCompleter>
 #include <QDir>
 
-#include <iostream>
-
 
 
 void PrivateTabWindow::viewHome(){

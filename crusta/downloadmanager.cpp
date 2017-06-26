@@ -31,10 +31,11 @@
 #include <QTextStream>
 #include <QFile>
 
-#include <iostream>
+
 
 DownloadManager::DownloadManager(){
     setLayout(vbox);
+    setWindowTitle(tr("Crusta : Download Manager"));
     vbox->addWidget(listwidget);
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());
