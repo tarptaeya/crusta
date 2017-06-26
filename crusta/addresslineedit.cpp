@@ -137,6 +137,8 @@ void AddressLineEdit::loadSearchString(){
           QStringList data=line.split(">>>>>");
           if(data[0]=="Search String"){
               this->defaultSearch=data[1];
+              if(this->defaultSearch.isEmpty())
+                  this->defaultSearch=QString("https://google.com/search?q=");
               inputFile.close();
               return;
           }
@@ -155,7 +157,7 @@ void AddressLineEdit::setDefaultSearch(){
     QStringListModel* m=new QStringListModel();
     QStringList l;
     l.append("https://google.com/search?q=");
-    l.append("https://duckduckgo.com");
+    l.append("https://duckduckgo.com/?q=");
     l.append("https://bing.com/search?q=");
     l.append("https://qwant.com/?q=");
     l.append("https://www.yandex.com/search/?text=");

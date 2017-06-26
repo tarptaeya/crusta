@@ -306,7 +306,7 @@ MainView::MainView(){
     if(!f.exists()){
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
-        in<<"Search String>>>>>\nUA String>>>>>\nHome Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        in<<"Search String>>>>>\nIncognito Search String>>>>>\nUA String>>>>>\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
         f.close();
     }
 
@@ -505,31 +505,7 @@ void MainView::addNormalTab(){
            inputFile.close();
         }
         if(home.isEmpty()){
-            QDialog* w=new QDialog();
-            QLabel* lbl=new QLabel(tr("Home Page Url"));
-            QLineEdit* url=new QLineEdit();
-            QHBoxLayout* hbox=new QHBoxLayout();
-            hbox->addWidget(lbl);
-            hbox->addWidget(url);
-            QHBoxLayout* h1box=new QHBoxLayout();
-            QPushButton* ok=new QPushButton(tr("Save"));
-            h1box->addWidget(new QLabel());
-            h1box->addWidget(ok);
-            ok->setFixedWidth(100);
-            QVBoxLayout* vbox=new QVBoxLayout();
-            vbox->addLayout(hbox);
-            vbox->addLayout(h1box);
-            w->setLayout(vbox);
-            w->setFixedWidth(500);
-            w->setWindowTitle("Crusta : Set Home Page");
-            //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
-            connect(ok,&QPushButton::clicked,w,&QDialog::accept);
-            if(w->exec()!=QDialog::Accepted){
-                return;
-            }
-            if(url->text()=="")
-                return;
-            home=url->text();
+            home=QString("https://google.com");
             QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
             if(f.open(QIODevice::ReadWrite | QIODevice::Text))
             {
@@ -556,6 +532,21 @@ void MainView::addNormalTab(){
         QWidget* widget=this->tabWindow->widget(cnt-1);
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
+        QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+        if (inputFile.open(QIODevice::ReadOnly))
+        {
+           QTextStream in(&inputFile);
+           while (!in.atEnd())
+           {
+              QString line = in.readLine();
+              QStringList data=line.split(">>>>>");
+              if(data[0]=="Home Page"){
+                  webview->home_page=data[1];
+                  break;
+              }
+           }
+           inputFile.close();
+        }
         QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
         exec_dir->cd("web");
         if(exec_dir->absolutePath().startsWith("/"))
