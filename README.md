@@ -10,44 +10,14 @@ You can always contact Crusta Browser at : contact@crustabrowser.com
 ## How to Compile ##
 
 1. Clone the repository via
-
 ```$ git clone git://github.com/CrustaBrowser/CrustaBrowser.git```
 
-2. Change directory to CrustaBrowser/crusta
+2. Build it in release mode by qt creator or use qmake.
 
-```cd CrustaBrowser/crusta```
+3. Add the following folders to your build(release) directory
+  * 3rd_party
+  * web
+ as given seperated in repo
+ 
+4. All done - you are now ready to explore Crusta
 
-3. Run QMake
-
-```qmake crusta.pro```
-
-4. Execute make
-
-```make```
-
-5. execute the crusta executable
-
-```./crusta```
-
-
-## Screen-shots ##
-
-normal mode->
-
-![shot-1](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crusta.png)
-
-
-
-
-![shot-2](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crusta2.png)
-
-
-
-split mode ->
-
-![shot-3](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/crustasplit.png)
-
-
-
-
-![shot-4](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/ScreenShots/splitmode.png)
