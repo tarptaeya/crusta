@@ -10,13 +10,15 @@ You can always contact Crusta Browser at : contact@crustabrowser.com
 ## How to Compile ##
 
 1. Clone the repository via
+
 ```$ git clone git://github.com/CrustaBrowser/CrustaBrowser.git```
 
 2. Build it in release mode by qt creator or use qmake.
 
 3. Add the following folders to your build(release) directory
-  * 3rd_party
-  * web
+    * 3rd_party
+    * web
+  
  as given seperated in repo
  
 4. All done - you are now ready to explore Crusta
