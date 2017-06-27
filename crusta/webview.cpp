@@ -689,7 +689,7 @@ void WebView::search(QString text){
           QStringList data=line.split(">>>>>");
           if(data[0]=="Search String"){
               srch=data[1];
-              inputFile.close();
+              break;
           }
        }
        inputFile.close();

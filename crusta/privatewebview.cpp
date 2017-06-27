@@ -622,7 +622,7 @@ void PrivateWebView::search(QString text){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
-          if(data[0]=="Search String"){
+          if(data[0]=="Incognito Search String"){
               srch=data[1];
               inputFile.close();
           }

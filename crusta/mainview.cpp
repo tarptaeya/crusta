@@ -306,7 +306,7 @@ MainView::MainView(){
     if(!f.exists()){
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
-        in<<"Search String>>>>>\nIncognito Search String>>>>>\nUA String>>>>>\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        in<<"Search String>>>>>https://google.com/search?q=\nIncognito Search String>>>>>https://duckduckgo.com/?q=\nUA String>>>>>\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
         f.close();
     }
 
@@ -978,7 +978,7 @@ void MainView::limitCompleterFile(){
 
 void MainView::limitHistoryFile(){
     QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
-    while(inputFile.size()>1000000){  // limit file to 1Mb
+    while(inputFile.size()>10000000){  // limit file to 1Mb
         QString s="";
         if (inputFile.open(QIODevice::ReadOnly)){
            QTextStream in(&inputFile);
@@ -1001,7 +1001,7 @@ void MainView::limitHistoryFile(){
 
 void MainView::limitDownloadFile(){
     QFile inputFile(QDir::homePath()+"/.crusta_db/downloads.txt");
-    while(inputFile.size()>500000){  //limit file to 500kb
+    while(inputFile.size()>1000000){  //limit file to 1Mb
         QString s="";
         if (inputFile.open(QIODevice::ReadOnly)){
            QTextStream in(&inputFile);
