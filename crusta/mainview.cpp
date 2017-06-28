@@ -1,6 +1,6 @@
 /* ============================================================
 * Crusta - Qt5 webengine browser
-* Copyright (C) 2017 Anmol Gautam <tarptaeya@gmail.com>
+* Copyright (C) 2017 Anmol Gautam <anmol@crustabrowser.com>
 *
 * THIS FILE IS A PART OF CRUSTA
 *
@@ -33,6 +33,7 @@
 #include "historymanager.h"
 #include "bookmarkmanager.h"
 #include "siteinfo.h"
+#include "speeddial.h"
 
 #include <QObject>
 #include <QPoint>
@@ -54,6 +55,7 @@
 #include <QPrinter>
 #include <QPageSetupDialog>
 #include <QMessageBox>
+#include <QWebEngineProfile>
 
 
 
@@ -304,10 +306,27 @@ MainView::MainView(){
 
     QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(!f.exists()){
+        QWebEngineProfile p;
+        p.setHttpUserAgent("");
+        QStringList ua=p.httpUserAgent().split(" ");
+        QString new_string="";
+        int len=ua.length();
+        for(int i=0;i<len-1;i++){
+            new_string+=ua[i]+" ";
+        }
+        new_string+="Crusta/1.0.0 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
-        in<<"Search String>>>>>https://google.com/search?q=\nIncognito Search String>>>>>https://duckduckgo.com/?q=\nUA String>>>>>\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        in<<"Search String>>>>>https://google.com/search?q=\nIncognito Search String>>>>>https://duckduckgo.com/?q=\nUA String>>>>>"+new_string+"\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
         f.close();
+    }
+
+    QFile f_(QDir::homePath()+"/.crusta_db/permissions.txt");
+    if(!f_.exists()){
+        f_.open(QIODevice::WriteOnly);
+        QTextStream in(&f_);
+        in<<"1\n1\n0\n1\n1\n1\n";
+        f_.close();
     }
 
     this->box->setContentsMargins(0,0,0,0);
@@ -394,6 +413,8 @@ void MainView::createMenuBar(){
     connect(this->preference,&QAction::triggered,this,&MainView::editPreference);
     this->edit_permissions=this->edit_menu->addAction(tr("&Edit Permissions"));
     connect(this->edit_permissions,&QAction::triggered,this,&MainView::editPermissions);
+    this->speed_dial=this->edit_menu->addAction(tr("Speed Dial"));
+    connect(this->speed_dial,&QAction::triggered,this,&MainView::showSpeedDial);
     this->view_menu=this->menu->addMenu(tr("&View"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
@@ -1025,4 +1046,9 @@ void MainView::limitDownloadFile(){
 void MainView::editPermissions(){
     PermissionDialog* pdg=new PermissionDialog();
     pdg->show();
+}
+
+void MainView::showSpeedDial(){
+    SpeedDial* s=new SpeedDial();
+    s->show();
 }

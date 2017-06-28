@@ -1,6 +1,6 @@
 /* ============================================================
 * Crusta - Qt5 webengine browser
-* Copyright (C) 2017 Anmol Gautam <tarptaeya@gmail.com>
+* Copyright (C) 2017 Anmol Gautam <anmol@crustabrowser.com>
 *
 * THIS FILE IS A PART OF CRUSTA
 *

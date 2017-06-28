@@ -1,6 +1,6 @@
 # ============================================================
 # Crusta - Qt5 webengine browser
-# Copyright (C) 2017 Anmol Gautam <tarptaeya@gmail.com>
+# Copyright (C) 2017 Anmol Gautam <anmol@crustabrowser.com>
 #
 # THIS FILE IS A PART OF CRUSTA
 #
@@ -56,7 +56,8 @@ SOURCES += main.cpp\
     privateaddresslineedit.cpp \
     privatemainview.cpp \
     crustaspeech.cpp \
-    permissions.cpp
+    permissions.cpp \
+    speeddial.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -81,7 +82,8 @@ HEADERS  += \
     privateaddresslineedit.h \
     privatemainview.h \
     crustaspeech.h \
-    permissions.h
+    permissions.h \
+    speeddial.h
 
 RESOURCES += \
     resource.qrc

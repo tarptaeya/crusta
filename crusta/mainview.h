@@ -1,6 +1,6 @@
 /* ============================================================
 * Crusta - Qt5 webengine browser
-* Copyright (C) 2017 Anmol Gautam <tarptaeya@gmail.com>
+* Copyright (C) 2017 Anmol Gautam <anmol@crustabrowser.com>
 *
 * THIS FILE IS A PART OF CRUSTA
 *
@@ -126,7 +126,8 @@ public:
     QAction* paste_action=new QAction();
     QAction* selectall_action=new QAction();
     QAction* find_action=new QAction();
-    QAction *edit_permissions=new QAction();
+    QAction* edit_permissions=new QAction();
+    QAction* speed_dial=new QAction();
     QAction* view_page_source_action=new QAction();
     QAction* zoom_in_action=new QAction();
     QAction* zoom_out_action=new QAction();
@@ -196,6 +197,7 @@ public:
     void openDebugger();
     void loadTheme();
     void editPermissions();
+    void showSpeedDial();
 };
 
 

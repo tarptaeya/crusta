@@ -18,37 +18,27 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 
-#ifndef ADDRESSLINEEDIT_H
-#define ADDRESSLINEEDIT_H
+#ifndef SPEEDDIAL_H
+#define SPEEDDIAL_H
 
+#include <QWidget>
 #include <QLineEdit>
-#include <QPushButton>
-#include <QIcon>
-#include <QPoint>
-#include <QCompleter>
-#include <QStringList>
-#include <QAction>
+#include <QSpinBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QListWidget>
 
-
-class AddressLineEdit:public QLineEdit{
-    QCompleter* cmpleter=new QCompleter();
+class SpeedDial: public QWidget{
+    QLineEdit* bgcolor=new QLineEdit();
+    QLineEdit* bgimage=new QLineEdit();
+    QListWidget* list=new QListWidget();
 public:
-    QAction* default_search=new QAction(tr("Search Preference"));
-    QAction* changeUAstring=new QAction(tr("Edit UA String"));
-    QStringList list;
-    void createAddressLineEdit();
-    QLineEdit* initialize();
-    void showContextMenu(const QPoint& pos);
-    QString defaultSearch;
-    AddressLineEdit();
-    void createCompleter();
-    void updateCompleter();
-    void loadSearchString();
-    void setDefaultSearch();
-    void setUAString();
-    void restoreUAString();
+    SpeedDial();
+    void load();
+    void save();
+    void add();
+    void remove();
 };
 
-
-
-#endif // ADDRESSLINEEDIT_H
+#endif // SPEEDDIAL_H

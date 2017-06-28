@@ -1,6 +1,6 @@
 /* ============================================================
 * Crusta - Qt5 webengine browser
-* Copyright (C) 2017 Anmol Gautam <tarptaeya@gmail.com>
+* Copyright (C) 2017 Anmol Gautam <anmol@crustabrowser.com>
 *
 * THIS FILE IS A PART OF CRUSTA
 *
@@ -35,6 +35,7 @@
 #include <QCompleter>
 #include <QStringListModel>
 #include <QDir>
+#include <QWebEngineProfile>
 
 
 
@@ -240,7 +241,15 @@ void PrivateAddressLineEdit::setUAString(){
 }
 
 void PrivateAddressLineEdit::restoreUAString(){
+    QWebEngineProfile p;
+    p.setHttpUserAgent("");
+    QStringList ua=p.httpUserAgent().split(" ");
     QString new_string="";
+    int len=ua.length();
+    for(int i=0;i<len-1;i++){
+        new_string+=ua[i]+" ";
+    }
+    new_string+="Crusta/1.0.0 "+ua[len-1];
     QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
