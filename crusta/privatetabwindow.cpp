@@ -45,7 +45,7 @@ void PrivateTabWindow::viewHome(){
 
 void PrivateTabWindow::updateAddrBar(){
     QString url=this->view->returnPrivateView()->url().toString();
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
     exec_dir->cd("web");
     QString forbidden;
     if(exec_dir->absolutePath().startsWith("/"))
@@ -116,6 +116,7 @@ void PrivateTabWindow::createControls(){
     connect(view,&QWebEngineView::loadFinished,this,&PrivateTabWindow::loadCompleted);
     connect(view,&QWebEngineView::loadProgress,this,&PrivateTabWindow::pageProgress);
     tab->setLayout(vbox);
+    vbox->setSpacing(0);
     tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:10px;background-color:white;color:black} QPushButton{border: none;margin-left: 10px;} QPushButton::hover{background-color: #f2f2f2}");
 }
 

@@ -504,7 +504,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     else{
         QFileDialog f;
         QString fname=f.getSaveFileName(this,tr("Download File"),path,QString(),nullptr,f.options());
-        if(fname=="")fname=path;
+        if(fname=="")return;
         download_item->setPath(fname);
         download_item->accept();
     }

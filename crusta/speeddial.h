@@ -38,6 +38,7 @@ public:
     void save();
     void add();
     void remove();
+    void configure();
 };
 
 #endif // SPEEDDIAL_H

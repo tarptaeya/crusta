@@ -19,6 +19,7 @@
 * ============================================================ */
 
 #include "mainview.h"
+#include "speeddial.h"
 #include <QIcon>
 #include <QDir>
 #include <QFont>
@@ -35,6 +36,14 @@ int main(int argc, char *argv[]){
     Q_INIT_RESOURCE(resource); // initialised the resource file;
     if(!QDir(QDir::homePath()+"/.crusta_db").exists()){
         QDir().mkdir(QDir::homePath()+"/.crusta_db");
+    }
+    if(!QDir(QDir::homePath()+"/.crusta_db/web").exists()){
+        QDir().mkdir(QDir::homePath()+"/.crusta_db/web");
+    }
+    if(!QDir(QDir::homePath()+"/.crusta_db/web/img").exists()){
+        QDir().mkdir(QDir::homePath()+"/.crusta_db/web/img");
+        SpeedDial* sd=new SpeedDial();
+        sd->configure();
     }
     QFont f;
     f.setPointSize(10);

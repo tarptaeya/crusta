@@ -45,7 +45,7 @@ void TabWindow::viewHome(){
 
 void TabWindow::updateAddrBar(){
     QString url=this->view->returnView()->url().toString();
-    QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+    QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
     exec_dir->cd("web");
     QString forbidden;
     if(exec_dir->absolutePath().startsWith("/"))

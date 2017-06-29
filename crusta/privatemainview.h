@@ -121,6 +121,7 @@ public:
     QAction* paste_action=new QAction();
     QAction* selectall_action=new QAction();
     QAction* find_action=new QAction();
+    QAction* speed_dial=new QAction();
     QAction* view_page_source_action=new QAction();
     QAction* zoom_in_action=new QAction();
     QAction* zoom_out_action=new QAction();
@@ -182,6 +183,7 @@ public:
     void closeWindow();
     void openDebugger();
     void openUrl(QString);
+    void showSpeedDial();
 };
 
 #endif // PRIVATEMAINVIEW_H

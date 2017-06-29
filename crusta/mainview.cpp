@@ -333,11 +333,18 @@ MainView::MainView(){
     if(!fi.exists()){
         fi.open(QIODevice::WriteOnly);
         QTextStream in(&fi);
-        in<<">>>>>"+QCoreApplication::applicationDirPath()+"/web/img/default.jpg\n"+"whatsapp>>>>>https://web.whatsapp.com/\n"
+        in<<">>>>>"+QDir::homePath()+"/.crusta_db"+"/web/img/default.jpg\n"+"whatsapp>>>>>https://web.whatsapp.com/\n"
             "twitter>>>>>https://twitter.com\n"+"pinterest>>>>>https://pinterest.com\n"
             "tumblr>>>>>https://tumblr.com\n"+"facebook>>>>>https://facebook.com\n"
             "googleplus>>>>>https://plus.google.com\n"+"linkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
         fi.close();
+        SpeedDial* sd=new SpeedDial();
+        sd->load();
+        sd->save();
+    }
+
+    QFile fi_(QDir::homePath()+"/.crusta_db/web/index.html");
+    if(!fi_.exists()){
         SpeedDial* sd=new SpeedDial();
         sd->load();
         sd->save();
@@ -582,7 +589,7 @@ void MainView::addNormalTab(){
            }
            inputFile.close();
         }
-        QDir* exec_dir=new QDir(QCoreApplication::applicationDirPath());
+        QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
         exec_dir->cd("web");
         if(exec_dir->absolutePath().startsWith("/"))
             webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
