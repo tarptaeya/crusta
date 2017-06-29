@@ -38,14 +38,7 @@ SpeedDial::SpeedDial(){
     setWindowTitle("Crusta : Speed Dial");
     QVBoxLayout* vbox=new QVBoxLayout();
     setLayout(vbox);
-    QHBoxLayout* hbox=new QHBoxLayout();
     QHBoxLayout* h1box=new QHBoxLayout();
-    QLabel* bg_color=new QLabel(tr("Background color"));
-    bg_color->setFixedWidth(170);
-    hbox->addWidget(bg_color);
-    hbox->addWidget(bgcolor);
-    bgcolor->setPlaceholderText(tr("hex color code"));
-    vbox->addLayout(hbox);
     QLabel* bg_image=new QLabel(tr("Background image"));
     bg_image->setFixedWidth(170);
     h1box->addWidget(bg_image);
@@ -72,8 +65,11 @@ SpeedDial::SpeedDial(){
 }
 
 void SpeedDial::save(){
+    if(bgimage->text()=="default"){
+        bgimage->setText(QCoreApplication::applicationDirPath()+"/web/img/default.jpg");
+    }
     QString upper="<!DOCTYPE html><html><head><title>New Tab</title><link rel=\"shortcut icon\" href=\"../crusta/res/drawables/icon_3.ico\"><style type=\"text/css\">"
-         "body {background-color:"+bgcolor->text()+";background-image:url(\""+bgimage->text()+"\");background-repeat: norepeat}.box {width: 160px;height: 100px;border: none;}"
+         "body {background-image:url(\""+bgimage->text()+"\");background-repeat: norepeat}.box {width: 160px;height: 100px;border: none;}"
          ".box:hover {box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}"
          ".entry {outline: none;margin-top: 100px;padding: 10px 20px;width: 100%;font-size: 20px;}</style></head><body>"
          "<div style=\"text-align: center;padding: 100px;width: 70%;margin: auto;\">";
@@ -103,6 +99,20 @@ void SpeedDial::save(){
         t << s;
         f.close();
     }
+    QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    if(fi.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QString s;
+        QTextStream t(&fi);
+        while(!t.atEnd())
+        {
+            QString line = t.readLine();
+            s.append(line + "\n");
+        }
+        fi.resize(0);
+        t << ">>>>>"+bgimage->text().toLatin1()+"\n"+s;
+        fi.close();
+    }
 }
 
 
@@ -115,16 +125,22 @@ void SpeedDial::load(){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
+          if(data[0]==""){
+              bgimage->setText(data[1]);
+          }
           if(!(data[0]=="" || data[1]=="")){
               list->addItem(data[0]);
           }
        }
        inputFile.close();
     }
+    if(bgimage->text()==QCoreApplication::applicationDirPath()+"/web/img/default.jpg"){
+        bgimage->setText("default");
+    }
 }
 
 void SpeedDial::add(){
-    QDialog* dg=new QDialog();
+    QDialog* dg=new QDialog(this);
     QLineEdit* data0=new QLineEdit();
     QLineEdit* data1=new QLineEdit();
     data0->setPlaceholderText(tr("Title"));

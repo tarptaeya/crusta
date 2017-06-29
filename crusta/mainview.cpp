@@ -329,6 +329,20 @@ MainView::MainView(){
         f_.close();
     }
 
+    QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    if(!fi.exists()){
+        fi.open(QIODevice::WriteOnly);
+        QTextStream in(&fi);
+        in<<">>>>>"+QCoreApplication::applicationDirPath()+"/web/img/default.jpg\n"+"whatsapp>>>>>https://web.whatsapp.com/\n"
+            "twitter>>>>>https://twitter.com\n"+"pinterest>>>>>https://pinterest.com\n"
+            "tumblr>>>>>https://tumblr.com\n"+"facebook>>>>>https://facebook.com\n"
+            "googleplus>>>>>https://plus.google.com\n"+"linkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
+        fi.close();
+        SpeedDial* sd=new SpeedDial();
+        sd->load();
+        sd->save();
+    }
+
     this->box->setContentsMargins(0,0,0,0);
     this->tabWindow->tabBar()->setDocumentMode(true);
     this->tabWindow->setElideMode(Qt::ElideRight);

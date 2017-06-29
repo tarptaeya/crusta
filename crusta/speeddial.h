@@ -30,7 +30,6 @@
 #include <QListWidget>
 
 class SpeedDial: public QWidget{
-    QLineEdit* bgcolor=new QLineEdit();
     QLineEdit* bgimage=new QLineEdit();
     QListWidget* list=new QListWidget();
 public:
