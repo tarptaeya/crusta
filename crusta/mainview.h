@@ -145,6 +145,7 @@ public:
     QAction* viewSource=new QAction();
     QAction* runJsCode=new QAction();
     QAction* changeUA=new QAction();
+    QAction* pick_color=new QAction();
     QAction* sitei=new QAction();
     QAction* aboutCr=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
@@ -198,6 +199,7 @@ public:
     void loadTheme();
     void editPermissions();
     void showSpeedDial();
+    void pickColor();
 };
 
 

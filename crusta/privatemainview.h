@@ -138,6 +138,7 @@ public:
     QAction* viewSource=new QAction();
     QAction* runJsCode=new QAction();
     QAction* changUA=new QAction();
+    QAction* pick_color=new QAction();
     QAction* sitei=new QAction();
     QAction* aboutCr=new QAction();
     PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
@@ -184,6 +185,7 @@ public:
     void openDebugger();
     void openUrl(QString);
     void showSpeedDial();
+    void pickColor();
 };
 
 #endif // PRIVATEMAINVIEW_H

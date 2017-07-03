@@ -56,6 +56,7 @@
 #include <QPageSetupDialog>
 #include <QMessageBox>
 #include <QWebEngineProfile>
+#include <QClipboard>
 
 
 
@@ -480,9 +481,11 @@ void MainView::createMenuBar(){
     this->runJsCode=this->tool_menu->addAction(tr("&Run Javascript Code"));
     this->viewSource=this->tool_menu->addAction(tr("View Page Source"));
     this->changeUA=this->tool_menu->addAction(tr("Edit User Agent"));
+    this->pick_color=this->tool_menu->addAction(tr("Pick Screen Color"));
     connect(this->viewSource,&QAction::triggered,this,&MainView::viewPageSource);
     connect(this->runJsCode,&QAction::triggered,this,&MainView::showJsCodeEditor);
     connect(this->changeUA,&QAction::triggered,this,&MainView::changeUAfx);
+    connect(this->pick_color,&QAction::triggered,this,&MainView::pickColor);
     QAction* help_=new QAction(tr("Help"));
     this->menu->addAction(help_);
     connect(help_,&QAction::triggered,this,&MainView::help);
@@ -1072,4 +1075,11 @@ void MainView::editPermissions(){
 void MainView::showSpeedDial(){
     SpeedDial* s=new SpeedDial();
     s->show();
+}
+
+void MainView::pickColor(){
+    QColorDialog cd;
+    QString color=cd.getColor(Qt::white,this,QString(tr("Pick Color"))).name();
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(color);
 }
