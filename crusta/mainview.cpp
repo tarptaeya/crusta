@@ -58,6 +58,8 @@
 #include <QWebEngineProfile>
 #include <QClipboard>
 
+#include <iostream>
+
 
 
 void MainView::closeTab(int index){
@@ -571,7 +573,16 @@ void MainView::addNormalTab(){
             }
         }
         webview->home_page=home;
-        webview->load(home);
+        if(QCoreApplication::arguments().length()>1){
+            QString given_url=QCoreApplication::arguments().at(1);
+            if(!given_url.startsWith("--"))
+                webview->load(given_url.split("\\").join("/"));
+            else
+                webview->load(home);
+        }
+        else{
+            webview->load(home);
+        }
     }
     else{
         QWidget* widget=this->tabWindow->widget(cnt-1);
