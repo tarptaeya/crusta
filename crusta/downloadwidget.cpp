@@ -61,6 +61,27 @@ void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal){
     int f=0;
     if(bytesTotal!=0)f=(int)((bytesRecieved*100)/bytesTotal);
     progress->setValue(f);
+    float size;
+    if(bytesTotal/1000.0<1){
+        size=bytesTotal;
+        fraction->setNum(size);
+        fraction->setText(fraction->text()+"b");
+    }
+    else if(bytesTotal/1000000.0<1){
+        size=bytesTotal/1000.0;
+        fraction->setNum(size);
+        fraction->setText(fraction->text()+"Kb");
+    }
+    else if(bytesTotal/1000000000.0<1){
+        size=bytesTotal/1000000.0;
+        fraction->setNum(size);
+        fraction->setText(fraction->text()+"Mb");
+    }
+    else{
+        size=bytesTotal/1000000000.0;
+        fraction->setNum(size);
+        fraction->setText(fraction->text()+"Gb");
+    }
 }
 
 void DownloadWidget::changeLayout_Completed(){
