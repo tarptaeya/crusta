@@ -35,7 +35,6 @@ class DownloadManager:public QDialog{
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QListWidget* listwidget=new QListWidget();
-    QPushButton* removeAll=new QPushButton();
     DownloadManager();
     void addDownloadItem(DownloadWidget *w);
     void loadDownloads();

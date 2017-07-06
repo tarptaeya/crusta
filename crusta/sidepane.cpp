@@ -43,11 +43,20 @@ SidePane::SidePane(){
     vbox->setSpacing(20);
     hbox->addLayout(vbox);
 
-    connect(history,&QPushButton::clicked,this,[this,hbox]{
-
+    connect(downloads,&QPushButton::clicked,this,[this,hbox]{
+        if(hbox->count()==1){
+            hbox->addWidget(this->download_manager);
+        }
+        else if(hbox->indexOf(this->download_manager)!=1){
+            hbox->removeItem(hbox->itemAt(1));
+            hbox->addWidget(this->download_manager);
+        }
+        else{
+            hbox->removeWidget(this->download_manager);
+        }
     });
 
     setLayout(hbox);
-    setStyleSheet("background-color: #404244");
-    setFixedWidth(48);
+    setObjectName("pane");
+    setStyleSheet("#pane{background-color: #404244}");
 }

@@ -39,9 +39,6 @@ DownloadManager::DownloadManager(){
     vbox->addWidget(listwidget);
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());
-    hbox->addWidget(removeAll);
-    removeAll->setText(tr("OK"));
-    connect(removeAll,&QPushButton::clicked,this,&QDialog::accept);
     hbox->addWidget(new QLabel());
     vbox->addLayout(hbox);
     loadDownloads();
@@ -55,7 +52,7 @@ void DownloadManager::addDownloadItem(DownloadWidget *w){
     w->item=item;
     listwidget->setItemWidget(item,w);
     this->setMinimumWidth(w->width()+45);
-    this->setMinimumHeight(w->height()*5);
+    //this->setMinimumHeight(w->height()*5);
 }
 
 void DownloadManager::loadDownloads(){

@@ -21,6 +21,8 @@
 #ifndef SIDEPANE_H
 #define SIDEPANE_H
 
+#include "downloadmanager.h"
+
 #include <QWidget>
 #include <QLineEdit>
 #include <QPushButton>
@@ -37,6 +39,7 @@ public:
 class SidePane: public QWidget{
 public:
     SidePane();
+    DownloadManager* download_manager=new DownloadManager();
     SidePaneButton* history=new SidePaneButton();
     SidePaneButton* bookmarks=new SidePaneButton();
     SidePaneButton* downloads=new SidePaneButton();
