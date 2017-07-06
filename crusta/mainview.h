@@ -30,6 +30,7 @@
 #include "downloadwidget.h"
 #include "downloadmanager.h"
 #include "jseditor.h"
+#include "sidepane.h"
 
 #include <QObject>
 #include <QPoint>
@@ -97,6 +98,7 @@ public:
     Window* window=new Window();
     QTabWidget* tabWindow=new QTabWidget(this);
     QHBoxLayout* box=new QHBoxLayout();
+    QHBoxLayout* side_pane=new QHBoxLayout();
     QMenuBar* menubar=new QMenuBar();
     QMenu* menu=new QMenu();
     QPushButton* add_btn=new QPushButton();
@@ -128,6 +130,7 @@ public:
     QAction* find_action=new QAction();
     QAction* edit_permissions=new QAction();
     QAction* speed_dial=new QAction();
+    QAction* toggle_side_pane_action=new QAction();
     QAction* view_page_source_action=new QAction();
     QAction* zoom_in_action=new QAction();
     QAction* zoom_out_action=new QAction();
@@ -163,6 +166,7 @@ public:
     QPageLayout currentPageLayout;
     DownloadManager* d_manager=new DownloadManager();
     MainView* splitWindow;
+    SidePane* pane=new SidePane();
     MainView();
     QString defaultTheme;
 
@@ -200,6 +204,7 @@ public:
     void editPermissions();
     void showSpeedDial();
     void pickColor();
+    void toggleSidePane();
 };
 
 

@@ -21,6 +21,7 @@
 #include "mainview.h"
 #include "permissions.h"
 #include "privatemainview.h"
+#include "sidepane.h"
 
 #include "fullscreennotifier.h"
 #include "webview.h"
@@ -381,6 +382,12 @@ MainView::MainView(){
 void MainView::createView(){
     this->window->setWindowTitle("Crusta");
     this->window->setLayout(box);
+    box->addLayout(side_pane);
+    box->setSpacing(0);
+    side_pane->setSpacing(0);
+    side_pane->setContentsMargins(0,0,0,0);
+    // TODO : if side pane has to show then add it
+    side_pane->addWidget(pane);
 }
 
 void MainView::showView(){
@@ -440,6 +447,11 @@ void MainView::createMenuBar(){
     this->speed_dial=this->edit_menu->addAction(tr("Speed Dial"));
     connect(this->speed_dial,&QAction::triggered,this,&MainView::showSpeedDial);
     this->view_menu=this->menu->addMenu(tr("&View"));
+    this->toggle_side_pane_action=this->view_menu->addAction(tr("&Show Side Pane"));
+    if(this->side_pane->count()==0)
+        this->toggle_side_pane_action->setText(tr("&Show Side Pane"));
+    else
+        this->toggle_side_pane_action->setText(tr("&Hide Side Pane"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
     this->zoom_in_action=this->view_menu->addAction(tr("&Zoom In"));
@@ -886,7 +898,7 @@ void MainView::changeUAfx(){
 
 void MainView::spiltModefx(){
     if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
-        if(this->box->count()==2){
+        if(this->box->count()==3){
             this->box->removeWidget(this->splitWindow->window);
             this->splitWindow->closeWindow();
             this->split_mode_action->setText(tr("&Split Mode"));
@@ -898,6 +910,8 @@ void MainView::spiltModefx(){
     box->setContentsMargins(0,0,0,0);
     box->setSpacing(0);
     this->splitWindow=new MainView();
+    this->splitWindow->box->removeItem(this->splitWindow->side_pane);
+    this->splitWindow->view_menu->removeAction(this->splitWindow->toggle_side_pane_action);
     box->addWidget(this->splitWindow->window);
     this->splitWindow->split_mode_action->setVisible(false);
     this->split_mode_action->setText(tr("&Exit Split Mode"));

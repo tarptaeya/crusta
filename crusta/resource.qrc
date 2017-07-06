@@ -19,5 +19,9 @@
         <file>res/drawables/exe_download.png</file>
         <file>res/drawables/file_download.png</file>
         <file>res/drawables/video_download.png</file>
+        <file>res/drawables/pane_bookmark.svg</file>
+        <file>res/drawables/pane_download.svg</file>
+        <file>res/drawables/pane_history.svg</file>
+        <file>res/drawables/pane_add.svg</file>
     </qresource>
 </RCC>
