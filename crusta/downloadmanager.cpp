@@ -37,10 +37,7 @@ DownloadManager::DownloadManager(){
     setLayout(vbox);
     setWindowTitle(tr("Crusta : Download Manager"));
     vbox->addWidget(listwidget);
-    QHBoxLayout* hbox=new QHBoxLayout();
-    hbox->addWidget(new QLabel());
-    hbox->addWidget(new QLabel());
-    vbox->addLayout(hbox);
+    vbox->setContentsMargins(3,10,10,10);
     loadDownloads();
     //setStyleSheet("QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
 }

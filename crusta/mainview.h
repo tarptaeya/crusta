@@ -107,7 +107,6 @@ public:
     QMenu* view_menu=new QMenu();
     QMenu* history_menu=new QMenu();
     QMenu* bookmark_menu=new QMenu();
-    QMenu* download_menu=new QMenu();
     QMenu* recently_closed=new QMenu();
     QMenu* tool_menu=new QMenu();
     QMenu* help_menu=new QMenu();
@@ -143,7 +142,6 @@ public:
     QAction* bookmark_tab=new QAction();
     QAction* bookmark_all_tabs=new QAction();
     QAction* show_all_bookmarks=new QAction();
-    QAction* show_all_downloads=new QAction();
     QAction* web_inspector_action=new QAction();
     QAction* viewSource=new QAction();
     QAction* runJsCode=new QAction();
@@ -164,7 +162,6 @@ public:
     JsEditor* jsEditor=new JsEditor();
     QPushButton* newtabbtn=new QPushButton();
     QPageLayout currentPageLayout;
-    DownloadManager* d_manager=new DownloadManager();
     MainView* splitWindow;
     SidePane* pane=new SidePane();
     MainView();
@@ -193,7 +190,6 @@ public:
     void showHistory();
     void clearHistory();
     void showBookamrks();
-    void showDownloads();
     void openIncognito();
     void changeUAfx();
     void spiltModefx();

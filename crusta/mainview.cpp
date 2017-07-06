@@ -481,10 +481,6 @@ void MainView::createMenuBar(){
     connect(this->bookmark_all_tabs,&QAction::triggered,this,&MainView::bookmarkAllTabs);
     this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
     connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
-    this->download_menu=this->menu->addMenu(tr("&Downloads"));
-    this->show_all_downloads=this->download_menu->addAction(tr("&Download Manager"));
-    connect(this->show_all_downloads,&QAction::triggered,this,&MainView::showDownloads);
-    this->download_menu->addAction(tr("&Clear all Downloads"));
     this->tool_menu=this->menu->addMenu(tr("&Tools"));
     this->sitei=this->tool_menu->addAction(tr("&Site Info"));
     connect(this->sitei,&QAction::triggered,this,&MainView::showPageInfo);
@@ -524,7 +520,6 @@ void MainView::createMenuBar(){
 
     this->show_all_history->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_H));
     this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
-    this->show_all_downloads->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_J));
 
     this->window->menu=this->menu;
 }
@@ -878,11 +873,6 @@ void MainView::changeSpinner(int index){
         }
         this->tabWindow->tabBar()->setTabButton(i,QTabBar::LeftSide,lbl);
     }
-}
-
-void MainView::showDownloads(){
-    this->d_manager=this->window->d_manager;
-    this->d_manager->show();
 }
 
 void MainView::openIncognito(){
