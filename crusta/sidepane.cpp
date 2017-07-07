@@ -29,6 +29,7 @@ SidePaneButton::SidePaneButton(){
 
 SidePane::SidePane(){
     QHBoxLayout* hbox=new QHBoxLayout();
+    QWidget* left=new QWidget();
     QVBoxLayout* vbox=new QVBoxLayout();
     vbox->addWidget(history);
     history->setIcon(QIcon(":/res/drawables/pane_history.svg"));
@@ -41,8 +42,11 @@ SidePane::SidePane(){
     vbox->addWidget(add_pane_btn);
     add_pane_btn->setIcon(QIcon(":/res/drawables/pane_add.svg"));
     vbox->setSpacing(20);
-    hbox->addLayout(vbox);
-
+    left->setLayout(vbox);
+    left->setStyleSheet("background-color: #404244");
+    left->setFixedWidth(48);
+    left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
+    hbox->addWidget(left);
     connect(downloads,&QPushButton::clicked,this,[this,hbox]{
         if(hbox->count()==1){
             hbox->addWidget(this->download_manager);
@@ -55,8 +59,10 @@ SidePane::SidePane(){
             hbox->removeWidget(this->download_manager);
         }
     });
-
+    hbox->setSpacing(0);
+    hbox->setContentsMargins(0,0,0,0);
     setLayout(hbox);
+    setMaximumWidth(48+350+45);
     setObjectName("pane");
     setStyleSheet("#pane{background-color: #404244}");
 }

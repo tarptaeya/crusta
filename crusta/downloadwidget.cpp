@@ -42,11 +42,12 @@ DownloadWidget::DownloadWidget(){
     hbox->addLayout(v0box);
     hbox->addLayout((v1box));
     v0box->addWidget(name);
+    name->setFixedWidth(245);
     name->setAlignment(Qt::AlignLeft);
     v0box->addWidget(progress);
     v1box->addWidget(cancel);
     v1box->addWidget(fraction);
-    setFixedWidth(500);
+    setFixedWidth(350);
 }
 
 void DownloadWidget::getName(QString file){
@@ -101,7 +102,6 @@ void DownloadWidget::changeLayout_Completed(){
     v1box->addWidget(open);
     v1box->addWidget(remove);
     v0box->addWidget(new QLabel(tr("Completed ")+QDateTime::currentDateTime().toString()));
-
     QString forbidden=path;
     QFile f(QDir::homePath()+"/.crusta_db/downloads.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
