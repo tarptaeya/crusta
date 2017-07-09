@@ -40,6 +40,9 @@ public:
 
 
 class SidePane: public QWidget{
+    QHBoxLayout* hbox=new QHBoxLayout();
+    QVBoxLayout* vbox=new QVBoxLayout();
+    QLabel* flexilabel=new QLabel();
 public:
     SidePane(MainView*m);
     MainView* mainview;

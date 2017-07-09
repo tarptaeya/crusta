@@ -23,5 +23,6 @@
         <file>res/drawables/pane_download.svg</file>
         <file>res/drawables/pane_history.svg</file>
         <file>res/drawables/pane_add.svg</file>
+        <file>res/videos/sidepanel_loader.gif</file>
     </qresource>
 </RCC>

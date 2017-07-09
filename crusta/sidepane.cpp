@@ -19,8 +19,11 @@
 * ============================================================ */
 
 #include "sidepane.h"
+#include <QWebEngineView>
+#include <QWebEngineProfile>
 #include <QLabel>
-#include <QRect>
+#include <QDir>
+#include <QMovie>
 
 #include <iostream>
 
@@ -32,9 +35,7 @@ SidePaneButton::SidePaneButton(){
 
 SidePane::SidePane(MainView* m){
     mainview=m;
-    QHBoxLayout* hbox=new QHBoxLayout();
     QWidget* left=new QWidget();
-    QVBoxLayout* vbox=new QVBoxLayout();
     vbox->addWidget(history);
     history->setToolTip(tr("History"));
     history->setIcon(QIcon(":/res/drawables/pane_history.svg"));
@@ -44,7 +45,6 @@ SidePane::SidePane(MainView* m){
     vbox->addWidget(downloads);
     downloads->setToolTip(tr("Downloads"));
     downloads->setIcon(QIcon(":/res/drawables/pane_download.svg"));
-    QLabel* flexilabel=new QLabel();
     vbox->addWidget(flexilabel);
     vbox->addWidget(add_pane_btn);
     add_pane_btn->setToolTip(tr("Add New Pane Button"));
@@ -56,7 +56,7 @@ SidePane::SidePane(MainView* m){
     left->setFixedWidth(48);
     left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     hbox->addWidget(left);
-    connect(history,&QPushButton::clicked,this,[this,hbox]{
+    connect(history,&QPushButton::clicked,this,[this]{
         if(hbox->count()==1){
             history_manager=new HistoryManager(mainview);
             history_manager->createManager();
@@ -74,7 +74,7 @@ SidePane::SidePane(MainView* m){
             hbox->removeWidget(this->history_manager);
         }
     });
-    connect(bookmarks,&QPushButton::clicked,this,[this,hbox]{
+    connect(bookmarks,&QPushButton::clicked,this,[this]{
         if(hbox->count()==1){
             bookmark_manager=new BookmarkManager(mainview);
             hbox->addWidget(this->bookmark_manager);
@@ -90,7 +90,7 @@ SidePane::SidePane(MainView* m){
             hbox->removeWidget(this->bookmark_manager);
         }
     });
-    connect(downloads,&QPushButton::clicked,this,[this,hbox]{
+    connect(downloads,&QPushButton::clicked,this,[this]{
         if(hbox->count()==1){
             this->download_manager->show();
             hbox->addWidget(this->download_manager);
@@ -122,11 +122,11 @@ void SidePane::addNewButton(){
     urledit->setPlaceholderText("url for side panel");
     QPushButton* ok=new QPushButton(tr("Add"));
     QPushButton* cncl=new QPushButton(tr("Cancel"));
-    QHBoxLayout* hbox=new QHBoxLayout();
-    hbox->addWidget(urledit);
-    hbox->addWidget(ok);
-    hbox->addWidget(cncl);
-    dg->setLayout(hbox);
+    QHBoxLayout* box=new QHBoxLayout();
+    box->addWidget(urledit);
+    box->addWidget(ok);
+    box->addWidget(cncl);
+    dg->setLayout(box);
     dg->setWindowFlag(Qt::FramelessWindowHint);
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
@@ -136,5 +136,43 @@ void SidePane::addNewButton(){
     if(!dg->exec()==QDialog::Accepted){
         return;
     }
-    //save the panel
+    QFile file(QDir::homePath()+"/.crusta_db/sidepanel.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream out(&file);
+    out << urledit->text().toLatin1()+"\n";
+    file.close();
+    SidePaneButton* new_btn=new SidePaneButton();
+    new_btn->setIcon(QIcon(":/res/videos/sidepanel_loader.gif"));
+    QMovie* loader=new QMovie(":/res/videos/sidepanel_loader.gif");
+    loader->start();
+    connect(loader,&QMovie::frameChanged,new_btn,[new_btn,loader]{
+        new_btn->setIcon(QIcon(loader->currentPixmap()));
+    });
+    vbox->insertWidget(vbox->indexOf(flexilabel),new_btn);
+    QWebEngineProfile* profile=new QWebEngineProfile();
+    profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+    QWebEnginePage* webpage=new QWebEnginePage(profile);
+    QWebEngineView* sidewebview=new QWebEngineView();
+    sidewebview->setPage(webpage);
+    sidewebview->setTabletTracking(true);
+    sidewebview->load(QUrl(urledit->text()));
+    sidewebview->setMaximumWidth(395);
+    sidewebview->setMinimumWidth(300);
+    connect(sidewebview,&QWebEngineView::iconChanged,this,[this,new_btn,sidewebview,loader]{
+        loader->stop();
+        new_btn->setIcon(sidewebview->icon());
+        QString icon_name=sidewebview->url().toString().split("//")[1];
+        if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
+            icon_name=icon_name.split(".")[1];
+        }
+        else{
+            icon_name=icon_name.split(".")[0];
+        }
+        std::cout<<sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
+    });
+    if(hbox->count()==2){
+        hbox->itemAt(1)->widget()->hide();
+        hbox->removeItem(hbox->itemAt(1));
+    }
+    //hbox->addWidget(sidewebview);
 }
