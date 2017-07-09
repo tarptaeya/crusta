@@ -30,7 +30,6 @@
 #include "downloadwidget.h"
 #include "downloadmanager.h"
 #include "jseditor.h"
-#include "sidepane.h"
 
 #include <QObject>
 #include <QPoint>
@@ -163,7 +162,6 @@ public:
     QPushButton* newtabbtn=new QPushButton();
     QPageLayout currentPageLayout;
     MainView* splitWindow;
-    SidePane* pane=new SidePane();
     MainView();
     QString defaultTheme;
 

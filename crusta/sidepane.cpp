@@ -21,13 +21,16 @@
 #include "sidepane.h"
 #include <QLabel>
 
+#include <iostream>
+
 
 SidePaneButton::SidePaneButton(){
     setStyleSheet("QPushButton{border: none;margin: 0}");
     setFixedSize(27,27);
 }
 
-SidePane::SidePane(){
+SidePane::SidePane(MainView* m){
+    mainview=m;
     QHBoxLayout* hbox=new QHBoxLayout();
     QWidget* left=new QWidget();
     QVBoxLayout* vbox=new QVBoxLayout();
@@ -47,7 +50,27 @@ SidePane::SidePane(){
     left->setFixedWidth(48);
     left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     hbox->addWidget(left);
+    connect(history,&QPushButton::clicked,this,[this,hbox]{
+        std::cout<<hbox->count()<<std::endl;
+        std::cout<<hbox->indexOf(this->history_manager)<<std::endl;
+        if(hbox->count()==1){
+            history_manager=new HistoryManager(mainview);
+            history_manager->createManager();
+            hbox->addWidget(this->history_manager);
+        }
+        else if(hbox->indexOf(this->history_manager)!=1){
+            hbox->removeItem(hbox->itemAt(1));
+            history_manager=new HistoryManager(mainview);
+            history_manager->createManager();
+            hbox->addWidget(this->history_manager);
+        }
+        else{
+            hbox->removeWidget(this->history_manager);
+        }
+    });
     connect(downloads,&QPushButton::clicked,this,[this,hbox]{
+        std::cout<<hbox->count()<<std::endl;
+        std::cout<<hbox->indexOf(this->download_manager)<<std::endl;
         if(hbox->count()==1){
             hbox->addWidget(this->download_manager);
         }

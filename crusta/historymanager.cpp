@@ -100,7 +100,7 @@ HistoryManager::HistoryManager(MainView *m){
     connect(clear_all,&QPushButton::clicked,this,&HistoryManager::clearAll);
     connect(open,&QAction::triggered,this,&HistoryManager::openUrl);
     connect(del,&QAction::triggered,this,&HistoryManager::clearEntry);
-    setMinimumWidth(650);
+    setMaximumWidth(395);
     setMinimumHeight(400);
 }
 

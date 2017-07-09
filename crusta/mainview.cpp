@@ -387,7 +387,9 @@ void MainView::createView(){
     side_pane->setSpacing(0);
     side_pane->setContentsMargins(0,0,0,0);
     // TODO : if side pane has to show then add it
+    SidePane* pane=new SidePane(this);
     side_pane->addWidget(pane);
+    pane->download_manager=this->window->d_manager;
 }
 
 void MainView::showView(){
