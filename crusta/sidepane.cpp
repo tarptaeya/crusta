@@ -20,13 +20,14 @@
 
 #include "sidepane.h"
 #include <QLabel>
+#include <QRect>
 
 #include <iostream>
 
 
 SidePaneButton::SidePaneButton(){
-    setStyleSheet("QPushButton{border: none;margin: 0}");
-    setFixedSize(27,27);
+    setStyleSheet("QPushButton{border: none;margin: 0} QPushButton::hover{background-color: #000;}");
+    setFixedSize(48,48);
 }
 
 SidePane::SidePane(MainView* m){
@@ -35,16 +36,21 @@ SidePane::SidePane(MainView* m){
     QWidget* left=new QWidget();
     QVBoxLayout* vbox=new QVBoxLayout();
     vbox->addWidget(history);
+    history->setToolTip(tr("History"));
     history->setIcon(QIcon(":/res/drawables/pane_history.svg"));
     vbox->addWidget(bookmarks);
+    bookmarks->setToolTip(tr("Bookmarks"));
     bookmarks->setIcon(QIcon(":/res/drawables/pane_bookmark.svg"));
     vbox->addWidget(downloads);
+    downloads->setToolTip(tr("Downloads"));
     downloads->setIcon(QIcon(":/res/drawables/pane_download.svg"));
     QLabel* flexilabel=new QLabel();
     vbox->addWidget(flexilabel);
     vbox->addWidget(add_pane_btn);
+    add_pane_btn->setToolTip(tr("Add New Pane Button"));
     add_pane_btn->setIcon(QIcon(":/res/drawables/pane_add.svg"));
-    vbox->setSpacing(20);
+    vbox->setSpacing(0);
+    vbox->setContentsMargins(0,0,0,0);
     left->setLayout(vbox);
     left->setStyleSheet("background-color: #404244");
     left->setFixedWidth(48);
@@ -100,10 +106,35 @@ SidePane::SidePane(MainView* m){
             hbox->removeWidget(this->download_manager);
         }
     });
+    connect(add_pane_btn,&SidePaneButton::clicked,this,&SidePane::addNewButton);
     hbox->setSpacing(0);
     hbox->setContentsMargins(0,0,0,0);
     setLayout(hbox);
     setMaximumWidth(48+350+45);
     setObjectName("pane");
     setStyleSheet("#pane{background-color: #404244}");
+}
+
+void SidePane::addNewButton(){
+    QDialog* dg=new QDialog(mainview);
+    QLineEdit* urledit=new QLineEdit();
+    urledit->setMinimumWidth(200);
+    urledit->setPlaceholderText("url for side panel");
+    QPushButton* ok=new QPushButton(tr("Add"));
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(urledit);
+    hbox->addWidget(ok);
+    hbox->addWidget(cncl);
+    dg->setLayout(hbox);
+    dg->setWindowFlag(Qt::FramelessWindowHint);
+    connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
+    connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
+    dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));
+    dg->setObjectName("dialog");
+    dg->setStyleSheet("#dialog{border: 2px solid #404244}");
+    if(!dg->exec()==QDialog::Accepted){
+        return;
+    }
+    //save the panel
 }
