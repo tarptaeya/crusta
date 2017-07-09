@@ -51,34 +51,52 @@ SidePane::SidePane(MainView* m){
     left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     hbox->addWidget(left);
     connect(history,&QPushButton::clicked,this,[this,hbox]{
-        std::cout<<hbox->count()<<std::endl;
-        std::cout<<hbox->indexOf(this->history_manager)<<std::endl;
         if(hbox->count()==1){
             history_manager=new HistoryManager(mainview);
             history_manager->createManager();
             hbox->addWidget(this->history_manager);
         }
         else if(hbox->indexOf(this->history_manager)!=1){
+            hbox->itemAt(1)->widget()->hide();
             hbox->removeItem(hbox->itemAt(1));
             history_manager=new HistoryManager(mainview);
             history_manager->createManager();
             hbox->addWidget(this->history_manager);
         }
         else{
+            this->history_manager->hide();
             hbox->removeWidget(this->history_manager);
         }
     });
-    connect(downloads,&QPushButton::clicked,this,[this,hbox]{
-        std::cout<<hbox->count()<<std::endl;
-        std::cout<<hbox->indexOf(this->download_manager)<<std::endl;
+    connect(bookmarks,&QPushButton::clicked,this,[this,hbox]{
         if(hbox->count()==1){
+            bookmark_manager=new BookmarkManager(mainview);
+            hbox->addWidget(this->bookmark_manager);
+        }
+        else if(hbox->indexOf(this->bookmark_manager)!=1){
+            hbox->itemAt(1)->widget()->hide();
+            hbox->removeItem(hbox->itemAt(1));
+            bookmark_manager=new BookmarkManager(mainview);
+            hbox->addWidget(this->bookmark_manager);
+        }
+        else{
+            this->bookmark_manager->hide();
+            hbox->removeWidget(this->bookmark_manager);
+        }
+    });
+    connect(downloads,&QPushButton::clicked,this,[this,hbox]{
+        if(hbox->count()==1){
+            this->download_manager->show();
             hbox->addWidget(this->download_manager);
         }
         else if(hbox->indexOf(this->download_manager)!=1){
+            hbox->itemAt(1)->widget()->hide();
             hbox->removeItem(hbox->itemAt(1));
+            this->download_manager->show();
             hbox->addWidget(this->download_manager);
         }
         else{
+            this->download_manager->hide();
             hbox->removeWidget(this->download_manager);
         }
     });

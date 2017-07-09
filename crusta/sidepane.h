@@ -24,6 +24,7 @@
 #include "mainview.h"
 #include "downloadmanager.h"
 #include "historymanager.h"
+#include "bookmarkmanager.h"
 
 #include <QWidget>
 #include <QLineEdit>
@@ -43,7 +44,8 @@ public:
     SidePane(MainView*m);
     MainView* mainview;
     HistoryManager* history_manager;
-    DownloadManager* download_manager=new DownloadManager();
+    BookmarkManager* bookmark_manager;
+    DownloadManager* download_manager;
     SidePaneButton* history=new SidePaneButton();
     SidePaneButton* bookmarks=new SidePaneButton();
     SidePaneButton* downloads=new SidePaneButton();

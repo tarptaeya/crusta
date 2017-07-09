@@ -101,7 +101,7 @@ HistoryManager::HistoryManager(MainView *m){
     connect(open,&QAction::triggered,this,&HistoryManager::openUrl);
     connect(del,&QAction::triggered,this,&HistoryManager::clearEntry);
     setMaximumWidth(395);
-    setMinimumHeight(400);
+    setMinimumWidth(300);
 }
 
 void HistoryManager::showContextMenu(const QPoint &pos){

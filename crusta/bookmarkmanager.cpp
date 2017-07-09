@@ -59,14 +59,16 @@ BookmarkManager::BookmarkManager(MainView *m){
     connect(open,&QAction::triggered,this,&BookmarkManager::openUrl);
     connect(del,&QAction::triggered,this,&BookmarkManager::clearEntry);
     QHBoxLayout* h1box=new QHBoxLayout();
-    h1box->addWidget(new QLabel(tr("Edit Desription : ")));
+    QLabel* editdescription=new QLabel(tr("Edit Desription : "));
+    h1box->addWidget(editdescription);
+    editdescription->setStyleSheet("color: #dbdbdb");
     h1box->addWidget(description);
     h1box->addWidget(save);
     vbox->addLayout(h1box);
     connect(save,&QPushButton::clicked,this,&BookmarkManager::saveDescription);
     connect(sbtn,&QPushButton::clicked,this,&BookmarkManager::searchBookmark);
-    setMinimumWidth(750);
-    setMinimumHeight(400);
+    setMinimumWidth(300);
+    setMaximumWidth(395);
 }
 
 void BookmarkManager::loadBookmarks(){
