@@ -45,6 +45,74 @@ SidePane::SidePane(MainView* m){
     vbox->addWidget(downloads);
     downloads->setToolTip(tr("Downloads"));
     downloads->setIcon(QIcon(":/res/drawables/pane_download.svg"));
+    QFile inputFile(QDir::homePath()+"/.crusta_db/sidepanel.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          std::cout<<line.toStdString()<<std::endl;
+          if(line.split("//").length()<2) continue;
+          QString icon_name=line.split("//")[1];
+          if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
+              icon_name=icon_name.split(".")[1];
+          }
+          else{
+              icon_name=icon_name.split(".")[0];
+          }
+          SidePaneButton* new_side_btn=new SidePaneButton();
+          new_side_btn->setToolTip(line);
+          new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
+          QWebEngineProfile* profile=new QWebEngineProfile();
+          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+          QWebEnginePage* webpage=new QWebEnginePage(profile);
+          QWebEngineView* sidewebview=new QWebEngineView();
+          sidewebview->hide();
+          sidewebview->setPage(webpage);
+          sidewebview->setTabletTracking(true);
+          sidewebview->load(QUrl(line));
+          sidewebview->setMaximumWidth(395);
+          sidewebview->setMinimumWidth(300);
+          connect(new_side_btn,&SidePaneButton::clicked,this,[this,line,sidewebview]{
+              if(hbox->count()==1){
+                  sidewebview->show();
+                  hbox->addWidget(sidewebview);
+              }
+              else if(hbox->indexOf(sidewebview)!=1){
+                  hbox->itemAt(1)->widget()->hide();
+                  hbox->removeItem(hbox->itemAt(1));
+                  sidewebview->show();
+                  hbox->addWidget(sidewebview);
+              }
+              else{
+                  hbox->itemAt(1)->widget()->hide();
+                  hbox->removeItem(hbox->itemAt(1));
+              }
+          });
+          if(new_side_btn->icon().pixmap(27,27).isNull()){
+              QMovie* loader=new QMovie(":/res/videos/sidepanel_loader.gif");
+              loader->start();
+              connect(loader,&QMovie::frameChanged,new_side_btn,[new_side_btn,loader]{
+                  new_side_btn->setIcon(QIcon(loader->currentPixmap()));
+              });
+              connect(sidewebview,&QWebEngineView::iconChanged,this,[this,new_side_btn,sidewebview,loader]{
+                  loader->stop();
+                  new_side_btn->setIcon(sidewebview->icon());
+                  QString icon_name=sidewebview->url().toString().split("//")[1];
+                  if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
+                      icon_name=icon_name.split(".")[1];
+                  }
+                  else{
+                      icon_name=icon_name.split(".")[0];
+                  }
+                  std::cout<<sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
+              });
+          }
+          vbox->addWidget(new_side_btn);
+       }
+       inputFile.close();
+    }
     vbox->addWidget(flexilabel);
     vbox->addWidget(add_pane_btn);
     add_pane_btn->setToolTip(tr("Add New Pane Button"));
@@ -170,9 +238,20 @@ void SidePane::addNewButton(){
         }
         std::cout<<sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
     });
-    if(hbox->count()==2){
-        hbox->itemAt(1)->widget()->hide();
-        hbox->removeItem(hbox->itemAt(1));
-    }
-    //hbox->addWidget(sidewebview);
+    connect(new_btn,&SidePaneButton::clicked,this,[this,sidewebview]{
+        if(hbox->count()==1){
+            sidewebview->show();
+            hbox->addWidget(sidewebview);
+        }
+        else if(hbox->indexOf(sidewebview)!=1){
+            hbox->itemAt(1)->widget()->hide();
+            hbox->removeItem(hbox->itemAt(1));
+            sidewebview->show();
+            hbox->addWidget(sidewebview);
+        }
+        else{
+            hbox->itemAt(1)->widget()->hide();
+            hbox->removeItem(hbox->itemAt(1));
+        }
+    });
 }
