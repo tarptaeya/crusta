@@ -31,11 +31,13 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QWebEngineFullScreenRequest>
 
 
 class SidePaneButton: public QPushButton{
 public:
     SidePaneButton();
+    QWebEngineView* sidewebview=new QWebEngineView();
 };
 
 
@@ -54,6 +56,7 @@ public:
     SidePaneButton* downloads=new SidePaneButton();
     SidePaneButton* add_pane_btn=new SidePaneButton();
     void addNewButton();
+    void acceptFullScreenReuest(QWebEngineFullScreenRequest request);
 };
 
 

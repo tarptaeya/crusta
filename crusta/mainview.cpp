@@ -921,6 +921,15 @@ void MainView::closeWindow(){
             this->split_mode_action->setText(tr("&Split Mode"));
         }
     }
+    int side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
+    while(side_cnt!=5){
+        SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(3)->widget();
+        side_btn->sidewebview->load(QUrl("http://"));
+        this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);
+        side_btn->sidewebview->page()->deleteLater();
+        std::cout<<side_cnt<<std::endl;
+        side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
+    }
     int cnt=this->tabWindow->count();
     for(int i=0;i<cnt;i++){
         this->closeTab(0);

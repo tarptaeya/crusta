@@ -67,23 +67,23 @@ SidePane::SidePane(MainView* m){
           QWebEngineProfile* profile=new QWebEngineProfile();
           profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
           QWebEnginePage* webpage=new QWebEnginePage(profile);
-          QWebEngineView* sidewebview=new QWebEngineView();
-          sidewebview->hide();
-          sidewebview->setPage(webpage);
-          sidewebview->setTabletTracking(true);
-          sidewebview->load(QUrl(line));
-          sidewebview->setMaximumWidth(395);
-          sidewebview->setMinimumWidth(300);
-          connect(new_side_btn,&SidePaneButton::clicked,this,[this,line,sidewebview]{
+          new_side_btn->sidewebview->hide();
+          connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
+          new_side_btn->sidewebview->setPage(webpage);
+          new_side_btn->sidewebview->setTabletTracking(true);
+          new_side_btn->sidewebview->load(QUrl(line));
+          new_side_btn->sidewebview->setMaximumWidth(395);
+          new_side_btn->sidewebview->setMinimumWidth(300);
+          connect(new_side_btn,&SidePaneButton::clicked,this,[this,line,new_side_btn]{
               if(hbox->count()==1){
-                  sidewebview->show();
-                  hbox->addWidget(sidewebview);
+                  new_side_btn->sidewebview->show();
+                  hbox->addWidget(new_side_btn->sidewebview);
               }
-              else if(hbox->indexOf(sidewebview)!=1){
+              else if(hbox->indexOf(new_side_btn->sidewebview)!=1){
                   hbox->itemAt(1)->widget()->hide();
                   hbox->removeItem(hbox->itemAt(1));
-                  sidewebview->show();
-                  hbox->addWidget(sidewebview);
+                  new_side_btn->sidewebview->show();
+                  hbox->addWidget(new_side_btn->sidewebview);
               }
               else{
                   hbox->itemAt(1)->widget()->hide();
@@ -96,17 +96,17 @@ SidePane::SidePane(MainView* m){
               connect(loader,&QMovie::frameChanged,new_side_btn,[new_side_btn,loader]{
                   new_side_btn->setIcon(QIcon(loader->currentPixmap()));
               });
-              connect(sidewebview,&QWebEngineView::iconChanged,this,[this,new_side_btn,sidewebview,loader]{
+              connect(new_side_btn->sidewebview,&QWebEngineView::iconChanged,this,[this,new_side_btn,loader]{
                   loader->stop();
-                  new_side_btn->setIcon(sidewebview->icon());
-                  QString icon_name=sidewebview->url().toString().split("//")[1];
+                  new_side_btn->setIcon(new_side_btn->sidewebview->icon());
+                  QString icon_name=new_side_btn->sidewebview->url().toString().split("//")[1];
                   if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
                       icon_name=icon_name.split(".")[1];
                   }
                   else{
                       icon_name=icon_name.split(".")[0];
                   }
-                  std::cout<<sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
+                  new_side_btn->sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
               });
           }
           vbox->addWidget(new_side_btn);
@@ -220,38 +220,41 @@ void SidePane::addNewButton(){
     QWebEngineProfile* profile=new QWebEngineProfile();
     profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
     QWebEnginePage* webpage=new QWebEnginePage(profile);
-    QWebEngineView* sidewebview=new QWebEngineView();
-    sidewebview->setPage(webpage);
-    sidewebview->setTabletTracking(true);
-    sidewebview->load(QUrl(urledit->text()));
-    sidewebview->setMaximumWidth(395);
-    sidewebview->setMinimumWidth(300);
-    connect(sidewebview,&QWebEngineView::iconChanged,this,[this,new_btn,sidewebview,loader]{
+    new_btn->sidewebview->setPage(webpage);
+    new_btn->sidewebview->setTabletTracking(true);
+    new_btn->sidewebview->load(QUrl(urledit->text()));
+    new_btn->sidewebview->setMaximumWidth(395);
+    new_btn->sidewebview->setMinimumWidth(300);
+    connect(new_btn->sidewebview,&QWebEngineView::iconChanged,this,[this,new_btn,loader]{
         loader->stop();
-        new_btn->setIcon(sidewebview->icon());
-        QString icon_name=sidewebview->url().toString().split("//")[1];
+        new_btn->setIcon(new_btn->sidewebview->icon());
+        QString icon_name=new_btn->sidewebview->url().toString().split("//")[1];
         if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
             icon_name=icon_name.split(".")[1];
         }
         else{
             icon_name=icon_name.split(".")[0];
         }
-        std::cout<<sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
+        new_btn->sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
     });
-    connect(new_btn,&SidePaneButton::clicked,this,[this,sidewebview]{
+    connect(new_btn,&SidePaneButton::clicked,this,[this,new_btn]{
         if(hbox->count()==1){
-            sidewebview->show();
-            hbox->addWidget(sidewebview);
+            new_btn->sidewebview->show();
+            hbox->addWidget(new_btn->sidewebview);
         }
-        else if(hbox->indexOf(sidewebview)!=1){
+        else if(hbox->indexOf(new_btn->sidewebview)!=1){
             hbox->itemAt(1)->widget()->hide();
             hbox->removeItem(hbox->itemAt(1));
-            sidewebview->show();
-            hbox->addWidget(sidewebview);
+            new_btn->sidewebview->show();
+            hbox->addWidget(new_btn->sidewebview);
         }
         else{
             hbox->itemAt(1)->widget()->hide();
             hbox->removeItem(hbox->itemAt(1));
         }
     });
+}
+
+void SidePane::acceptFullScreenReuest(QWebEngineFullScreenRequest request){
+    request.accept();
 }
