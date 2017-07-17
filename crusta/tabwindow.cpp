@@ -36,6 +36,7 @@
 #include <QStringListModel>
 #include <QMenu>
 #include <QDir>
+#include <QWebEngineHistory>
 
 
 

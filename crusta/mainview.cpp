@@ -468,8 +468,8 @@ void MainView::createMenuBar(){
     this->fullscreen_action=this->view_menu->addAction(tr("&Show Full Screen"));
     connect(this->fullscreen_action,&QAction::triggered,this,&MainView::fullScreen);
     this->history_menu=this->menu->addMenu(tr("&History"));
-    this->show_all_history=this->history_menu->addAction(tr("&Show All History"));
-    connect(this->show_all_history,&QAction::triggered,this,&MainView::showHistory);
+//    this->show_all_history=this->history_menu->addAction(tr("&Show All History"));
+//    connect(this->show_all_history,&QAction::triggered,this,&MainView::showHistory);
     this->clearAllHist=this->history_menu->addAction(tr("&Clear All History"));
     connect(this->clearAllHist,&QAction::triggered,this,&MainView::clearHistory);
     this->history_menu->addSeparator();
@@ -481,8 +481,8 @@ void MainView::createMenuBar(){
     connect(this->bookmark_tab,&QAction::triggered,this,&MainView::bookmarkTab);
     this->bookmark_all_tabs=this->bookmark_menu->addAction(tr("&Bookmark All Tabs"));
     connect(this->bookmark_all_tabs,&QAction::triggered,this,&MainView::bookmarkAllTabs);
-    this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
-    connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
+//    this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
+//    connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
     this->tool_menu=this->menu->addMenu(tr("&Tools"));
     this->sitei=this->tool_menu->addAction(tr("&Site Info"));
     connect(this->sitei,&QAction::triggered,this,&MainView::showPageInfo);
@@ -520,8 +520,8 @@ void MainView::createMenuBar(){
     this->zoom_out_action->setShortcut(QKeySequence(QKeySequence::ZoomOut));
     this->fullscreen_action->setShortcut(QKeySequence(QKeySequence::FullScreen));
 
-    this->show_all_history->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_H));
-    this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
+//    this->show_all_history->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_H));
+//    this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
 
     this->window->menu=this->menu;
 }
@@ -916,7 +916,7 @@ void MainView::closeWindow(){
     in << "";
     file.close();
     if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
-        if(this->box->count()==2){
+        if(this->box->count()==3){
             this->splitWindow->closeWindow();
             this->split_mode_action->setText(tr("&Split Mode"));
         }
@@ -927,7 +927,6 @@ void MainView::closeWindow(){
         side_btn->sidewebview->load(QUrl("http://"));
         this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);
         side_btn->sidewebview->page()->deleteLater();
-        std::cout<<side_cnt<<std::endl;
         side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
     }
     int cnt=this->tabWindow->count();

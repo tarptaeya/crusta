@@ -52,7 +52,6 @@ SidePane::SidePane(MainView* m){
        while (!in.atEnd())
        {
           QString line = in.readLine();
-          std::cout<<line.toStdString()<<std::endl;
           if(line.split("//").length()<2) continue;
           QString icon_name=line.split("//")[1];
           if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
