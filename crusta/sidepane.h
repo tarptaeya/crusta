@@ -37,7 +37,10 @@
 class SidePaneButton: public QPushButton{
 public:
     SidePaneButton();
+    QString url;
+    QString icon_;
     QWebEngineView* sidewebview=new QWebEngineView();
+    void buttonContext(const QPoint &point);
 };
 
 

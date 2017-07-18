@@ -31,6 +31,8 @@
 SidePaneButton::SidePaneButton(){
     setStyleSheet("QPushButton{border: none;margin: 0} QPushButton::hover{background-color: #000;}");
     setFixedSize(48,48);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this,&SidePaneButton::customContextMenuRequested,this,&SidePaneButton::buttonContext);
 }
 
 SidePane::SidePane(MainView* m){
@@ -38,12 +40,15 @@ SidePane::SidePane(MainView* m){
     QWidget* left=new QWidget();
     vbox->addWidget(history);
     history->setToolTip(tr("History"));
+    history->setContextMenuPolicy(Qt::NoContextMenu);
     history->setIcon(QIcon(":/res/drawables/pane_history.svg"));
     vbox->addWidget(bookmarks);
     bookmarks->setToolTip(tr("Bookmarks"));
+    bookmarks->setContextMenuPolicy(Qt::NoContextMenu);
     bookmarks->setIcon(QIcon(":/res/drawables/pane_bookmark.svg"));
     vbox->addWidget(downloads);
     downloads->setToolTip(tr("Downloads"));
+    downloads->setContextMenuPolicy(Qt::NoContextMenu);
     downloads->setIcon(QIcon(":/res/drawables/pane_download.svg"));
     QFile inputFile(QDir::homePath()+"/.crusta_db/sidepanel.txt");
     if (inputFile.open(QIODevice::ReadOnly))
@@ -61,6 +66,8 @@ SidePane::SidePane(MainView* m){
               icon_name=icon_name.split(".")[0];
           }
           SidePaneButton* new_side_btn=new SidePaneButton();
+          new_side_btn->url=line;
+          new_side_btn->icon_=icon_name;
           new_side_btn->setToolTip(line);
           new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
           QWebEngineProfile* profile=new QWebEngineProfile();
@@ -222,6 +229,7 @@ void SidePane::addNewButton(){
     new_btn->sidewebview->setPage(webpage);
     new_btn->sidewebview->setTabletTracking(true);
     new_btn->sidewebview->load(QUrl(urledit->text()));
+    new_btn->url=urledit->text();
     new_btn->sidewebview->setMaximumWidth(395);
     new_btn->sidewebview->setMinimumWidth(300);
     connect(new_btn->sidewebview,&QWebEngineView::iconChanged,this,[this,new_btn,loader]{
@@ -234,6 +242,7 @@ void SidePane::addNewButton(){
         else{
             icon_name=icon_name.split(".")[0];
         }
+        new_btn->icon_=icon_name;
         new_btn->sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
     });
     connect(new_btn,&SidePaneButton::clicked,this,[this,new_btn]{
@@ -256,4 +265,37 @@ void SidePane::addNewButton(){
 
 void SidePane::acceptFullScreenReuest(QWebEngineFullScreenRequest request){
     request.accept();
+}
+
+void SidePaneButton::buttonContext(const QPoint &point){
+    QMenu* menu=new QMenu();
+    QAction* remove=new QAction(tr("Remove"));
+    menu->addAction(remove);
+    connect(remove,&QAction::triggered,this,[this]{
+        QString forbidden=this->url;
+        QFile f(QDir::homePath()+"/.crusta_db/sidepanel.txt");
+        if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            QString s;
+            QTextStream t(&f);
+            while(!t.atEnd())
+            {
+                QString line = t.readLine();
+                if(line!=forbidden)
+                    s.append(line + "\n");
+            }
+            f.resize(0);
+            t << s;
+            f.close();
+        }
+        QString icon_name=this->icon_;
+        QDir dir;
+        dir.remove(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
+        this->sidewebview->load(QUrl("http://"));
+        this->sidewebview->page()->deleteLater();
+        this->parentWidget()->layout()->removeWidget(this);
+        this->sidewebview->deleteLater();
+        this->deleteLater();
+    });
+    menu->exec(this->mapToGlobal(point));
 }
