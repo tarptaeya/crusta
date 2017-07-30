@@ -93,6 +93,7 @@ public:
     PWindow* window=new PWindow();
     QTabWidget* tabWindow=new QTabWidget(this);
     QHBoxLayout* box=new QHBoxLayout();
+    QHBoxLayout* side_pane=new QHBoxLayout();
     QMenuBar* menubar=new QMenuBar();
     QMenu* menu=new QMenu();
     QPushButton* add_btn=new QPushButton();

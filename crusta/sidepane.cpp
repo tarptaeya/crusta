@@ -189,8 +189,141 @@ SidePane::SidePane(MainView* m){
     setStyleSheet("#pane{background-color: #404244}");
 }
 
+SidePane::SidePane(PrivateMainView* m){
+    pmainview=m;
+    QWidget* left=new QWidget();
+    vbox->addWidget(bookmarks);
+    bookmarks->setToolTip(tr("Bookmarks"));
+    bookmarks->setContextMenuPolicy(Qt::NoContextMenu);
+    bookmarks->setIcon(QIcon(":/res/drawables/pane_bookmark.svg"));
+    vbox->addWidget(downloads);
+    downloads->setToolTip(tr("Downloads"));
+    downloads->setContextMenuPolicy(Qt::NoContextMenu);
+    downloads->setIcon(QIcon(":/res/drawables/pane_download.svg"));
+    QFile inputFile(QDir::homePath()+"/.crusta_db/sidepanel.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          if(line.split("//").length()<2) continue;
+          QString icon_name=line.split("//")[1];
+          if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
+              icon_name=icon_name.split(".")[1];
+          }
+          else{
+              icon_name=icon_name.split(".")[0];
+          }
+          SidePaneButton* new_side_btn=new SidePaneButton();
+          new_side_btn->url=line;
+          new_side_btn->icon_=icon_name;
+          new_side_btn->setToolTip(line);
+          new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
+          QWebEngineProfile* profile=new QWebEngineProfile();
+          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+          QWebEnginePage* webpage=new QWebEnginePage(profile);
+          new_side_btn->sidewebview->hide();
+          connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
+          new_side_btn->sidewebview->setPage(webpage);
+          new_side_btn->sidewebview->setTabletTracking(true);
+          new_side_btn->sidewebview->load(QUrl(line));
+          new_side_btn->sidewebview->setMaximumWidth(395);
+          new_side_btn->sidewebview->setMinimumWidth(300);
+          connect(new_side_btn,&SidePaneButton::clicked,this,[this,line,new_side_btn]{
+              if(hbox->count()==1){
+                  new_side_btn->sidewebview->show();
+                  hbox->addWidget(new_side_btn->sidewebview);
+              }
+              else if(hbox->indexOf(new_side_btn->sidewebview)!=1){
+                  hbox->itemAt(1)->widget()->hide();
+                  hbox->removeItem(hbox->itemAt(1));
+                  new_side_btn->sidewebview->show();
+                  hbox->addWidget(new_side_btn->sidewebview);
+              }
+              else{
+                  hbox->itemAt(1)->widget()->hide();
+                  hbox->removeItem(hbox->itemAt(1));
+              }
+          });
+          if(new_side_btn->icon().pixmap(27,27).isNull()){
+              QMovie* loader=new QMovie(":/res/videos/sidepanel_loader.gif");
+              loader->start();
+              connect(loader,&QMovie::frameChanged,new_side_btn,[new_side_btn,loader]{
+                  new_side_btn->setIcon(QIcon(loader->currentPixmap()));
+              });
+              connect(new_side_btn->sidewebview,&QWebEngineView::iconChanged,this,[this,new_side_btn,loader]{
+                  loader->stop();
+                  new_side_btn->setIcon(new_side_btn->sidewebview->icon());
+                  QString icon_name=new_side_btn->sidewebview->url().toString().split("//")[1];
+                  if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
+                      icon_name=icon_name.split(".")[1];
+                  }
+                  else{
+                      icon_name=icon_name.split(".")[0];
+                  }
+                  new_side_btn->sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
+              });
+          }
+          vbox->addWidget(new_side_btn);
+       }
+       inputFile.close();
+    }
+    vbox->addWidget(flexilabel);
+    vbox->addWidget(add_pane_btn);
+    add_pane_btn->setToolTip(tr("Add New Pane Button"));
+    add_pane_btn->setIcon(QIcon(":/res/drawables/pane_add.svg"));
+    vbox->setSpacing(0);
+    vbox->setContentsMargins(0,0,0,0);
+    left->setLayout(vbox);
+    left->setStyleSheet("background-color: #404244");
+    left->setFixedWidth(48);
+    left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
+    hbox->addWidget(left);
+    connect(bookmarks,&QPushButton::clicked,this,[this]{
+        if(hbox->count()==1){
+            bookmark_manager=new BookmarkManager(mainview);
+            hbox->addWidget(this->bookmark_manager);
+        }
+        else if(hbox->indexOf(this->bookmark_manager)!=1){
+            hbox->itemAt(1)->widget()->hide();
+            hbox->removeItem(hbox->itemAt(1));
+            bookmark_manager=new BookmarkManager(mainview);
+            hbox->addWidget(this->bookmark_manager);
+        }
+        else{
+            this->bookmark_manager->hide();
+            hbox->removeWidget(this->bookmark_manager);
+        }
+    });
+    connect(downloads,&QPushButton::clicked,this,[this]{
+        if(hbox->count()==1){
+            this->download_manager->show();
+            hbox->addWidget(this->download_manager);
+        }
+        else if(hbox->indexOf(this->download_manager)!=1){
+            hbox->itemAt(1)->widget()->hide();
+            hbox->removeItem(hbox->itemAt(1));
+            this->download_manager->show();
+            hbox->addWidget(this->download_manager);
+        }
+        else{
+            this->download_manager->hide();
+            hbox->removeWidget(this->download_manager);
+        }
+    });
+    connect(add_pane_btn,&SidePaneButton::clicked,this,&SidePane::addNewButton);
+    hbox->setSpacing(0);
+    hbox->setContentsMargins(0,0,0,0);
+    setLayout(hbox);
+    setMaximumWidth(48+350+45);
+    setObjectName("pane");
+    setStyleSheet("#pane{background-color: #404244}");
+}
+
+
 void SidePane::addNewButton(){
-    QDialog* dg=new QDialog(mainview);
+    QDialog* dg=new QDialog();
     QLineEdit* urledit=new QLineEdit();
     urledit->setMinimumWidth(200);
     urledit->setPlaceholderText("url for side panel");

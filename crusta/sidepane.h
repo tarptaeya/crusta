@@ -22,6 +22,7 @@
 #define SIDEPANE_H
 
 #include "mainview.h"
+#include "privatemainview.h"
 #include "downloadmanager.h"
 #include "historymanager.h"
 #include "bookmarkmanager.h"
@@ -50,6 +51,8 @@ class SidePane: public QWidget{
     QLabel* flexilabel=new QLabel();
 public:
     SidePane(MainView*m);
+    SidePane(PrivateMainView*m);
+    PrivateMainView* pmainview;
     MainView* mainview;
     HistoryManager* history_manager;
     BookmarkManager* bookmark_manager;

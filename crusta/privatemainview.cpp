@@ -27,6 +27,7 @@
 #include "bookmarkmanager.h"
 #include "siteinfo.h"
 #include "speeddial.h"
+#include "sidepane.h"
 
 #include <QObject>
 #include <QPoint>
@@ -318,6 +319,14 @@ PrivateMainView::PrivateMainView(){
 void PrivateMainView::createView(){
     this->window->setWindowTitle("Crusta - Private Mode");
     this->window->setLayout(box);
+    box->addLayout(side_pane);
+    box->setSpacing(0);
+    side_pane->setSpacing(0);
+    side_pane->setContentsMargins(0,0,0,0);
+    // TODO : if side pane has to show then add it
+    SidePane* pane=new SidePane(this);
+    side_pane->addWidget(pane);
+    pane->download_manager=this->window->d_manager;
 }
 
 void PrivateMainView::showView(){
@@ -391,12 +400,12 @@ void PrivateMainView::createMenuBar(){
     connect(this->bookmark_tab,&QAction::triggered,this,&PrivateMainView::bookmarkTab);
     this->bookmark_all_tabs=this->bookmark_menu->addAction(tr("&Bookmark All Tabs"));
     connect(this->bookmark_all_tabs,&QAction::triggered,this,&PrivateMainView::bookmarkAllTabs);
-    this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
-    connect(this->show_all_bookmarks,&QAction::triggered,this,&PrivateMainView::showBookamrks);
-    this->download_menu=this->menu->addMenu(tr("&Downloads"));
-    this->show_all_downloads=this->download_menu->addAction(tr("&Download Manager"));
-    connect(this->show_all_downloads,&QAction::triggered,this,&PrivateMainView::showDownloads);
-    this->download_menu->addAction(tr("&Clear all Downloads"));
+//    this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
+//    connect(this->show_all_bookmarks,&QAction::triggered,this,&PrivateMainView::showBookamrks);
+//    this->download_menu=this->menu->addMenu(tr("&Downloads"));
+//    this->show_all_downloads=this->download_menu->addAction(tr("&Download Manager"));
+//    connect(this->show_all_downloads,&QAction::triggered,this,&PrivateMainView::showDownloads);
+//    this->download_menu->addAction(tr("&Clear all Downloads"));
     this->tool_menu=this->menu->addMenu(tr("&Tools"));
     this->sitei=this->tool_menu->addAction(tr("&Site Info"));
     connect(this->sitei,&QAction::triggered,this,&PrivateMainView::showPageInfo);
@@ -791,10 +800,18 @@ void PrivateMainView::splitModefx(){
 
 void PrivateMainView::closeWindow(){
     if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
-        if(this->box->count()==2){
+        if(this->box->count()==3){
             this->psplitView->closeWindow();
             this->split_mode_action->setText(tr("&Split Mode"));
         }
+    }
+    int side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
+    while(side_cnt!=4){
+        SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(2)->widget();
+        side_btn->sidewebview->load(QUrl("http://"));
+        this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);
+        side_btn->sidewebview->page()->deleteLater();
+        side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
     }
     int cnt=this->tabWindow->count();
     for(int i=0;i<cnt;i++){
