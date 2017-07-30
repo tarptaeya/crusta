@@ -67,10 +67,13 @@ SpeedDial::SpeedDial(){
 
 void SpeedDial::save(){
     if(bgimage->text()=="default"){
-        bgimage->setText(QDir::homePath()+"/.crusta_db"+"/web/img/default.jpg");
+        bgimage->setText("background-color:#404244");
+    }
+    else{
+        bgimage->setText("background-image:url(\""+bgimage->text()+"\")");
     }
     QString upper="<!DOCTYPE html><html><head><title>New Tab</title><link rel=\"shortcut icon\" href=\"../crusta/res/drawables/icon_3.ico\"><style type=\"text/css\">"
-         "body {background-image:url(\""+bgimage->text()+"\");background-repeat: norepeat}.box {width: 160px;height: 100px;border: none;}"
+         "body {"+bgimage->text()+";background-repeat: norepeat}.box {width: 160px;height: 100px;border: none;}"
          ".box:hover {box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}"
          ".entry {outline: none;margin-top: 100px;padding: 10px 20px;width: 100%;font-size: 20px;}</style></head><body>"
          "<div style=\"text-align: center;padding: 100px;width: 70%;margin: auto;\">";
@@ -136,7 +139,7 @@ void SpeedDial::load(){
        }
        inputFile.close();
     }
-    if(bgimage->text()==QDir::homePath()+"/.crusta_db"+"/web/img/default.jpg"){
+    if(bgimage->text()=="background-color:#404244"){
         bgimage->setText("default");
     }
 }
