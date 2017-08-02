@@ -361,7 +361,10 @@ void SidePane::addNewButton(){
     QWebEnginePage* webpage=new QWebEnginePage(profile);
     new_btn->sidewebview->setPage(webpage);
     new_btn->sidewebview->setTabletTracking(true);
-    new_btn->sidewebview->load(QUrl(urledit->text()));
+    QString url=urledit->text();
+    if(!url.startsWith("http"))
+        url="http://"+url;
+    new_btn->sidewebview->load(QUrl(url));
     new_btn->url=urledit->text();
     new_btn->sidewebview->setMaximumWidth(395);
     new_btn->sidewebview->setMinimumWidth(300);

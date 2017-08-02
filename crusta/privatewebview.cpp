@@ -107,7 +107,11 @@ void PrivateWebView::spinnerStarted(){
             PrivateWebView* v=(PrivateWebView*)l->itemAt(1)->widget();
             if(v==this){
                 QLabel* spinner=new QLabel();
-                QMovie* loader=new QMovie(":/res/videos/loader.gif");
+                QMovie* loader;
+                if(tabwidget->currentIndex()==i)
+                    loader=new QMovie(":/res/videos/loader.gif");
+                else
+                    loader=new QMovie(":/res/videos/passive_loader.gif");
                 loader->start();
                 spinner->setMovie(loader);
                 tabwidget->tabBar()->setTabButton(i,QTabBar::LeftSide,spinner);
@@ -214,6 +218,7 @@ QWebEngineView* PrivateWebView::createWindow(QWebEnginePage::WebWindowType type)
         tabwin->menu_btn->setMenu(win->menu);
         tabwidget->insertTab(tabwidget->currentIndex()+1,tabwin->tab,tr("Connecting..."));
         tabwidget->setCurrentIndex(tabwidget->currentIndex()+1);
+        tabwidget->setCurrentIndex(tabwidget->currentIndex()-1);
         return view;
     }
     case QWebEnginePage::WebBrowserBackgroundTab: {
