@@ -321,7 +321,7 @@ MainView::MainView(){
         new_string+="Crusta/1.0.0 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
-        in<<"Search String>>>>>https://google.com/search?q=\nIncognito Search String>>>>>https://duckduckgo.com/?q=\nUA String>>>>>"+new_string+"\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        in<<"Search String>>>>>https://qwant.com/?q=\nIncognito Search String>>>>>https://qwant.com/?q=\nUA String>>>>>"+new_string+"\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
         f.close();
     }
 
@@ -337,10 +337,10 @@ MainView::MainView(){
     if(!fi.exists()){
         fi.open(QIODevice::WriteOnly);
         QTextStream in(&fi);
-        in<<">>>>>"+QDir::homePath()+"/.crusta_db"+"/web/img/default.jpg\n"+"whatsapp>>>>>https://web.whatsapp.com/\n"
-            "twitter>>>>>https://twitter.com\n"+"pinterest>>>>>https://pinterest.com\n"
-            "tumblr>>>>>https://tumblr.com\n"+"facebook>>>>>https://facebook.com\n"
-            "googleplus>>>>>https://plus.google.com\n"+"linkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
+        in<< ">>>>>default\nwhatsapp>>>>>https://web.whatsapp.com/\n"
+            "twitter>>>>>https://twitter.com\npinterest>>>>>https://pinterest.com\n"
+            "tumblr>>>>>https://tumblr.com\nfacebook>>>>>https://facebook.com\n"
+            "googleplus>>>>>https://plus.google.com\nlinkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
         fi.close();
         SpeedDial* sd=new SpeedDial();
         sd->load();
@@ -561,7 +561,7 @@ void MainView::addNormalTab(){
            inputFile.close();
         }
         if(home.isEmpty()){
-            home=QString("https://google.com");
+            home=QString("https://qwant.com");
             QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
             if(f.open(QIODevice::ReadWrite | QIODevice::Text))
             {

@@ -139,6 +139,7 @@ void SpeedDial::load(){
        }
        inputFile.close();
     }
+    if(bgimage->text().isNull()) bgimage->setText("default");
     if(bgimage->text()=="background-color:#404244"){
         bgimage->setText("default");
     }

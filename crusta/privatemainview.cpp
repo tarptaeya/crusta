@@ -484,7 +484,7 @@ void PrivateMainView::addNormalTab(){
            inputFile.close();
         }
         if(home.isEmpty()){
-            home=QString("https://duckduckgo.com");
+            home=QString("https://qwant.com");
             QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
             if(f.open(QIODevice::ReadWrite | QIODevice::Text))
             {
