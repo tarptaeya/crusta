@@ -43,7 +43,7 @@
 
 
 void AddressLineEdit::createAddressLineEdit(){
-    this->setTextMargins(15,0,15,0);
+    this->setTextMargins(7,0,7,0);
     loadSearchString();
 }
 

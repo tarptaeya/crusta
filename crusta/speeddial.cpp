@@ -66,7 +66,7 @@ SpeedDial::SpeedDial(){
 }
 
 void SpeedDial::save(){
-    if(bgimage->text()=="default"){
+    if(bgimage->text()=="default" || bgimage->text()=="background-color:#404244"){
         bgimage->setText("background-color:#404244");
     }
     else{
