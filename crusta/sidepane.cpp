@@ -343,6 +343,11 @@ void SidePane::addNewButton(){
     if(!dg->exec()==QDialog::Accepted){
         return;
     }
+    QString url=urledit->text();
+    if(!url.startsWith("http")){
+        url="http://"+url;
+        urledit->setText(url);
+    }
     QFile file(QDir::homePath()+"/.crusta_db/sidepanel.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
@@ -361,9 +366,6 @@ void SidePane::addNewButton(){
     QWebEnginePage* webpage=new QWebEnginePage(profile);
     new_btn->sidewebview->setPage(webpage);
     new_btn->sidewebview->setTabletTracking(true);
-    QString url=urledit->text();
-    if(!url.startsWith("http"))
-        url="http://"+url;
     new_btn->sidewebview->load(QUrl(url));
     new_btn->url=urledit->text();
     new_btn->sidewebview->setMaximumWidth(395);

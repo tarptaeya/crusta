@@ -22,6 +22,7 @@
 #define WEBPAGE_H
 
 #include <QWebEnginePage>
+#include <QObject>
 #include <QString>
 #include <QWebEngineProfile>
 #include <QMessageBox>
@@ -37,6 +38,7 @@ class WebPage:public QWebEnginePage{
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
     virtual bool certificateError(const QWebEngineCertificateError &error);
+    //virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
 public:
     QString agent;
     void loadUAString();
