@@ -162,6 +162,7 @@ void PrivateWebView::pageTitleChanged(){
             if(v==this){
                 QString title=this->page()->title();
                 tabwidget->setTabText(i,title);
+                tabwidget->setTabToolTip(i,title);
             }
         }
     }

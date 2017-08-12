@@ -24,7 +24,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui charts
 QT       += webenginewidgets webengine texttospeech
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     crustaspeech.cpp \
     permissions.cpp \
     speeddial.cpp \
-    sidepane.cpp
+    sidepane.cpp \
+    visualiser.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -85,7 +86,8 @@ HEADERS  += \
     crustaspeech.h \
     permissions.h \
     speeddial.h \
-    sidepane.h
+    sidepane.h \
+    visualiser.h
 
 RESOURCES += \
     resource.qrc
