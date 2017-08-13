@@ -318,7 +318,7 @@ MainView::MainView(){
         for(int i=0;i<len-1;i++){
             new_string+=ua[i]+" ";
         }
-        new_string+="Crusta/1.0.0 "+ua[len-1];
+        new_string+="Crusta/1.3.0 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
         in<<"Search String>>>>>https://qwant.com/?q=\nIncognito Search String>>>>>https://qwant.com/?q=\nUA String>>>>>"+new_string+"\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
