@@ -92,5 +92,5 @@ HEADERS  += \
 RESOURCES += \
     resource.qrc
 
-RC_FILE = crusta.rc
+RC_ICONS += crusta.ico
 
