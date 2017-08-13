@@ -128,7 +128,6 @@ public:
     QAction* find_action=new QAction();
     QAction* edit_permissions=new QAction();
     QAction* speed_dial=new QAction();
-    QAction* toggle_side_pane_action=new QAction();
     QAction* view_page_source_action=new QAction();
     QAction* zoom_in_action=new QAction();
     QAction* zoom_out_action=new QAction();
@@ -198,7 +197,6 @@ public:
     void editPermissions();
     void showSpeedDial();
     void pickColor();
-    void toggleSidePane();
 };
 
 

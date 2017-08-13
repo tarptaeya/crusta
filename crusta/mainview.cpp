@@ -449,11 +449,6 @@ void MainView::createMenuBar(){
     this->speed_dial=this->edit_menu->addAction(tr("Speed Dial"));
     connect(this->speed_dial,&QAction::triggered,this,&MainView::showSpeedDial);
     this->view_menu=this->menu->addMenu(tr("&View"));
-    this->toggle_side_pane_action=this->view_menu->addAction(tr("&Show Side Pane"));
-    if(this->side_pane->count()==0)
-        this->toggle_side_pane_action->setText(tr("&Show Side Pane"));
-    else
-        this->toggle_side_pane_action->setText(tr("&Hide Side Pane"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
     this->zoom_in_action=this->view_menu->addAction(tr("&Zoom In"));
@@ -903,7 +898,6 @@ void MainView::spiltModefx(){
     box->setSpacing(0);
     this->splitWindow=new MainView();
     this->splitWindow->box->removeItem(this->splitWindow->side_pane);
-    this->splitWindow->view_menu->removeAction(this->splitWindow->toggle_side_pane_action);
     box->addWidget(this->splitWindow->window);
     this->splitWindow->split_mode_action->setVisible(false);
     this->split_mode_action->setText(tr("&Exit Split Mode"));
