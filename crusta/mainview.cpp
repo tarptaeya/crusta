@@ -58,6 +58,7 @@
 #include <QMessageBox>
 #include <QWebEngineProfile>
 #include <QClipboard>
+#include <QProcess>
 
 #include <iostream>
 
@@ -77,8 +78,9 @@ void MainView::closeTab(int index){
     in << u.toString().toLatin1()+"\n";
     file.close();
     webview->load(QUrl("http://"));
-    if(this->tabWindow->count()==1)
+    if(this->tabWindow->count()==1){
         MainView::quit();
+    }
     webview->page()->deleteLater();
     this->tabWindow->removeTab(index);
     MainView::addNewTabButton();
@@ -377,6 +379,38 @@ MainView::MainView(){
 
     loadTheme();
 
+    QString new_version_file = QDir::homePath()+"/.crusta_db/new_version.txt";
+    QProcess::execute(QString("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/current.txt', '"+new_version_file+"')\""));
+
+    QString new_version;
+    QFile newVersion(QDir::homePath()+"/.crusta_db/new_version.txt");
+    if (newVersion.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&newVersion);
+       while (!in.atEnd())
+       {
+          new_version = in.readLine();
+       }
+       newVersion.close();
+    }
+
+    QString current_version;
+    QFile currentVersion(QDir::homePath()+"/.crusta_db/current.txt");
+    if (currentVersion.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&currentVersion);
+       while (!in.atEnd())
+       {
+          current_version = in.readLine();
+       }
+       currentVersion.close();
+    }
+
+    if(new_version!=current_version){
+        QProcess::startDetached("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/setup.exe', '"+QDir::tempPath()+"/setup.exe')");
+        updateOn=true;
+        QDir::remove(new_version_file);
+    }
 }
 
 void MainView::createView(){
@@ -842,6 +876,9 @@ void MainView::bookmarkAllTabs(){
 }
 
 void MainView::quit(){
+    if(updateOn){
+        QProcess::execute(QCoreApplication::applicationDirPath()+"/install.bat");
+    }
     this->window->deleteLater();
 }
 

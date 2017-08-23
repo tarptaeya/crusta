@@ -68,6 +68,7 @@ class MainView:public QMainWindow{
     Q_OBJECT
 private:
     void quit();
+    bool updateOn=false;
 public:
     void closeTab(int);
     void zoomIn();
