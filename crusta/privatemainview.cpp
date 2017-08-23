@@ -345,6 +345,9 @@ void PrivateMainView::createMenuBar(){
     this->split_mode_action=this->file_menu->addAction(tr("&Split Tab Mode"));
     connect(this->split_mode_action,&QAction::triggered,this,&PrivateMainView::splitModefx);
     this->file_menu->addSeparator();
+    this->closeCurrentTab=this->file_menu->addAction(tr("&Close Current Tab"));
+    this->closeCurrentTab->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_W));
+    this->file_menu->addSeparator();
     this->open_file=this->file_menu->addAction(tr("&Open File"));
     connect(this->open_file,&QAction::triggered,this,&PrivateMainView::openLocalFile);
     this->save_as_pdf=this->file_menu->addAction(tr("&Save Page As PDF"));

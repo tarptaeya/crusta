@@ -302,7 +302,7 @@ void MainView::pastePageAction(){
 }
 
 MainView::MainView(){
-    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:crimson;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid crimson;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
+    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:#00b0e3;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid #00b0e3;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
     this->window->parentView=this;
 
     limitCompleterFile();
@@ -412,6 +412,10 @@ void MainView::createMenuBar(){
     this->incognito=this->file_menu->addAction(tr("&New Private Window"));
     connect(this->incognito,&QAction::triggered,this,&MainView::openIncognito);
     this->file_menu->addSeparator();
+    this->closeCurrentTab=this->file_menu->addAction(tr("&Close Current Tab"));
+    this->closeCurrentTab->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_W));
+    this->file_menu->addSeparator();
+    connect(this->closeCurrentTab,&QAction::triggered,[this]{closeTab(tabWindow->currentIndex());});
     this->open_file=this->file_menu->addAction(tr("&Open File"));
     connect(this->open_file,&QAction::triggered,this,&MainView::openLocalFile);
     this->save_as_pdf=this->file_menu->addAction(tr("&Save Page As PDF"));

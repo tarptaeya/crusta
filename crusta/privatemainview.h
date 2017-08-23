@@ -110,6 +110,7 @@ public:
     QAction* new_tab_action=new QAction();
     QAction* split_mode_action=new QAction();
     QAction* new_window_action=new QAction();
+    QAction* closeCurrentTab=new QAction();
     QAction* open_file=new QAction();
     QAction* save_as_pdf=new QAction();
     QAction* save_page=new QAction();
