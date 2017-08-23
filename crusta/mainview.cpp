@@ -523,6 +523,7 @@ void MainView::createMenuBar(){
 //    this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
 
     this->window->menu=this->menu;
+    this->menu->setStyleSheet("padding: 20px 20px;margin-right: 20px");
 }
 
 void MainView::createTabWindow(){

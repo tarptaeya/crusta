@@ -450,6 +450,7 @@ void PrivateMainView::createMenuBar(){
     this->show_all_downloads->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_J));
 
     this->window->menu=this->menu;
+    this->menu->setStyleSheet("padding: 20px 20px;margin-right: 20px");
 }
 
 void PrivateMainView::createTabWindow(){
