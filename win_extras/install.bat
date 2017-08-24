@@ -1,3 +1,3 @@
 @echo off
-taskkill /IM crusta.exe && start %temp%\setup.exe
+taskkill /IM crusta.exe && start %temp%\setup.exe /VERYSILENT
 exit
