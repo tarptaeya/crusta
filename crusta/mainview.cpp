@@ -335,6 +335,12 @@ MainView::MainView(){
         f_.close();
     }
 
+    QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
+    vf_.open(QIODevice::WriteOnly);
+    QTextStream in(&vf_);
+    in<<"1.3.0_beta";  // current local version of crusta
+    vf_.close();
+
     QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
     if(!fi.exists()){
         fi.open(QIODevice::WriteOnly);
@@ -409,7 +415,7 @@ MainView::MainView(){
     if(new_version!=current_version){
         QProcess::startDetached("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/setup.exe', '"+QDir::tempPath()+"/setup.exe')");
         updateOn=true;
-        QDir::remove(new_version_file);
+        QDir().remove(new_version_file);
     }
 }
 
