@@ -338,7 +338,7 @@ MainView::MainView(){
     QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
     vf_.open(QIODevice::WriteOnly);
     QTextStream in(&vf_);
-    in<<"1.3.0_beta";  // current local version of crusta
+    in<<"1.3.0";  // current local version of crusta
     vf_.close();
 
     QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
@@ -396,6 +396,7 @@ MainView::MainView(){
        while (!in.atEnd())
        {
           new_version = in.readLine();
+          std::cout<<new_version.toStdString()<<std::endl;
        }
        newVersion.close();
     }
@@ -883,7 +884,7 @@ void MainView::bookmarkAllTabs(){
 
 void MainView::quit(){
     if(updateOn){
-        QProcess::execute(QCoreApplication::applicationDirPath()+"/install.bat");
+        std::cout<<QProcess::startDetached(QDir::tempPath()+"/setup.exe /VERYSILENT")<<std::endl;
     }
     this->window->deleteLater();
 }

@@ -67,6 +67,7 @@ public:
     QString defaultSearch;
     QLayout* layout;
     QWidget* widget;
+    QLabel* urllabel;
     QAction* exitFullScreen=new QAction();
     QAction* timeAction=new QAction();
     FullScreenNotifier* notifier=new FullScreenNotifier();
