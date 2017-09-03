@@ -24,5 +24,7 @@
         <file>res/drawables/pane_history.svg</file>
         <file>res/drawables/pane_add.svg</file>
         <file>res/videos/sidepanel_loader.gif</file>
+        <file>res/drawables/crusta_banner.png</file>
+        <file>res/drawables/splash.png</file>
     </qresource>
 </RCC>

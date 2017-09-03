@@ -56,6 +56,8 @@
 #include <QDialog>
 #include <QFileDialog>
 
+#include <iostream>
+
 
 
 
@@ -549,14 +551,15 @@ void WebView::downloadFinished(QString path){
 
 void WebView::showLinkHovered(QString url){
     link=url;
-    if(link==""){
-        urllabel->hide();
-        return;
-    }
+//    if(link==""){
+//        urllabel->hide();
+//        return;
+//    }
     urllabel->setText(link);
     urllabel->setFixedWidth(link.length()*7);
     urllabel->move(0,this->height()-urllabel->height());
     urllabel->show();
+    std::cout<<link.toStdString()<<std::endl;
 }
 
 void WebView::closeTab(){

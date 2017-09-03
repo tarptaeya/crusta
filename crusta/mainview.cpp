@@ -320,7 +320,7 @@ MainView::MainView(){
         for(int i=0;i<len-1;i++){
             new_string+=ua[i]+" ";
         }
-        new_string+="Crusta/1.3.0 "+ua[len-1];
+        new_string+="Crusta/1.3.2 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
         in<<"Search String>>>>>https://qwant.com/?q=\nIncognito Search String>>>>>https://qwant.com/?q=\nUA String>>>>>"+new_string+"\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
@@ -338,7 +338,7 @@ MainView::MainView(){
     QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
     vf_.open(QIODevice::WriteOnly);
     QTextStream in(&vf_);
-    in<<"1.3.0";  // current local version of crusta
+    in<<"1.3.2";  // current local version of crusta
     vf_.close();
 
     QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
@@ -564,7 +564,7 @@ void MainView::createMenuBar(){
 //    this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
 
     this->window->menu=this->menu;
-    this->menu->setStyleSheet("padding: 20px 20px;margin-right: 20px");
+//    this->menu->setStyleSheet("padding: 20px 20px;margin-right: 20px");
 }
 
 void MainView::createTabWindow(){
@@ -884,7 +884,26 @@ void MainView::bookmarkAllTabs(){
 
 void MainView::quit(){
     if(updateOn){
-        std::cout<<QProcess::startDetached(QDir::tempPath()+"/setup.exe /VERYSILENT")<<std::endl;
+        this->window->hide();
+        QDialog* udialog = new QDialog();
+        QVBoxLayout* uvbox = new QVBoxLayout();
+        QLabel* uicon = new QLabel();
+        QHBoxLayout* uhbox = new QHBoxLayout();
+        QPushButton* uok = new QPushButton(tr("Update"));
+        QPushButton* ucncl = new QPushButton(tr("Ignore"));
+
+        uicon->setPixmap(QPixmap(":res/drawables/crusta_banner.png"));
+        uvbox->addWidget(uicon);
+        uvbox->addWidget(new QLabel(tr("A new version of Crusta Browser is available.\nDo you want to launch the installer now?")));
+        uhbox->addWidget(uok);
+        uhbox->addWidget(ucncl);
+        uvbox->addLayout(uhbox);
+        udialog->setLayout(uvbox);
+        connect(uok,&QPushButton::clicked,udialog,&QDialog::accept);
+        connect(ucncl,&QPushButton::clicked,udialog,&QDialog::reject);
+        if(udialog->exec()==QDialog::Accepted){
+            std::cout<<QProcess::startDetached(QDir::tempPath()+"/setup.exe & taskkill crusta.exe");
+        }
     }
     this->window->deleteLater();
 }
