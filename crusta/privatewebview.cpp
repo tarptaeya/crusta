@@ -61,7 +61,7 @@
 PrivateWebView::PrivateWebView(){
     exitFullScreen->setShortcut(Qt::Key_Escape);
     createPrivateWebView();
-    urllabel = new QLabel(this);
+    //urllabel = new QLabel(this);
     settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled,true);
     settings()->setAttribute(QWebEngineSettings::PluginsEnabled,true);
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows,true);
@@ -494,15 +494,15 @@ void PrivateWebView::downloadFinished(QString path){
 }
 
 void PrivateWebView::showLinkHovered(QString url){
-    link=url;
-    if(link==""){
-        urllabel->hide();
-        return;
-    }
-    urllabel->setText(link);
-    urllabel->setFixedWidth(link.length()*7);
-    urllabel->move(0,this->height()-urllabel->height());
-    urllabel->show();
+//    link=url;
+//    if(link==""){
+//        urllabel->hide();
+//        return;
+//    }
+//    urllabel->setText(link);
+//    urllabel->setFixedWidth(link.length()*7);
+//    urllabel->move(0,this->height()-urllabel->height());
+//    urllabel->show();
 }
 
 void PrivateWebView::closeTab(){

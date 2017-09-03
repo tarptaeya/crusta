@@ -64,7 +64,7 @@
 WebView::WebView(){
     exitFullScreen->setShortcut(Qt::Key_Escape);
     createWebView();
-    urllabel = new QLabel(this);
+    //urllabel = new QLabel(this);
     settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled,true);
     settings()->setAttribute(QWebEngineSettings::PluginsEnabled,true);
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows,true);
@@ -555,11 +555,11 @@ void WebView::showLinkHovered(QString url){
 //        urllabel->hide();
 //        return;
 //    }
-    urllabel->setText(link);
-    urllabel->setFixedWidth(link.length()*7);
-    urllabel->move(0,this->height()-urllabel->height());
-    urllabel->show();
-    std::cout<<link.toStdString()<<std::endl;
+//    urllabel->setText(link);
+//    urllabel->setFixedWidth(link.length()*7);
+//    urllabel->move(0,this->height()-urllabel->height());
+//    urllabel->show();
+//    std::cout<<link.toStdString()<<std::endl;
 }
 
 void WebView::closeTab(){

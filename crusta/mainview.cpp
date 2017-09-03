@@ -338,7 +338,7 @@ MainView::MainView(){
     QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
     vf_.open(QIODevice::WriteOnly);
     QTextStream in(&vf_);
-    in<<"1.3.2";  // current local version of crusta
+    in<<"1.3.2.1";  // current local version of crusta
     vf_.close();
 
     QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
