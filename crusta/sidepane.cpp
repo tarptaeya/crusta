@@ -29,8 +29,8 @@
 
 
 SidePaneButton::SidePaneButton(){
-    setStyleSheet("QPushButton{border: none;margin: 0} QPushButton::hover{background-color: #000;}");
-    setFixedSize(48,48);
+    setStyleSheet("QPushButton{border: none;margin: 0} QPushButton::hover{background-color: #d0d0d0;}");
+    setFixedSize(40,40);
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,&SidePaneButton::customContextMenuRequested,this,&SidePaneButton::buttonContext);
 }
@@ -126,8 +126,8 @@ SidePane::SidePane(MainView* m){
     vbox->setSpacing(0);
     vbox->setContentsMargins(0,0,0,0);
     left->setLayout(vbox);
-    left->setStyleSheet("background-color: #404244");
-    left->setFixedWidth(48);
+    //left->setStyleSheet("background-color: #404244");
+    left->setFixedWidth(40);
     left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     hbox->addWidget(left);
     connect(history,&QPushButton::clicked,this,[this]{
@@ -184,9 +184,9 @@ SidePane::SidePane(MainView* m){
     hbox->setSpacing(0);
     hbox->setContentsMargins(0,0,0,0);
     setLayout(hbox);
-    setMaximumWidth(48+350+45);
+    setMaximumWidth(40+350+45);
     setObjectName("pane");
-    setStyleSheet("#pane{background-color: #404244}");
+    //setStyleSheet("#pane{background-color: #404244}");
 }
 
 SidePane::SidePane(PrivateMainView* m){
@@ -221,7 +221,7 @@ SidePane::SidePane(PrivateMainView* m){
           new_side_btn->setToolTip(line);
           new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
           QWebEngineProfile* profile=new QWebEngineProfile();
-          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/2.0.0 Mobile");
           QWebEnginePage* webpage=new QWebEnginePage(profile);
           new_side_btn->sidewebview->hide();
           connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
@@ -276,8 +276,8 @@ SidePane::SidePane(PrivateMainView* m){
     vbox->setSpacing(0);
     vbox->setContentsMargins(0,0,0,0);
     left->setLayout(vbox);
-    left->setStyleSheet("background-color: #404244");
-    left->setFixedWidth(48);
+    //left->setStyleSheet("background-color: #404244");
+    left->setFixedWidth(40);
     left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     hbox->addWidget(left);
     connect(bookmarks,&QPushButton::clicked,this,[this]{
@@ -316,9 +316,9 @@ SidePane::SidePane(PrivateMainView* m){
     hbox->setSpacing(0);
     hbox->setContentsMargins(0,0,0,0);
     setLayout(hbox);
-    setMaximumWidth(48+350+45);
+    setMaximumWidth(40+350+45);
     setObjectName("pane");
-    setStyleSheet("#pane{background-color: #404244}");
+    //setStyleSheet("#pane{background-color: #404244}");
 }
 
 
@@ -339,7 +339,7 @@ void SidePane::addNewButton(){
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));
     dg->setObjectName("dialog");
-    dg->setStyleSheet("#dialog{border: 2px solid #404244}");
+    dg->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
     if(!dg->exec()==QDialog::Accepted){
         return;
     }
@@ -362,7 +362,7 @@ void SidePane::addNewButton(){
     });
     vbox->insertWidget(vbox->indexOf(flexilabel),new_btn);
     QWebEngineProfile* profile=new QWebEngineProfile();
-    profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+    profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/2.0.0 Mobile");
     QWebEnginePage* webpage=new QWebEnginePage(profile);
     new_btn->sidewebview->setPage(webpage);
     new_btn->sidewebview->setTabletTracking(true);

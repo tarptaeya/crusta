@@ -59,7 +59,7 @@ SOURCES += main.cpp\
     permissions.cpp \
     speeddial.cpp \
     sidepane.cpp \
-    visualiser.cpp
+    statusbar.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -87,7 +87,7 @@ HEADERS  += \
     permissions.h \
     speeddial.h \
     sidepane.h \
-    visualiser.h
+    statusbar.h
 
 RESOURCES += \
     resource.qrc

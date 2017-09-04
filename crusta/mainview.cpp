@@ -434,7 +434,7 @@ void MainView::createView(){
 }
 
 void MainView::showView(){
-    this->window->showMaximized();
+    this->window->show();
 }
 
 void MainView::newWindow(){

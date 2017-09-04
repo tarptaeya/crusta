@@ -124,18 +124,21 @@ void TabWindow::createControls(){
     hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
-    vbox->addWidget(pbar);
+    vbox->addWidget(statusbar);
+    pbar=statusbar->pbar;
+    pbar->setStyleSheet("QProgressBar::chunk{background-color: #00b0e3}");
     vbox->setSpacing(0);
     pbar->setMaximum(0);
     pbar->setMaximum(100);
-    pbar->hide();
-    pbar->setMaximumHeight(5);
     pbar->setTextVisible(false);
+    pbar->setFixedWidth(170);
+    pbar->setFixedHeight(10);
+    //pbar->hide();
     tab->setLayout(vbox);
     connect(view,&QWebEngineView::loadStarted,this,&TabWindow::loadBegin);
     connect(view,&QWebEngineView::loadFinished,this,&TabWindow::loadCompleted);
     connect(view,&QWebEngineView::loadProgress,this,&TabWindow::pageProgress);
-    tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:3px;margin-bottom: 2px;margin-top: 2px;} QPushButton{border: none;margin-left:10px;} QPushButton::hover{background-color: #f0f0f0;}");
+    //tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:3px;margin-bottom: 2px;margin-top: 2px;} QPushButton{border: none;margin-left:10px;} QPushButton::hover{background-color: #f0f0f0;}");
 }
 
 QWidget* TabWindow::returnTab(){
@@ -323,6 +326,7 @@ void TabWindow::loadBegin(){
 
 void TabWindow::loadCompleted(){
     pbar->hide();
+    pbar->setValue(0);
     load_btn->disconnect();
     this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
     connect(load_btn,&QPushButton::clicked,view,&QWebEngineView::reload);
