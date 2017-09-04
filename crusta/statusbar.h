@@ -26,14 +26,20 @@
 #include <QPushButton>
 #include <QProgressBar>
 #include <QSlider>
+#include <QWebEngineView>
+#include <QLabel>
 
 class StatusBar: public QWidget{
 public:
+    QLabel* zoomindicator=new QLabel();
+    QWebEngineView* view;
     QPushButton* resetzoombtn=new QPushButton(tr("Reset"));
     QSlider* zoomslider=new QSlider();
     QProgressBar* pbar=new QProgressBar();
     QHBoxLayout* hbox=new QHBoxLayout();
     StatusBar();
+    void getWebview(QWebEngineView* mview);
+    void changeZoom(int);
 };
 
 #endif // STATUSBAR_H

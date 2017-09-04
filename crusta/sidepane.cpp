@@ -119,8 +119,10 @@ SidePane::SidePane(MainView* m){
        }
        inputFile.close();
     }
-    vbox->addWidget(flexilabel);
     vbox->addWidget(add_pane_btn);
+    vbox->addWidget(flexilabel);
+    vbox->addWidget(settings_btn);
+    settings_btn->setIcon(QIcon(":/res/drawables/pane_settings.svg"));
     add_pane_btn->setToolTip(tr("Add New Pane Button"));
     add_pane_btn->setIcon(QIcon(":/res/drawables/pane_add.svg"));
     vbox->setSpacing(0);

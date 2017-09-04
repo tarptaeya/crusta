@@ -124,6 +124,7 @@ void TabWindow::createControls(){
     hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
+    statusbar->getWebview(view);
     vbox->addWidget(statusbar);
     pbar=statusbar->pbar;
     pbar->setStyleSheet("QProgressBar::chunk{background-color: #00b0e3}");

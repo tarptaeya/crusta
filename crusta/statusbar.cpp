@@ -19,21 +19,51 @@
 * ============================================================ */
 
 #include "statusbar.h"
-#include <QLabel>
+#include <QSound>
 
 StatusBar::StatusBar(){
     setLayout(hbox);
     hbox->addWidget(new QLabel());
     hbox->setContentsMargins(0,0,0,0);
     hbox->addWidget(pbar);
+    QPushButton* capturebtn=new QPushButton();
+    hbox->addWidget(capturebtn);
+    capturebtn->setFixedWidth(20);
+    capturebtn->setIcon(QIcon(":/res/drawables/status_shutter.svg"));
+    connect(capturebtn,&QPushButton::clicked,this,[this]{
+       QPixmap scrshot = view->grab();
+       QSound::play(":/res/audio/shutter.wav");
+       scrshot.save("c:/users/hp/desktop/"+view->title()+".png");
+    });
     hbox->addWidget(resetzoombtn);
+    connect(resetzoombtn,&QPushButton::clicked,this,[this]{
+        view->setZoomFactor(1);
+        zoomslider->setValue(100);
+    });
     resetzoombtn->setFixedWidth(50);
     hbox->addWidget(zoomslider);
+    hbox->addWidget(zoomindicator);
+    QLabel* percentLabel=new QLabel("%");
+    percentLabel->setFixedWidth(15);
+    hbox->addWidget(percentLabel);
+    zoomindicator->setNum(100);
+    zoomindicator->setFixedWidth(20);
     zoomslider->setFixedWidth(170);
     zoomslider->setFixedHeight(10);
     zoomslider->setOrientation(Qt::Horizontal);
     zoomslider->setValue(100);
     zoomslider->setMinimum(10);
     zoomslider->setMaximum(300);
+    connect(zoomslider,&QSlider::valueChanged,this,&StatusBar::changeZoom);
     setFixedHeight(20);
+    setStyleSheet("QPushButton{background-color: #f0f0f0}");
+}
+
+void StatusBar::getWebview(QWebEngineView *mview){
+    view=mview;
+}
+
+void StatusBar::changeZoom(int value){
+    view->setZoomFactor(value/100.0);
+    zoomindicator->setNum(value);
 }

@@ -25,6 +25,8 @@
         <file>res/drawables/pane_add.svg</file>
         <file>res/videos/sidepanel_loader.gif</file>
         <file>res/drawables/crusta_banner.png</file>
-        <file>res/drawables/splash.png</file>
+        <file>res/audio/shutter.wav</file>
+        <file>res/drawables/pane_settings.svg</file>
+        <file>res/drawables/status_shutter.svg</file>
     </qresource>
 </RCC>
