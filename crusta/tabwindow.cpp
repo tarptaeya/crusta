@@ -134,12 +134,15 @@ void TabWindow::createControls(){
     pbar->setTextVisible(false);
     pbar->setFixedWidth(170);
     pbar->setFixedHeight(10);
-    //pbar->hide();
     tab->setLayout(vbox);
+    vbox->setContentsMargins(0,0,0,0);
     connect(view,&QWebEngineView::loadStarted,this,&TabWindow::loadBegin);
     connect(view,&QWebEngineView::loadFinished,this,&TabWindow::loadCompleted);
     connect(view,&QWebEngineView::loadProgress,this,&TabWindow::pageProgress);
-    //tab->setStyleSheet("QWidget{background-color:white} QLineEdit{border:0.5px solid black;border-radius:3px;margin-bottom: 2px;margin-top: 2px;} QPushButton{border: none;margin-left:10px;} QPushButton::hover{background-color: #f0f0f0;}");
+    back_btn->setFixedSize(30,30);
+    fwd_btn->setFixedSize(30,30);
+    load_btn->setFixedSize(30,30);
+    tab->setStyleSheet("QPushButton{border: none;background-color: #f0f0f0} QPushButton::hover{background-color: #d0d0d0;}");
 }
 
 QWidget* TabWindow::returnTab(){

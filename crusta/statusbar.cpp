@@ -20,10 +20,11 @@
 
 #include "statusbar.h"
 #include <QSound>
+#include <QWebEnginePage>
 
 StatusBar::StatusBar(){
     setLayout(hbox);
-    hbox->addWidget(new QLabel());
+    hbox->addWidget(hoveredlink);
     hbox->setContentsMargins(0,0,0,0);
     hbox->addWidget(pbar);
     QPushButton* capturebtn=new QPushButton();
@@ -61,9 +62,17 @@ StatusBar::StatusBar(){
 
 void StatusBar::getWebview(QWebEngineView *mview){
     view=mview;
+    connect(view->page(),&QWebEnginePage::linkHovered,this,&StatusBar::showLinkHovered);
 }
 
 void StatusBar::changeZoom(int value){
     view->setZoomFactor(value/100.0);
     zoomindicator->setNum(value);
+}
+
+void StatusBar::showLinkHovered(const QString &url){
+    QString text(url);
+    QFontMetrics metrics(hoveredlink->font());
+    QString elidedText = metrics.elidedText(text, Qt::ElideRight, hoveredlink->width()-10);
+    hoveredlink->setText(elidedText);
 }

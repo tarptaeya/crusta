@@ -31,6 +31,7 @@
 
 class StatusBar: public QWidget{
 public:
+    QLabel* hoveredlink=new QLabel();
     QLabel* zoomindicator=new QLabel();
     QWebEngineView* view;
     QPushButton* resetzoombtn=new QPushButton(tr("Reset"));
@@ -40,6 +41,7 @@ public:
     StatusBar();
     void getWebview(QWebEngineView* mview);
     void changeZoom(int);
+    void showLinkHovered(const QString &url);
 };
 
 #endif // STATUSBAR_H
