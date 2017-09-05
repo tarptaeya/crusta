@@ -43,7 +43,12 @@
 
 
 void AddressLineEdit::createAddressLineEdit(){
-    this->setTextMargins(7,0,7,0);
+    siteinfo_btn->move(3,3);
+    siteinfo_btn->setFixedSize(20,20);
+    siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
+    siteinfo_btn->setStyleSheet("border: 1px solid #00b0e3");
+    setTextMargins(22,0,7,0);
+    setFixedHeight(26);
     loadSearchString();
 }
 

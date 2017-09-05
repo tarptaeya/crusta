@@ -33,6 +33,7 @@
 class AddressLineEdit:public QLineEdit{
     QCompleter* cmpleter=new QCompleter();
 public:
+    QPushButton* siteinfo_btn=new QPushButton(this);
     QAction* default_search=new QAction(tr("Search Preference"));
     QAction* changeUAstring=new QAction(tr("Edit UA String"));
     QStringList list;

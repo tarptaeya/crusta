@@ -68,6 +68,13 @@ void TabWindow::updateAddrBar(){
         this->addr_bar->initialize()->setCursorPosition(0);
         return;
     }
+    if(url.startsWith("https://")){
+        this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/secure_site.svg"));
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid 00c400");
+    } else {
+        this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid 00b0e3");
+    }
     this->addr_bar->initialize()->setText(url);
     this->addr_bar->initialize()->setCursorPosition(0);
     QString s=this->addr_bar->text();
@@ -142,6 +149,9 @@ void TabWindow::createControls(){
     back_btn->setFixedSize(30,30);
     fwd_btn->setFixedSize(30,30);
     load_btn->setFixedSize(30,30);
+    home_btn->setFixedSize(30,30);
+    bookmark_btn->setFixedSize(30,30);
+    menu_btn->setFixedSize(30,30);
     tab->setStyleSheet("QPushButton{border: none;background-color: #f0f0f0} QPushButton::hover{background-color: #d0d0d0;}");
 }
 

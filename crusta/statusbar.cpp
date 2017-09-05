@@ -57,7 +57,7 @@ StatusBar::StatusBar(){
     zoomslider->setMaximum(300);
     connect(zoomslider,&QSlider::valueChanged,this,&StatusBar::changeZoom);
     setFixedHeight(20);
-    setStyleSheet("QPushButton{background-color: #f0f0f0}");
+    setStyleSheet("QPushButton{background-color: #f0f0f0} QPushButton::hover{background-color: #d0d0d0}");
 }
 
 void StatusBar::getWebview(QWebEngineView *mview){
