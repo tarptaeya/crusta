@@ -336,7 +336,7 @@ void SidePane::addNewButton(){
     box->addWidget(ok);
     box->addWidget(cncl);
     dg->setLayout(box);
-    dg->setWindowFlag(Qt::FramelessWindowHint);
+    dg->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));

@@ -37,6 +37,7 @@
 #include <QMenu>
 #include <QDir>
 #include <QWebEngineHistory>
+#include <QComboBox>
 
 
 
@@ -70,10 +71,10 @@ void TabWindow::updateAddrBar(){
     }
     if(url.startsWith("https://")){
         this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/secure_site.svg"));
-        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid 00c400");
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00c400");
     } else {
         this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
-        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid 00b0e3");
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00b0e3");
     }
     this->addr_bar->initialize()->setText(url);
     this->addr_bar->initialize()->setCursorPosition(0);
@@ -216,6 +217,47 @@ void TabWindow::loadUrl(){
 }
 
 void TabWindow::bookmarkPage(){
+    QDialog* bkmrk_ppup=new QDialog();
+    QVBoxLayout* vbox_bkmrk=new QVBoxLayout();
+    bkmrk_ppup->setLayout(vbox_bkmrk);
+    QLabel* bkmrk_ppup_title=new QLabel(tr("Bookmark"));
+    bkmrk_ppup_title->setStyleSheet("font-size: 16px; color: #0f0f0f");
+    bkmrk_ppup_title->setFixedHeight(30);
+    vbox_bkmrk->addWidget(bkmrk_ppup_title);
+    QLabel* name_lbl=new QLabel(tr("Name"));
+    name_lbl->setFixedWidth(60);
+    QLabel* folder_lbl=new QLabel(tr("Folder"));
+    folder_lbl->setFixedWidth(60);
+    QComboBox* folder_cmb=new QComboBox();
+    QHBoxLayout* p0hbox=new QHBoxLayout();
+    p0hbox->addWidget(name_lbl);
+    QLineEdit* name_edt=new QLineEdit();
+    name_edt->setText(view->title());
+    name_edt->selectAll();
+    p0hbox->addWidget(name_edt);
+    vbox_bkmrk->addLayout(p0hbox);
+    QHBoxLayout* p1hbox=new QHBoxLayout();
+    p1hbox->addWidget(folder_lbl);
+    p1hbox->addWidget(folder_cmb);
+    vbox_bkmrk->addLayout(p1hbox);
+    QPushButton* remove_btn=new QPushButton(tr("Remove"));
+    QPushButton* edit_btn=new QPushButton(tr("Edit"));
+    QPushButton* done_btn=new QPushButton(tr("Done"));
+    done_btn->setDefault(true);
+    QHBoxLayout* p2hbox=new QHBoxLayout();
+    p2hbox->addWidget(new QLabel());
+    p2hbox->addWidget(remove_btn);
+    p2hbox->addWidget(edit_btn);
+    p2hbox->addWidget(done_btn);
+    vbox_bkmrk->addLayout(p2hbox);
+    bkmrk_ppup->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+    bkmrk_ppup->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
+    bkmrk_ppup->setFixedSize(250,170);
+    bkmrk_ppup->move(this->tab->mapToGlobal(QPoint(bookmark_btn->x()-220,bookmark_btn->y()+30)));
+    if(!bkmrk_ppup->exec()==QDialog::Accepted){
+        return;
+    }
+
     QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
