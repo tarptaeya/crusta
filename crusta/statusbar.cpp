@@ -42,6 +42,7 @@ StatusBar::StatusBar(){
         zoomslider->setValue(100);
     });
     resetzoombtn->setFixedWidth(50);
+    zoomslider->setStyleSheet("QSlider::handle{background-color: #00b0e3}");
     hbox->addWidget(zoomslider);
     hbox->addWidget(zoomindicator);
     QLabel* percentLabel=new QLabel("%");
@@ -72,7 +73,9 @@ void StatusBar::changeZoom(int value){
 
 void StatusBar::showLinkHovered(const QString &url){
     QString text(url);
+    int width = hoveredlink->width();
     QFontMetrics metrics(hoveredlink->font());
     QString elidedText = metrics.elidedText(text, Qt::ElideRight, hoveredlink->width()-10);
     hoveredlink->setText(elidedText);
+    hoveredlink->setStyleSheet("width:"+QString::number(width));
 }

@@ -63,7 +63,6 @@ public:
     SidePaneButton* add_pane_btn=new SidePaneButton();
     SidePaneButton* settings_btn=new SidePaneButton();
     void addNewButton();
-    void acceptFullScreenReuest(QWebEngineFullScreenRequest request);
 };
 
 
