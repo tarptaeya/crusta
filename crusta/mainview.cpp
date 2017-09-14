@@ -434,7 +434,7 @@ void MainView::createView(){
 }
 
 void MainView::showView(){
-    this->window->show();
+    this->window->showMaximized();
 }
 
 void MainView::newWindow(){
@@ -883,25 +883,6 @@ void MainView::bookmarkAllTabs(){
 }
 
 void MainView::quit(){
-    QFile file(QDir::homePath()+"/.crusta_db/session.txt");
-    file.open(QIODevice::WriteOnly);
-    QTextStream in(&file);
-    in << "";
-    file.close();
-    if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
-        if(this->box->count()==3){
-            this->splitWindow->closeWindow();
-            this->split_mode_action->setText(tr("&Split Mode"));
-        }
-    }
-    int side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
-    while(side_cnt!=6){
-        SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(3)->widget();
-        side_btn->sidewebview->load(QUrl("http://"));
-        this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);
-        side_btn->sidewebview->page()->deleteLater();
-        side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
-    }
     if(updateOn){
         this->window->hide();
         QDialog* udialog = new QDialog();
@@ -1003,7 +984,7 @@ void MainView::closeWindow(){
         }
     }
     int side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
-    while(side_cnt!=6){
+    while(side_cnt!=5){
         SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(3)->widget();
         side_btn->sidewebview->load(QUrl("http://"));
         this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);

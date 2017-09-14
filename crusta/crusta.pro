@@ -25,7 +25,7 @@
 #-------------------------------------------------
 
 QT       += core gui charts
-QT       += webenginewidgets webengine texttospeech multimedia
+QT       += webenginewidgets webengine texttospeech
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -59,7 +59,7 @@ SOURCES += main.cpp\
     permissions.cpp \
     speeddial.cpp \
     sidepane.cpp \
-    statusbar.cpp
+    visualiser.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -87,7 +87,7 @@ HEADERS  += \
     permissions.h \
     speeddial.h \
     sidepane.h \
-    statusbar.h
+    visualiser.h
 
 RESOURCES += \
     resource.qrc

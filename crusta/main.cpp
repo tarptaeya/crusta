@@ -26,7 +26,6 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QtWebEngine>
-#include <QSplashScreen>
 
 int main(int argc, char *argv[]){
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

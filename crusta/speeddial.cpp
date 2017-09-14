@@ -66,18 +66,17 @@ SpeedDial::SpeedDial(){
 }
 
 void SpeedDial::save(){
-    if(bgimage->text()=="default" || bgimage->text()=="background-color:#404244"){
-        bgimage->setText("background-color:#404244");
+    if(bgimage->text()=="default" || bgimage->text()=="background-color:#f0f0f0"){
+        bgimage->setText("background-color:#f0f0f0");
+    }
+    else if(bgimage->text().startsWith("#")){
+        bgimage->setText("background-color:"+bgimage->text());
     }
     else{
         bgimage->setText("background-image:url(\""+bgimage->text()+"\")");
     }
-    QString upper="<!DOCTYPE html><html><head><title>New Tab</title><link rel=\"shortcut icon\" href=\"../crusta/res/drawables/icon_3.ico\"><style type=\"text/css\">"
-         "body {"+bgimage->text()+";background-repeat: norepeat}.box {width: 160px;height: 100px;border: none;}"
-         ".box:hover {box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}"
-         ".entry {outline: none;margin-top: 100px;padding: 10px 20px;width: 100%;font-size: 20px;}</style></head><body>"
-         "<div style=\"text-align: center;padding: 100px;width: 70%;margin: auto;\">";
-    QString lower="</div></body></html>";
+    QString upper="<!doctype html><html><head><title>New Tab</title><link rel='icon' href='img/favicon.ico'/><style>body{"+bgimage->text()+";backgroud-repeat: norepeat;} .search-box{font-size: 16px; width: 100%; padding: 8px 8px; outline: none; } .box{width: 200px; height: 120px; background-color: #fff; transition: 0.15s; margin: 25px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); } .box:hover{width: 180px; height: 100px; margin: 35px; } .add-box{width: 200px; height: 120px; background-color: transparent; transition: 0.15s; margin: 25px; } .add-box:hover{width: 180px; height: 100px; margin: 35px; } </style> </head> <body> <div style = 'width: 50%; margin: auto; margin-top: 5%'> <input type = 'text' class = 'search-box' autofocus placeholder = 'Search the web '/> </div> <div style='text-align: center;width: 90%;margin: auto; margin-top: 50px'> ";
+    QString lower="<img src='img/add.png' class='add-box' onclick='getNewBoxUrl()'></img> </div> <script> function getNewBoxUrl(){alert('To Add/Remove speed-dials,\\n - Goto Menu\\n - Edit\\n - Speed Dial') } </script> </body> </html>";
     QString middle="";
     QFile inputFile(QDir::homePath()+"/.crusta_db/speeddial.txt");
     if (inputFile.open(QIODevice::ReadOnly))
@@ -140,7 +139,7 @@ void SpeedDial::load(){
        inputFile.close();
     }
     if(bgimage->text().isNull()) bgimage->setText("default");
-    if(bgimage->text()=="background-color:#404244"){
+    if(bgimage->text()=="background-color:#f0f0f0"){
         bgimage->setText("default");
     }
 }

@@ -20,7 +20,6 @@
 
 #include "sidepane.h"
 #include <QWebEngineView>
-#include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QLabel>
 #include <QDir>
@@ -30,10 +29,6 @@
 
 
 SidePaneButton::SidePaneButton(){
-    sidewebview->hide();
-    QWebEngineProfile* profile=new QWebEngineProfile("SidePanel");
-    profile->setHttpUserAgent(profile->httpUserAgent()+" Mobile");
-    sidewebview->setPage(new QWebEnginePage(profile));
     setStyleSheet("QPushButton{border: none;margin: 0} QPushButton::hover{background-color: #d0d0d0;}");
     setFixedSize(40,40);
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -75,7 +70,12 @@ SidePane::SidePane(MainView* m){
           new_side_btn->icon_=icon_name;
           new_side_btn->setToolTip(line);
           new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
+          QWebEngineProfile* profile=new QWebEngineProfile();
+          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+          QWebEnginePage* webpage=new QWebEnginePage(profile);
           new_side_btn->sidewebview->hide();
+          connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
+          new_side_btn->sidewebview->setPage(webpage);
           new_side_btn->sidewebview->setTabletTracking(true);
           new_side_btn->sidewebview->load(QUrl(line));
           new_side_btn->sidewebview->setMaximumWidth(395);
@@ -119,16 +119,14 @@ SidePane::SidePane(MainView* m){
        }
        inputFile.close();
     }
-    vbox->addWidget(add_pane_btn);
     vbox->addWidget(flexilabel);
-    vbox->addWidget(settings_btn);
-    settings_btn->setIcon(QIcon(":/res/drawables/pane_settings.svg"));
+    vbox->addWidget(add_pane_btn);
     add_pane_btn->setToolTip(tr("Add New Pane Button"));
     add_pane_btn->setIcon(QIcon(":/res/drawables/pane_add.svg"));
     vbox->setSpacing(0);
     vbox->setContentsMargins(0,0,0,0);
     left->setLayout(vbox);
-    //left->setStyleSheet("background-color: #404244");
+    left->setStyleSheet("background-color: #f0f0f0");
     left->setFixedWidth(40);
     left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     hbox->addWidget(left);
@@ -188,7 +186,7 @@ SidePane::SidePane(MainView* m){
     setLayout(hbox);
     setMaximumWidth(40+350+45);
     setObjectName("pane");
-    //setStyleSheet("#pane{background-color: #404244}");
+    setStyleSheet("#pane{background-color: #f0f0f0}");
 }
 
 SidePane::SidePane(PrivateMainView* m){
@@ -222,6 +220,12 @@ SidePane::SidePane(PrivateMainView* m){
           new_side_btn->icon_=icon_name;
           new_side_btn->setToolTip(line);
           new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
+          QWebEngineProfile* profile=new QWebEngineProfile();
+          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+          QWebEnginePage* webpage=new QWebEnginePage(profile);
+          new_side_btn->sidewebview->hide();
+          connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
+          new_side_btn->sidewebview->setPage(webpage);
           new_side_btn->sidewebview->setTabletTracking(true);
           new_side_btn->sidewebview->load(QUrl(line));
           new_side_btn->sidewebview->setMaximumWidth(395);
@@ -272,7 +276,7 @@ SidePane::SidePane(PrivateMainView* m){
     vbox->setSpacing(0);
     vbox->setContentsMargins(0,0,0,0);
     left->setLayout(vbox);
-    //left->setStyleSheet("background-color: #404244");
+    left->setStyleSheet("background-color: #f0f0f0");
     left->setFixedWidth(40);
     left->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     hbox->addWidget(left);
@@ -314,7 +318,7 @@ SidePane::SidePane(PrivateMainView* m){
     setLayout(hbox);
     setMaximumWidth(40+350+45);
     setObjectName("pane");
-    //setStyleSheet("#pane{background-color: #404244}");
+    setStyleSheet("#pane{background-color: #f0f0f0}");
 }
 
 
@@ -330,12 +334,12 @@ void SidePane::addNewButton(){
     box->addWidget(ok);
     box->addWidget(cncl);
     dg->setLayout(box);
-    dg->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+    dg->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));
     dg->setObjectName("dialog");
-    dg->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    dg->setStyleSheet("#dialog{border: 2px solid #00b0e3}");
     if(!dg->exec()==QDialog::Accepted){
         return;
     }
@@ -356,7 +360,11 @@ void SidePane::addNewButton(){
     connect(loader,&QMovie::frameChanged,new_btn,[new_btn,loader]{
         new_btn->setIcon(QIcon(loader->currentPixmap()));
     });
-    vbox->insertWidget(vbox->indexOf(flexilabel)-1,new_btn);
+    vbox->insertWidget(vbox->indexOf(flexilabel),new_btn);
+    QWebEngineProfile* profile=new QWebEngineProfile();
+    profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
+    QWebEnginePage* webpage=new QWebEnginePage(profile);
+    new_btn->sidewebview->setPage(webpage);
     new_btn->sidewebview->setTabletTracking(true);
     new_btn->sidewebview->load(QUrl(url));
     new_btn->url=urledit->text();
@@ -391,6 +399,10 @@ void SidePane::addNewButton(){
             hbox->removeItem(hbox->itemAt(1));
         }
     });
+}
+
+void SidePane::acceptFullScreenReuest(QWebEngineFullScreenRequest request){
+    request.accept();
 }
 
 void SidePaneButton::buttonContext(const QPoint &point){

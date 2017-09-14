@@ -23,7 +23,6 @@
 
 #include "addresslineedit.h"
 #include "webview.h"
-#include "statusbar.h"
 
 #include <QObject>
 #include <QVBoxLayout>
@@ -44,7 +43,6 @@ class TabWindow:public QObject{
     QProgressBar* pbar=new QProgressBar();
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
-    StatusBar* statusbar=new StatusBar();
     QWidget* tab=new QWidget();
     QPushButton* back_btn=new QPushButton();
     QPushButton* fwd_btn=new QPushButton();
@@ -65,7 +63,6 @@ public:
     void pageProgress(int p);
     void loadCompleted();
     void loadBegin();
-    void showSiteInfo();
 };
 
 
