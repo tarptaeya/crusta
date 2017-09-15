@@ -25,5 +25,7 @@
         <file>res/drawables/pane_add.svg</file>
         <file>res/videos/sidepanel_loader.gif</file>
         <file>res/drawables/crusta_banner.png</file>
+        <file>res/drawables/normal_site.svg</file>
+        <file>res/drawables/secure_site.svg</file>
     </qresource>
 </RCC>

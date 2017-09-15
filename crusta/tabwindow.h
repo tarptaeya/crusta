@@ -63,6 +63,7 @@ public:
     void pageProgress(int p);
     void loadCompleted();
     void loadBegin();
+    void showSiteInfo();
 };
 
 

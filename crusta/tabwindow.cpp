@@ -68,6 +68,14 @@ void TabWindow::updateAddrBar(){
         this->addr_bar->initialize()->setCursorPosition(0);
         return;
     }
+    if(url.startsWith("https://")){
+        this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/secure_site.svg"));
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00c400");
+    } else {
+        this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00b0e3");
+    }
+    connect(this->addr_bar->siteinfo_btn,&QPushButton::clicked,this,&TabWindow::showSiteInfo);
     this->addr_bar->initialize()->setText(url);
     this->addr_bar->initialize()->setCursorPosition(0);
     QString s=this->addr_bar->text();
@@ -334,3 +342,38 @@ void TabWindow::loadCompleted(){
     this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
     connect(load_btn,&QPushButton::clicked,view,&QWebEngineView::reload);
 }
+
+void TabWindow::showSiteInfo(){
+    if(addr_bar->text().startsWith("https://")){
+        QDialog* dlg=new QDialog();
+        dlg->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+        dlg->setFixedSize(250,100);
+        QVBoxLayout* dvbox=new QVBoxLayout();
+        dlg->setLayout(dvbox);
+        QLabel* site_lbl_0=new QLabel(tr("Secure Connection"));
+        site_lbl_0->setStyleSheet("font-size: 14px");
+        dvbox->addWidget(site_lbl_0);
+        QLabel* site_lbl_1=new QLabel(tr("Information you send or get through the site is private."));
+        site_lbl_1->setWordWrap(true);
+        dvbox->addWidget(site_lbl_1);
+        dlg->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
+        dlg->move(addr_bar->siteinfo_btn->mapToGlobal(QPoint(addr_bar->siteinfo_btn->x()-30,addr_bar->siteinfo_btn->y()+20)));
+        dlg->exec();
+    } else {
+        QDialog* dlg=new QDialog();
+        dlg->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+        dlg->setFixedSize(250,150);
+        QVBoxLayout* dvbox=new QVBoxLayout();
+        dlg->setLayout(dvbox);
+        QLabel* site_lbl_0=new QLabel(tr("Insecure Connection"));
+        site_lbl_0->setStyleSheet("font-size: 14px");
+        dvbox->addWidget(site_lbl_0);
+        QLabel* site_lbl_1=new QLabel(tr("The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site."));
+        site_lbl_1->setWordWrap(true);
+        dvbox->addWidget(site_lbl_1);
+        dlg->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
+        dlg->move(addr_bar->siteinfo_btn->mapToGlobal(QPoint(addr_bar->siteinfo_btn->x()-30,addr_bar->siteinfo_btn->y()+20)));
+        dlg->exec();
+    }
+}
+
