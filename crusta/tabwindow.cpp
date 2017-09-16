@@ -214,12 +214,105 @@ void TabWindow::loadUrl(){
 }
 
 void TabWindow::bookmarkPage(){
-    QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
-    file.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream out(&file);
-    out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+"\n";
-    file.close();
-    this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
+    QDialog* bkmrk_ppup=new QDialog();
+    QVBoxLayout* vbox_bkmrk=new QVBoxLayout();
+    bkmrk_ppup->setLayout(vbox_bkmrk);
+    QLabel* bkmrk_ppup_title=new QLabel(tr("Bookmark"));
+    QString s=this->addr_bar->text();
+    QFile input(QDir::homePath()+"/.crusta_db/bookmarks.txt");
+    bool already_bkmrk=false;
+    if (input.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&input);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(data.count()==1)continue;
+          if(data.count()==2)data.append("");
+          if(data[1]==s){
+              already_bkmrk=true;
+              break;
+          }
+       }
+       input.close();
+    }
+    bkmrk_ppup_title->setStyleSheet("font-size: 16px; color: #0f0f0f");
+    bkmrk_ppup_title->setFixedHeight(30);
+    vbox_bkmrk->addWidget(bkmrk_ppup_title);
+    QLabel* name_lbl=new QLabel(tr("Name"));
+    name_lbl->setFixedWidth(60);
+    QHBoxLayout* p0hbox=new QHBoxLayout();
+    p0hbox->addWidget(name_lbl);
+    QLineEdit* name_edt=new QLineEdit();
+    name_edt->setText(view->title());
+    name_edt->setCursorPosition(0);
+    p0hbox->addWidget(name_edt);
+    vbox_bkmrk->addLayout(p0hbox);
+    QLineEdit* description=new QLineEdit();
+    description->setPlaceholderText(tr("Description"));
+    vbox_bkmrk->addWidget(description);
+    QPushButton* remove_btn=new QPushButton(tr("Remove"));
+    QPushButton* done_btn=new QPushButton(tr("Done"));
+    done_btn->setDefault(true);
+    QHBoxLayout* p2hbox=new QHBoxLayout();
+    p2hbox->addWidget(remove_btn);
+    p2hbox->addWidget(done_btn);
+    vbox_bkmrk->addLayout(p2hbox);
+    bkmrk_ppup->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+    bkmrk_ppup->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
+    bkmrk_ppup->setFixedSize(250,170);
+    connect(remove_btn,&QPushButton::clicked,this,[this,bkmrk_ppup,description]{
+        this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
+        QString forbidden=this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+description->text().toLatin1();
+        QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
+        if(f.open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            QString s;
+            QTextStream t(&f);
+            while(!t.atEnd())
+            {
+                QString line = t.readLine();
+                if(line!=forbidden)
+                    s.append(line + "\n");
+            }
+            f.resize(0);
+            t << s;
+            f.close();
+        }
+        bkmrk_ppup->reject();
+        return;
+    });
+    if(!already_bkmrk){
+        bkmrk_ppup_title->setText(tr("Bookmark Added"));
+        this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
+    }else{
+        if (input.open(QIODevice::ReadOnly))
+        {
+           QTextStream in(&input);
+           while (!in.atEnd())
+           {
+              QString line = in.readLine();
+              QStringList data=line.split(">>>>>");
+              if(data.count()==1)continue;
+              if(data.count()==2)data.append("");
+              if(data[1]==s){
+                  description->setText(data[2]);
+                  break;
+              }
+           }
+           input.close();
+        }
+    }
+    bkmrk_ppup->move(this->tab->mapToGlobal(QPoint(bookmark_btn->x()-220,bookmark_btn->y()+30)));
+    bkmrk_ppup->exec();
+    if(!already_bkmrk){
+        QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
+        file.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream out(&file);
+        out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+description->text().toLatin1()+"\n";
+        file.close();
+    }
 }
 
 void TabWindow::updateStar(){
