@@ -463,6 +463,7 @@ void PrivateMainView::createTabWindow(){
 void PrivateMainView::addNormalTab(){
     PrivateTabWindow* tab=new PrivateTabWindow();
     tab->menu_btn->setMenu(menu);
+    tab->menu_btn->setStyleSheet("QPushButton::menu-indicator { image: none; }");
     this->tabWindow->addTab(tab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     int cnt=this->tabWindow->count();

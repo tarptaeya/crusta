@@ -37,10 +37,14 @@
 #include <QDir>
 #include <QWebEngineProfile>
 
-
-
 void PrivateAddressLineEdit::createAddressLineEdit(){
-    this->setTextMargins(7,0,7,0);
+    siteinfo_btn->move(3,3);
+    siteinfo_btn->setFixedSize(20,20);
+    siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
+    siteinfo_btn->setStyleSheet("border: 1px solid #00b0e3");
+    siteinfo_btn->setToolTip(tr("Site Info"));
+    setTextMargins(22,0,7,0);
+    setFixedHeight(26);
     loadSearchString();
 }
 
@@ -75,10 +79,31 @@ void PrivateAddressLineEdit::showContextMenu(const QPoint& pos){
 PrivateAddressLineEdit::PrivateAddressLineEdit(){
     setPlaceholderText(tr("Search or enter address"));
     createAddressLineEdit();
+    createCompleter();
+    setCompleter(cmpleter);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,&PrivateAddressLineEdit::customContextMenuRequested,this,&PrivateAddressLineEdit::showContextMenu);
     connect(default_search,&QAction::triggered,this,&PrivateAddressLineEdit::setDefaultSearch);
     connect(changeUAstring,&QAction::triggered,this,&PrivateAddressLineEdit::setUAString);
+}
+
+void PrivateAddressLineEdit::createCompleter(){
+    QStringListModel* model=new QStringListModel();
+    cmpleter->setModel(model);
+    cmpleter->setCaseSensitivity(Qt::CaseInsensitive);
+    cmpleter->setFilterMode(Qt::MatchContains);
+    QFile inputFile(QDir::homePath()+"/.crusta_db/completer.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          list.append(line);
+       }
+       inputFile.close();
+    }
+    model->setStringList(list);
 }
 
 void PrivateAddressLineEdit::loadSearchString(){
@@ -104,20 +129,14 @@ void PrivateAddressLineEdit::loadSearchString(){
 
 void PrivateAddressLineEdit::setDefaultSearch(){
     QDialog* w=new QDialog();
-    QLabel* lbl=new QLabel(tr("Search Engine URL"));
+    QLabel* lbl=new QLabel(tr("Search String"));
     QLineEdit* url=new QLineEdit();
     url->setText(defaultSearch);
 
     QCompleter* c=new QCompleter();
     QStringListModel* m=new QStringListModel();
     QStringList l;
-    l.append("https://google.com/search?q=");
-    l.append("https://duckduckgo.com/?q=");
-    l.append("https://bing.com/search?q=");
-    l.append("https://qwant.com/?q=");
-    l.append("https://www.yandex.com/search/?text=");
-    l.append("https://www.ecosia.org/search?q=");
-    l.append("https://www.baidu.com/s?wd=");
+    l.append("https://www.ecosia.org/search?tt=crusta&q=");
     m->setStringList(l);
     c->setModel(m);
     c->setFilterMode(Qt::MatchContains);

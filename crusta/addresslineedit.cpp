@@ -157,20 +157,14 @@ void AddressLineEdit::loadSearchString(){
 
 void AddressLineEdit::setDefaultSearch(){
     QDialog* w=new QDialog();
-    QLabel* lbl=new QLabel(tr("Search Engine URL"));
+    QLabel* lbl=new QLabel(tr("Search String"));
     QLineEdit* url=new QLineEdit();
     url->setText(defaultSearch);
 
     QCompleter* c=new QCompleter();
     QStringListModel* m=new QStringListModel();
     QStringList l;
-    l.append("https://google.com/search?q=");
-    l.append("https://duckduckgo.com/?q=");
-    l.append("https://bing.com/search?q=");
-    l.append("https://qwant.com/?q=");
-    l.append("https://www.yandex.com/search/?text=");
-    l.append("https://www.ecosia.org/search?q=");
-    l.append("https://www.baidu.com/s?wd=");
+    l.append("https://www.ecosia.org/search?tt=crusta&q=");
     m->setStringList(l);
     c->setModel(m);
     c->setFilterMode(Qt::MatchContains);

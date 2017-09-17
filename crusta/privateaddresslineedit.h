@@ -27,10 +27,12 @@
 #include <QPoint>
 #include <QStringList>
 #include <QAction>
-
+#include <QCompleter>
 
 class PrivateAddressLineEdit:public QLineEdit{
+    QCompleter* cmpleter=new QCompleter();
 public:
+    QPushButton* siteinfo_btn=new QPushButton(this);
     QAction* default_search=new QAction(tr("Search Preference"));
     QAction* changeUAstring=new QAction(tr("Edit UA String"));
     QStringList list;
@@ -39,6 +41,7 @@ public:
     void showContextMenu(const QPoint& pos);
     QString defaultSearch;
     PrivateAddressLineEdit();
+    void createCompleter();
     void loadSearchString();
     void setDefaultSearch();
     void setUAString();

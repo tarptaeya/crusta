@@ -386,7 +386,7 @@ MainView::MainView(){
     loadTheme();
 
     QString new_version_file = QDir::homePath()+"/.crusta_db/new_version.txt";
-    QProcess::execute(QString("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/current.txt', '"+new_version_file+"')\""));
+    QProcess::startDetached(QString("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/current.txt', '"+new_version_file+"')\""));
 
     QString new_version;
     QFile newVersion(QDir::homePath()+"/.crusta_db/new_version.txt");
@@ -416,7 +416,6 @@ MainView::MainView(){
     if(new_version!=current_version){
         QProcess::startDetached("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/setup.exe', '"+QDir::tempPath()+"/setup.exe')");
         updateOn=true;
-        QDir().remove(new_version_file);
     }
 }
 
@@ -564,7 +563,7 @@ void MainView::createMenuBar(){
 //    this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
 
     this->window->menu=this->menu;
-//    this->menu->setStyleSheet("padding: 20px 20px;margin-right: 20px");
+    this->menu->setStyleSheet("border: 1px solid #00b0e3");
 }
 
 void MainView::createTabWindow(){
@@ -577,6 +576,7 @@ void MainView::createTabWindow(){
 void MainView::addNormalTab(){
     TabWindow* tab=new TabWindow();
     tab->menu_btn->setMenu(menu);
+    tab->menu_btn->setStyleSheet("QPushButton::menu-indicator { image: none; }");
     this->tabWindow->addTab(tab->returnTab(),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
     int cnt=this->tabWindow->count();

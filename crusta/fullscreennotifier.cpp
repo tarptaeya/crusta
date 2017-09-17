@@ -29,7 +29,7 @@
 #include <QGraphicsOpacityEffect>
 
 void FullScreenNotifier::createNotifier(){
-    this->label->setStyleSheet("background:#ffffff; width:500px;height:20px");
+    this->label->setStyleSheet("background:#f0f0f0; width:500px;height:20px");
     this->label->setText(tr("Crusta is now fullscreen - press ESC to exit fullscreen"));
 }
 
@@ -38,7 +38,7 @@ void FullScreenNotifier::showNotifier(){
     this->label->setGeometry(0,0,380,80);
     this->label->setAlignment(Qt::AlignCenter);
     this->label->move(this->x,60);
-    this->label->setStyleSheet("border: 3px solid black;border-radius:20px;background-color:white;color:black");
+    this->label->setStyleSheet("border: 3px solid black;;background-color:#f0f0f0;color:black");
     QGraphicsOpacityEffect* effect=new QGraphicsOpacityEffect();
     this->label->setGraphicsEffect(effect);
     QPropertyAnimation* a=new QPropertyAnimation(effect,"opacity");

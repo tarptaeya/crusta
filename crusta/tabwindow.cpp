@@ -37,6 +37,7 @@
 #include <QMenu>
 #include <QDir>
 #include <QWebEngineHistory>
+#include <iostream>
 
 
 
@@ -117,6 +118,9 @@ void TabWindow::createControls(){
     connect(this->view->returnView(),&QWebEngineView::loadFinished,this,&TabWindow::updateStar);
     connect(this->addr_bar->initialize(),&QLineEdit::returnPressed,this,&TabWindow::loadUrl);
     //hbox->addWidget(this->search_bar->initialize());
+    this->time_lbl->setFlat(true);
+    connect(time_lbl,&QPushButton::clicked,this,&TabWindow::showLoadTime);
+    hbox->addWidget(this->time_lbl);
     this->home_btn->setFlat(true);
     this->home_btn->setIcon(QIcon(":/res/drawables/home.svg"));
     this->home_btn->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -146,11 +150,13 @@ void TabWindow::createControls(){
     back_btn->setFixedSize(30,30);
     fwd_btn->setFixedSize(30,30);
     load_btn->setFixedSize(30,30);
+    time_lbl->setFixedSize(50,30);
     home_btn->setFixedSize(30,30);
     bookmark_btn->setFixedSize(30,30);
     menu_btn->setFixedSize(30,30);
 
-    tab->setStyleSheet("QWidget{background-color: #f0f0f0} QLineEdit{background: #fff; selection-background: #00b0e3} QPushButton{background-color: #f0f0f0} QPushButton::hover{background-color: #d0d0d0;}");
+    tab->setStyleSheet("QWidget{background-color: #f0f0f0} QLineEdit{background: #fff; border-right: 0px} QPushButton{background-color: #f0f0f0} QPushButton::hover{background-color: #d0d0d0;}");
+    time_lbl->setStyleSheet("color: #00b0e3");
 }
 
 QWidget* TabWindow::returnTab(){
@@ -423,6 +429,8 @@ void TabWindow::pageProgress(int p){
 }
 
 void TabWindow::loadBegin(){
+    loadStartTime=QTime::currentTime();
+    time_lbl->setText("...");
     pbar->show();
     this->load_btn->setIcon(QIcon(":/res/drawables/close.svg"));
     load_btn->disconnect();
@@ -430,6 +438,9 @@ void TabWindow::loadBegin(){
 }
 
 void TabWindow::loadCompleted(){
+    int millis=QTime::currentTime().msecsTo(loadStartTime);
+    millis/=10;
+    time_lbl->setText(QString::number(-1*millis/100.0)+"s");
     pbar->hide();
     load_btn->disconnect();
     this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
@@ -468,5 +479,22 @@ void TabWindow::showSiteInfo(){
         dlg->move(addr_bar->siteinfo_btn->mapToGlobal(QPoint(addr_bar->siteinfo_btn->x()-30,addr_bar->siteinfo_btn->y()+20)));
         dlg->exec();
     }
+}
+
+void TabWindow::showLoadTime(){
+    QDialog* dlg=new QDialog();
+    dlg->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+    dlg->setFixedSize(250,110);
+    QVBoxLayout* dvbox=new QVBoxLayout();
+    dlg->setLayout(dvbox);
+    QLabel* site_lbl_0=new QLabel(time_lbl->text());
+    site_lbl_0->setStyleSheet("font-size: 14px");
+    dvbox->addWidget(site_lbl_0);
+    QLabel* site_lbl_1=new QLabel("the duration from the start time for the first network request, to the response time for the final request made by the website.");
+    site_lbl_1->setWordWrap(true);
+    dvbox->addWidget(site_lbl_1);
+    dlg->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
+    dlg->move(time_lbl->mapToGlobal(QPoint(-140,30)));
+    dlg->exec();
 }
 

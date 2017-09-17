@@ -28,6 +28,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QPushButton>
+#include <QPoint>
+#include <QTime>
 
 
 
@@ -38,12 +40,14 @@ class PrivateTabWindow:public QObject{
     void setHomePage();
     void homeContext(const QPoint& pos);
     QProgressBar* pbar=new QProgressBar();
+    QTime loadStartTime;
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QWidget* tab=new QWidget();
     QPushButton* back_btn=new QPushButton();
     QPushButton* fwd_btn=new QPushButton();
     QPushButton* load_btn=new QPushButton();
+    QPushButton* time_lbl=new QPushButton();
     QPushButton* home_btn=new QPushButton();
     QPushButton* bookmark_btn=new QPushButton();
     QPushButton* tool_btn=new QPushButton();
@@ -60,6 +64,8 @@ public:
     void pageProgress(int p);
     void loadCompleted();
     void loadBegin();
+    void showSiteInfo();
+    void showLoadTime();
 };
 
 
