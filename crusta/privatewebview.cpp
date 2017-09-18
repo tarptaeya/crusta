@@ -627,7 +627,7 @@ void PrivateWebView::espeak(){
 }
 
 void PrivateWebView::search(QString text){
-    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
     QString srch;
     if (inputFile.open(QIODevice::ReadOnly))
     {
@@ -636,7 +636,7 @@ void PrivateWebView::search(QString text){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
-          if(data[0]=="Incognito Search String"){
+          if(data[0]=="Incognito engine"){
               srch=data[1];
               inputFile.close();
           }

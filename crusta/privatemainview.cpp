@@ -473,7 +473,7 @@ void PrivateMainView::addNormalTab(){
         QLayout* layout=widget->layout();
         PrivateWebView* webview=(PrivateWebView*)layout->itemAt(1)->widget();
         QString home;
-        QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+        QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
@@ -481,7 +481,7 @@ void PrivateMainView::addNormalTab(){
            {
               QString line = in.readLine();
               QStringList data=line.split(">>>>>");
-              if(data[0]=="Incognito Home Page"){
+              if(data[0]=="Incognito Home page"){
                   home=data[1];
                   break;
               }
@@ -489,8 +489,15 @@ void PrivateMainView::addNormalTab(){
            inputFile.close();
         }
         if(home.isEmpty()){
-            home=QString("https://qwant.com");
-            QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+            QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
+            exec_dir->cd("web");
+            QString forbidden;
+            if(exec_dir->absolutePath().startsWith("/"))
+                forbidden="file://"+exec_dir->absolutePath()+"/index.html";
+            else
+                forbidden="file:///"+exec_dir->absolutePath()+"/index.html";
+            home=forbidden;
+            QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
             if(f.open(QIODevice::ReadWrite | QIODevice::Text))
             {
                 QString s;
@@ -499,7 +506,7 @@ void PrivateMainView::addNormalTab(){
                 {
                     QString line = t.readLine();
                     QStringList data=line.split(">>>>>");
-                    if(data[0]=="Incognito Home Page")
+                    if(data[0]=="Incognito Home page")
                         s.append(data[0]+">>>>>"+home+"\n");
                     else
                         s.append(line+"\n");
@@ -516,7 +523,7 @@ void PrivateMainView::addNormalTab(){
         QWidget* widget=this->tabWindow->widget(cnt-1);
         QLayout* layout=widget->layout();
         PrivateWebView* webview=(PrivateWebView*)layout->itemAt(1)->widget();
-        QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+        QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
@@ -524,7 +531,7 @@ void PrivateMainView::addNormalTab(){
            {
               QString line = in.readLine();
               QStringList data=line.split(">>>>>");
-              if(data[0]=="Incognito Home Page"){
+              if(data[0]=="Incognito Home page"){
                   webview->home_page=data[1];
                   break;
               }

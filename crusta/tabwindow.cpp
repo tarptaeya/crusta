@@ -143,6 +143,7 @@ void TabWindow::createControls(){
     pbar->hide();
     pbar->setMaximumHeight(5);
     pbar->setTextVisible(false);
+    pbar->setStyleSheet("QProgressBar:chunk{background-color: #00b0e3}");
     tab->setLayout(vbox);
     connect(view,&QWebEngineView::loadStarted,this,&TabWindow::loadBegin);
     connect(view,&QWebEngineView::loadFinished,this,&TabWindow::loadCompleted);
@@ -347,7 +348,7 @@ void TabWindow::updateStar(){
 void TabWindow::homeContext(const QPoint& pos){
     QMenu* menu=new QMenu();
     QAction* go_home=new QAction(tr("Home"));
-    QAction* set_home=new QAction(tr("Set Home Page"));
+    QAction* set_home=new QAction(tr("Set Home page"));
     connect(go_home,&QAction::triggered,this->view->returnView(),&WebView::home);
     connect(set_home,&QAction::triggered,this,&TabWindow::setHomePage);
     menu->addAction(go_home);
@@ -357,7 +358,7 @@ void TabWindow::homeContext(const QPoint& pos){
 
 void TabWindow::setHomePage(){
     QDialog* w=new QDialog();
-    QLabel* lbl=new QLabel(tr("Home Page URL"));
+    QLabel* lbl=new QLabel(tr("Home page URL"));
     QLineEdit* url=new QLineEdit();
     url->setText(this->view->returnView()->home_page);
     connect(url,&QLineEdit::returnPressed,w,&QDialog::accept);
@@ -365,7 +366,7 @@ void TabWindow::setHomePage(){
     QCompleter* c=new QCompleter();
     QStringListModel* m=new QStringListModel();
     QStringList l;
-    l.append("https://google.com");
+    l.append("default");
     l.append("https://duckduckgo.com");
     l.append("https://bing.com");
     l.append("https://qwant.com");
@@ -393,17 +394,25 @@ void TabWindow::setHomePage(){
     vbox->addLayout(h1box);
     w->setLayout(vbox);
     w->setFixedWidth(500);
-    w->setWindowTitle("Crusta : Set Home Page");
+    w->setWindowTitle("Crusta : Set Home page");
     //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border:1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
         return;
     }
-    if(url->text()=="")
-        return;
     QString new_string=url->text();
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    if(url->text()=="" || url->text()=="default"){
+        QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
+        exec_dir->cd("web");
+        QString forbidden;
+        if(exec_dir->absolutePath().startsWith("/"))
+            forbidden="file://"+exec_dir->absolutePath()+"/index.html";
+        else
+            forbidden="file:///"+exec_dir->absolutePath()+"/index.html";
+        new_string=forbidden;
+    }
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -412,7 +421,7 @@ void TabWindow::setHomePage(){
         {
             QString line = t.readLine();
             QStringList data=line.split(">>>>>");
-            if(data[0]=="Home Page")
+            if(data[0]=="Home page")
                 s.append(data[0]+">>>>>"+new_string + "\n");
             else
                 s.append(line+"\n");

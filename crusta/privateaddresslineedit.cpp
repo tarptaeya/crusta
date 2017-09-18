@@ -107,7 +107,7 @@ void PrivateAddressLineEdit::createCompleter(){
 }
 
 void PrivateAddressLineEdit::loadSearchString(){
-    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -115,11 +115,11 @@ void PrivateAddressLineEdit::loadSearchString(){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
-          if(data[0]=="Incognito Search String"){
+          if(data[0]=="Incognito engine"){
               this->defaultSearch=data[1];
               inputFile.close();
               if(this->defaultSearch.isEmpty())
-                  this->defaultSearch=QString("https://duckduckgo.com/?q=");
+                  this->defaultSearch=QString("https://www.ecosia.org/search?tt=crusta&q=");
               return;
           }
        }
@@ -169,7 +169,7 @@ void PrivateAddressLineEdit::setDefaultSearch(){
         return;
     QString new_string=url->text();
     defaultSearch=new_string;
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -178,7 +178,7 @@ void PrivateAddressLineEdit::setDefaultSearch(){
         {
             QString line = t.readLine();
             QStringList data=line.split(">>>>>");
-            if(data[0]=="Incognito Search String")
+            if(data[0]=="Incognito engine")
                 s.append(data[0]+">>>>>"+new_string + "\n");
             else
                 s.append(line+"\n");
@@ -194,7 +194,7 @@ void PrivateAddressLineEdit::setUAString(){
     QLabel* lbl=new QLabel(tr("HTTP USER AGENT"));
     QLineEdit* ua=new QLineEdit();
     QString http;
-    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -239,7 +239,7 @@ void PrivateAddressLineEdit::setUAString(){
     if(ua->text()=="")
         return;
     QString new_string=ua->text();
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -268,8 +268,8 @@ void PrivateAddressLineEdit::restoreUAString(){
     for(int i=0;i<len-1;i++){
         new_string+=ua[i]+" ";
     }
-    new_string+="Crusta/1.0.0 "+ua[len-1];
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    new_string+="Crusta/1.4.0 "+ua[len-1];
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

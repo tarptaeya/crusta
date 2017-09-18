@@ -310,7 +310,7 @@ MainView::MainView(){
     limitCompleterFile();
     limitHistoryFile();
 
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(!f.exists()){
         QWebEngineProfile p;
         p.setHttpUserAgent("");
@@ -320,10 +320,10 @@ MainView::MainView(){
         for(int i=0;i<len-1;i++){
             new_string+=ua[i]+" ";
         }
-        new_string+="Crusta/1.3.2 "+ua[len-1];
+        new_string+="Crusta/1.4.0 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
-        in<<"Search String>>>>>https://qwant.com/?q=\nIncognito Search String>>>>>https://qwant.com/?q=\nUA String>>>>>"+new_string+"\nHome Page>>>>>\nIncognito Home Page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        in<<"engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nIncognito engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nUA String>>>>>"+new_string+"\nHome page>>>>>\nIncognito Home page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
         f.close();
     }
 
@@ -586,7 +586,7 @@ void MainView::addNormalTab(){
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
         QString home;
-        QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+        QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
@@ -594,7 +594,7 @@ void MainView::addNormalTab(){
            {
               QString line = in.readLine();
               QStringList data=line.split(">>>>>");
-              if(data[0]=="Home Page"){
+              if(data[0]=="Home page"){
                   home=data[1];
                   break;
               }
@@ -602,8 +602,15 @@ void MainView::addNormalTab(){
            inputFile.close();
         }
         if(home.isEmpty()){
-            home=QString("https://qwant.com");
-            QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+            QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
+            exec_dir->cd("web");
+            QString forbidden;
+            if(exec_dir->absolutePath().startsWith("/"))
+                forbidden="file://"+exec_dir->absolutePath()+"/index.html";
+            else
+                forbidden="file:///"+exec_dir->absolutePath()+"/index.html";
+            home=forbidden;
+            QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
             if(f.open(QIODevice::ReadWrite | QIODevice::Text))
             {
                 QString s;
@@ -612,7 +619,7 @@ void MainView::addNormalTab(){
                 {
                     QString line = t.readLine();
                     QStringList data=line.split(">>>>>");
-                    if(data[0]=="Home Page")
+                    if(data[0]=="Home page")
                         s.append(data[0]+">>>>>"+home+"\n");
                     else
                         s.append(line+"\n");
@@ -638,7 +645,7 @@ void MainView::addNormalTab(){
         QWidget* widget=this->tabWindow->widget(cnt-1);
         QLayout* layout=widget->layout();
         WebView* webview=(WebView*)layout->itemAt(1)->widget();
-        QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+        QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
@@ -646,7 +653,7 @@ void MainView::addNormalTab(){
            {
               QString line = in.readLine();
               QStringList data=line.split(">>>>>");
-              if(data[0]=="Home Page"){
+              if(data[0]=="Home page"){
                   webview->home_page=data[1];
                   break;
               }
@@ -1068,7 +1075,7 @@ void MainView::openDebugger(){
 
 void MainView::loadTheme(){
     QString theme;
-    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);

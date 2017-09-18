@@ -135,7 +135,7 @@ void AddressLineEdit::updateCompleter(){
 }
 
 void AddressLineEdit::loadSearchString(){
-    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -143,10 +143,10 @@ void AddressLineEdit::loadSearchString(){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
-          if(data[0]=="Search String"){
+          if(data[0]=="engine"){
               this->defaultSearch=data[1];
               if(this->defaultSearch.isEmpty())
-                  this->defaultSearch=QString("https://google.com/search?q=");
+                  this->defaultSearch=QString("https://www.ecosia.org/search?tt=crusta&q=");
               inputFile.close();
               return;
           }
@@ -199,7 +199,7 @@ void AddressLineEdit::setDefaultSearch(){
         return;
     QString new_string=url->text();
     defaultSearch=new_string;
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -208,7 +208,7 @@ void AddressLineEdit::setDefaultSearch(){
         {
             QString line = t.readLine();
             QStringList data=line.split(">>>>>");
-            if(data[0]=="Search String")
+            if(data[0]=="engine")
                 s.append(data[0]+">>>>>"+new_string + "\n");
             else
                 s.append(line+"\n");
@@ -224,7 +224,7 @@ void AddressLineEdit::setUAString(){
     QLabel* lbl=new QLabel(tr("HTTP USER AGENT"));
     QLineEdit* ua=new QLineEdit();
     QString http;
-    QFile inputFile(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -271,7 +271,7 @@ void AddressLineEdit::setUAString(){
     if(ua->text()=="")
         return;
     QString new_string=ua->text();
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -300,8 +300,8 @@ void AddressLineEdit::restoreUAString(){
     for(int i=0;i<len-1;i++){
         new_string+=ua[i]+" ";
     }
-    new_string+="Crusta/1.0.0 "+ua[len-1];
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    new_string+="Crusta/1.4.0 "+ua[len-1];
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

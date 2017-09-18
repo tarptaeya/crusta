@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
     QApplication a(argc, argv);
     QtWebEngine::initialize();
     a.setApplicationName(QString("Crusta"));
-    a.setApplicationVersion(QString("1.0.0"));
+    a.setApplicationVersion(QString("1.4.0"));
     Q_INIT_RESOURCE(resource); // initialised the resource file;
 
     if(!QDir(QDir::homePath()+"/.crusta_db").exists()){

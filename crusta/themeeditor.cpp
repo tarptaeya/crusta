@@ -54,7 +54,7 @@ void ThemeEditor::restoreTheme(){
     this->accept();
     QString  _col="#00b0e3";
     QString theme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:"+_col+";} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid "+_col+";height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -79,7 +79,7 @@ void ThemeEditor::saveTheme(){
     this->accept();
     QString  _col=color->text();
     QString theme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:"+_col+";} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid "+_col+";height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
-    QFile f(QDir::homePath()+"/.crusta_db/preference.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
