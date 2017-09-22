@@ -44,6 +44,15 @@ BookmarkManager::BookmarkManager(MainView *m){
     sbtn->setFixedWidth(50);
     vbox->addLayout(hbox);
     vbox->addWidget(display);
+    vbox->addWidget(info_lbl);
+    info_lbl->setMinimumHeight(200);
+    QVBoxLayout* lbl_vbox=new QVBoxLayout();
+    info_lbl->setLayout(lbl_vbox);
+    lbl_vbox->addWidget(info_lbl_1);
+    lbl_vbox->addWidget(info_lbl_2);
+    lbl_vbox->addWidget(info_lbl_3);
+    lbl_vbox->addWidget(new QLabel());
+    connect(display,&QTreeWidget::itemClicked,this,&BookmarkManager::displayInfo);
     QStringList header;
     header.append(tr("Title"));
     header.append(tr("URL"));
@@ -61,7 +70,7 @@ BookmarkManager::BookmarkManager(MainView *m){
     QHBoxLayout* h1box=new QHBoxLayout();
     QLabel* editdescription=new QLabel(tr("Edit Desription : "));
     h1box->addWidget(editdescription);
-    editdescription->setStyleSheet("color: #dbdbdb");
+    editdescription->setStyleSheet("color: #404244");
     h1box->addWidget(description);
     h1box->addWidget(save);
     vbox->addLayout(h1box);
@@ -69,6 +78,7 @@ BookmarkManager::BookmarkManager(MainView *m){
     connect(sbtn,&QPushButton::clicked,this,&BookmarkManager::searchBookmark);
     setMinimumWidth(300);
     setMaximumWidth(395);
+    connect(display,&QTreeWidget::itemDoubleClicked,this,&BookmarkManager::openUrl);
 }
 
 void BookmarkManager::loadBookmarks(){
@@ -185,6 +195,20 @@ void BookmarkManager::searchBookmark(){
     }
 }
 
+void BookmarkManager::displayInfo(QTreeWidgetItem *item, int column){
+    QString title = item->text(0);
+    QString url = item->text(1);
+    QString info = item->text(2);
+    info_lbl_1->setText(title);
+    info_lbl_1->setWordWrap(true);
+    info_lbl_1->setStyleSheet("font-size: 15px; color: #404244");
+    info_lbl_2->setText(url);
+    info_lbl_2->setWordWrap(true);
+    info_lbl_2->setStyleSheet("font-size: 11px; color: #404244");
+    info_lbl_3->setText(info);
+    info_lbl_3->setWordWrap(true);
+    info_lbl_3->setStyleSheet("font-size: 13px; color: #404244");
+}
 
 
 
@@ -201,6 +225,15 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
     sbtn->setFixedWidth(50);
     vbox->addLayout(hbox);
     vbox->addWidget(display);
+    vbox->addWidget(info_lbl);
+    info_lbl->setMinimumHeight(200);
+    QVBoxLayout* lbl_vbox=new QVBoxLayout();
+    info_lbl->setLayout(lbl_vbox);
+    lbl_vbox->addWidget(info_lbl_1);
+    lbl_vbox->addWidget(info_lbl_2);
+    lbl_vbox->addWidget(info_lbl_3);
+    lbl_vbox->addWidget(new QLabel());
+    connect(display,&QTreeWidget::itemClicked,this,&PrivateBookmarkManager::displayInfo);
     QStringList header;
     header.append(tr("Title"));
     header.append(tr("URL"));
@@ -219,6 +252,7 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
     vbox->addLayout(h1box);
     connect(save,&QPushButton::clicked,this,&PrivateBookmarkManager::saveDescription);
     connect(sbtn,&QPushButton::clicked,this,&PrivateBookmarkManager::searchBookmark);
+    connect(display,&QTreeWidget::itemDoubleClicked,this,&PrivateBookmarkManager::openUrl);
 }
 
 void PrivateBookmarkManager::loadBookmarks(){
@@ -252,15 +286,15 @@ void PrivateBookmarkManager::showContextMenu(const QPoint &pos){
 }
 
 void PrivateBookmarkManager::openUrl(){
-    QTreeWidgetItem* item=display->currentItem();
-    QUrl url=QUrl(item->text(1));
-    mview->addNormalTab();
-    int index=mview->tabWindow->count()-1;
-    mview->tabWindow->setCurrentIndex(index);
-    QWidget* widget=mview->tabWindow->widget(index);
-    QLayout* layout=widget->layout();
-    PrivateWebView* webview=(PrivateWebView*)layout->itemAt(1)->widget();
-    webview->load(url);
+//    QTreeWidgetItem* item=display->currentItem();
+//    QUrl url=QUrl(item->text(1));
+//    mview->addNormalTab();
+//    int index=mview->tabWindow->count()-1;
+//    mview->tabWindow->setCurrentIndex(index);
+//    QWidget* widget=mview->tabWindow->widget(index);
+//    QLayout* layout=widget->layout();
+//    PrivateWebView* webview=(PrivateWebView*)layout->itemAt(1)->widget();
+//    webview->load(url);
 }
 
 void PrivateBookmarkManager::clearEntry(){
@@ -335,4 +369,17 @@ void PrivateBookmarkManager::searchBookmark(){
     }
 }
 
-
+void PrivateBookmarkManager::displayInfo(QTreeWidgetItem *item, int column){
+    QString title = item->text(0);
+    QString url = item->text(1);
+    QString info = item->text(2);
+    info_lbl_1->setText(title);
+    info_lbl_1->setWordWrap(true);
+    info_lbl_1->setStyleSheet("font-size: 15px; color: #404244");
+    info_lbl_2->setText(url);
+    info_lbl_2->setWordWrap(true);
+    info_lbl_2->setStyleSheet("font-size: 11px; color: #404244");
+    info_lbl_3->setText(info);
+    info_lbl_3->setWordWrap(true);
+    info_lbl_3->setStyleSheet("font-size: 13px; color: #404244");
+}

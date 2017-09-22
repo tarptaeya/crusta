@@ -17,10 +17,6 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
-
-#ifndef BOOKMARKMANAGER_H
-#define BOOKMARKMANAGER_H
-
 #include "mainview.h"
 #include "privatemainview.h"
 
@@ -32,10 +28,17 @@
 #include <QVBoxLayout>
 #include <QPoint>
 #include <QLabel>
+#include <QWidget>
 
+#ifndef BOOKMARKMANAGER_H
+#define BOOKMARKMANAGER_H
 
 class BookmarkManager:public QDialog{
 public:
+    QWidget* info_lbl=new QWidget();
+    QLabel* info_lbl_1=new QLabel();
+    QLabel* info_lbl_2=new QLabel();
+    QLabel* info_lbl_3=new QLabel();
     QTreeWidget* display=new QTreeWidget();
     QAction* open=new QAction(tr("Open"));
     QAction* del=new QAction(tr("Remove"));
@@ -52,10 +55,20 @@ public:
     void clearEntry();
     void saveDescription();
     void searchBookmark();
+    void displayInfo(QTreeWidgetItem* item,int column);
 };
+
+#endif // BOOKMARKMANAGER_H
+
+#ifndef PRIVATEBOOKMARKMANAGER_H
+#define PRIVATEBOOKMARKMANAGER_H
 
 class PrivateBookmarkManager:public QDialog{
 public:
+    QWidget* info_lbl=new QWidget();
+    QLabel* info_lbl_1=new QLabel();
+    QLabel* info_lbl_2=new QLabel();
+    QLabel* info_lbl_3=new QLabel();
     QTreeWidget* display=new QTreeWidget();
     QAction* open=new QAction(tr("Open"));
     QAction* del=new QAction(tr("Remove"));
@@ -72,6 +85,7 @@ public:
     void clearEntry();
     void saveDescription();
     void searchBookmark();
+    void displayInfo(QTreeWidgetItem* item,int column);
 };
 
-#endif // BOOKMARKMANAGER_H
+#endif

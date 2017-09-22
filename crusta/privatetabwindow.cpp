@@ -243,6 +243,7 @@ void PrivateTabWindow::bookmarkPage(){
     QPushButton* remove_btn=new QPushButton(tr("Remove"));
     QPushButton* done_btn=new QPushButton(tr("Done"));
     done_btn->setDefault(true);
+    connect(done_btn,&QPushButton::clicked,bkmrk_ppup,&QDialog::accept);
     QHBoxLayout* p2hbox=new QHBoxLayout();
     p2hbox->addWidget(remove_btn);
     p2hbox->addWidget(done_btn);
@@ -293,6 +294,7 @@ void PrivateTabWindow::bookmarkPage(){
         }
     }
     bkmrk_ppup->move(this->tab->mapToGlobal(QPoint(bookmark_btn->x()-220,bookmark_btn->y()+30)));
+    description->setFocus();
     bkmrk_ppup->exec();
     if(!already_bkmrk){
         QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
@@ -315,7 +317,7 @@ void PrivateTabWindow::updateStar(){
           QStringList data=line.split(">>>>>");
           if(data.count()==1)continue;
           if(data.count()==2)data.append("");
-          if(data[1]==s){
+          if(data[1]==s && s.size()!=0){
               this->bookmark_btn->setIcon(QIcon(":/res/drawables/star.svg"));
               input.close();
               return;
