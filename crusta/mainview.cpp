@@ -413,7 +413,7 @@ MainView::MainView(){
        currentVersion.close();
     }
 
-    if(new_version!=current_version){
+    if(new_version!=current_version && new_version.size()!=0){
         QProcess::startDetached("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/setup.exe', '"+QDir::tempPath()+"/setup.exe')");
         updateOn=true;
     }
@@ -1117,7 +1117,7 @@ void MainView::limitCompleterFile(){
 
 void MainView::limitHistoryFile(){
     QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
-    while(inputFile.size()>10000000){  // limit file to 1Mb
+    while(inputFile.size()>20000000){  // limit file to 2Mb
         QString s="";
         if (inputFile.open(QIODevice::ReadOnly)){
            QTextStream in(&inputFile);

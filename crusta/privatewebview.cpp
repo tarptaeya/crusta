@@ -494,7 +494,7 @@ void PrivateWebView::downloadFinished(QString path){
 }
 
 void PrivateWebView::showLinkHovered(QString url){
-//    link=url;
+    link=url;
 //    if(link==""){
 //        urllabel->hide();
 //        return;
