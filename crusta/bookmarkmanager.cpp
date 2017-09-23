@@ -28,6 +28,7 @@
 #include <QString>
 #include <QDir>
 #include <QHeaderView>
+#include <iostream>
 
 
 
@@ -286,6 +287,7 @@ void PrivateBookmarkManager::showContextMenu(const QPoint &pos){
 }
 
 void PrivateBookmarkManager::openUrl(){
+    std::cout<<"Reached Bkmrk\n";
 //    QTreeWidgetItem* item=display->currentItem();
 //    QUrl url=QUrl(item->text(1));
 //    mview->addNormalTab();

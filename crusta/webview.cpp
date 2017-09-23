@@ -194,7 +194,9 @@ void WebView::acceptFullScreen(QWebEngineFullScreenRequest request){
     else{
         request.accept();
         notifier->setParent(0);
+        notifier->hideNotifier();
         timeNotifier->setParent(0);
+        timeNotifier->hideNotifier();
         setParent(widget);
         layout->replaceWidget(correction,this);
         removeAction(exitFullScreen);

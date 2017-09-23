@@ -326,7 +326,7 @@ void SidePane::addNewButton(){
     QDialog* dg=new QDialog();
     QLineEdit* urledit=new QLineEdit();
     urledit->setMinimumWidth(200);
-    urledit->setPlaceholderText("url for side panel");
+    urledit->setPlaceholderText("http://");
     QPushButton* ok=new QPushButton(tr("Add"));
     QPushButton* cncl=new QPushButton(tr("Cancel"));
     QHBoxLayout* box=new QHBoxLayout();
@@ -340,10 +340,12 @@ void SidePane::addNewButton(){
     dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));
     dg->setObjectName("dialog");
     dg->setStyleSheet("#dialog{border: 2px solid #00b0e3}");
+    urledit->setFocus();
     if(!dg->exec()==QDialog::Accepted){
         return;
     }
     QString url=urledit->text();
+    if(url.isEmpty()) return;
     if(!url.startsWith("http")){
         url="http://"+url;
         urledit->setText(url);

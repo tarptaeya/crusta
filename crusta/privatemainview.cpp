@@ -657,9 +657,9 @@ void PrivateMainView::addNewTabButton(){
 }
 
 void PrivateMainView::duplicateTab(QWebEngineView* view){
-    TabWindow* tab=new TabWindow();
+    PrivateTabWindow* tab=new PrivateTabWindow();
     tab->menu_btn->setMenu(menu);
-    WebView* wview=new WebView();
+    PrivateWebView* wview=new PrivateWebView();
     wview->load(view->url());
     this->tabWindow->addTab(tab->returnTab(wview),tr("new Tab"));
     this->tabWindow->setCurrentIndex(this->tabWindow->count()-1);
