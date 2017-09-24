@@ -50,6 +50,7 @@
 #include <QPageSetupDialog>
 #include <QMessageBox>
 #include <QClipboard>
+#include <QSound>
 
 
 
@@ -626,6 +627,7 @@ void PrivateMainView::openLocalFile(){
 }
 
 void PrivateMainView::screenShot(){
+    QSound::play(":/res/audio/shutter.wav");
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();

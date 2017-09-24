@@ -27,5 +27,6 @@
         <file>res/drawables/crusta_banner.png</file>
         <file>res/drawables/normal_site.svg</file>
         <file>res/drawables/secure_site.svg</file>
+        <file>res/audio/shutter.wav</file>
     </qresource>
 </RCC>

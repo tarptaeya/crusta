@@ -59,6 +59,7 @@
 #include <QWebEngineProfile>
 #include <QClipboard>
 #include <QProcess>
+#include <QSound>
 
 #include <iostream>
 
@@ -749,6 +750,7 @@ void MainView::openLocalFile(){
 }
 
 void MainView::screenShot(){
+    QSound::play(":/res/audio/shutter.wav");
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
     QLayout* layout=widget->layout();
