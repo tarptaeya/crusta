@@ -20,7 +20,6 @@
 
 #include "sidepane.h"
 #include <QWebEngineView>
-#include <QWebEngineProfile>
 #include <QLabel>
 #include <QDir>
 #include <QMovie>
@@ -50,6 +49,13 @@ SidePane::SidePane(MainView* m){
     downloads->setToolTip(tr("Downloads"));
     downloads->setContextMenuPolicy(Qt::NoContextMenu);
     downloads->setIcon(QIcon(":/res/drawables/pane_download.svg"));
+    QFile f_(QDir::homePath()+"/.crusta_db/sidepanel.txt");
+    if(!f_.exists()){
+        f_.open(QIODevice::WriteOnly);
+        QTextStream in(&f_);
+        in<<"http://m.facebook.com\nhttp://m.twitter.com\n";
+        f_.close();
+    }
     QFile inputFile(QDir::homePath()+"/.crusta_db/sidepanel.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
@@ -70,9 +76,7 @@ SidePane::SidePane(MainView* m){
           new_side_btn->icon_=icon_name;
           new_side_btn->setToolTip(line);
           new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
-          QWebEngineProfile* profile=new QWebEngineProfile();
-          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
-          QWebEnginePage* webpage=new QWebEnginePage(profile);
+          QWebEnginePage* webpage=new QWebEnginePage();
           new_side_btn->sidewebview->hide();
           connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
           new_side_btn->sidewebview->setPage(webpage);
@@ -220,9 +224,7 @@ SidePane::SidePane(PrivateMainView* m){
           new_side_btn->icon_=icon_name;
           new_side_btn->setToolTip(line);
           new_side_btn->setIcon(QIcon(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png"));
-          QWebEngineProfile* profile=new QWebEngineProfile();
-          profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
-          QWebEnginePage* webpage=new QWebEnginePage(profile);
+          QWebEnginePage* webpage=new QWebEnginePage();
           new_side_btn->sidewebview->hide();
           connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
           new_side_btn->sidewebview->setPage(webpage);
@@ -326,7 +328,7 @@ void SidePane::addNewButton(){
     QDialog* dg=new QDialog();
     QLineEdit* urledit=new QLineEdit();
     urledit->setMinimumWidth(200);
-    urledit->setPlaceholderText("http://");
+    urledit->setPlaceholderText("http://m.example.com");
     QPushButton* ok=new QPushButton(tr("Add"));
     QPushButton* cncl=new QPushButton(tr("Cancel"));
     QHBoxLayout* box=new QHBoxLayout();
@@ -363,9 +365,7 @@ void SidePane::addNewButton(){
         new_btn->setIcon(QIcon(loader->currentPixmap()));
     });
     vbox->insertWidget(vbox->indexOf(flexilabel),new_btn);
-    QWebEngineProfile* profile=new QWebEngineProfile();
-    profile->setHttpUserAgent(profile->httpUserAgent()+" Crusta/1.1.0 Mobile");
-    QWebEnginePage* webpage=new QWebEnginePage(profile);
+    QWebEnginePage* webpage=new QWebEnginePage();
     new_btn->sidewebview->setPage(webpage);
     new_btn->sidewebview->setTabletTracking(true);
     new_btn->sidewebview->load(QUrl(url));

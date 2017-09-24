@@ -75,10 +75,10 @@ void SpeedDial::save(){
     else{
         bgimage->setText("background-image:url(\""+bgimage->text()+"\")");
     }
-    QString upper="<!doctype html><html><head><title>New Tab</title><link rel='icon' href='img/favicon.ico'/><style>body{"+bgimage->text()+";backgroud-repeat: norepeat;} .search-box{font-size: 16px; width: 100%; padding: 8px 8px; outline: none; } .box{width: 200px; height: 120px; background-color: #fff; transition: 0.15s; margin: 25px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); } .box:hover{width: 180px; height: 100px; margin: 35px; } .add-box{width: 200px; height: 120px; background-color: transparent; transition: 0.15s; margin: 25px; } .add-box:hover{width: 180px; height: 100px; margin: 35px; } </style> </head> <body> <div style = 'width: 50%; margin: auto; margin-top: 5%'> <form method = 'GET' action = 'https://ecosia.org/search'> <input type = 'hidden' name = 'tt' value = 'crusta'/> <input type = 'text' class = 'search-box' name='q' autofocus placeholder = 'Search the web '/> </form> </div> <div style='text-align: center;width: 90%;margin: auto; margin-top: 50px'> ";
+    QString upper="<!doctype html><html><head><title>New Tab</title><link rel='icon' href='img/favicon.ico'/><style>body{"+bgimage->text()+";backgroud-repeat: norepeat;} .search-box{font-size: 16px; width: 100%; padding: 8px 8px; outline: none; } .box{width: 200px; height: 120px; background-color: #fff; transition: 0.15s; margin: 25px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); } .box:hover{width: 180px; height: 100px; margin: 35px; } .add-box{width: 200px; height: 120px; background-color: transparent; transition: 0.15s; margin: 25px; } .add-box:hover{width: 180px; height: 100px; margin: 35px; } </style> </head> <body> <div style = 'width: 50%; margin: auto; margin-top: 5%'> <form method = 'GET' action = 'https://ecosia.org/search'> <input type = 'hidden' name = 'tt' value = 'crusta'/> <input type = 'text' class = 'search-box' name='q' autofocus autocomplete='on' placeholder = 'Search the web '/> </form> </div> <div style='text-align: center;width: 90%;margin: auto; margin-top: 50px'> ";
     QString lower="<img src='img/add.png' class='add-box' onclick='getNewBoxUrl()'></img> </div> <script> function getNewBoxUrl(){alert('To Add/Remove speed-dials,\\n - Goto Menu\\n - Edit\\n - Speed Dial') } </script> </body> </html>";
     QString middle="";
-    QFile inputFile(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/startpage.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -102,7 +102,7 @@ void SpeedDial::save(){
         t << s;
         f.close();
     }
-    QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    QFile fi(QDir::homePath()+"/.crusta_db/startpage.txt");
     if(fi.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
@@ -121,7 +121,7 @@ void SpeedDial::save(){
 
 
 void SpeedDial::load(){
-    QFile inputFile(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    QFile inputFile(QDir::homePath()+"/.crusta_db/startpage.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -171,7 +171,7 @@ void SpeedDial::add(){
     view->show();
     connect(view,&QWebEngineView::loadFinished,view,[data0,view]{view->grab().save(QDir::homePath()+"/.crusta_db"+"/web/img/"+data0->text()+".png");view->close();});
     list->addItem(data0->text());
-    QFile f(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/startpage.txt");
     if(f.open(QIODevice::Append))
     {
         QTextStream t(&f);
@@ -185,7 +185,7 @@ void SpeedDial::remove(){
     QString forbidden=list->currentItem()->text();
     QDir img;
     img.remove(QDir::homePath()+"/.crusta_db"+"/web/img/"+forbidden+".png");
-    QFile f(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    QFile f(QDir::homePath()+"/.crusta_db/startpage.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;

@@ -191,7 +191,6 @@ void MainView::FindText(){
             this->findwidget->setFixedHeight(50);
             this->findwidget->setFixedWidth(webview->geometry().width());
             this->findwidget->setObjectName("findwidget");
-            //this->findwidget->setStyleSheet("#findwidget{border-top:1px solid black;background-color:#ffffff}");
         }
         this->findwidget->show();
         QPropertyAnimation *animation = new QPropertyAnimation(this->findwidget, "pos");
@@ -342,14 +341,14 @@ MainView::MainView(){
     in<<"1.3.2.1";  // current local version of crusta
     vf_.close();
 
-    QFile fi(QDir::homePath()+"/.crusta_db/speeddial.txt");
+    QFile fi(QDir::homePath()+"/.crusta_db/startpage.txt");
     if(!fi.exists()){
         fi.open(QIODevice::WriteOnly);
         QTextStream in(&fi);
         in<< ">>>>>default\nwhatsapp>>>>>https://web.whatsapp.com/\n"
             "twitter>>>>>https://twitter.com\npinterest>>>>>https://pinterest.com\n"
             "tumblr>>>>>https://tumblr.com\nfacebook>>>>>https://facebook.com\n"
-            "googleplus>>>>>https://plus.google.com\nlinkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
+            "googleplus>>>>>https://plus.google.com\nlinkedin>>>>>https://linkedin.com\n";
         fi.close();
         SpeedDial* sd=new SpeedDial();
         sd->load();
@@ -427,7 +426,6 @@ void MainView::createView(){
     box->setSpacing(0);
     side_pane->setSpacing(0);
     side_pane->setContentsMargins(0,0,0,0);
-    // TODO : if side pane has to show then add it
     SidePane* pane=new SidePane(this);
     side_pane->addWidget(pane);
     pane->download_manager=this->window->d_manager;
@@ -508,8 +506,6 @@ void MainView::createMenuBar(){
     this->fullscreen_action=this->view_menu->addAction(tr("&Show Full Screen"));
     connect(this->fullscreen_action,&QAction::triggered,this,&MainView::fullScreen);
     this->history_menu=this->menu->addMenu(tr("&History"));
-//    this->show_all_history=this->history_menu->addAction(tr("&Show All History"));
-//    connect(this->show_all_history,&QAction::triggered,this,&MainView::showHistory);
     this->clearAllHist=this->history_menu->addAction(tr("&Clear All History"));
     connect(this->clearAllHist,&QAction::triggered,this,&MainView::clearHistory);
     this->history_menu->addSeparator();
@@ -521,8 +517,6 @@ void MainView::createMenuBar(){
     connect(this->bookmark_tab,&QAction::triggered,this,&MainView::bookmarkTab);
     this->bookmark_all_tabs=this->bookmark_menu->addAction(tr("&Bookmark All Tabs"));
     connect(this->bookmark_all_tabs,&QAction::triggered,this,&MainView::bookmarkAllTabs);
-//    this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
-//    connect(this->show_all_bookmarks,&QAction::triggered,this,&MainView::showBookamrks);
     this->tool_menu=this->menu->addMenu(tr("&Tools"));
     this->sitei=this->tool_menu->addAction(tr("&Site Info"));
     connect(this->sitei,&QAction::triggered,this,&MainView::showPageInfo);
@@ -548,21 +542,15 @@ void MainView::createMenuBar(){
     this->save_as_pdf->setShortcut(QKeySequence(QKeySequence::Print));
     this->save_page->setShortcut(QKeySequence(QKeySequence::Save));
     this->exit_action->setShortcut(QKeySequence(QKeySequence::Quit));
-
     this->undo_action->setShortcut(QKeySequence(QKeySequence::Undo));
     this->redo_action->setShortcut(QKeySequence(QKeySequence::Redo));
     this->cut_action->setShortcut(QKeySequence(QKeySequence::Cut));
     this->copy_action->setShortcut(QKeySequence(QKeySequence::Copy));
     this->paste_action->setShortcut(QKeySequence(QKeySequence::Paste));
     this->selectall_action->setShortcut(QKeySequence(QKeySequence::SelectAll));
-
     this->zoom_in_action->setShortcut(QKeySequence(QKeySequence::ZoomIn));
     this->zoom_out_action->setShortcut(QKeySequence(QKeySequence::ZoomOut));
     this->fullscreen_action->setShortcut(QKeySequence(QKeySequence::FullScreen));
-
-//    this->show_all_history->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_H));
-//    this->show_all_bookmarks->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_B));
-
     this->window->menu=this->menu;
     this->menu->setStyleSheet("border: 1px solid #00b0e3");
 }
@@ -699,7 +687,6 @@ void MainView::saveAsPdf(){
     currentPageLayout.setPageSize(printer.pageLayout().pageSize());
     currentPageLayout.setOrientation(printer.pageLayout().orientation());
     QFileDialog f;
-    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString file_name=f.getSaveFileName(this->window,tr("Crusta : Save File"),QDir::homePath(),"Pdf File(*.pdf)",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
@@ -713,7 +700,6 @@ void MainView::saveAsPdf(){
 
 void MainView::savePage(){
     QFileDialog f;
-    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString file_name=f.getSaveFileName(this->window,tr("Crusta : Save File"),QDir::homePath(),"WebPage, Complete",nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
@@ -735,7 +721,6 @@ void MainView::showJsCodeEditor(){
 
 void MainView::openLocalFile(){
     QFileDialog f;
-    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString filename=f.getOpenFileName(this->window,tr("Crusta : Open File"),QDir::homePath(),QString(),nullptr,f.options());
     int index=this->tabWindow->currentIndex();
     QWidget* widget=this->tabWindow->widget(index);
@@ -757,7 +742,6 @@ void MainView::screenShot(){
     QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
     QPixmap pmap = webview->grab();
     QFileDialog f;
-    //f.setOption(QFileDialog::DontUseNativeDialog,true);
     QString filename=f.getSaveFileName(this->window,tr("Crusta : Open File"),QDir::homePath(),QString("Images (*.png *.xpm *.jpg *.bmp)"),nullptr,f.options());
     if(filename!=""){
     if(!(filename.endsWith(".png")||filename.endsWith(".jpg")||filename.endsWith(".bmp")||filename.endsWith(".xpm")))filename+=QString(".png");
@@ -1039,7 +1023,6 @@ void MainView::openDebugger(){
     if(!a.contains("--remote-debugging-port=")){
         QMessageBox* notify=new QMessageBox(this->window);
         notify->setWindowTitle("Crusta : Debugger");
-        //notify->setStyleSheet("QMessageBox{background-color:white;color:black} QLabel{color:black} QPushButton{border:0.5px solid black;width:100px;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
         notify->setText("Enable Debugging Mode By Launching Crusta With Argument '--remote-debugging-port=<port>' ");
         notify->exec();
         return;
@@ -1062,7 +1045,6 @@ void MainView::openDebugger(){
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Debugger");
-    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
         return;

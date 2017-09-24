@@ -55,6 +55,9 @@ void TabWindow::updateAddrBar(){
     else
         forbidden="file:///"+exec_dir->absolutePath()+"/index.html";
     if(forbidden==url){
+        addr_bar->setText("");
+        this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00b0e3");
         return;
     }
     QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
@@ -191,7 +194,7 @@ void TabWindow::loadUrl(){
         this->view->returnView()->page()->runJavaScript(script);
     }
     else if(textList.length()==1){
-        if(text.startsWith("crusta://")||text.startsWith("file://")){
+        if(text.startsWith("crusta://")||text.startsWith("file://")||text.startsWith("view-source:")){
             this->view->returnView()->load(QUrl(text));
         }
         else if(text.startsWith("localhost:")||text=="localhost"){

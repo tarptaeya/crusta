@@ -707,7 +707,7 @@ void WebView::search(QString text){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
-          if(data[0]=="Search engine"){
+          if(data[0]=="engine"){
               srch=data[1];
               break;
           }
