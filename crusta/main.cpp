@@ -28,6 +28,7 @@
 #include <QtWebEngine>
 
 int main(int argc, char *argv[]){
+    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL, true);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);
     QtWebEngine::initialize();
@@ -40,12 +41,6 @@ int main(int argc, char *argv[]){
     }
     if(!QDir(QDir::homePath()+"/.crusta_db/web").exists()){
         QDir().mkdir(QDir::homePath()+"/.crusta_db/web");
-    }
-    if(!QDir(QDir::homePath()+"/.crusta_db/sidepanel").exists()){
-        QDir().mkdir(QDir::homePath()+"/.crusta_db/sidepanel");
-    }
-    if(!QDir(QDir::homePath()+"/.crusta_db/sidepanel/ico").exists()){
-        QDir().mkdir(QDir::homePath()+"/.crusta_db/sidepanel/ico");
     }
     if(!QDir(QDir::homePath()+"/.crusta_db/web/img").exists()){
         QDir().mkdir(QDir::homePath()+"/.crusta_db/web/img");

@@ -68,6 +68,8 @@ WebView::WebView(){
     settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled,true);
     settings()->setAttribute(QWebEngineSettings::PluginsEnabled,true);
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows,true);
+    settings()->setAttribute(QWebEngineSettings::WebGLEnabled,true);
+    settings()->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled,true);
     connect(this->page(),&QWebEnginePage::fullScreenRequested,this,&WebView::acceptFullScreen);
     connect(this->page(),&QWebEnginePage::loadStarted,this,&WebView::spinnerStarted);
     connect(this->page(),&QWebEnginePage::loadFinished,this,&WebView::loadFinished);

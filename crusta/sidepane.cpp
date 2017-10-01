@@ -28,10 +28,12 @@
 
 
 SidePaneButton::SidePaneButton(){
+    click=0;
     setStyleSheet("QPushButton{border: none;margin: 0} QPushButton::hover{background-color: #d0d0d0;}");
     setFixedSize(40,40);
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,&SidePaneButton::customContextMenuRequested,this,&SidePaneButton::buttonContext);
+    sidewebview->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 }
 
 SidePane::SidePane(MainView* m){
@@ -67,8 +69,7 @@ SidePane::SidePane(MainView* m){
           QString icon_name=line.split("//")[1];
           if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
               icon_name=icon_name.split(".")[1];
-          }
-          else{
+          }else{
               icon_name=icon_name.split(".")[0];
           }
           SidePaneButton* new_side_btn=new SidePaneButton();
@@ -81,10 +82,14 @@ SidePane::SidePane(MainView* m){
           connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
           new_side_btn->sidewebview->setPage(webpage);
           new_side_btn->sidewebview->setTabletTracking(true);
-          new_side_btn->sidewebview->load(QUrl(line));
+          new_side_btn->url=line;
           new_side_btn->sidewebview->setMaximumWidth(395);
           new_side_btn->sidewebview->setMinimumWidth(300);
           connect(new_side_btn,&SidePaneButton::clicked,this,[this,line,new_side_btn]{
+              if(new_side_btn->click==0){
+                  new_side_btn->click=1;
+                  new_side_btn->sidewebview->load(QUrl(new_side_btn->url));
+              }
               if(hbox->count()==1){
                   new_side_btn->sidewebview->show();
                   hbox->addWidget(new_side_btn->sidewebview);
@@ -113,7 +118,9 @@ SidePane::SidePane(MainView* m){
                   if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
                       icon_name=icon_name.split(".")[1];
                   }
-                  else{
+                  if(icon_name.startsWith("mobile")){
+                      icon_name=icon_name.split(".")[1];
+                  }else{
                       icon_name=icon_name.split(".")[0];
                   }
                   new_side_btn->sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
@@ -261,7 +268,9 @@ SidePane::SidePane(PrivateMainView* m){
                   if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
                       icon_name=icon_name.split(".")[1];
                   }
-                  else{
+                  if(icon_name.startsWith("mobile")){
+                      icon_name=icon_name.split(".")[1];
+                  }else{
                       icon_name=icon_name.split(".")[0];
                   }
                   new_side_btn->sidewebview->icon().pixmap(27,27).save(QDir::homePath()+"/.crusta_db/sidepanel/ico/"+icon_name+".png");
@@ -328,7 +337,7 @@ void SidePane::addNewButton(){
     QDialog* dg=new QDialog();
     QLineEdit* urledit=new QLineEdit();
     urledit->setMinimumWidth(200);
-    urledit->setPlaceholderText("http://m.example.com");
+    urledit->setPlaceholderText("http://example.com");
     QPushButton* ok=new QPushButton(tr("Add"));
     QPushButton* cncl=new QPushButton(tr("Cancel"));
     QHBoxLayout* box=new QHBoxLayout();
@@ -379,7 +388,9 @@ void SidePane::addNewButton(){
         if(icon_name.startsWith("www.")|| icon_name.startsWith("m.")){
             icon_name=icon_name.split(".")[1];
         }
-        else{
+        if(icon_name.startsWith("mobile")){
+            icon_name=icon_name.split(".")[1];
+        }else{
             icon_name=icon_name.split(".")[0];
         }
         new_btn->icon_=icon_name;

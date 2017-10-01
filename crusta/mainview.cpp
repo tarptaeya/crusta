@@ -338,7 +338,7 @@ MainView::MainView(){
     QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
     vf_.open(QIODevice::WriteOnly);
     QTextStream in(&vf_);
-    in<<"1.3.2.1";  // current local version of crusta
+    in<<"1.4.0";  // current local version of crusta
     vf_.close();
 
     QFile fi(QDir::homePath()+"/.crusta_db/startpage.txt");
@@ -360,6 +360,18 @@ MainView::MainView(){
         SpeedDial* sd=new SpeedDial();
         sd->load();
         sd->save();
+    }
+
+    if(!QDir(QDir::homePath()+"/.crusta_db/sidepanel").exists()){
+        QDir().mkdir(QDir::homePath()+"/.crusta_db/sidepanel");
+        QDir().mkdir(QDir::homePath()+"/.crusta_db/sidepanel/ico");
+        QString a=QCoreApplication::applicationDirPath()+"/sidepanel/ico/";
+        QString b=QDir::homePath()+"/.crusta_db/sidepanel/ico/";
+        QDir d(QCoreApplication::applicationDirPath()+"/sidepanel/ico/");
+        QStringList filesList = d.entryList(QStringList("*"));
+        for(QString file:filesList){
+            QFile::copy(a+file,b+file);
+        }
     }
 
     this->box->setContentsMargins(0,0,0,0);
@@ -876,7 +888,7 @@ void MainView::bookmarkAllTabs(){
 }
 
 void MainView::quit(){
-    if(updateOn){
+    if(updateOn && QFile(QDir::tempPath()+"/setup.exe").exists()){
         this->window->hide();
         QDialog* udialog = new QDialog();
         QVBoxLayout* uvbox = new QVBoxLayout();
@@ -1078,7 +1090,7 @@ void MainView::loadTheme(){
 
 void MainView::limitCompleterFile(){
     QFile inputFile(QDir::homePath()+"/.crusta_db/completer.txt");
-    while(inputFile.size()>500000){  //limit file to 500kb
+    while(inputFile.size()>75000){  //limit file to 75kb
         QString s="";
         if (inputFile.open(QIODevice::ReadOnly)){
            QTextStream in(&inputFile);

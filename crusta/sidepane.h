@@ -37,6 +37,7 @@
 
 class SidePaneButton: public QPushButton{
 public:
+    int click;
     SidePaneButton();
     QString url;
     QString icon_;
