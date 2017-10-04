@@ -424,6 +424,8 @@ void PrivateTabWindow::pageProgress(int p){
 }
 
 void PrivateTabWindow::loadBegin(){
+    ((PrivateWebPage*)view->page())->alertCount=0;
+    ((PrivateWebPage*)view->page())->preventAlert=false;
     loadStartTime=QTime::currentTime();
     time_lbl->setText("...");
     pbar->show();

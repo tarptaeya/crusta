@@ -38,8 +38,11 @@ class WebPage:public QWebEnginePage{
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
     virtual bool certificateError(const QWebEngineCertificateError &error);
+    void javaScriptAlert(const QUrl &securityOrigin, const QString &msg);
     //virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
 public:
+    int alertCount;
+    bool preventAlert;
     QString agent;
     void loadUAString();
     WebPage();
@@ -51,7 +54,10 @@ class PrivateWebPage:public QWebEnginePage{
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
     virtual bool certificateError(const QWebEngineCertificateError &error);
+    void javaScriptAlert(const QUrl &securityOrigin, const QString &msg);
 public:
+    int alertCount;
+    bool preventAlert;
     QString agent;
     void loadUAString();
     PrivateWebPage(QWebEngineProfile* profile,QObject* parent=0);

@@ -25,6 +25,11 @@
 #include <QIODevice>
 #include <QDir>
 #include <QWebEngineProfile>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QCheckBox>
+#include <QPushButton>
 
 
 
@@ -72,6 +77,8 @@ void WebPage::loadUAString(){
 }
 
 WebPage::WebPage(){
+    preventAlert=false;
+    alertCount=0;
     loadUAString();
 }
 
@@ -90,6 +97,38 @@ bool WebPage::certificateError(const QWebEngineCertificateError &error){
     }
     QMessageBox::critical(view(), tr("Certificate Error"), error.errorDescription(), QMessageBox::Ok, QMessageBox::NoButton);
     return false;
+}
+
+void WebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &msg){
+    if(preventAlert) return;
+    QDialog* jad=new QDialog();
+    jad->setWindowFlag(Qt::FramelessWindowHint);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    jad->setLayout(vbox);
+    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+    murl->setStyleSheet("font-size: 14px; font: italics");
+    vbox->addWidget(murl);
+    QLabel* mlbl=new QLabel(msg);
+    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+    vbox->addWidget(mlbl);
+    if(alertCount>=1){
+        QCheckBox* prvnt_btn=new QCheckBox(tr("Prevent this page from additional dialogs"));
+        vbox->addWidget(prvnt_btn);
+        connect(prvnt_btn,&QCheckBox::clicked,this,[this]{
+            preventAlert=true;
+        });
+    }
+    QPushButton* okbtn=new QPushButton(tr("OK"));
+    okbtn->setFixedWidth(80);
+    connect(okbtn,&QPushButton::clicked,jad,&QDialog::accept);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(okbtn);
+    vbox->addLayout(hbox);
+    jad->setObjectName("dialog");
+    jad->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    alertCount++;
+    jad->exec();
 }
 
 
@@ -150,4 +189,36 @@ bool PrivateWebPage::certificateError(const QWebEngineCertificateError &error){
     }
     QMessageBox::critical(view(), tr("Certificate Error"), error.errorDescription(), QMessageBox::Ok, QMessageBox::NoButton);
     return false;
+}
+
+void PrivateWebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &msg){
+    if(preventAlert) return;
+    QDialog* jad=new QDialog();
+    jad->setWindowFlag(Qt::FramelessWindowHint);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    jad->setLayout(vbox);
+    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+    murl->setStyleSheet("font-size: 14px; font: italics");
+    vbox->addWidget(murl);
+    QLabel* mlbl=new QLabel(msg);
+    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+    vbox->addWidget(mlbl);
+    if(alertCount>=1){
+        QCheckBox* prvnt_btn=new QCheckBox(tr("Prevent this page from additional dialogs"));
+        vbox->addWidget(prvnt_btn);
+        connect(prvnt_btn,&QCheckBox::clicked,this,[this]{
+            preventAlert=true;
+        });
+    }
+    QPushButton* okbtn=new QPushButton(tr("OK"));
+    okbtn->setFixedWidth(80);
+    connect(okbtn,&QPushButton::clicked,jad,&QDialog::accept);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(okbtn);
+    vbox->addLayout(hbox);
+    jad->setObjectName("dialog");
+    jad->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    alertCount++;
+    jad->exec();
 }

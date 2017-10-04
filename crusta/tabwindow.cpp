@@ -443,6 +443,8 @@ void TabWindow::pageProgress(int p){
 }
 
 void TabWindow::loadBegin(){
+    ((WebPage*)view->page())->alertCount=0;
+    ((WebPage*)view->page())->preventAlert=false;
     loadStartTime=QTime::currentTime();
     time_lbl->setText("...");
     pbar->show();
