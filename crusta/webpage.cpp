@@ -30,7 +30,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QPushButton>
-
+#include <QLineEdit>
 
 
 Profile::Profile(){
@@ -128,7 +128,79 @@ void WebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &msg){
     jad->setObjectName("dialog");
     jad->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
     alertCount++;
+    jad->move(view()->mapToGlobal(QPoint((view()->width()-jad->width()/2)/2,0)));
     jad->exec();
+}
+
+bool WebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString &msg, const QString &defaultValue, QString *result){
+    QDialog* jpd=new QDialog();
+    jpd->setWindowFlag(Qt::FramelessWindowHint);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    jpd->setLayout(vbox);
+    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+    murl->setStyleSheet("font-size: 14px; font: italics");
+    vbox->addWidget(murl);
+    QLabel* mlbl=new QLabel(msg);
+    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+    vbox->addWidget(mlbl);
+    QLineEdit* input=new QLineEdit();
+    input->setText(defaultValue);
+    input->selectAll();
+    vbox->addWidget(input);
+    QPushButton* ok=new QPushButton(tr("OK"));
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    ok->setFixedWidth(80);
+    cncl->setFixedWidth(80);
+    ok->setDefault(true);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(ok);
+    hbox->addWidget(cncl);
+    vbox->addLayout(hbox);
+    connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
+    connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
+    jpd->setObjectName("dialog");
+    jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
+    if(jpd->exec()==QDialog::Accepted){
+        *result=input->text();
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
+    QDialog* jcd=new QDialog();
+    jcd->setWindowFlag(Qt::FramelessWindowHint);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    jcd->setLayout(vbox);
+    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+    murl->setStyleSheet("font-size: 14px; font: italics");
+    vbox->addWidget(murl);
+    QLabel* mlbl=new QLabel(msg);
+    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+    vbox->addWidget(mlbl);
+    QPushButton* ok=new QPushButton(tr("OK"));
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    ok->setFixedWidth(80);
+    cncl->setFixedWidth(80);
+    ok->setDefault(true);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(ok);
+    hbox->addWidget(cncl);
+    vbox->addLayout(hbox);
+    connect(ok,&QPushButton::clicked,jcd,&QDialog::accept);
+    connect(cncl,&QPushButton::clicked,jcd,&QDialog::reject);
+    jcd->setObjectName("dialog");
+    jcd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    jcd->move(view()->mapToGlobal(QPoint((view()->width()-jcd->width()/2)/2,0)));
+    if(jcd->exec()==QDialog::Accepted){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 
@@ -220,5 +292,78 @@ void PrivateWebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &
     jad->setObjectName("dialog");
     jad->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
     alertCount++;
+    jad->move(view()->mapToGlobal(QPoint((view()->width()-jad->width()/2)/2,0)));
     jad->exec();
 }
+
+bool PrivateWebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString &msg, const QString &defaultValue, QString *result){
+    QDialog* jpd=new QDialog();
+    jpd->setWindowFlag(Qt::FramelessWindowHint);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    jpd->setLayout(vbox);
+    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+    murl->setStyleSheet("font-size: 14px; font: italics");
+    vbox->addWidget(murl);
+    QLabel* mlbl=new QLabel(msg);
+    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+    vbox->addWidget(mlbl);
+    QLineEdit* input=new QLineEdit();
+    input->setText(defaultValue);
+    input->selectAll();
+    vbox->addWidget(input);
+    QPushButton* ok=new QPushButton(tr("OK"));
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    ok->setFixedWidth(80);
+    cncl->setFixedWidth(80);
+    ok->setDefault(true);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(ok);
+    hbox->addWidget(cncl);
+    vbox->addLayout(hbox);
+    connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
+    connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
+    jpd->setObjectName("dialog");
+    jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
+    if(jpd->exec()==QDialog::Accepted){
+        *result=input->text();
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool PrivateWebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
+    QDialog* jcd=new QDialog();
+    jcd->setWindowFlag(Qt::FramelessWindowHint);
+    QVBoxLayout* vbox=new QVBoxLayout();
+    jcd->setLayout(vbox);
+    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+    murl->setStyleSheet("font-size: 14px; font: italics");
+    vbox->addWidget(murl);
+    QLabel* mlbl=new QLabel(msg);
+    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+    vbox->addWidget(mlbl);
+    QPushButton* ok=new QPushButton(tr("OK"));
+    QPushButton* cncl=new QPushButton(tr("Cancel"));
+    ok->setFixedWidth(80);
+    cncl->setFixedWidth(80);
+    ok->setDefault(true);
+    QHBoxLayout* hbox=new QHBoxLayout();
+    hbox->addWidget(new QLabel());
+    hbox->addWidget(ok);
+    hbox->addWidget(cncl);
+    vbox->addLayout(hbox);
+    connect(ok,&QPushButton::clicked,jcd,&QDialog::accept);
+    connect(cncl,&QPushButton::clicked,jcd,&QDialog::reject);
+    jcd->setObjectName("dialog");
+    jcd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    jcd->move(view()->mapToGlobal(QPoint((view()->width()-jcd->width()/2)/2,0)));
+    if(jcd->exec()==QDialog::Accepted){
+        return true;
+    }else{
+        return false;
+    }
+}
+
