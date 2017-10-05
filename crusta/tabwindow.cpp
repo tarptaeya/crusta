@@ -461,6 +461,21 @@ void TabWindow::loadCompleted(){
     load_btn->disconnect();
     this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
     connect(load_btn,&QPushButton::clicked,view,&QWebEngineView::reload);
+    QString current_url=view->url().toString();
+    QFile inputFile(QDir::homePath()+"/.crusta_db/startpage.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          QStringList data=line.split(">>>>>");
+          if(!(data[0]=="" || data[1]=="") && (current_url.startsWith(data[1]) || current_url.startsWith("https://"+data[1].split("://")[1]) || current_url.startsWith("https://www."+data[1].split("://")[1]))){
+              std::cout<<view->grab().save(QDir::homePath()+"/.crusta_db/web/img/"+data[0]+".png");
+          }
+       }
+       inputFile.close();
+    }
 }
 
 void TabWindow::showSiteInfo(){
