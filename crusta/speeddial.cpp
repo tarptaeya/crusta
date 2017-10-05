@@ -36,33 +36,7 @@
 #include <iostream>
 
 SpeedDial::SpeedDial(){
-    setWindowTitle("Crusta : Speed Dial");
-    QVBoxLayout* vbox=new QVBoxLayout();
-    setLayout(vbox);
-    QHBoxLayout* h1box=new QHBoxLayout();
-    QLabel* bg_image=new QLabel(tr("Background image"));
-    bg_image->setFixedWidth(170);
-    h1box->addWidget(bg_image);
-    h1box->addWidget(bgimage);
-    QPushButton* choose_bgimage=new QPushButton(tr("Choose Image"));
-    h1box->addWidget(choose_bgimage);
-    vbox->addLayout(h1box);
-    vbox->addWidget(list);
     load();
-    QPushButton* add_=new QPushButton(tr("Add"));
-    QPushButton* remove_=new QPushButton(tr("Remove"));
-    QPushButton* ok=new QPushButton(tr("OK"));
-    QHBoxLayout* h2box=new QHBoxLayout();
-    h2box->addWidget(new QLabel());
-    h2box->addWidget(add_);
-    h2box->addWidget(remove_);
-    h2box->addWidget(ok);
-    vbox->addLayout(h2box);
-    connect(add_,&QPushButton::clicked,this,&SpeedDial::add);
-    connect(remove_,&QPushButton::clicked,this,&SpeedDial::remove);
-    connect(ok,&QPushButton::clicked,this,[this]{save();close();});
-    QFileDialog* f=new QFileDialog();
-    connect(choose_bgimage,&QPushButton::clicked,this,[this,f]{this->bgimage->setText(f->getOpenFileName());});
 }
 
 void SpeedDial::save(){
@@ -76,7 +50,7 @@ void SpeedDial::save(){
         bgimage->setText("background-image:url(\""+bgimage->text()+"\")");
     }
     QString upper="<!doctype html><html><head><title>New Tab</title><link rel='icon' href='img/favicon.ico'/><style>body{"+bgimage->text()+";backgroud-repeat: norepeat;} .search-box{font-size: 16px; width: 100%; padding: 8px 8px; outline: none; } .box{width: 200px; height: 120px; background-color: #fff; transition: 0.15s; margin: 25px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); } .box:hover{width: 180px; height: 100px; margin: 35px; } .add-box{width: 200px; height: 120px; background-color: transparent; transition: 0.15s; margin: 25px; } .add-box:hover{width: 180px; height: 100px; margin: 35px; } </style> </head> <body> <div style = 'width: 50%; margin: auto; margin-top: 5%'> <form method = 'GET' action = 'https://ecosia.org/search'> <input type = 'hidden' name = 'tt' value = 'crusta'/> <input type = 'text' class = 'search-box' name='q' autofocus autocomplete='on' placeholder = 'Search the web '/> </form> </div> <div style='text-align: center;width: 90%;margin: auto; margin-top: 50px'> ";
-    QString lower="<img src='img/add.png' class='add-box' onclick='getNewBoxUrl()'></img> </div> <script> function getNewBoxUrl(){alert('To Add/Remove speed-dials,\\n - Goto Menu\\n - Edit\\n - Speed Dial') } </script> </body> </html>";
+    QString lower="<img src='img/add.png' class='add-box' onclick='getNewBoxUrl()'></img> </div> <script> function getNewBoxUrl(){prompt('ifRiVOjEJzLc2MQ9h3xT')} </script> </body> </html>";
     QString middle="";
     QFile inputFile(QDir::homePath()+"/.crusta_db/startpage.txt");
     if (inputFile.open(QIODevice::ReadOnly))
@@ -87,7 +61,12 @@ void SpeedDial::save(){
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
           if(!(data[0]=="" || data[1]=="")){
-              QString s="<a href=\""+data[1]+"\"><img src=\"img/"+data[0]+".png\" class=\"box\" style=\"margin: 25px\"></img></a>";
+              QFile imf(QDir::homePath()+"/.crusta_db/web/img/"+data[0]+".png");
+              QString s;
+              if(imf.exists())
+                  s="<a href=\""+data[1]+"\"><img src=\"img/"+data[0]+".png\" class=\"box\" style=\"margin: 25px\"></img></a>";
+              else
+                  s="<a href=\""+data[1]+"\"><img src=\"img/iHzhaKKio90s65SApu.png\" class=\"box\" style=\"margin: 25px\"></img></a>";
               middle+=s;
           }
        }
@@ -132,9 +111,6 @@ void SpeedDial::load(){
           if(data[0]==""){
               bgimage->setText(data[1]);
           }
-          if(!(data[0]=="" || data[1]=="")){
-              list->addItem(data[0]);
-          }
        }
        inputFile.close();
     }
@@ -144,45 +120,18 @@ void SpeedDial::load(){
     }
 }
 
-void SpeedDial::add(){
-    QDialog* dg=new QDialog(this);
-    QLineEdit* data0=new QLineEdit();
-    QLineEdit* data1=new QLineEdit();
-    data0->setPlaceholderText(tr("Title"));
-    data1->setPlaceholderText("URL");
-    QPushButton* ok=new QPushButton(tr("OK"));
-    QPushButton* cncl=new QPushButton(tr("Cancel"));
-    QVBoxLayout* vbox=new QVBoxLayout();
-    dg->setLayout(vbox);
-    vbox->addWidget(data0);
-    vbox->addWidget(data1);
-    QHBoxLayout* hbox=new QHBoxLayout();
-    hbox->addWidget(ok);
-    hbox->addWidget(cncl);
-    vbox->addLayout(hbox);
-    connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
-    connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
-    if(dg->exec()!=QDialog::Accepted){
-        return;
-    }
-    QWebEngineView* view=new QWebEngineView();
-    view->load(QUrl(data1->text()));
-    view->setWindowTitle("Processing thumbnail for Speed-Dial... Please Wait");
-    view->show();
-    connect(view,&QWebEngineView::loadFinished,view,[data0,view]{view->grab().save(QDir::homePath()+"/.crusta_db"+"/web/img/"+data0->text()+".png");view->close();});
-    list->addItem(data0->text());
+void SpeedDial::add(QString title,QString url){
     QFile f(QDir::homePath()+"/.crusta_db/startpage.txt");
     if(f.open(QIODevice::Append))
     {
         QTextStream t(&f);
-        t << data0->text()+">>>>>"+data1->text()+"\n";
+        t << title+">>>>>"+url+"\n";
         f.close();
     }
     save();
 }
 
-void SpeedDial::remove(){
-    QString forbidden=list->currentItem()->text();
+void SpeedDial::remove(QString forbidden){
     QDir img;
     img.remove(QDir::homePath()+"/.crusta_db"+"/web/img/"+forbidden+".png");
     QFile f(QDir::homePath()+"/.crusta_db/startpage.txt");
@@ -200,7 +149,6 @@ void SpeedDial::remove(){
         t << s;
         f.close();
     }
-    list->clear();
     load();
     save();
 }

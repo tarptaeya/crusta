@@ -19,6 +19,7 @@
 * ============================================================ */
 
 #include "webpage.h"
+#include "speeddial.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
@@ -79,6 +80,7 @@ void WebPage::loadUAString(){
 WebPage::WebPage(){
     preventAlert=false;
     alertCount=0;
+    key="ifRiVOjEJzLc2MQ9h3xT";
     loadUAString();
 }
 
@@ -133,40 +135,80 @@ void WebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &msg){
 }
 
 bool WebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString &msg, const QString &defaultValue, QString *result){
-    QDialog* jpd=new QDialog();
-    jpd->setWindowFlag(Qt::FramelessWindowHint);
-    QVBoxLayout* vbox=new QVBoxLayout();
-    jpd->setLayout(vbox);
-    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
-    murl->setStyleSheet("font-size: 14px; font: italics");
-    vbox->addWidget(murl);
-    QLabel* mlbl=new QLabel(msg);
-    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
-    vbox->addWidget(mlbl);
-    QLineEdit* input=new QLineEdit();
-    input->setText(defaultValue);
-    input->selectAll();
-    vbox->addWidget(input);
-    QPushButton* ok=new QPushButton(tr("OK"));
-    QPushButton* cncl=new QPushButton(tr("Cancel"));
-    ok->setFixedWidth(80);
-    cncl->setFixedWidth(80);
-    ok->setDefault(true);
-    QHBoxLayout* hbox=new QHBoxLayout();
-    hbox->addWidget(new QLabel());
-    hbox->addWidget(ok);
-    hbox->addWidget(cncl);
-    vbox->addLayout(hbox);
-    connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
-    connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
-    jpd->setObjectName("dialog");
-    jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
-    jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
-    if(jpd->exec()==QDialog::Accepted){
-        *result=input->text();
-        return true;
+    if(msg==key){
+        QDialog* sd=new QDialog();
+        sd->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+        QVBoxLayout* vbox=new QVBoxLayout();
+        sd->setLayout(vbox);
+        QLabel* hlbl=new QLabel(tr("Add Speed Dial"));
+        hlbl->setStyleSheet("font-size: 16px");
+        QHBoxLayout* h0box=new QHBoxLayout();
+        h0box->addWidget(new QLabel());
+        h0box->addWidget(hlbl);
+        h0box->addWidget(new QLabel());
+        vbox->addLayout(h0box);
+        QLineEdit* input_t=new QLineEdit();
+        input_t->setPlaceholderText("Unique Title");
+        vbox->addWidget(input_t);
+        QLineEdit* input_u=new QLineEdit();
+        input_u->setPlaceholderText("http://example.com");
+        vbox->addWidget(input_u);
+        QPushButton* ok=new QPushButton(tr("Add"));
+        QPushButton* cncl=new QPushButton(tr("Cancel"));
+        ok->setDefault(true);
+        QHBoxLayout* h1box=new QHBoxLayout();
+        h1box->addWidget(ok);
+        h1box->addWidget(cncl);
+        vbox->addLayout(h1box);
+        connect(ok,&QPushButton::clicked,sd,&QDialog::accept);
+        connect(cncl,&QPushButton::clicked,sd,&QDialog::reject);
+        sd->setObjectName("dialog");
+        sd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        sd->setFixedWidth(300);
+        if(sd->exec()==QDialog::Accepted){
+            *result=input_t->text();
+            SpeedDial().add(input_t->text(), input_u->text());
+            this->load(this->url());
+            return true;
+        }else{
+            return false;
+        }
     }else{
-        return false;
+        QDialog* jpd=new QDialog();
+        jpd->setWindowFlag(Qt::FramelessWindowHint);
+        QVBoxLayout* vbox=new QVBoxLayout();
+        jpd->setLayout(vbox);
+        QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+        murl->setStyleSheet("font-size: 14px; font: italics");
+        vbox->addWidget(murl);
+        QLabel* mlbl=new QLabel(msg);
+        mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+        vbox->addWidget(mlbl);
+        QLineEdit* input=new QLineEdit();
+        input->setText(defaultValue);
+        input->selectAll();
+        vbox->addWidget(input);
+        QPushButton* ok=new QPushButton(tr("OK"));
+        QPushButton* cncl=new QPushButton(tr("Cancel"));
+        ok->setFixedWidth(80);
+        cncl->setFixedWidth(80);
+        ok->setDefault(true);
+        QHBoxLayout* hbox=new QHBoxLayout();
+        hbox->addWidget(new QLabel());
+        hbox->addWidget(ok);
+        hbox->addWidget(cncl);
+        vbox->addLayout(hbox);
+        connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
+        connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
+        jpd->setObjectName("dialog");
+        jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
+        if(jpd->exec()==QDialog::Accepted){
+            *result=input->text();
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 
@@ -244,6 +286,9 @@ void PrivateWebPage::loadUAString(){
 
 PrivateWebPage::PrivateWebPage(QWebEngineProfile *profile, QObject *parent):QWebEnginePage(profile,parent){
     loadUAString();
+    alertCount=0;
+    preventAlert=false;
+    key="ifRiVOjEJzLc2MQ9h3xT";
 }
 
 bool PrivateWebPage::certificateError(const QWebEngineCertificateError &error){
@@ -297,40 +342,80 @@ void PrivateWebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &
 }
 
 bool PrivateWebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString &msg, const QString &defaultValue, QString *result){
-    QDialog* jpd=new QDialog();
-    jpd->setWindowFlag(Qt::FramelessWindowHint);
-    QVBoxLayout* vbox=new QVBoxLayout();
-    jpd->setLayout(vbox);
-    QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
-    murl->setStyleSheet("font-size: 14px; font: italics");
-    vbox->addWidget(murl);
-    QLabel* mlbl=new QLabel(msg);
-    mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
-    vbox->addWidget(mlbl);
-    QLineEdit* input=new QLineEdit();
-    input->setText(defaultValue);
-    input->selectAll();
-    vbox->addWidget(input);
-    QPushButton* ok=new QPushButton(tr("OK"));
-    QPushButton* cncl=new QPushButton(tr("Cancel"));
-    ok->setFixedWidth(80);
-    cncl->setFixedWidth(80);
-    ok->setDefault(true);
-    QHBoxLayout* hbox=new QHBoxLayout();
-    hbox->addWidget(new QLabel());
-    hbox->addWidget(ok);
-    hbox->addWidget(cncl);
-    vbox->addLayout(hbox);
-    connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
-    connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
-    jpd->setObjectName("dialog");
-    jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
-    jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
-    if(jpd->exec()==QDialog::Accepted){
-        *result=input->text();
-        return true;
+    if(msg==key){
+        QDialog* sd=new QDialog();
+        sd->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+        QVBoxLayout* vbox=new QVBoxLayout();
+        sd->setLayout(vbox);
+        QLabel* hlbl=new QLabel(tr("Add Speed Dial"));
+        hlbl->setStyleSheet("font-size: 16px");
+        QHBoxLayout* h0box=new QHBoxLayout();
+        h0box->addWidget(new QLabel());
+        h0box->addWidget(hlbl);
+        h0box->addWidget(new QLabel());
+        vbox->addLayout(h0box);
+        QLineEdit* input_t=new QLineEdit();
+        input_t->setPlaceholderText("Unique Title");
+        vbox->addWidget(input_t);
+        QLineEdit* input_u=new QLineEdit();
+        input_u->setPlaceholderText("http://example.com");
+        vbox->addWidget(input_u);
+        QPushButton* ok=new QPushButton(tr("Add"));
+        QPushButton* cncl=new QPushButton(tr("Cancel"));
+        ok->setDefault(true);
+        QHBoxLayout* h1box=new QHBoxLayout();
+        h1box->addWidget(ok);
+        h1box->addWidget(cncl);
+        vbox->addLayout(h1box);
+        connect(ok,&QPushButton::clicked,sd,&QDialog::accept);
+        connect(cncl,&QPushButton::clicked,sd,&QDialog::reject);
+        sd->setObjectName("dialog");
+        sd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        sd->setFixedWidth(300);
+        if(sd->exec()==QDialog::Accepted){
+            *result=input_t->text();
+            SpeedDial().add(input_t->text(), input_u->text());
+            this->load(this->url());
+            return true;
+        }else{
+            return false;
+        }
     }else{
-        return false;
+        QDialog* jpd=new QDialog();
+        jpd->setWindowFlag(Qt::FramelessWindowHint);
+        QVBoxLayout* vbox=new QVBoxLayout();
+        jpd->setLayout(vbox);
+        QLabel* murl=new QLabel(tr("Page at ")+securityOrigin.toString()+tr(" says:"));
+        murl->setStyleSheet("font-size: 14px; font: italics");
+        vbox->addWidget(murl);
+        QLabel* mlbl=new QLabel(msg);
+        mlbl->setStyleSheet("margin-top: 15px; margin-bottom: 15px;");
+        vbox->addWidget(mlbl);
+        QLineEdit* input=new QLineEdit();
+        input->setText(defaultValue);
+        input->selectAll();
+        vbox->addWidget(input);
+        QPushButton* ok=new QPushButton(tr("OK"));
+        QPushButton* cncl=new QPushButton(tr("Cancel"));
+        ok->setFixedWidth(80);
+        cncl->setFixedWidth(80);
+        ok->setDefault(true);
+        QHBoxLayout* hbox=new QHBoxLayout();
+        hbox->addWidget(new QLabel());
+        hbox->addWidget(ok);
+        hbox->addWidget(cncl);
+        vbox->addLayout(hbox);
+        connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
+        connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
+        jpd->setObjectName("dialog");
+        jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
+        if(jpd->exec()==QDialog::Accepted){
+            *result=input->text();
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 

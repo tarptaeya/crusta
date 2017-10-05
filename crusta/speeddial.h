@@ -31,13 +31,12 @@
 
 class SpeedDial: public QWidget{
     QLineEdit* bgimage=new QLineEdit();
-    QListWidget* list=new QListWidget();
 public:
     SpeedDial();
     void load();
     void save();
-    void add();
-    void remove();
+    void add(QString title, QString url);
+    void remove(QString forbidden);
     void configure();
 };
 

@@ -35,6 +35,7 @@ public:
 };
 
 class WebPage:public QWebEnginePage{
+    QString key;
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
     virtual bool certificateError(const QWebEngineCertificateError &error);
@@ -53,6 +54,7 @@ public:
 
 
 class PrivateWebPage:public QWebEnginePage{
+    QString  key;
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
     virtual bool certificateError(const QWebEngineCertificateError &error);
