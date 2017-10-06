@@ -19,7 +19,7 @@ You can always contact Crusta Browser at : contact@crustabrowser.com
 
 3. Add the following folders to your build(release) directory
     * 3rd_party
-    * web
+    * speeddial
   
  as given seperated in repo
  
