@@ -48,7 +48,7 @@ void TabWindow::viewHome(){
 void TabWindow::updateAddrBar(){
     QString url=this->view->returnView()->url().toString();
     QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-    exec_dir->cd("web");
+    exec_dir->cd("speeddial");
     QString forbidden;
     if(exec_dir->absolutePath().startsWith("/"))
         forbidden="file://"+exec_dir->absolutePath()+"/index.html";
@@ -409,7 +409,7 @@ void TabWindow::setHomePage(){
     QString new_string=url->text();
     if(url->text()=="" || url->text()=="default"){
         QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-        exec_dir->cd("web");
+        exec_dir->cd("speeddial");
         QString forbidden;
         if(exec_dir->absolutePath().startsWith("/"))
             forbidden="file://"+exec_dir->absolutePath()+"/index.html";
@@ -470,8 +470,9 @@ void TabWindow::loadCompleted(){
        {
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
+          if(data[0]=="" || data[1]=="") continue;
           if(!(data[0]=="" || data[1]=="") && (current_url.startsWith(data[1]) || current_url.startsWith("https://"+data[1].split("://")[1]) || current_url.startsWith("https://www."+data[1].split("://")[1]))){
-              std::cout<<view->grab().save(QDir::homePath()+"/.crusta_db/web/img/"+data[0]+".png");
+              view->grab().save(QDir::homePath()+"/.crusta_db/speeddial/img/"+data[0]+".png");
           }
        }
        inputFile.close();

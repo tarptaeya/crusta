@@ -197,7 +197,6 @@ public:
     void openDebugger();
     void loadTheme();
     void editPermissions();
-    void showSpeedDial();
     void pickColor();
 };
 

@@ -148,7 +148,7 @@ bool WebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString &msg, c
         h0box->addWidget(new QLabel());
         vbox->addLayout(h0box);
         QLineEdit* input_t=new QLineEdit();
-        input_t->setPlaceholderText("Unique Title");
+        input_t->setPlaceholderText("Unique personalised title without space");
         vbox->addWidget(input_t);
         QLineEdit* input_u=new QLineEdit();
         input_u->setPlaceholderText("http://example.com");

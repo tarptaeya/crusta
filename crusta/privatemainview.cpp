@@ -379,8 +379,6 @@ void PrivateMainView::createMenuBar(){
     this->find_action->setShortcut(QKeySequence(QKeySequence::Find));
     connect(this->find_action,&QAction::triggered,this,&PrivateMainView::FindText);
     this->edit_menu->addSeparator();
-    this->speed_dial=this->edit_menu->addAction(tr("Speed Dial"));
-    connect(this->speed_dial,&QAction::triggered,this,&PrivateMainView::showSpeedDial);
     this->view_menu=this->menu->addMenu(tr("&View"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&PrivateMainView::viewPageSource);
@@ -491,7 +489,7 @@ void PrivateMainView::addNormalTab(){
         }
         if(home.isEmpty()){
             QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-            exec_dir->cd("web");
+            exec_dir->cd("speeddial");
             QString forbidden;
             if(exec_dir->absolutePath().startsWith("/"))
                 forbidden="file://"+exec_dir->absolutePath()+"/index.html";
@@ -540,7 +538,7 @@ void PrivateMainView::addNormalTab(){
            inputFile.close();
         }
         QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-        exec_dir->cd("web");
+        exec_dir->cd("speeddial");
         if(exec_dir->absolutePath().startsWith("/"))
             webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
         else
@@ -886,11 +884,6 @@ void PrivateMainView::openDebugger(){
     QWebEngineView* debugger=new QWebEngineView();
     debugger->load(QUrl("http://localhost:"+_port));
     debugger->show();
-}
-
-void PrivateMainView::showSpeedDial(){
-    SpeedDial* s=new SpeedDial();
-    s->show();
 }
 
 void PrivateMainView::pickColor(){

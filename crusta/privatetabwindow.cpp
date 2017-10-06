@@ -46,7 +46,7 @@ void PrivateTabWindow::viewHome(){
 void PrivateTabWindow::updateAddrBar(){
     QString url=this->view->returnPrivateView()->url().toString();
     QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-    exec_dir->cd("web");
+    exec_dir->cd("speeddial");
     QString forbidden;
     if(exec_dir->absolutePath().startsWith("/"))
         forbidden="file://"+exec_dir->absolutePath()+"/index.html";
@@ -390,7 +390,7 @@ void PrivateTabWindow::setHomePage(){
     QString new_string=url->text();
     if(url->text()=="" || url->text()=="default"){
         QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-        exec_dir->cd("web");
+        exec_dir->cd("speeddial");
         QString forbidden;
         if(exec_dir->absolutePath().startsWith("/"))
             forbidden="file://"+exec_dir->absolutePath()+"/index.html";

@@ -52,7 +52,7 @@ void SpeedDial::save(){
           QString line = in.readLine();
           QStringList data=line.split(">>>>>");
           if(!(data[0]=="" || data[1]=="")){
-              QFile imf(QDir::homePath()+"/.crusta_db/web/img/"+data[0]+".png");
+              QFile imf(QDir::homePath()+"/.crusta_db/speeddial/img/"+data[0]+".png");
               QString s;
               if(imf.exists())
                   s="<a href='"+data[1]+"'> <div class='box'> <div class='box-image' style='background-image: url(\"img/" + data[0] + ".png\")'> <button class='box-btn' onclick='confirm(\"ifRiVOjEJzLc2MQ9h3xT "+data[0]+"\"); return false;'>&#x2715;</button> </div> <div class='box-title'>"+data[0]+"</div> </div> </a>";
@@ -63,7 +63,7 @@ void SpeedDial::save(){
        }
        inputFile.close();
     }
-    QFile f(QDir::homePath()+"/.crusta_db"+"/web/index.html");
+    QFile f(QDir::homePath()+"/.crusta_db"+"/speeddial/index.html");
     if(f.open(QIODevice::WriteOnly))
     {
         QString s=upper+middle+lower;
@@ -112,6 +112,10 @@ void SpeedDial::load(){
 }
 
 void SpeedDial::add(QString title,QString url){
+    if(!(url.startsWith("http://")||url.startsWith("https://")))
+        url="http://"+url;
+    if(title.split(" ").length()>1)
+        title=title.split(" ")[0];
     QFile f(QDir::homePath()+"/.crusta_db/startpage.txt");
     if(f.open(QIODevice::Append))
     {
@@ -124,7 +128,7 @@ void SpeedDial::add(QString title,QString url){
 
 void SpeedDial::remove(QString forbidden){
     QDir img;
-    img.remove(QDir::homePath()+"/.crusta_db"+"/web/img/"+forbidden+".png");
+    img.remove(QDir::homePath()+"/.crusta_db"+"/speeddial/img/"+forbidden+".png");
     QFile f(QDir::homePath()+"/.crusta_db/startpage.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
@@ -145,9 +149,9 @@ void SpeedDial::remove(QString forbidden){
 }
 
 void SpeedDial::configure(){
-    QString a=QCoreApplication::applicationDirPath()+"/web/img/";
-    QString b=QDir::homePath()+"/.crusta_db/web/img/";
-    QDir d(QCoreApplication::applicationDirPath()+"/web/img/");
+    QString a=QCoreApplication::applicationDirPath()+"/speeddial/img/";
+    QString b=QDir::homePath()+"/.crusta_db/speeddial/img/";
+    QDir d(QCoreApplication::applicationDirPath()+"/speeddial/img/");
     QStringList filesList = d.entryList(QStringList("*"));
     for(QString file:filesList){
         QFile::copy(a+file,b+file);

@@ -320,7 +320,7 @@ MainView::MainView(){
         for(int i=0;i<len-1;i++){
             new_string+=ua[i]+" ";
         }
-        new_string+="Crusta/1.4.0 "+ua[len-1];
+        new_string+="Crusta/1.4.1 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
         in<<"engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nIncognito engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nUA String>>>>>"+new_string+"\nHome page>>>>>\nIncognito Home page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
@@ -345,17 +345,17 @@ MainView::MainView(){
     if(!fi.exists()){
         fi.open(QIODevice::WriteOnly);
         QTextStream in(&fi);
-        in<< ">>>>>default\nwhatsapp>>>>>https://web.whatsapp.com/\n"
-            "twitter>>>>>https://twitter.com\npinterest>>>>>https://pinterest.com\n"
+        in<< "whatsapp>>>>>https://web.whatsapp.com/\n"
+            "twitter>>>>>https://twitter.com\n"
             "tumblr>>>>>https://tumblr.com\nfacebook>>>>>https://facebook.com\n"
-            "googleplus>>>>>https://plus.google.com\nlinkedin>>>>>https://linkedin.com\n";
+            "googleplus>>>>>https://plus.google.com\nlinkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
         fi.close();
         SpeedDial* sd=new SpeedDial();
         sd->load();
         sd->save();
     }
 
-    QFile fi_(QDir::homePath()+"/.crusta_db/web/index.html");
+    QFile fi_(QDir::homePath()+"/.crusta_db/speeddial/index.html");
     if(!fi_.exists()){
         SpeedDial* sd=new SpeedDial();
         sd->load();
@@ -501,8 +501,6 @@ void MainView::createMenuBar(){
     connect(this->preference,&QAction::triggered,this,&MainView::editPreference);
     this->edit_permissions=this->edit_menu->addAction(tr("&Edit Permissions"));
     connect(this->edit_permissions,&QAction::triggered,this,&MainView::editPermissions);
-    this->speed_dial=this->edit_menu->addAction(tr("Speed Dial"));
-    connect(this->speed_dial,&QAction::triggered,this,&MainView::showSpeedDial);
     this->view_menu=this->menu->addMenu(tr("&View"));
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
@@ -604,7 +602,7 @@ void MainView::addNormalTab(){
         }
         if(home.isEmpty()){
             QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-            exec_dir->cd("web");
+            exec_dir->cd("speeddial");
             QString forbidden;
             if(exec_dir->absolutePath().startsWith("/"))
                 forbidden="file://"+exec_dir->absolutePath()+"/index.html";
@@ -662,7 +660,7 @@ void MainView::addNormalTab(){
            inputFile.close();
         }
         QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
-        exec_dir->cd("web");
+        exec_dir->cd("speeddial");
         if(exec_dir->absolutePath().startsWith("/"))
             webview->load(QUrl("file://"+exec_dir->absolutePath()+"/index.html"));
         else
@@ -1160,11 +1158,6 @@ void MainView::limitDownloadFile(){
 void MainView::editPermissions(){
     PermissionDialog* pdg=new PermissionDialog();
     pdg->show();
-}
-
-void MainView::showSpeedDial(){
-    SpeedDial* s=new SpeedDial();
-    s->show();
 }
 
 void MainView::pickColor(){

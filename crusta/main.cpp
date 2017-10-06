@@ -39,11 +39,11 @@ int main(int argc, char *argv[]){
     if(!QDir(QDir::homePath()+"/.crusta_db").exists()){
         QDir().mkdir(QDir::homePath()+"/.crusta_db");
     }
-    if(!QDir(QDir::homePath()+"/.crusta_db/web").exists()){
-        QDir().mkdir(QDir::homePath()+"/.crusta_db/web");
+    if(!QDir(QDir::homePath()+"/.crusta_db/speeddial").exists()){
+        QDir().mkdir(QDir::homePath()+"/.crusta_db/speeddial");
     }
-    if(!QDir(QDir::homePath()+"/.crusta_db/web/img").exists()){
-        QDir().mkdir(QDir::homePath()+"/.crusta_db/web/img");
+    if(!QDir(QDir::homePath()+"/.crusta_db/speeddial/img").exists()){
+        QDir().mkdir(QDir::homePath()+"/.crusta_db/speeddial/img");
         SpeedDial* sd=new SpeedDial();
         sd->configure();
     }

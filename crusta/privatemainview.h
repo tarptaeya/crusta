@@ -186,7 +186,6 @@ public:
     void closeWindow();
     void openDebugger();
     void openUrl(QString);
-    void showSpeedDial();
     void pickColor();
 };
 
