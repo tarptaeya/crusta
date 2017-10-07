@@ -338,7 +338,7 @@ MainView::MainView(){
     QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
     vf_.open(QIODevice::WriteOnly);
     QTextStream in(&vf_);
-    in<<"1.4.0";  // current local version of crusta
+    in<<"1.4.1";  // current local version of crusta
     vf_.close();
 
     QFile fi(QDir::homePath()+"/.crusta_db/startpage.txt");
@@ -396,39 +396,6 @@ MainView::MainView(){
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::changeSpinner);
 
     loadTheme();
-
-    QString new_version_file = QDir::homePath()+"/.crusta_db/new_version.txt";
-    QProcess::startDetached(QString("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/current.txt', '"+new_version_file+"')\""));
-
-    QString new_version;
-    QFile newVersion(QDir::homePath()+"/.crusta_db/new_version.txt");
-    if (newVersion.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&newVersion);
-       while (!in.atEnd())
-       {
-          new_version = in.readLine();
-          std::cout<<new_version.toStdString()<<std::endl;
-       }
-       newVersion.close();
-    }
-
-    QString current_version;
-    QFile currentVersion(QDir::homePath()+"/.crusta_db/current.txt");
-    if (currentVersion.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&currentVersion);
-       while (!in.atEnd())
-       {
-          current_version = in.readLine();
-       }
-       currentVersion.close();
-    }
-
-    if(new_version!=current_version && new_version.size()!=0){
-        QProcess::startDetached("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/setup.exe', '"+QDir::tempPath()+"/setup.exe')");
-        updateOn=true;
-    }
 }
 
 void MainView::createView(){
@@ -886,28 +853,6 @@ void MainView::bookmarkAllTabs(){
 }
 
 void MainView::quit(){
-    if(updateOn && QFile(QDir::tempPath()+"/setup.exe").exists()){
-        this->window->hide();
-        QDialog* udialog = new QDialog();
-        QVBoxLayout* uvbox = new QVBoxLayout();
-        QLabel* uicon = new QLabel();
-        QHBoxLayout* uhbox = new QHBoxLayout();
-        QPushButton* uok = new QPushButton(tr("Update"));
-        QPushButton* ucncl = new QPushButton(tr("Ignore"));
-
-        uicon->setPixmap(QPixmap(":res/drawables/crusta_banner.png"));
-        uvbox->addWidget(uicon);
-        uvbox->addWidget(new QLabel(tr("A new version of Crusta Browser is available.\nDo you want to launch the installer now?")));
-        uhbox->addWidget(uok);
-        uhbox->addWidget(ucncl);
-        uvbox->addLayout(uhbox);
-        udialog->setLayout(uvbox);
-        connect(uok,&QPushButton::clicked,udialog,&QDialog::accept);
-        connect(ucncl,&QPushButton::clicked,udialog,&QDialog::reject);
-        if(udialog->exec()==QDialog::Accepted){
-            std::cout<<QProcess::startDetached(QDir::tempPath()+"/setup.exe & taskkill crusta.exe");
-        }
-    }
     this->window->deleteLater();
 }
 
