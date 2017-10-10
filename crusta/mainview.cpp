@@ -60,6 +60,8 @@
 #include <QClipboard>
 #include <QProcess>
 #include <QSound>
+#include <QSysInfo>
+#include <QSettings>
 
 #include <iostream>
 
@@ -396,6 +398,23 @@ MainView::MainView(){
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&MainView::changeSpinner);
 
     loadTheme();
+
+    QString platform=QSysInfo().productType();
+    if(platform == QString("windows")){
+        QFile uf(QDir::homePath()+"/.crusta_db/updater.ps1");
+        if(!uf.exists()){
+            // TODO
+        }
+        QProcess::startDetached("powershell"+QDir::homePath()+"/.crusta_db/updater.ps1");
+    } else if(platform == QString("ubuntu")){
+        QFile uf(QDir::homePath()+"/.crusta_db/updater.sh");
+        if(!uf.exists()){
+            // TODO
+        }
+        QProcess::startDetached("./"+QDir::homePath()+"/.crusta_db/updater.sh");
+    } else if(platform == QString("osx")){
+        // TODO
+    }
 }
 
 void MainView::createView(){
@@ -411,7 +430,9 @@ void MainView::createView(){
 }
 
 void MainView::showView(){
-    this->window->showMaximized();
+    QSettings appSettings("Tarptaeya", "Crusta");
+    this->window->restoreGeometry(appSettings.value("geometry").toByteArray());
+    this->window->show();
 }
 
 void MainView::newWindow(){
@@ -947,6 +968,8 @@ void MainView::closeWindow(){
 
 void Window::closeEvent(QCloseEvent *event){
     this->parentView->closeWindow();
+    QSettings appSettings("Tarptaeya", "Crusta");
+    appSettings.setValue("geometry", saveGeometry());
     event->accept();
 }
 
