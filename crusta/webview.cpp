@@ -487,7 +487,8 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     }
     if(platform == "windows"){
         if(specifirDownloadOption->isChecked()){
-
+            QProcess::startDetached("powershell -Command \"Import-Module BitsTransfer; Start-BitsTransfer "+download_item->url().toString()+" "+download_item->path());
+            return;
         }
     } else if(platform == "ubuntu"){
         if(specifirDownloadOption->isChecked()){
