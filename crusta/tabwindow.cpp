@@ -187,7 +187,7 @@ QWidget* TabWindow::returnTab(WebView* view){
 }
 
 void TabWindow::loadUrl(){
-    QString text=QUrl().toPercentEncoding(this->addr_bar->initialize()->text());
+    QString text=this->addr_bar->initialize()->text();
     QStringList textList=text.split(" ");
     if(text.startsWith("javascript:")){
         QString script=text.split(":")[1];
@@ -204,7 +204,7 @@ void TabWindow::loadUrl(){
             this->view->returnView()->load(QUrl(text));
         }
         else if(text.split('.').length()==1){
-            QString searchStr=this->addr_bar->defaultSearch+text;
+            QString searchStr=this->addr_bar->defaultSearch+QUrl().toPercentEncoding(text);
             this->view->returnView()->load(QUrl(searchStr));
         }
         else{
@@ -218,7 +218,7 @@ void TabWindow::loadUrl(){
         this->view->returnView()->load(QUrl(text));
     }
     else{
-        QString searchStr=this->addr_bar->defaultSearch+text;
+        QString searchStr=this->addr_bar->defaultSearch+QUrl().toPercentEncoding(text);
         this->view->returnView()->load(QUrl(searchStr));
     }
 }

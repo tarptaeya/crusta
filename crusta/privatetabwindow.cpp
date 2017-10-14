@@ -168,7 +168,7 @@ QWidget* PrivateTabWindow::returnTab(PrivateWebView* view){
 }
 
 void PrivateTabWindow::loadUrl(){
-    QString text=QUrl().toPercentEncoding(this->addr_bar->initialize()->text());
+    QString text=this->addr_bar->initialize()->text();
     QStringList textList=text.split(" ");
     if(text.startsWith("javascript:")){
         QString script=text.split(":")[1];
@@ -185,7 +185,7 @@ void PrivateTabWindow::loadUrl(){
             this->view->returnPrivateView()->load(QUrl(text));
         }
         else if(text.split('.').length()==1){
-            QString searchStr=this->addr_bar->defaultSearch+text;
+            QString searchStr=this->addr_bar->defaultSearch+QUrl().toPercentEncoding(text);
             this->view->returnPrivateView()->load(QUrl(searchStr));
         }
         else{
@@ -199,7 +199,7 @@ void PrivateTabWindow::loadUrl(){
         this->view->returnPrivateView()->load(QUrl(text));
     }
     else{
-        QString searchStr=this->addr_bar->defaultSearch+text;
+        QString searchStr=this->addr_bar->defaultSearch+QUrl().toPercentEncoding(text);
         this->view->returnPrivateView()->load(QUrl(searchStr));
     }
 }

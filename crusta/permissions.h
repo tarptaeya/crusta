@@ -21,7 +21,7 @@
 #ifndef PERMISSIONS_H
 #define PERMISSIONS_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QLabel>
 #include <QRadioButton>
 #include <QPushButton>
@@ -43,7 +43,7 @@ public:
 
 
 
-class PermissionDialog: public QWidget{
+class PermissionDialog: public QDialog{
     QVBoxLayout* vbox=new QVBoxLayout();
     PermissionValue* notif=new PermissionValue("Notifications");
     PermissionValue* mouse=new PermissionValue("Mouse Lock");

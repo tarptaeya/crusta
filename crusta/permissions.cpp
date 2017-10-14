@@ -96,6 +96,7 @@ void PermissionDialog::savePermissions(){
     QTextStream out(&file);
     out << s;
     file.close();
+    this->accept();
 }
 
 void PermissionDialog::loadPermissions(){

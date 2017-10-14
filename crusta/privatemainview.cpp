@@ -51,6 +51,7 @@
 #include <QMessageBox>
 #include <QClipboard>
 #include <QSound>
+#include <QSettings>
 
 
 
@@ -331,7 +332,9 @@ void PrivateMainView::createView(){
 }
 
 void PrivateMainView::showView(){
-    this->window->showMaximized();
+    QSettings appSettings("Tarptaeya", "Crusta");
+    this->window->restoreGeometry(appSettings.value("geometry").toByteArray());
+    this->window->show();
 }
 
 void PrivateMainView::newWindow(){
