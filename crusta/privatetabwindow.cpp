@@ -168,7 +168,7 @@ QWidget* PrivateTabWindow::returnTab(PrivateWebView* view){
 }
 
 void PrivateTabWindow::loadUrl(){
-    QString text=this->addr_bar->initialize()->text();
+    QString text=QUrl().toPercentEncoding(this->addr_bar->initialize()->text());
     QStringList textList=text.split(" ");
     if(text.startsWith("javascript:")){
         QString script=text.split(":")[1];

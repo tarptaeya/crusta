@@ -405,7 +405,7 @@ MainView::MainView(){
         if(!uf.exists()){
             // TODO
         }
-        QProcess::startDetached("powershell"+QDir::homePath()+"/.crusta_db/updater.ps1");
+        std::cout<<QProcess::startDetached("powershell "+QDir::homePath()+"/.crusta_db/updater.ps1");
     } else if(platform == QString("ubuntu")){
         QFile uf(QDir::homePath()+"/.crusta_db/updater.sh");
         if(!uf.exists()){
