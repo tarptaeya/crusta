@@ -55,6 +55,7 @@
 #include <QDesktopServices>
 #include <QDialog>
 #include <QFileDialog>
+#include <QProcess>
 
 #include <iostream>
 
@@ -447,7 +448,20 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     QVBoxLayout* vgb=new QVBoxLayout();
     vgb->addWidget(ropen);
     vgb->addWidget(rsave);
-    rsave->setChecked(true);
+    QRadioButton* specifirDownloadOption = new QRadioButton(); // BITS on windows, wget on ubuntu
+    QString platform = QSysInfo().productType();
+    if(platform == "windows"){
+        specifirDownloadOption->setText(tr("use BITS (recommonded for large files)"));
+        vgb->addWidget(specifirDownloadOption);
+        specifirDownloadOption->setChecked(true);
+    } else if(platform == "ubuntu"){
+        specifirDownloadOption->setStyleSheet("font-weight: bold");
+        specifirDownloadOption->setText(tr("use wget"));
+        vgb->addWidget(specifirDownloadOption);
+        specifirDownloadOption->setChecked(true);
+    } else {
+        rsave->setChecked(true);
+    }
     gb->setLayout(vgb);
     gb->setFlat(true);
     gb->setTitle(tr("What should Crusta do with this file?"));
@@ -470,6 +484,19 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     if(w->exec()!=QDialog::Accepted){
         download_item->cancel();
         return;
+    }
+    if(platform == "windows"){
+        if(specifirDownloadOption->isChecked()){
+
+        }
+    } else if(platform == "ubuntu"){
+        if(specifirDownloadOption->isChecked()){
+            QStringList directory_prefix_list = download_item->path().split('/');
+            directory_prefix_list.removeLast();
+            QString directory_prefix = directory_prefix_list.join("/");
+            QProcess::startDetached("wget --directory-prefix="+directory_prefix+" --tries=5 "+download_item->url().toString());
+            return;
+        }
     }
 
     DownloadWidget* dw=new DownloadWidget();
