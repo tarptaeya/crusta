@@ -399,13 +399,43 @@ MainView::MainView(){
 
     loadTheme();
 
+    QString new_version_file = QDir::homePath()+"/.crusta_db/new_version.txt";
+    QProcess::startDetached(QString("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/current.txt', '"+new_version_file+"')\""));
+
+    QString new_version;
+    QFile newVersion(QDir::homePath()+"/.crusta_db/new_version.txt");
+    if (newVersion.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&newVersion);
+       while (!in.atEnd())
+       {
+          new_version = in.readLine();
+          std::cout<<new_version.toStdString()<<std::endl;
+       }
+       newVersion.close();
+    }
+
+    QString current_version;
+    QFile currentVersion(QDir::homePath()+"/.crusta_db/current.txt");
+    if (currentVersion.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&currentVersion);
+       while (!in.atEnd())
+       {
+          current_version = in.readLine();
+       }
+       currentVersion.close();
+    }
+
     QString platform=QSysInfo().productType();
     if(platform == QString("windows")){
-        QFile uf(QDir::homePath()+"/.crusta_db/updater.ps1");
-        if(!uf.exists()){
-            // TODO
+        if(new_version!=current_version && new_version.size()!=0){
+            if(!QFile(QDir::homePath()="/.crusta_db/setup.exe").exists())
+                QProcess::startDetached("powershell -Command \"Import-Module BitsTransfer; Start-BitsTransfer http://crustabrowser.com/version/setup.exe "+QDir::homePath()+"/.crusta_db/setup.exe\"");
+            updateOn=true;
+        }else{
+            QDir().remove(QDir::homePath()+"/.crusta_db/setup.exe");
         }
-        std::cout<<QProcess::startDetached("powershell "+QDir::homePath()+"/.crusta_db/updater.ps1");
     } else if(platform == QString("ubuntu")){
         QFile uf(QDir::homePath()+"/.crusta_db/updater.sh");
         if(!uf.exists()){
@@ -413,6 +443,8 @@ MainView::MainView(){
         }
         QProcess::startDetached("./"+QDir::homePath()+"/.crusta_db/updater.sh");
     } else if(platform == QString("osx")){
+        // TODO
+    } else{
         // TODO
     }
 }
@@ -875,6 +907,41 @@ void MainView::bookmarkAllTabs(){
 
 void MainView::quit(){
     this->window->deleteLater();
+    QString platform=QSysInfo().productType();
+    if(platform == QString("windows")){
+        if(updateOn && QFile(QDir::homePath()+"/.crusta_db/setup.exe").exists()){
+            QDialog* ud = new QDialog();
+            ud->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::CoverWindow);
+            ud->setWindowTitle(tr("Crusta Updater"));
+            QLabel* lbl = new QLabel(tr("A new version of Crusta is available.\nDo you want to launch the setup now?"));
+            QVBoxLayout* vbox_ud = new QVBoxLayout();
+            ud->setLayout(vbox_ud);
+            vbox_ud->addWidget(lbl);
+            QPushButton* ok = new QPushButton(tr("Yes"));
+            QPushButton* later = new QPushButton(tr("Remind Later"));
+            QHBoxLayout* hbox_ud = new QHBoxLayout();
+            hbox_ud->addWidget(ok);
+            hbox_ud->addWidget(later);
+            vbox_ud->addLayout(hbox_ud);
+            connect(ok,&QPushButton::clicked,ud,&QDialog::accept);
+            connect(later,&QPushButton::clicked,ud,&QDialog::reject);
+            ud->setFixedWidth(300);
+            if(ud->exec() == QDialog::Accepted)
+                QProcess::startDetached(QDir::homePath()+"/.crusta_db/setup.exe");
+        }
+    } else if(platform == QString("ubuntu")){
+        if(updateOn){
+            // TODO
+        }
+    } else if(platform == QString("osx")){
+        if(updateOn){
+            // TODO
+        }
+    } else{
+        if(updateOn){
+            // TODO
+        }
+    }
 }
 
 void MainView::showPageInfo(){

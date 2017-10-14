@@ -164,6 +164,7 @@ public:
     MainView* splitWindow;
     MainView();
     QString defaultTheme;
+    bool updateOn = false;
 
     void createView();
     void showView();
