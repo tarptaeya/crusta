@@ -236,10 +236,13 @@ SidePane::SidePane(PrivateMainView* m){
           connect(webpage,&QWebEnginePage::fullScreenRequested,this,&SidePane::acceptFullScreenReuest);
           new_side_btn->sidewebview->setPage(webpage);
           new_side_btn->sidewebview->setTabletTracking(true);
-          new_side_btn->sidewebview->load(QUrl(line));
           new_side_btn->sidewebview->setMaximumWidth(395);
           new_side_btn->sidewebview->setMinimumWidth(300);
           connect(new_side_btn,&SidePaneButton::clicked,this,[this,line,new_side_btn]{
+              if(new_side_btn->click==0){
+                  new_side_btn->click=1;
+                  new_side_btn->sidewebview->load(QUrl(new_side_btn->url));
+              }
               if(hbox->count()==1){
                   new_side_btn->sidewebview->show();
                   hbox->addWidget(new_side_btn->sidewebview);

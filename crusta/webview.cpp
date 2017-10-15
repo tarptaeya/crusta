@@ -488,6 +488,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     if(platform == "windows"){
         if(specifirDownloadOption->isChecked()){
             QProcess::startDetached("powershell -Command \"Import-Module BitsTransfer; Start-BitsTransfer "+download_item->url().toString()+" "+download_item->path());
+            download_item->cancel();
             return;
         }
     } else if(platform == "ubuntu"){
@@ -496,6 +497,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
             directory_prefix_list.removeLast();
             QString directory_prefix = directory_prefix_list.join("/");
             QProcess::startDetached("wget --directory-prefix="+directory_prefix+" --tries=5 "+download_item->url().toString());
+            download_item->cancel();
             return;
         }
     }
