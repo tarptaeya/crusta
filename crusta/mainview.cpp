@@ -35,6 +35,7 @@
 #include "bookmarkmanager.h"
 #include "siteinfo.h"
 #include "speeddial.h"
+#include "statusbar.h"
 
 #include <QObject>
 #include <QPoint>
@@ -450,8 +451,12 @@ MainView::MainView(){
 }
 
 void MainView::createView(){
+    prebox->addLayout(box);
+    StatusBar* statusbar = new StatusBar();
+    prebox->addWidget(statusbar);
+    prebox->setContentsMargins(0,0,0,0);
     this->window->setWindowTitle("Crusta");
-    this->window->setLayout(box);
+    this->window->setLayout(prebox);
     box->addLayout(side_pane);
     box->setSpacing(0);
     side_pane->setSpacing(0);

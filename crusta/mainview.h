@@ -96,6 +96,7 @@ public:
 public:
     Window* window=new Window();
     QTabWidget* tabWindow=new QTabWidget(this);
+    QVBoxLayout* prebox = new QVBoxLayout();
     QHBoxLayout* box=new QHBoxLayout();
     QHBoxLayout* side_pane=new QHBoxLayout();
     QMenuBar* menubar=new QMenuBar();

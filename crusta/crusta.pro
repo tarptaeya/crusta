@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     crustaspeech.cpp \
     permissions.cpp \
     speeddial.cpp \
-    sidepane.cpp
+    sidepane.cpp \
+    statusbar.cpp
 
 HEADERS  += \
     fullscreennotifier.h \
@@ -85,7 +86,8 @@ HEADERS  += \
     crustaspeech.h \
     permissions.h \
     speeddial.h \
-    sidepane.h
+    sidepane.h \
+    statusbar.h
 
 RESOURCES += \
     resource.qrc
