@@ -24,11 +24,15 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <QLineEdit>
+#include <QLabel>
+
+#include "sidepane.h"
 
 class StatusBar: public QWidget{
+    QPushButton* toggle_btn = new QPushButton();
+    QHBoxLayout* box = new QHBoxLayout();
 public:
-    StatusBar();
+    StatusBar(SidePane*pane);
 };
 
 #endif // STATUSBAR_H

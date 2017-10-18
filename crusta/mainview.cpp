@@ -451,8 +451,10 @@ MainView::MainView(){
 }
 
 void MainView::createView(){
+    SidePane* pane=new SidePane(this);
     prebox->addLayout(box);
-    StatusBar* statusbar = new StatusBar();
+    prebox->setSpacing(0);
+    StatusBar* statusbar = new StatusBar(pane);
     prebox->addWidget(statusbar);
     prebox->setContentsMargins(0,0,0,0);
     this->window->setWindowTitle("Crusta");
@@ -461,7 +463,6 @@ void MainView::createView(){
     box->setSpacing(0);
     side_pane->setSpacing(0);
     side_pane->setContentsMargins(0,0,0,0);
-    SidePane* pane=new SidePane(this);
     side_pane->addWidget(pane);
     pane->download_manager=this->window->d_manager;
 }

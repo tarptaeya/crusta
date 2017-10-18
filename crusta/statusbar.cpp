@@ -19,7 +19,21 @@
 * ============================================================ */
 
 #include "statusbar.h"
+#include <QMainWindow>
 
-StatusBar::StatusBar(){
-    setFixedHeight(10);
+StatusBar::StatusBar(SidePane *pane){
+    setFixedHeight(20);
+    box->setMargin(0);
+    box->setSpacing(0);
+    box->setContentsMargins(0,0,0,0);
+    box->addWidget(toggle_btn);
+    toggle_btn->setIcon(QIcon(":/res/drawables/togglepane.png"));
+    toggle_btn->setFixedSize(40,20);
+    connect(toggle_btn, &QPushButton::clicked, this, [this, pane]{
+        if(pane->isVisible()) pane->hide();
+        else pane->show();
+    });
+    box->addWidget(new QLabel());
+    setStyleSheet("QPushButton{border: none} QPushButton:hover{background-color: #d0d0d0}");
+    setLayout(box);
 }
