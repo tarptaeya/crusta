@@ -95,6 +95,7 @@ public:
     void limitDownloadFile();
 public:
     Window* window=new Window();
+    QWidget* statusbar;
     QTabWidget* tabWindow=new QTabWidget(this);
     QVBoxLayout* prebox = new QVBoxLayout();
     QHBoxLayout* box=new QHBoxLayout();

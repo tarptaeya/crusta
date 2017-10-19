@@ -91,6 +91,7 @@ public:
     void changeSpinner(int index);
 public:
     PWindow* window=new PWindow();
+    QWidget* statusbar;
     QTabWidget* tabWindow=new QTabWidget(this);
     QVBoxLayout* prebox = new QVBoxLayout();
     QHBoxLayout* box=new QHBoxLayout();

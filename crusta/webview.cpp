@@ -586,10 +586,6 @@ void WebView::downloadFinished(QString path){
 
 void WebView::showLinkHovered(QString url){
     link=url;
-    QWidget* widget=(QWidget*)this->parent();
-    QStackedWidget* stackedwidget=(QStackedWidget*)widget->parent();
-    QTabWidget* tabwidget=(QTabWidget*)stackedwidget->parent();
-    Window* win=(Window*)tabwidget->parentWidget();
 }
 
 void WebView::closeTab(){

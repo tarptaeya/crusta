@@ -331,7 +331,7 @@ void PrivateMainView::createView(){
     side_pane->setContentsMargins(0,0,0,0);
     // TODO : if side pane has to show then add it
     SidePane* pane=new SidePane(this);
-    StatusBar* statusbar = new StatusBar(pane);
+    statusbar = new StatusBar(pane);
     prebox->addWidget(statusbar);
     side_pane->addWidget(pane);
     this->toggle_sbar_action->setText(tr("&Hide Status Bar"));
@@ -339,7 +339,7 @@ void PrivateMainView::createView(){
         this->toggle_sbar_action->setText(tr("&Show Status Bar"));
         statusbar->hide();
     }
-    connect(this->toggle_sbar_action,&QAction::triggered,this,[this, statusbar]{
+    connect(this->toggle_sbar_action,&QAction::triggered,this,[this]{
         if(statusbar->isVisible()){
             this->toggle_sbar_action->setText(tr("&Show Status Bar"));
             QSettings("Tarptaeya", "Crusta").setValue("statusbar_visibility", 0);
@@ -491,6 +491,15 @@ void PrivateMainView::createTabWindow(){
 
 void PrivateMainView::addNormalTab(){
     PrivateTabWindow* tab=new PrivateTabWindow();
+    connect(tab->view->page(),&WebPage::linkHovered,this,[this](const QString& url){
+        StatusBar* sbar = (StatusBar*)statusbar;
+        QString url_ = url;
+        if(url_.length()*10>sbar->width()){
+            url_.truncate(sbar->width()/10);
+            url_+="...";
+        }
+        sbar->link_lbl->setText(url_);
+    });
     tab->menu_btn->setMenu(menu);
     tab->menu_btn->setStyleSheet("QPushButton::menu-indicator { image: none; }");
     this->tabWindow->addTab(tab->returnTab(),tr("new Tab"));
