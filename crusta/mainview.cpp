@@ -464,8 +464,25 @@ void MainView::createView(){
     side_pane->setSpacing(0);
     side_pane->setContentsMargins(0,0,0,0);
     side_pane->addWidget(pane);
-    std::cout<<QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility").toString().toStdString();
-    if(QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility") == 0) pane->hide();
+    this->toggle_sbar_action->setText(tr("&Hide Status Bar"));
+    if(QSettings("Tarptaeya", "Crusta").value("statusbar_visibility") == 0){
+        this->toggle_sbar_action->setText(tr("&Show Status Bar"));
+        statusbar->hide();
+    }
+    connect(this->toggle_sbar_action,&QAction::triggered,this,[this, statusbar]{
+        if(statusbar->isVisible()){
+            this->toggle_sbar_action->setText(tr("&Show Status Bar"));
+            QSettings("Tarptaeya", "Crusta").setValue("statusbar_visibility", 0);
+            statusbar->hide();
+        } else {
+            this->toggle_sbar_action->setText(tr("&Hide Status Bar"));
+            QSettings("Tarptaeya", "Crusta").setValue("statusbar_visibility", 1);
+            statusbar->show();
+        }
+    });
+    if(QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility") == 0){
+        pane->hide();
+    }
     pane->download_manager=this->window->d_manager;
 }
 
@@ -530,6 +547,7 @@ void MainView::createMenuBar(){
     this->edit_permissions=this->edit_menu->addAction(tr("&Edit Permissions"));
     connect(this->edit_permissions,&QAction::triggered,this,&MainView::editPermissions);
     this->view_menu=this->menu->addMenu(tr("&View"));
+    this->view_menu->addAction(this->toggle_sbar_action);
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
     this->zoom_in_action=this->view_menu->addAction(tr("&Zoom In"));
