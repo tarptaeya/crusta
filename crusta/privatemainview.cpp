@@ -28,6 +28,7 @@
 #include "siteinfo.h"
 #include "speeddial.h"
 #include "sidepane.h"
+#include "statusbar.h"
 
 #include <QObject>
 #include <QPoint>
@@ -319,15 +320,39 @@ PrivateMainView::PrivateMainView(){
 }
 
 void PrivateMainView::createView(){
+    prebox->addLayout(box);
+    prebox->setSpacing(0);
+    prebox->setContentsMargins(0,0,0,0);
     this->window->setWindowTitle("Crusta - Private Mode");
-    this->window->setLayout(box);
+    this->window->setLayout(prebox);
     box->addLayout(side_pane);
     box->setSpacing(0);
     side_pane->setSpacing(0);
     side_pane->setContentsMargins(0,0,0,0);
     // TODO : if side pane has to show then add it
     SidePane* pane=new SidePane(this);
+    StatusBar* statusbar = new StatusBar(pane);
+    prebox->addWidget(statusbar);
     side_pane->addWidget(pane);
+    this->toggle_sbar_action->setText(tr("&Hide Status Bar"));
+    if(QSettings("Tarptaeya", "Crusta").value("statusbar_visibility") == 0){
+        this->toggle_sbar_action->setText(tr("&Show Status Bar"));
+        statusbar->hide();
+    }
+    connect(this->toggle_sbar_action,&QAction::triggered,this,[this, statusbar]{
+        if(statusbar->isVisible()){
+            this->toggle_sbar_action->setText(tr("&Show Status Bar"));
+            QSettings("Tarptaeya", "Crusta").setValue("statusbar_visibility", 0);
+            statusbar->hide();
+        } else {
+            this->toggle_sbar_action->setText(tr("&Hide Status Bar"));
+            QSettings("Tarptaeya", "Crusta").setValue("statusbar_visibility", 1);
+            statusbar->show();
+        }
+    });
+    if(QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility") == 0){
+        pane->hide();
+    }
     pane->download_manager=this->window->d_manager;
 }
 
@@ -383,8 +408,10 @@ void PrivateMainView::createMenuBar(){
     connect(this->find_action,&QAction::triggered,this,&PrivateMainView::FindText);
     this->edit_menu->addSeparator();
     this->view_menu=this->menu->addMenu(tr("&View"));
+    this->view_menu->addAction(this->toggle_sbar_action);
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&PrivateMainView::viewPageSource);
+    this->view_menu->addSeparator();
     this->zoom_in_action=this->view_menu->addAction(tr("&Zoom In"));
     connect(this->zoom_in_action,&QAction::triggered,this,&PrivateMainView::zoomIn);
     this->zoom_out_action=this->view_menu->addAction(tr("&Zoom Out"));

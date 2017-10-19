@@ -550,6 +550,7 @@ void MainView::createMenuBar(){
     this->view_menu->addAction(this->toggle_sbar_action);
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
+    this->view_menu->addSeparator();
     this->zoom_in_action=this->view_menu->addAction(tr("&Zoom In"));
     connect(this->zoom_in_action,&QAction::triggered,this,&MainView::zoomIn);
     this->zoom_out_action=this->view_menu->addAction(tr("&Zoom Out"));
