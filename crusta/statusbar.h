@@ -33,6 +33,7 @@ class StatusBar: public QWidget{
     QHBoxLayout* box = new QHBoxLayout();
 public:
     StatusBar(SidePane*pane);
+    QLabel* link_lbl = new QLabel();
 };
 
 #endif // STATUSBAR_H

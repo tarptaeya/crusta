@@ -19,7 +19,7 @@
 * ============================================================ */
 
 #include "statusbar.h"
-#include <QMainWindow>
+#include <QSettings>
 
 StatusBar::StatusBar(SidePane *pane){
     setFixedHeight(20);
@@ -30,9 +30,16 @@ StatusBar::StatusBar(SidePane *pane){
     toggle_btn->setIcon(QIcon(":/res/drawables/togglepane.png"));
     toggle_btn->setFixedSize(40,20);
     connect(toggle_btn, &QPushButton::clicked, this, [this, pane]{
-        if(pane->isVisible()) pane->hide();
-        else pane->show();
+        if(pane->isVisible()){
+            QSettings("Tarptaeya", "Crusta").setValue("sidepanel_visibility", 0);
+            pane->hide();
+        }
+        else{
+            QSettings("Tarptaeya", "Crusta").setValue("sidepanel_visibility", 1);
+            pane->show();
+        }
     });
+    box->addWidget(link_lbl);
     box->addWidget(new QLabel());
     setStyleSheet("QPushButton{border: none} QPushButton:hover{background-color: #d0d0d0}");
     setLayout(box);

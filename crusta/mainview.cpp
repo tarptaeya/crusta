@@ -464,6 +464,8 @@ void MainView::createView(){
     side_pane->setSpacing(0);
     side_pane->setContentsMargins(0,0,0,0);
     side_pane->addWidget(pane);
+    std::cout<<QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility").toString().toStdString();
+    if(QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility") == 0) pane->hide();
     pane->download_manager=this->window->d_manager;
 }
 
