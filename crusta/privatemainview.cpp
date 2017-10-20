@@ -53,6 +53,7 @@
 #include <QClipboard>
 #include <QSound>
 #include <QSettings>
+#include <QFont>
 
 
 
@@ -493,10 +494,19 @@ void PrivateMainView::addNormalTab(){
     PrivateTabWindow* tab=new PrivateTabWindow();
     connect(tab->view->page(),&WebPage::linkHovered,this,[this](const QString& url){
         StatusBar* sbar = (StatusBar*)statusbar;
-        QString url_ = url;
-        if(url_.length()*10>sbar->width()){
-            url_.truncate(sbar->width()/10);
-            url_+="...";
+        QString url_ = "";
+        QFont f;
+        f.setPointSize(10);
+        QFontMetrics fm(f);
+        int allowed_width = sbar->width() - 50;
+        int total_width = 0;
+        for(QString single_char: url){
+            total_width += fm.width(single_char);
+            url_ += single_char;
+            if(total_width + 50 > allowed_width) {
+                url_ += "...";
+                break;
+            }
         }
         sbar->link_lbl->setText(url_);
     });
