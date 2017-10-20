@@ -1,0 +1,39 @@
+/* ============================================================
+* Crusta - Qt5 webengine browser
+* Copyright (C) 2017 Anmol Gautam <anmol@crustabrowser.com>
+*
+* THIS FILE IS A PART OF CRUSTA
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* ============================================================ */
+
+#ifndef STATUSBAR_H
+#define STATUSBAR_H
+
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QLabel>
+
+#include "sidepane.h"
+
+class StatusBar: public QWidget{
+    QPushButton* toggle_btn = new QPushButton();
+    QHBoxLayout* box = new QHBoxLayout();
+public:
+    StatusBar(SidePane*pane);
+    QLabel* link_lbl = new QLabel();
+};
+
+#endif // STATUSBAR_H

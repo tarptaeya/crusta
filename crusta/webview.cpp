@@ -25,6 +25,7 @@
 #include "popup.h"
 #include "mainview.h"
 #include "downloadmanager.h"
+#include "statusbar.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -585,15 +586,6 @@ void WebView::downloadFinished(QString path){
 
 void WebView::showLinkHovered(QString url){
     link=url;
-//    if(link==""){
-//        urllabel->hide();
-//        return;
-//    }
-//    urllabel->setText(link);
-//    urllabel->setFixedWidth(link.length()*7);
-//    urllabel->move(0,this->height()-urllabel->height());
-//    urllabel->show();
-//    std::cout<<link.toStdString()<<std::endl;
 }
 
 void WebView::closeTab(){
