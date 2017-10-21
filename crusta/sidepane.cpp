@@ -55,7 +55,7 @@ SidePane::SidePane(MainView* m){
     if(!f_.exists()){
         f_.open(QIODevice::WriteOnly);
         QTextStream in(&f_);
-        in<<"http://m.facebook.com\nhttp://m.twitter.com\n";
+        in<<"http://m.facebook.com\nhttp://m.twitter.com\nhttp://time.is\n";
         f_.close();
     }
     QFile inputFile(QDir::homePath()+"/.crusta_db/sidepanel.txt");
@@ -296,18 +296,18 @@ SidePane::SidePane(PrivateMainView* m){
     hbox->addWidget(left);
     connect(bookmarks,&QPushButton::clicked,this,[this]{
         if(hbox->count()==1){
-            bookmark_manager=new BookmarkManager(mainview);
-            hbox->addWidget(this->bookmark_manager);
+            pbookmark_manager=new PrivateBookmarkManager(pmainview);
+            hbox->addWidget(this->pbookmark_manager);
         }
-        else if(hbox->indexOf(this->bookmark_manager)!=1){
+        else if(hbox->indexOf(this->pbookmark_manager)!=1){
             hbox->itemAt(1)->widget()->hide();
             hbox->removeItem(hbox->itemAt(1));
-            bookmark_manager=new BookmarkManager(mainview);
-            hbox->addWidget(this->bookmark_manager);
+            pbookmark_manager=new PrivateBookmarkManager(pmainview);
+            hbox->addWidget(this->pbookmark_manager);
         }
         else{
-            this->bookmark_manager->hide();
-            hbox->removeWidget(this->bookmark_manager);
+            this->pbookmark_manager->hide();
+            hbox->removeWidget(this->pbookmark_manager);
         }
     });
     connect(downloads,&QPushButton::clicked,this,[this]{

@@ -17,17 +17,18 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
+
 #include "mainview.h"
 #include "privatemainview.h"
 
-#include <QDialog>
-#include <QTreeWidget>
 #include <QAction>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QVBoxLayout>
-#include <QPoint>
+#include <QDialog>
 #include <QLabel>
+#include <QLineEdit>
+#include <QPoint>
+#include <QPushButton>
+#include <QTreeWidget>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #ifndef BOOKMARKMANAGER_H
@@ -69,7 +70,7 @@ public:
     QLabel* info_lbl_1=new QLabel();
     QLabel* info_lbl_2=new QLabel();
     QLabel* info_lbl_3=new QLabel();
-    QTreeWidget* display=new QTreeWidget();
+    QTreeWidget* pdisplay=new QTreeWidget();
     QAction* open=new QAction(tr("Open"));
     QAction* del=new QAction(tr("Remove"));
     QLineEdit* search=new QLineEdit();
@@ -78,14 +79,14 @@ public:
     QPushButton* sbtn=new QPushButton(tr("Go"));
     QVBoxLayout* vbox=new QVBoxLayout();
     PrivateBookmarkManager(PrivateMainView* m);
-    PrivateMainView* mview;
+    PrivateMainView* pmview;
     void loadBookmarks();
     void showContextMenu(const QPoint& pos);
     void openUrl();
     void clearEntry();
     void saveDescription();
     void searchBookmark();
-    void displayInfo(QTreeWidgetItem* item,int column);
+    void pdisplayInfo(QTreeWidgetItem* item,int column);
 };
 
 #endif

@@ -19,27 +19,19 @@
 * ============================================================ */
 
 #include "addresslineedit.h"
-#include <QPushButton>
-#include <QLineEdit>
-#include <QIcon>
-#include <QMenu>
-#include <QFile>
-#include <QTextStream>
-#include <QIODevice>
-#include <QCompleter>
-#include <QString>
-#include <QStringList>
-#include <QStringListModel>
-#include <QDialog>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QCompleter>
-#include <QStringListModel>
-#include <QDir>
-#include <QStringList>
-#include <QWebEngineProfile>
 
+#include <QDialog>
+#include <QDir>
+#include <QFile>
+#include <QHBoxLayout>
+#include <QIODevice>
+#include <QLabel>
+#include <QMenu>
+#include <QString>
+#include <QStringListModel>
+#include <QTextStream>
+#include <QVBoxLayout>
+#include <QWebEngineProfile>
 
 
 void AddressLineEdit::createAddressLineEdit(){
@@ -260,7 +252,6 @@ void AddressLineEdit::setUAString(){
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Edit HTTP User Agent String");
-    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border:1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     connect(ua,&QLineEdit::returnPressed,w,&QDialog::accept);
@@ -300,7 +291,7 @@ void AddressLineEdit::restoreUAString(){
     for(int i=0;i<len-1;i++){
         new_string+=ua[i]+" ";
     }
-    new_string+="Crusta/1.4.0 "+ua[len-1];
+    new_string+="Crusta/1.4.2 "+ua[len-1];
     QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {

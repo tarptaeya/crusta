@@ -31,11 +31,9 @@
 #include <iostream>
 
 
-
 BookmarkManager::BookmarkManager(MainView *m){
     mview=m;
     setLayout(vbox);
-    //setStyleSheet("QWidget{background-color:white;color:black} QLineEdit{background-color:white;color:black;border:1px solid black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(search);
@@ -108,7 +106,6 @@ void BookmarkManager::showContextMenu(const QPoint &pos){
     QMenu* cmenu=new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
-    //cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
     cmenu->exec(display->mapToGlobal(pos));
 }
 
@@ -214,9 +211,8 @@ void BookmarkManager::displayInfo(QTreeWidgetItem *item, int column){
 
 
 PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
-    mview=m;
+    pmview=m;
     setLayout(vbox);
-    //setStyleSheet("QWidget{background-color:white;color:black} QLineEdit{background-color:white;color:black;border:1px solid black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     QHBoxLayout* hbox=new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(search);
@@ -225,7 +221,7 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
     search->setFixedWidth(200);
     sbtn->setFixedWidth(50);
     vbox->addLayout(hbox);
-    vbox->addWidget(display);
+    vbox->addWidget(pdisplay);
     vbox->addWidget(info_lbl);
     info_lbl->setMinimumHeight(200);
     QVBoxLayout* lbl_vbox=new QVBoxLayout();
@@ -234,16 +230,16 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
     lbl_vbox->addWidget(info_lbl_2);
     lbl_vbox->addWidget(info_lbl_3);
     lbl_vbox->addWidget(new QLabel());
-    connect(display,&QTreeWidget::itemClicked,this,&PrivateBookmarkManager::displayInfo);
+    connect(pdisplay,&QTreeWidget::itemClicked,this,&PrivateBookmarkManager::pdisplayInfo);
     QStringList header;
     header.append(tr("Title"));
     header.append(tr("URL"));
     header.append(tr("Description"));
-    display->setHeaderLabels(header);
+    pdisplay->setHeaderLabels(header);
     setWindowTitle(tr("Crusta : Bookmarks Manager"));
     loadBookmarks();
-    display->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(display,&QTreeWidget::customContextMenuRequested,this,&PrivateBookmarkManager::showContextMenu);
+    pdisplay->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(pdisplay,&QTreeWidget::customContextMenuRequested,this,&PrivateBookmarkManager::showContextMenu);
     connect(open,&QAction::triggered,this,&PrivateBookmarkManager::openUrl);
     connect(del,&QAction::triggered,this,&PrivateBookmarkManager::clearEntry);
     QHBoxLayout* h1box=new QHBoxLayout();
@@ -253,7 +249,7 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m){
     vbox->addLayout(h1box);
     connect(save,&QPushButton::clicked,this,&PrivateBookmarkManager::saveDescription);
     connect(sbtn,&QPushButton::clicked,this,&PrivateBookmarkManager::searchBookmark);
-    connect(display,&QTreeWidget::itemDoubleClicked,this,&PrivateBookmarkManager::openUrl);
+    connect(pdisplay,&QTreeWidget::itemDoubleClicked,this,&PrivateBookmarkManager::openUrl);
 }
 
 void PrivateBookmarkManager::loadBookmarks(){
@@ -269,7 +265,7 @@ void PrivateBookmarkManager::loadBookmarks(){
           if(data.count()==2)data.append("");
           if(!(data[0]=="" || data[1]=="")){
               QTreeWidgetItem* item=new QTreeWidgetItem(data);
-              display->insertTopLevelItem(0,item);
+              pdisplay->insertTopLevelItem(0,item);
 
           }
        }
@@ -278,29 +274,29 @@ void PrivateBookmarkManager::loadBookmarks(){
 }
 
 void PrivateBookmarkManager::showContextMenu(const QPoint &pos){
-    if(display->itemAt(pos)==NULL)return;
+    if(pdisplay->itemAt(pos)==NULL)return;
     QMenu* cmenu=new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
     //cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
-    cmenu->exec(display->mapToGlobal(pos));
+    cmenu->exec(pdisplay->mapToGlobal(pos));
 }
 
 void PrivateBookmarkManager::openUrl(){
     std::cout<<"Reached Bkmrk\n";
-//    QTreeWidgetItem* item=display->currentItem();
-//    QUrl url=QUrl(item->text(1));
-//    mview->addNormalTab();
-//    int index=mview->tabWindow->count()-1;
-//    mview->tabWindow->setCurrentIndex(index);
-//    QWidget* widget=mview->tabWindow->widget(index);
-//    QLayout* layout=widget->layout();
-//    PrivateWebView* webview=(PrivateWebView*)layout->itemAt(1)->widget();
-//    webview->load(url);
+    QTreeWidgetItem* item=pdisplay->currentItem();
+    QUrl url=QUrl(item->text(1));
+    pmview->addNormalTab();
+    int index=pmview->tabWindow->count()-1;
+    pmview->tabWindow->setCurrentIndex(index);
+    QWidget* widget=pmview->tabWindow->widget(index);
+    QLayout* layout=widget->layout();
+    PrivateWebView* webview=(PrivateWebView*)layout->itemAt(1)->widget();
+    webview->load(url);
 }
 
 void PrivateBookmarkManager::clearEntry(){
-    QTreeWidgetItem* item=display->currentItem();
+    QTreeWidgetItem* item=pdisplay->currentItem();
     QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
     QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
@@ -321,9 +317,9 @@ void PrivateBookmarkManager::clearEntry(){
 }
 
 void PrivateBookmarkManager::saveDescription(){
-    if(display->currentItem()==NULL)
+    if(pdisplay->currentItem()==NULL)
         return;
-    QTreeWidgetItem* item=display->currentItem();
+    QTreeWidgetItem* item=pdisplay->currentItem();
     QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
     item->setText(2,description->text());
     description->setText("");
@@ -349,7 +345,7 @@ void PrivateBookmarkManager::saveDescription(){
 
 void PrivateBookmarkManager::searchBookmark(){
     QString key=search->text();
-    display->clear();
+    pdisplay->clear();
     QFile inputFile(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {
@@ -363,7 +359,7 @@ void PrivateBookmarkManager::searchBookmark(){
           QString master=data[2];
           if(master.contains(key)){
               QTreeWidgetItem* item=new QTreeWidgetItem(data);
-              display->insertTopLevelItem(0,item);
+              pdisplay->insertTopLevelItem(0,item);
 
           }
        }
@@ -371,7 +367,7 @@ void PrivateBookmarkManager::searchBookmark(){
     }
 }
 
-void PrivateBookmarkManager::displayInfo(QTreeWidgetItem *item, int column){
+void PrivateBookmarkManager::pdisplayInfo(QTreeWidgetItem *item, int column){
     QString title = item->text(0);
     QString url = item->text(1);
     QString info = item->text(2);

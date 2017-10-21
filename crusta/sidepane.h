@@ -57,6 +57,7 @@ public:
     MainView* mainview;
     HistoryManager* history_manager;
     BookmarkManager* bookmark_manager;
+    PrivateBookmarkManager* pbookmark_manager;
     DownloadManager* download_manager;
     SidePaneButton* history=new SidePaneButton();
     SidePaneButton* bookmarks=new SidePaneButton();

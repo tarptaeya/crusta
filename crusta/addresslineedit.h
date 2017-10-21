@@ -21,13 +21,13 @@
 #ifndef ADDRESSLINEEDIT_H
 #define ADDRESSLINEEDIT_H
 
-#include <QLineEdit>
-#include <QPushButton>
-#include <QIcon>
-#include <QPoint>
-#include <QCompleter>
-#include <QStringList>
 #include <QAction>
+#include <QCompleter>
+#include <QIcon>
+#include <QLineEdit>
+#include <QPoint>
+#include <QPushButton>
+#include <QStringList>
 
 
 class AddressLineEdit:public QLineEdit{
@@ -49,7 +49,5 @@ public:
     void setUAString();
     void restoreUAString();
 };
-
-
 
 #endif // ADDRESSLINEEDIT_H

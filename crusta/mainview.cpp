@@ -324,7 +324,7 @@ MainView::MainView(){
         for(int i=0;i<len-1;i++){
             new_string+=ua[i]+" ";
         }
-        new_string+="Crusta/1.4.1 "+ua[len-1];
+        new_string+="Crusta/1.4.2 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
         in<<"engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nIncognito engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nUA String>>>>>"+new_string+"\nHome page>>>>>\nIncognito Home page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
