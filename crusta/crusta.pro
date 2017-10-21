@@ -25,7 +25,7 @@
 #-------------------------------------------------
 
 QT       += core gui charts
-QT       += webenginewidgets webengine texttospeech multimedia
+QT       += location webenginewidgets webengine texttospeech multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
