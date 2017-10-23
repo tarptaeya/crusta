@@ -449,19 +449,18 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     QVBoxLayout* vgb=new QVBoxLayout();
     vgb->addWidget(ropen);
     vgb->addWidget(rsave);
+    rsave->setChecked(true);
     QRadioButton* specifirDownloadOption = new QRadioButton(); // BITS on windows, wget on ubuntu
     QString platform = QSysInfo().productType();
     if(platform == "windows"){
         specifirDownloadOption->setText(tr("use BITS (recommonded for large files)"));
         vgb->addWidget(specifirDownloadOption);
-        specifirDownloadOption->setChecked(true);
     } else if(platform == "ubuntu"){
         specifirDownloadOption->setStyleSheet("font-weight: bold");
         specifirDownloadOption->setText(tr("use wget"));
         vgb->addWidget(specifirDownloadOption);
-        specifirDownloadOption->setChecked(true);
     } else {
-        rsave->setChecked(true);
+        // TODO:
     }
     gb->setLayout(vgb);
     gb->setFlat(true);
@@ -706,6 +705,16 @@ void WebView::showContextMenu(const QPoint& pos){
 void WebView::loadFinished(){
     if(this->icon().isNull()){
         this->faviconChanged(QIcon());
+    }
+    QDir* exec_dir=new QDir(QDir::homePath()+"/.crusta_db");
+    exec_dir->cd("speeddial");
+    QString forbidden;
+    if(exec_dir->absolutePath().startsWith("/"))
+        forbidden="file://"+exec_dir->absolutePath()+"/index.html";
+    else
+        forbidden="file:///"+exec_dir->absolutePath()+"/index.html";
+    if(url().toString() == forbidden){
+        return;
     }
     QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
