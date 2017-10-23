@@ -239,6 +239,33 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         }else{
             return false;
         }
+    }else if(msg == "ifRiVOjJzQWe2MQ9h3xT_filter_btn"){ // filter button key of speed-dial
+        QDialog* fd = new QDialog();
+        fd->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+        fd->setObjectName("dialog");
+        fd->setStyleSheet("#dialog{border: 1px solid #00b0e3; background-color: #fff}");
+        QVBoxLayout* fdvbox = new QVBoxLayout();
+        fdvbox->setSpacing(5);
+        QLabel* title = new QLabel(tr("Speed-dial settings"));
+        title->setStyleSheet("font-size: 16px");
+        fdvbox->addWidget(title);
+        QLabel* src_en_lbl = new QLabel(tr("Search Engine"));
+        fdvbox->addWidget(src_en_lbl);
+        QLineEdit* src_en_text = new QLineEdit();
+        src_en_text->setPlaceholderText(tr("http://your-favourite-search-engine-url"));
+        fdvbox->addWidget(src_en_text);
+        QLabel* bg_lbl = new QLabel(tr("Background Image"));
+        fdvbox->addWidget(bg_lbl);
+        QPushButton* bg_img = new QPushButton(tr("Choose Image"));
+        fdvbox->addWidget(bg_img);
+        fd->setFixedSize(300,200);
+        fd->setLayout(fdvbox);
+        fd->move(view()->mapToGlobal(QPoint(view()->width()-320,20)));
+        if(fd->exec()==QDialog::Accepted){
+            return true;
+        }else{
+            return false;
+        }
     }else{
         QDialog* jcd=new QDialog();
         jcd->setWindowFlag(Qt::FramelessWindowHint);

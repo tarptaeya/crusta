@@ -34,6 +34,7 @@ int main(int argc, char *argv[]){
     QtWebEngine::initialize();
     a.setApplicationName(QString("Crusta"));
     a.setApplicationVersion(QString("1.4.0"));
+    a.setAttribute(Qt::AA_EnableHighDpiScaling);
     Q_INIT_RESOURCE(resource); // initialised the resource file;
 
     if(!QDir(QDir::homePath()+"/.crusta_db").exists()){
