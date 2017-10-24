@@ -29,5 +29,9 @@
         <file>res/drawables/secure_site.svg</file>
         <file>res/audio/shutter.wav</file>
         <file>res/drawables/togglepane.png</file>
+        <file>res/fav/ecosia.png</file>
+        <file>res/fav/yandex.png</file>
+        <file>res/fav/wikipedia.png</file>
+        <file>res/fav/google.png</file>
     </qresource>
 </RCC>

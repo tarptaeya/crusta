@@ -31,7 +31,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QPushButton>
-#include <QLineEdit>
+#include <QComboBox>
 
 
 Profile::Profile(){
@@ -251,8 +251,11 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         fdvbox->addWidget(title);
         QLabel* src_en_lbl = new QLabel(tr("Search Engine"));
         fdvbox->addWidget(src_en_lbl);
-        QLineEdit* src_en_text = new QLineEdit();
-        src_en_text->setPlaceholderText(tr("http://your-favourite-search-engine-url"));
+        QComboBox* src_en_text = new QComboBox();
+        src_en_text->insertItem(0, QIcon(":/res/fav/wikipedia.png"), tr("Wikipedia"));
+        src_en_text->insertItem(0, QIcon(":/res/fav/google.png"), tr("Google"));
+        src_en_text->insertItem(0, QIcon(":/res/fav/yandex.png"), tr("Yandex"));
+        src_en_text->insertItem(0, QIcon(":/res/fav/ecosia.png"), tr("Ecosia"));
         fdvbox->addWidget(src_en_text);
         QLabel* bg_lbl = new QLabel(tr("Background Image"));
         fdvbox->addWidget(bg_lbl);
