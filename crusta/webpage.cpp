@@ -31,7 +31,8 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QPushButton>
-#include <QLineEdit>
+#include <QComboBox>
+#include <QSettings>
 
 
 Profile::Profile(){
@@ -239,6 +240,45 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         }else{
             return false;
         }
+    }else if(msg == "ifRiVOjJzQWe2MQ9h3xT_filter_btn"){ // filter button key of speed-dial
+        QDialog* fd = new QDialog();
+        fd->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
+        fd->setObjectName("dialog");
+        fd->setStyleSheet("#dialog{border: 1px solid #00b0e3; background-color: #fff}");
+        QVBoxLayout* fdvbox = new QVBoxLayout();
+        fdvbox->setSpacing(5);
+        QLabel* title = new QLabel(tr("Speed-dial settings"));
+        title->setStyleSheet("font-size: 16px");
+        fdvbox->addWidget(title);
+        QLabel* src_en_lbl = new QLabel(tr("Search Engine"));
+        fdvbox->addWidget(src_en_lbl);
+        QComboBox* src_en_text = new QComboBox();
+        src_en_text->insertItem(0, QIcon(":/res/fav/google.png"), tr("Google"));
+        src_en_text->insertItem(0, QIcon(":/res/fav/yandex.png"), tr("Yandex"));
+        src_en_text->insertItem(0, QIcon(":/res/fav/ecosia.png"), tr("Ecosia"));
+        src_en_text->setCurrentText(QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
+        fdvbox->addWidget(src_en_text);
+        QLabel* bg_lbl = new QLabel(tr("Background Image"));
+        fdvbox->addWidget(bg_lbl);
+        QPushButton* bg_img = new QPushButton(tr("Choose Image"));
+        connect(bg_img,&QPushButton::clicked,this,[this]{
+            QFileDialog* f=new QFileDialog();
+            sdBgimage=f->getOpenFileUrl(nullptr,tr("Speed Dial : Background"),QDir::homePath(),tr("Image Files (*.png *.jpg *.jpeg)")).toString();
+        });
+        fdvbox->addWidget(bg_img);
+        fd->setFixedSize(300,200);
+        fd->setLayout(fdvbox);
+        fd->move(view()->mapToGlobal(QPoint(view()->width()-320,20)));
+        fd->exec();
+        if(sdBgimage.isEmpty()){
+            sdBgimage = QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString();
+        } else {
+            QSettings("Tarptaeya", "Crusta").setValue("speeddial_bgimage",sdBgimage);
+        }
+        QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine",src_en_text->currentText());
+        SpeedDial().save(sdBgimage, src_en_text->currentText());
+        this->load(this->url());
+        return true;
     }else{
         QDialog* jcd=new QDialog();
         jcd->setWindowFlag(Qt::FramelessWindowHint);

@@ -32,6 +32,7 @@
 
 
 class SiteInfoWidget:public QDialog{
+    Q_OBJECT
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     SiteInfoWidget(QWebEngineView *view);

@@ -36,6 +36,7 @@
 
 
 class TabWindow:public QObject{
+    Q_OBJECT
     void viewHome();
     void updateAddrBar();
     void updateStar();

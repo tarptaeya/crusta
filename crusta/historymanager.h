@@ -40,6 +40,7 @@
 
 
 class HistoryManager:public QDialog{
+    Q_OBJECT
 public:
     QTreeWidget* display_area=new QTreeWidget();
     QPushButton* clear_all=new QPushButton(tr("Clear All"));

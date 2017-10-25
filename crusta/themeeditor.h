@@ -31,6 +31,7 @@
 
 
 class ThemeEditor:public QDialog{
+    Q_OBJECT
 private:
     QLineEdit* color=new QLineEdit();
     QVBoxLayout* vbox=new QVBoxLayout();

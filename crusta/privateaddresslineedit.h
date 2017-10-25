@@ -30,6 +30,7 @@
 #include <QCompleter>
 
 class PrivateAddressLineEdit:public QLineEdit{
+    Q_OBJECT
     QCompleter* cmpleter=new QCompleter();
 public:
     QPushButton* siteinfo_btn=new QPushButton(this);

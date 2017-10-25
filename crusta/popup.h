@@ -32,6 +32,7 @@
 
 
 class PopUp:public QObject{
+    Q_OBJECT
 public:
     QWidget* widget=new QWidget();
     QPushButton* btn=new QPushButton();

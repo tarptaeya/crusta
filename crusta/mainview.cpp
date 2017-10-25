@@ -35,7 +35,6 @@
 #include "bookmarkmanager.h"
 #include "siteinfo.h"
 #include "speeddial.h"
-#include "statusbar.h"
 
 #include <QObject>
 #include <QPoint>
@@ -64,6 +63,7 @@
 #include <QSysInfo>
 #include <QSettings>
 #include <QFont>
+#include <QLocale>
 
 #include <iostream>
 
@@ -355,15 +355,14 @@ MainView::MainView(){
             "googleplus>>>>>https://plus.google.com\nlinkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
         fi.close();
         SpeedDial* sd=new SpeedDial();
-        sd->load();
-        sd->save();
+        sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(),QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
+
     }
 
     QFile fi_(QDir::homePath()+"/.crusta_db/speeddial/index.html");
     if(!fi_.exists()){
         SpeedDial* sd=new SpeedDial();
-        sd->load();
-        sd->save();
+        sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(),QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
     }
 
     if(!QDir(QDir::homePath()+"/.crusta_db/sidepanel").exists()){
@@ -453,38 +452,29 @@ MainView::MainView(){
 
 void MainView::createView(){
     SidePane* pane=new SidePane(this);
-    prebox->addLayout(box);
-    prebox->setSpacing(0);
-    statusbar = new StatusBar(pane);
-    prebox->addWidget(statusbar);
-    prebox->setContentsMargins(0,0,0,0);
     this->window->setWindowTitle("Crusta");
-    this->window->setWindowFlag(Qt::MSWindowsOwnDC);
-    this->window->setLayout(prebox);
+    this->window->setLayout(box);
     box->addLayout(side_pane);
     box->setSpacing(0);
     side_pane->setSpacing(0);
     side_pane->setContentsMargins(0,0,0,0);
     side_pane->addWidget(pane);
-    this->toggle_sbar_action->setText(tr("&Hide Status Bar"));
-    if(QSettings("Tarptaeya", "Crusta").value("statusbar_visibility") == 0){
-        this->toggle_sbar_action->setText(tr("&Show Status Bar"));
-        statusbar->hide();
-    }
-    connect(this->toggle_sbar_action,&QAction::triggered,this,[this]{
-        if(statusbar->isVisible()){
-            this->toggle_sbar_action->setText(tr("&Show Status Bar"));
-            QSettings("Tarptaeya", "Crusta").setValue("statusbar_visibility", 0);
-            statusbar->hide();
-        } else {
-            this->toggle_sbar_action->setText(tr("&Hide Status Bar"));
-            QSettings("Tarptaeya", "Crusta").setValue("statusbar_visibility", 1);
-            statusbar->show();
-        }
-    });
+    this->toggle_spane_action->setText(tr("&Hide Side Panel"));
     if(QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility") == 0){
+        this->toggle_spane_action->setText(tr("&Show Side Panel"));
         pane->hide();
     }
+    connect(this->toggle_spane_action,&QAction::triggered,this,[this,pane]{
+        if(pane->isVisible()){
+            this->toggle_spane_action->setText(tr("&Show Side Panel"));
+            QSettings("Tarptaeya", "Crusta").setValue("sidepanel_visibility", 0);
+            pane->hide();
+        } else {
+            this->toggle_spane_action->setText(tr("&Hide Side Panel"));
+            QSettings("Tarptaeya", "Crusta").setValue("sidepanel_visibility", 1);
+            pane->show();
+        }
+    });
     pane->download_manager=this->window->d_manager;
 }
 
@@ -549,7 +539,7 @@ void MainView::createMenuBar(){
     this->edit_permissions=this->edit_menu->addAction(tr("&Edit Permissions"));
     connect(this->edit_permissions,&QAction::triggered,this,&MainView::editPermissions);
     this->view_menu=this->menu->addMenu(tr("&View"));
-    this->view_menu->addAction(this->toggle_sbar_action);
+    this->view_menu->addAction(this->toggle_spane_action);
     this->view_page_source_action=this->view_menu->addAction(tr("&Page Source"));
     connect(this->view_page_source_action,&QAction::triggered,this,&MainView::viewPageSource);
     this->view_menu->addSeparator();
@@ -623,24 +613,6 @@ void MainView::createTabWindow(){
 
 void MainView::addNormalTab(){
     TabWindow* tab=new TabWindow();
-    connect(tab->view->page(),&WebPage::linkHovered,this,[this](const QString& url){
-        StatusBar* sbar = (StatusBar*)statusbar;
-        QString url_ = "";
-        QFont f;
-        f.setPointSize(10);
-        QFontMetrics fm(f);
-        int allowed_width = sbar->width() - 50;
-        int total_width = 0;
-        for(QString single_char: url){
-            total_width += fm.width(single_char);
-            url_ += single_char;
-            if(total_width + 50 > allowed_width) {
-                url_ += "...";
-                break;
-            }
-        }
-        sbar->link_lbl->setText(url_);
-    });
     tab->menu_btn->setMenu(menu);
     tab->menu_btn->setStyleSheet("QPushButton::menu-indicator { image: none; }");
     this->tabWindow->addTab(tab->returnTab(),tr("new Tab"));

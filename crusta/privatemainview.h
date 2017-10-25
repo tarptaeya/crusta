@@ -53,6 +53,7 @@ class PrivateMainView;
 
 
 class PWindow:public QWidget{
+    Q_OBJECT
     void closeEvent(QCloseEvent *event);
 public:
     QMenu* menu=new QMenu();
@@ -91,9 +92,7 @@ public:
     void changeSpinner(int index);
 public:
     PWindow* window=new PWindow();
-    QWidget* statusbar;
     QTabWidget* tabWindow=new QTabWidget(this);
-    QVBoxLayout* prebox = new QVBoxLayout();
     QHBoxLayout* box=new QHBoxLayout();
     QHBoxLayout* side_pane=new QHBoxLayout();
     QMenuBar* menubar=new QMenuBar();
@@ -126,7 +125,7 @@ public:
     QAction* selectall_action=new QAction();
     QAction* find_action=new QAction();
     QAction* speed_dial=new QAction();
-    QAction* toggle_sbar_action = new QAction();
+    QAction* toggle_spane_action = new QAction();
     QAction* view_page_source_action=new QAction();
     QAction* zoom_in_action=new QAction();
     QAction* zoom_out_action=new QAction();

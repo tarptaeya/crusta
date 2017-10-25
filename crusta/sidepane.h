@@ -36,6 +36,7 @@
 
 
 class SidePaneButton: public QPushButton{
+    Q_OBJECT
 public:
     int click;
     SidePaneButton();
@@ -47,6 +48,7 @@ public:
 
 
 class SidePane: public QWidget{
+    Q_OBJECT
     QHBoxLayout* hbox=new QHBoxLayout();
     QVBoxLayout* vbox=new QVBoxLayout();
     QLabel* flexilabel=new QLabel();

@@ -35,6 +35,7 @@
 #define BOOKMARKMANAGER_H
 
 class BookmarkManager:public QDialog{
+    Q_OBJECT
 public:
     QWidget* info_lbl=new QWidget();
     QLabel* info_lbl_1=new QLabel();

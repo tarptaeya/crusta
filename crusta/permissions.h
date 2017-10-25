@@ -44,6 +44,7 @@ public:
 
 
 class PermissionDialog: public QDialog{
+    Q_OBJECT
     QVBoxLayout* vbox=new QVBoxLayout();
     PermissionValue* notif=new PermissionValue("Notifications");
     PermissionValue* mouse=new PermissionValue("Mouse Lock");
