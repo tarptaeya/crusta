@@ -25,7 +25,6 @@
 #include "popup.h"
 #include "mainview.h"
 #include "downloadmanager.h"
-#include "statusbar.h"
 
 #include <QWebEngineView>
 #include <QWebEnginePage>

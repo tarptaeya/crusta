@@ -29,6 +29,7 @@
 #include <QTextEdit>
 
 class CrustaSpeech:public QWidget{
+    Q_OBJECT
     QVBoxLayout* vbox=new QVBoxLayout();
 public:
     QTextEdit* tts=new QTextEdit();

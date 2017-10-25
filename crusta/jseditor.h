@@ -32,6 +32,7 @@
 #include <QWidget>
 
 class JsEditor:public QWidget{
+    Q_OBJECT
 public:
     CodeEditor* editor=new CodeEditor();
     QVBoxLayout* vbox=new QVBoxLayout();

@@ -30,11 +30,10 @@
 #include <QListWidget>
 
 class SpeedDial: public QWidget{
+    Q_OBJECT
     QLineEdit* bgimage=new QLineEdit();
 public:
-    SpeedDial();
-    void load();
-    void save();
+    void save(QString bgimage, QString srchstr);
     void add(QString title, QString url);
     void remove(QString forbidden);
     void configure();

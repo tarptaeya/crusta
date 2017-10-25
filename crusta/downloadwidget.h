@@ -32,6 +32,7 @@
 #include <QListWidgetItem>
 
 class DownloadWidget:public QWidget {
+    Q_OBJECT
 public:
     QHBoxLayout* hbox=new QHBoxLayout();
     QVBoxLayout* v0box=new QVBoxLayout();

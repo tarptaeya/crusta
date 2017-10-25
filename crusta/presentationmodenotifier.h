@@ -33,6 +33,7 @@
 
 
 class PresentationModeNotifier:public QObject{
+    Q_OBJECT
 public:
     QLabel* label=new QLabel();
     QTimer* timer=new QTimer();

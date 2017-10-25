@@ -35,6 +35,7 @@ public:
 };
 
 class WebPage:public QWebEnginePage{
+    Q_OBJECT
     QString key;
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
@@ -47,6 +48,7 @@ public:
     int alertCount;
     bool preventAlert;
     QString agent;
+    QString sdBgimage;
     void loadUAString();
     WebPage();
 };

@@ -95,9 +95,7 @@ public:
     void limitDownloadFile();
 public:
     Window* window=new Window();
-    QWidget* statusbar;
     QTabWidget* tabWindow=new QTabWidget(this);
-    QVBoxLayout* prebox = new QVBoxLayout();
     QHBoxLayout* box=new QHBoxLayout();
     QHBoxLayout* side_pane=new QHBoxLayout();
     QMenuBar* menubar=new QMenuBar();
@@ -131,7 +129,7 @@ public:
     QAction* find_action=new QAction();
     QAction* edit_permissions=new QAction();
     QAction* speed_dial=new QAction();
-    QAction* toggle_sbar_action=new QAction();
+    QAction* toggle_spane_action=new QAction();
     QAction* view_page_source_action=new QAction();
     QAction* zoom_in_action=new QAction();
     QAction* zoom_out_action=new QAction();
