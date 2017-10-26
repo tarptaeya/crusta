@@ -33,6 +33,7 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QSettings>
+#include <QGroupBox>
 
 
 Profile::Profile(){
@@ -250,22 +251,49 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         QLabel* title = new QLabel(tr("Speed-dial settings"));
         title->setStyleSheet("font-size: 16px");
         fdvbox->addWidget(title);
-        QLabel* src_en_lbl = new QLabel(tr("Search Engine"));
-        fdvbox->addWidget(src_en_lbl);
+        QGroupBox* gbox1 = new QGroupBox();
+        QVBoxLayout* gvbox=new QVBoxLayout();
+        gbox1->setLayout(gvbox);
+        gbox1->setTitle(tr("Search Engine"));
         QComboBox* src_en_text = new QComboBox();
-        src_en_text->insertItem(0, QIcon(":/res/fav/google.png"), tr("Google"));
+        src_en_text->insertItem(0, QIcon(":/res/fav/web.png"), tr("Other"));
         src_en_text->insertItem(0, QIcon(":/res/fav/yandex.png"), tr("Yandex"));
         src_en_text->insertItem(0, QIcon(":/res/fav/ecosia.png"), tr("Ecosia"));
-        src_en_text->setCurrentText(QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
-        fdvbox->addWidget(src_en_text);
-        QLabel* bg_lbl = new QLabel(tr("Background Image"));
-        fdvbox->addWidget(bg_lbl);
+        QString currentSpeeddialSearchEngine = QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString();
+        gvbox->addWidget(src_en_text);
+        QLineEdit* oth_src_en_text=new QLineEdit();
+        oth_src_en_text->setPlaceholderText("http://your-favourite-search-string");
+        gvbox->addWidget(oth_src_en_text);
+        oth_src_en_text->hide();
+        if(currentSpeeddialSearchEngine == "Yandex" || currentSpeeddialSearchEngine == "Ecosia")
+            src_en_text->setCurrentText(currentSpeeddialSearchEngine);
+        else{
+            src_en_text->setCurrentText(currentSpeeddialSearchEngine);
+            oth_src_en_text->setText(currentSpeeddialSearchEngine);
+            if(oth_src_en_text->isHidden())
+                oth_src_en_text->show();
+        }
+        connect(src_en_text,&QComboBox::currentTextChanged,this,[this,oth_src_en_text](const QString s){
+            if(s=="Other"){
+                if(!oth_src_en_text->isVisible())
+                    oth_src_en_text->show();
+            }else{
+                if(oth_src_en_text->isVisible())
+                    oth_src_en_text->hide();
+            }
+        });
+        fdvbox->addWidget(gbox1);
+        QGroupBox* gbox2 = new QGroupBox();
+        gbox2->setTitle(tr("Background Image"));
+        QVBoxLayout* gvbox2=new QVBoxLayout();
+        gbox2->setLayout(gvbox2);
         QPushButton* bg_img = new QPushButton(tr("Choose Image"));
         connect(bg_img,&QPushButton::clicked,this,[this]{
             QFileDialog* f=new QFileDialog();
             sdBgimage=f->getOpenFileUrl(nullptr,tr("Speed Dial : Background"),QDir::homePath(),tr("Image Files (*.png *.jpg *.jpeg)")).toString();
         });
-        fdvbox->addWidget(bg_img);
+        gvbox2->addWidget(bg_img);
+        fdvbox->addWidget(gbox2);
         fd->setFixedSize(300,200);
         fd->setLayout(fdvbox);
         fd->move(view()->mapToGlobal(QPoint(view()->width()-320,20)));
@@ -275,8 +303,13 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         } else {
             QSettings("Tarptaeya", "Crusta").setValue("speeddial_bgimage",sdBgimage);
         }
-        QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine",src_en_text->currentText());
-        SpeedDial().save(sdBgimage, src_en_text->currentText());
+        if(src_en_text->currentText()=="Other"){
+            currentSpeeddialSearchEngine = oth_src_en_text->text();
+        }else{
+            currentSpeeddialSearchEngine = src_en_text->currentText();
+        }
+        QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine",currentSpeeddialSearchEngine);
+        SpeedDial().save(sdBgimage, currentSpeeddialSearchEngine);
         this->load(this->url());
         return true;
     }else{
