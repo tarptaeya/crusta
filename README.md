@@ -2,6 +2,8 @@
 
 ## About
 
+[![Download Crusta Browser](https://img.shields.io/sourceforge/dt/crustabrowser.svg)](https://sourceforge.net/projects/crustabrowser/files/latest/download)
+
 Crusta is blazingly fast full feature web browser with unique features. Crusta's aim is to provide a rich internet experience to users. We believe in internet freedom and never collect any information of our users.
 
 ![Crusta Image](http://crustabrowser.com/img/crusta.png)
@@ -46,6 +48,20 @@ Crusta come with text to speech which can read any text over the webpages or oth
 
 ## Download
 
-- For Windows operating system, Crusta binaries are available here.
-- For Arch Linux use https://aur.archlinux.org/packages/crusta-browser-git/ (Thanks to @mmetak)
-- For other OS(es) see the Building Crusta from Source wiki page.
+- For Windows operating system, Crusta binaries are available [here](https://sourceforge.net/projects/crustabrowser/).
+- For Arch Linux use https://aur.archlinux.org/packages/crusta-browser-git/ (Thanks to [@mmetak](https://github.com/mmetak)).
+- For other OS(es) see the Building Crusta from Source [wiki page](https://github.com/CrustaBrowser/CrustaBrowser/wiki/Building-Crusta-from-Source).
+
+### Contributing
+
+Crusta is an open source web-browser, lincensed under GPLv3. Crusta primarily focuses to power the user and you have full control over the source to customise Crusta according to your needs.
+
+Ways in which you can contribute towards Crusta
+- Report a Bug
+- Open an Issue
+- Suggestions for new features
+- Translations
+- Pull Requests
+- Following Crusta on [twitter](http://twitter.com/crustabrowser)
+
+Please note that we use C++/Qt ,JS and CSS for Crusta, so please contribute in these languages only. 
