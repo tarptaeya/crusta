@@ -52,7 +52,7 @@ Crusta come with text to speech which can read any text over the webpages or oth
 - For Arch Linux use https://aur.archlinux.org/packages/crusta-browser-git/ (Thanks to [@mmetak](https://github.com/mmetak)).
 - For other OS(es) see the Building Crusta from Source [wiki page](https://github.com/CrustaBrowser/CrustaBrowser/wiki/Building-Crusta-from-Source).
 
-### Contributing
+## Contributing
 
 Crusta is an open source web-browser, lincensed under GPLv3. Crusta primarily focuses to power the user and you have full control over the source to customise Crusta according to your needs.
 
