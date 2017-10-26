@@ -43,3 +43,9 @@ Ever come across a color which you wish to know? Crusta allows you to pick any s
 
 - ### Text To Speech
 Crusta come with text to speech which can read any text over the webpages or other files too!
+
+## Download
+
+- For Windows operating system, Crusta binaries are available here.
+- For Arch Linux use https://aur.archlinux.org/packages/crusta-browser-git/ (Thanks to @mmetak)
+- For other OS(es) see the Building Crusta from Source wiki page.
