@@ -1,27 +1,67 @@
 ![Banner](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/banner.png) 
 
+## About
+
 Crusta is blazingly fast full feature web browser with unique features. Crusta's aim is to provide a rich internet experience to users. We believe in internet freedom and never collect any information of our users.
-Try out the new open source Crusta Browser, it's free to use and always be.
 
-We would be happy to recieve a pull request from you. You can always contribute to Crusta Browser by forking the Github repository. You can also contribute by making new Themes and Translations for Crusta Browser. Crusta Browser is a open source projected licensed under GPLv3.
+## Features
 
-You can always contact Crusta Browser at : contact@crustabrowser.com
+### Built in Split Tabs
+Crusta gives you the power to split tabs on the same window so you can multitask easily.
 
-[![Download CrustaBrowser](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/crustabrowser/files/latest/download)
+![Split Tabs](http://crustabrowser.com/img/features/splittab.png)
 
-## How to Compile ##
+### Side Panel for your personal feeds
+With side panel, you can easily organise your social and news feed always on the side of browser without changing tabs.
 
-1. Clone the repository via
+![Side Panel](http://crustabrowser.com/img/features/sidepanel.png)
 
-```$ git clone git://github.com/CrustaBrowser/CrustaBrowser.git```
+### Go with Browser Presentation!
+With presentation mode in Crusta, you can easily present your presentations made using Prezi or ImpressJs.
 
-2. Build it in release mode by qt creator or use qmake.
+![Presentation Mode](http://crustabrowser.com/img/features/presentationmode.png)
 
-3. Add the following folders to your build(release) directory
-    * 3rd_party
-    * speeddial
-  
- as given seperated in repo
- 
-4. All done - you are now ready to explore Crusta
+### JavaScript Editor!
+You can now inject your own JavaScript code into webpage without diving into debugging mode.
 
+![JavaScript Editor](http://crustabrowser.com/img/features/runjs.png)
+
+### Edit Browser Identification
+With Edit UA option, you can edit your browser identification and even the platform which you are on.
+
+![Edit UA String](http://crustabrowser.com/img/features/uastring.png)
+
+### View Pdf in Browser!
+Crusta uses the power of pdfjs which lets you view all the pdf documents on the web.
+
+![Pdf](http://crustabrowser.com/img/features/pdf.png)
+
+### Restore session and even tabs
+Crusta can restore closed tabs and your previous browser session even after your pc reboots.
+
+![Restore session](http://crustabrowser.com/img/features/restore.png)
+
+### Scrollable Tabs!
+Forget about clicking on tabs to switch them, just scroll over tab bar to switch tabs.
+
+![Scrollable Tabs](http://crustabrowser.com/img/features/scroll.gif)
+
+### One Click Controls
+Crusta gives you full controll to operate it with one-click controls, whether capturing screen-shots or set home page or edit search preference!
+
+![One Click Controls](http://crustabrowser.com/img/features/oneclick.gif)
+
+### Docked Dev Tools
+Crusta comes with docked dev tools to efficiently debug webpages without compromising the screen width.
+
+![Docked Dev Tools](http://crustabrowser.com/img/features/debugger.png)
+
+### Color Picker
+Ever come across a color which you wish to know? Crusta allows you to pick any screen color and copy it to clipboard.
+
+![Color Picker](http://crustabrowser.com/img/features/pickcolor.png)
+
+### Text To Speech
+Crusta come with text to speech which can read any text over the webpages or other files too!
+
+![Text to Speech](http://crustabrowser.com/img/features/texttospeech.png)
