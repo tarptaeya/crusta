@@ -68,6 +68,7 @@ public:
     bool preventAlert;
     QString agent;
     void loadUAString();
+    QString sdBgimage;
     PrivateWebPage(QWebEngineProfile* profile,QObject* parent=0);
 };
 
