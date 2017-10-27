@@ -34,6 +34,8 @@
 #include <QComboBox>
 #include <QSettings>
 #include <QGroupBox>
+#include <QRadioButton>
+#include <QColorDialog>
 
 
 Profile::Profile(){
@@ -284,17 +286,40 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         });
         fdvbox->addWidget(gbox1);
         QGroupBox* gbox2 = new QGroupBox();
-        gbox2->setTitle(tr("Background Image"));
+        gbox2->setTitle(tr("Background"));
         QVBoxLayout* gvbox2=new QVBoxLayout();
         gbox2->setLayout(gvbox2);
+        QRadioButton* solidOption = new QRadioButton(tr("Use Solid Color"));
+        QRadioButton* imageOption = new QRadioButton(tr("Use Image"));
+        gvbox2->addWidget(solidOption);
+        gvbox2->addWidget(imageOption);
+        QPushButton* hidden = new QPushButton(); // hidden button to fix the default button
+        hidden->setDefault(true);
+        gvbox2->addWidget(hidden);
+        hidden->hide();
+        QPushButton* bg_sld = new QPushButton(tr("Choose Solid Color"));
+        connect(bg_sld,&QPushButton::clicked,this,[this]{
+            QColorDialog* f=new QColorDialog();
+            sdBgimage = f->getColor().name();
+        });
+        gvbox2->addWidget(bg_sld);
         QPushButton* bg_img = new QPushButton(tr("Choose Image"));
         connect(bg_img,&QPushButton::clicked,this,[this]{
             QFileDialog* f=new QFileDialog();
             sdBgimage=f->getOpenFileUrl(nullptr,tr("Speed Dial : Background"),QDir::homePath(),tr("Image Files (*.png *.jpg *.jpeg)")).toString();
         });
         gvbox2->addWidget(bg_img);
+        connect(solidOption,&QRadioButton::toggled,this,[this,bg_sld,bg_img,solidOption]{
+            if(solidOption->isChecked()){
+                bg_sld->setEnabled(true);
+                bg_img->setEnabled(false);
+            }else{
+                bg_sld->setDisabled(true);
+                bg_img->setEnabled(true);
+            }
+        });
         fdvbox->addWidget(gbox2);
-        fd->setFixedSize(300,200);
+        fd->setFixedSize(300,300);
         fd->setLayout(fdvbox);
         fd->move(view()->mapToGlobal(QPoint(view()->width()-320,20)));
         fd->exec();
