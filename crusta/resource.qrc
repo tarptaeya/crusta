@@ -32,5 +32,6 @@
         <file>res/fav/ecosia.png</file>
         <file>res/fav/yandex.png</file>
         <file>res/fav/web.png</file>
+        <file>res/drawables/up.svg</file>
     </qresource>
 </RCC>

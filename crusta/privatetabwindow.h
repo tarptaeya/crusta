@@ -47,6 +47,7 @@ public:
     QWidget* tab=new QWidget();
     QPushButton* back_btn=new QPushButton();
     QPushButton* fwd_btn=new QPushButton();
+    QPushButton* up_btn=new QPushButton();
     QPushButton* load_btn=new QPushButton();
     QPushButton* time_lbl=new QPushButton();
     QPushButton* home_btn=new QPushButton();

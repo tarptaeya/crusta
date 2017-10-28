@@ -93,6 +93,12 @@ void PrivateTabWindow::createControls(){
     this->fwd_btn->setIcon(QIcon(":/res/drawables/forward.svg"));
     connect(this->fwd_btn,&QPushButton::clicked,this->view->returnPrivateView(),&QWebEngineView::forward);
     hbox->addWidget(this->fwd_btn);
+    this->up_btn->setFlat(true);
+    this->up_btn->setIcon(QIcon(":/res/drawables/up.svg"));
+    connect(up_btn,&QPushButton::clicked,this,[this]{
+        view->page()->runJavaScript("window.scrollTo(0,0)");
+    });
+    hbox->addWidget(this->up_btn);
     this->load_btn->setFlat(true);
     this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
     connect(this->load_btn,&QPushButton::clicked,this->view->returnPrivateView(),&QWebEngineView::reload);
@@ -135,6 +141,7 @@ void PrivateTabWindow::createControls(){
     vbox->setSpacing(0);
     back_btn->setFixedSize(30,30);
     fwd_btn->setFixedSize(30,30);
+    up_btn->setFixedSize(30,30);
     load_btn->setFixedSize(30,30);
     time_lbl->setFixedSize(50,30);
     home_btn->setFixedSize(30,30);
