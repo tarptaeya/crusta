@@ -36,6 +36,10 @@
 #include <QStringListModel>
 #include <QDir>
 #include <QWebEngineProfile>
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QComboBox>
+
 
 void PrivateAddressLineEdit::createAddressLineEdit(){
     siteinfo_btn->move(3,3);
@@ -129,45 +133,74 @@ void PrivateAddressLineEdit::loadSearchString(){
 
 void PrivateAddressLineEdit::setDefaultSearch(){
     QDialog* w=new QDialog();
-    QLabel* lbl=new QLabel(tr("Search String"));
-    QLineEdit* url=new QLineEdit();
-    url->setText(defaultSearch);
-
-    QCompleter* c=new QCompleter();
-    QStringListModel* m=new QStringListModel();
-    QStringList l;
-    l.append("https://www.ecosia.org/search?tt=crusta&q=");
-    m->setStringList(l);
-    c->setModel(m);
-    c->setFilterMode(Qt::MatchContains);
-    url->setCompleter(c);
-
-    QHBoxLayout* hbox=new QHBoxLayout();
-    hbox->addWidget(lbl);
-    hbox->addWidget(url);
+    QVBoxLayout* vbox = new QVBoxLayout();
+    QGroupBox* gbox = new QGroupBox();
+    gbox->setTitle(tr("Search Engine Settings"));
+    QVBoxLayout* gvbox = new QVBoxLayout();
+    gbox->setLayout(gvbox);
+    QRadioButton* defaultOption = new QRadioButton(tr("Use default search engines"));
+    QRadioButton* customOption = new QRadioButton(tr("Use custom search string"));
+    gvbox->addWidget(defaultOption);
+    gvbox->addWidget(customOption);
+    QComboBox* srch_cmb = new QComboBox();
+    srch_cmb->addItem(QIcon(":/res/fav/ecosia.png"), tr("Ecosia"));
+    srch_cmb->addItem(QIcon(":/res/fav/yandex.png"), tr("Yandex"));
+    gvbox->addWidget(srch_cmb);
+    QLineEdit* cstm_srch = new QLineEdit();
+    cstm_srch->setText(defaultSearch);
+    cstm_srch->setPlaceholderText(tr("http://your-favourite-search-engine-string"));
+    gvbox->addWidget(cstm_srch);
+    if(defaultSearch=="http://www.yandex.ru/?clid=2308389&q="||defaultSearch=="https://www.ecosia.org/search?tt=crusta&q="){
+        defaultOption->setChecked(true);
+        cstm_srch->hide();
+        if(defaultSearch.contains("yandex")){
+            srch_cmb->setCurrentIndex(1);
+        }else if(defaultSearch.contains("ecosia")){
+            srch_cmb->setCurrentIndex(0);
+        }
+    }else{
+        srch_cmb->setDisabled(true);
+        cstm_srch->show();
+        customOption->setChecked(true);
+    }
+    connect(customOption,&QRadioButton::toggled,this,[this,customOption,cstm_srch,srch_cmb]{
+        if(customOption->isChecked()){
+            cstm_srch->show();
+            srch_cmb->setDisabled(true);
+        }else{
+            cstm_srch->hide();
+            srch_cmb->setEnabled(true);
+        }
+    });
+    vbox->addWidget(gbox);
     QHBoxLayout* h1box=new QHBoxLayout();
     QPushButton* cncl=new QPushButton(tr("Cancel"));
     QPushButton* ok=new QPushButton(tr("Save"));
     h1box->addWidget(new QLabel());
     h1box->addWidget(cncl);
     h1box->addWidget(ok);
+    ok->setDefault(true);
     cncl->setFixedWidth(100);
     ok->setFixedWidth(100);
-    QVBoxLayout* vbox=new QVBoxLayout();
-    vbox->addLayout(hbox);
     vbox->addLayout(h1box);
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Set Default Search Engine");
-    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
     connect(cncl,&QPushButton::clicked,w,&QDialog::reject);
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
         return;
     }
-    if(url->text()=="")
-        return;
-    QString new_string=url->text();
+    QString new_string;
+    if(defaultOption->isChecked()){
+        if(srch_cmb->currentText()=="Ecosia"){
+            new_string = "https://www.ecosia.org/search?tt=crusta&q=";
+        }else if(srch_cmb->currentText()=="Yandex"){
+            new_string = "http://www.yandex.ru/?clid=2308389&q=";
+        }
+    }else{
+        new_string = cstm_srch->text();
+    }
     defaultSearch=new_string;
     QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
