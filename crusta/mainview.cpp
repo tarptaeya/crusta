@@ -339,8 +339,12 @@ MainView::MainView(){
        currentVersion.close();
     }
 
+    if(current_version==new_version){
+        QDir().rmdir(QDir::homePath()+"/.crusta_db/setup.exe");
+    }
+
     QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
-    if(!(f.exists() || current_version == new_version)){
+    if(!f.exists()){
         QWebEngineProfile p;
         p.setHttpUserAgent("");
         QStringList ua=p.httpUserAgent().split(" ");
@@ -361,7 +365,7 @@ MainView::MainView(){
     }
 
     QFile f_(QDir::homePath()+"/.crusta_db/permissions.txt");
-    if(!(f_.exists() || current_version == new_version)){
+    if(!f_.exists()){
         f_.open(QIODevice::WriteOnly);
         QTextStream in(&f_);
         in<<"1\n1\n0\n1\n1\n1\n";
@@ -375,7 +379,7 @@ MainView::MainView(){
     vf_.close();
 
     QFile fi(QDir::homePath()+"/.crusta_db/startpage.txt");
-    if(!(fi.exists() || current_version == new_version)){
+    if(!fi.exists()){
         fi.open(QIODevice::WriteOnly);
         QTextStream in(&fi);
         in<< "whatsapp>>>>>https://web.whatsapp.com/\n"
@@ -390,19 +394,11 @@ MainView::MainView(){
             QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine","Ecosia");
         }
         sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(),QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
-
     }
 
-    QFile fi_(QDir::homePath()+"/.crusta_db/speeddial/index.html");
-    if(!(fi_.exists() || current_version == new_version)){
-        SpeedDial* sd=new SpeedDial();
-        if(QLocale().languageToString(QLocale().system().language()) == "Russian"){
-            QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine","Yandex");
-        }else{
-            QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine","Ecosia");
-        }
-        sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(),QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
-    }
+    SpeedDial* sd=new SpeedDial();
+    sd->configure();
+    sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(),QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
 
     if(!QDir(QDir::homePath()+"/.crusta_db/sidepanel").exists()){
         QDir().mkdir(QDir::homePath()+"/.crusta_db/sidepanel");
@@ -474,6 +470,9 @@ void MainView::createView(){
     side_pane->setContentsMargins(0,0,0,0);
     side_pane->addWidget(pane);
     this->toggle_spane_action->setText(tr("&Hide Side Panel"));
+    if(QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility").isNull()){
+        QSettings("Tarptaeya", "Crusta").setValue("sidepanel_visibility", 1);
+    }
     if(QSettings("Tarptaeya", "Crusta").value("sidepanel_visibility") == 0){
         this->toggle_spane_action->setText(tr("&Show Side Panel"));
         pane->hide();
