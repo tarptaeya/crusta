@@ -314,8 +314,33 @@ MainView::MainView(){
     limitCompleterFile();
     limitHistoryFile();
 
+    QString new_version;
+    QFile newVersion(QDir::homePath()+"/.crusta_db/new_version.txt");
+    if (newVersion.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&newVersion);
+       while (!in.atEnd())
+       {
+          new_version = in.readLine();
+          std::cout<<new_version.toStdString()<<std::endl;
+       }
+       newVersion.close();
+    }
+
+    QString current_version;
+    QFile currentVersion(QDir::homePath()+"/.crusta_db/current.txt");
+    if (currentVersion.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&currentVersion);
+       while (!in.atEnd())
+       {
+          current_version = in.readLine();
+       }
+       currentVersion.close();
+    }
+
     QFile f(QDir::homePath()+"/.crusta_db/settings.txt");
-    if(!f.exists()){
+    if(!(f.exists() || current_version == new_version)){
         QWebEngineProfile p;
         p.setHttpUserAgent("");
         QStringList ua=p.httpUserAgent().split(" ");
@@ -324,15 +349,19 @@ MainView::MainView(){
         for(int i=0;i<len-1;i++){
             new_string+=ua[i]+" ";
         }
-        new_string+="Crusta/1.4.2 "+ua[len-1];
+        new_string+="Crusta/1.4.3 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
-        in<<"engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nIncognito engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nUA String>>>>>"+new_string+"\nHome page>>>>>\nIncognito Home page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        if(QLocale().languageToString(QLocale().system().language()) == "Russian"){
+            in<<"engine>>>>>http://www.yandex.ru/?clid=2308389&q=\nIncognito engine>>>>>http://www.yandex.ru/?clid=2308389&q=\nUA String>>>>>"+new_string+"\nHome page>>>>>\nIncognito Home page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        }else{
+            in<<"engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nIncognito engine>>>>>https://www.ecosia.org/search?tt=crusta&q=\nUA String>>>>>"+new_string+"\nHome page>>>>>\nIncognito Home page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
+        }
         f.close();
     }
 
     QFile f_(QDir::homePath()+"/.crusta_db/permissions.txt");
-    if(!f_.exists()){
+    if(!(f_.exists() || current_version == new_version)){
         f_.open(QIODevice::WriteOnly);
         QTextStream in(&f_);
         in<<"1\n1\n0\n1\n1\n1\n";
@@ -342,26 +371,36 @@ MainView::MainView(){
     QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
     vf_.open(QIODevice::WriteOnly);
     QTextStream in(&vf_);
-    in<<"1.4.1";  // current local version of crusta
+    in<<"1.4.3";  // current local version of crusta
     vf_.close();
 
     QFile fi(QDir::homePath()+"/.crusta_db/startpage.txt");
-    if(!fi.exists()){
+    if(!(fi.exists() || current_version == new_version)){
         fi.open(QIODevice::WriteOnly);
         QTextStream in(&fi);
         in<< "whatsapp>>>>>https://web.whatsapp.com/\n"
             "twitter>>>>>https://twitter.com\n"
             "tumblr>>>>>https://tumblr.com\nfacebook>>>>>https://facebook.com\n"
-            "googleplus>>>>>https://plus.google.com\nlinkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
+            "yandex>>>>>http://www.yandex.ru/?clid=2308388\nlinkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
         fi.close();
         SpeedDial* sd=new SpeedDial();
+        if(QLocale().languageToString(QLocale().system().language()) == "Russian"){
+            QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine","Yandex");
+        }else{
+            QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine","Ecosia");
+        }
         sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(),QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
 
     }
 
     QFile fi_(QDir::homePath()+"/.crusta_db/speeddial/index.html");
-    if(!fi_.exists()){
+    if(!(fi_.exists() || current_version == new_version)){
         SpeedDial* sd=new SpeedDial();
+        if(QLocale().languageToString(QLocale().system().language()) == "Russian"){
+            QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine","Yandex");
+        }else{
+            QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine","Ecosia");
+        }
         sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(),QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
     }
 
@@ -402,31 +441,6 @@ MainView::MainView(){
 
     QString new_version_file = QDir::homePath()+"/.crusta_db/new_version.txt";
     QProcess::startDetached(QString("powershell -Command \"(New-Object Net.WebClient).DownloadFile('http://crustabrowser.com/version/current.txt', '"+new_version_file+"')\""));
-
-    QString new_version;
-    QFile newVersion(QDir::homePath()+"/.crusta_db/new_version.txt");
-    if (newVersion.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&newVersion);
-       while (!in.atEnd())
-       {
-          new_version = in.readLine();
-          std::cout<<new_version.toStdString()<<std::endl;
-       }
-       newVersion.close();
-    }
-
-    QString current_version;
-    QFile currentVersion(QDir::homePath()+"/.crusta_db/current.txt");
-    if (currentVersion.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&currentVersion);
-       while (!in.atEnd())
-       {
-          current_version = in.readLine();
-       }
-       currentVersion.close();
-    }
 
     QString platform=QSysInfo().productType();
     if(platform == QString("windows")){

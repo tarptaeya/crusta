@@ -33,7 +33,7 @@ int main(int argc, char *argv[]){
     QApplication a(argc, argv);
     QtWebEngine::initialize();
     a.setApplicationName(QString("Crusta"));
-    a.setApplicationVersion(QString("1.4.0"));
+    a.setApplicationVersion(QString("1.4.3"));
     a.setAttribute(Qt::AA_EnableHighDpiScaling);
     Q_INIT_RESOURCE(resource); // initialised the resource file;
 
