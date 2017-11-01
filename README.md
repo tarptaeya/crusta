@@ -2,8 +2,6 @@
 
 ## About
 
-[![Download Crusta Browser](https://img.shields.io/sourceforge/dt/crustabrowser.svg)](https://sourceforge.net/projects/crustabrowser/files/latest/download)
-
 Crusta is blazingly fast full feature web browser with unique features. Crusta's aim is to provide a rich internet experience to users. We believe in internet freedom and never collect any information of our users.
 
 ![Crusta Image](http://crustabrowser.com/img/crusta.png)
