@@ -505,6 +505,7 @@ void PrivateWebView::download(QWebEngineDownloadItem *download_item){
     QFile file(QDir::homePath()+"/.crusta_db/downloads.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream in(&file);
+    in.setCodec("UTF-8");
     in << download_item->path()+"\n";
     file.close();
 }
@@ -663,6 +664,7 @@ void PrivateWebView::search(QString text){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();

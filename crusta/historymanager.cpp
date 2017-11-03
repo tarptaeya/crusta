@@ -53,6 +53,7 @@ void HistoryManager::createManager(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -117,6 +118,7 @@ void HistoryManager::clearAll(){
     QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream out(&file);
+    out.setCodec("UTF-8");
     out <<"";
     file.close();
     display_area->clear();
@@ -136,12 +138,13 @@ void HistoryManager::openUrl(){
 
 void HistoryManager::clearEntry(){
     QTreeWidgetItem* item=display_area->currentItem();
-    QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QString forbidden=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
     QFile f(QDir::homePath()+"/.crusta_db/history.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -179,6 +182,7 @@ void HistoryManager::setFilterDate(){
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            while (!in.atEnd())
            {
               QString line = in.readLine();
@@ -198,6 +202,7 @@ void HistoryManager::setFilterDate(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();

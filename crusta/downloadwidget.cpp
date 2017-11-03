@@ -108,13 +108,14 @@ void DownloadWidget::changeLayout_Completed(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
             if(line.split(">>>>>")[0]!=forbidden)
                 s.append(line + "\n");
             else{
-                s.append(path+">>>>>"+"Completed"+">>>>>"+QDateTime::currentDateTime().toString().toLatin1()+"\n");
+                s.append(path+">>>>>"+"Completed"+">>>>>"+QDateTime::currentDateTime().toString().toUtf8()+"\n");
             }
         }
         f.resize(0);
@@ -144,13 +145,14 @@ void DownloadWidget::changeLayout_Canceled(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
             if(line.split(">>>>>")[0]!=forbidden)
                 s.append(line + "\n");
             else{
-                s.append(path+">>>>>"+"Canceled"+">>>>>"+QDateTime::currentDateTime().toString().toLatin1()+"\n");
+                s.append(path+">>>>>"+"Canceled"+">>>>>"+QDateTime::currentDateTime().toString().toUtf8()+"\n");
             }
         }
         f.resize(0);
@@ -180,13 +182,14 @@ void DownloadWidget::changeLayout_Interrupted(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
             if(line.split(">>>>>")[0]!=forbidden)
                 s.append(line + "\n");
             else{
-                s.append(path+">>>>>"+"Interrupted"+">>>>>"+QDateTime::currentDateTime().toString().toLatin1()+"\n");
+                s.append(path+">>>>>"+"Interrupted"+">>>>>"+QDateTime::currentDateTime().toString().toUtf8()+"\n");
             }
         }
         f.resize(0);
@@ -234,6 +237,7 @@ void DownloadWidget::removeWidget(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();

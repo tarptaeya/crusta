@@ -498,6 +498,7 @@ void PrivateMainView::addNormalTab(){
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            while (!in.atEnd())
            {
               QString line = in.readLine();
@@ -523,6 +524,7 @@ void PrivateMainView::addNormalTab(){
             {
                 QString s;
                 QTextStream t(&f);
+                t.setCodec("UTF-8");
                 while(!t.atEnd())
                 {
                     QString line = t.readLine();
@@ -548,6 +550,7 @@ void PrivateMainView::addNormalTab(){
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            while (!in.atEnd())
            {
               QString line = in.readLine();
@@ -749,7 +752,8 @@ void PrivateMainView::bookmarkTab(){
     QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
+    out.setCodec("UTF-8");
+    out << webview->title().toUtf8()+">>>>>"+webview->url().toString().toUtf8()+">>>>>"+"\n";
     file.close();
 }
 
@@ -763,7 +767,8 @@ void PrivateMainView::bookmarkAllTabs(){
         QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream out(&file);
-        out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
+        out.setCodec("UTF-8");
+        out << webview->title().toUtf8()+">>>>>"+webview->url().toString().toUtf8()+">>>>>"+"\n";
         file.close();
     }
 }

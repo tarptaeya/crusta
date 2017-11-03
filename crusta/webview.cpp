@@ -563,6 +563,7 @@ void WebView::download(QWebEngineDownloadItem *download_item){
     QFile file(QDir::homePath()+"/.crusta_db/downloads.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream in(&file);
+    in.setCodec("UTF-8");
     in << download_item->path()+"\n";
     file.close();
 }
@@ -718,7 +719,8 @@ void WebView::loadFinished(){
     QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out << title().toLatin1()+">>>>>"+url().toString().toLatin1()+">>>>>"+QDate::currentDate().toString().toLatin1()+"\n";
+    out.setCodec("UTF-8");
+    out << title().toUtf8()+">>>>>"+url().toString().toUtf8()+">>>>>"+QDate::currentDate().toString().toUtf8()+"\n";
     file.close();
 }
 
@@ -735,6 +737,7 @@ void WebView::search(QString text){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -759,6 +762,7 @@ void WebView::loadPermissions(){
     if(f.exists()){
         f.open(QIODevice::ReadOnly);
         QTextStream in(&f);
+        in.setCodec("UTF-8");
         while (!in.atEnd()){
            QString line = in.readLine();
            slist.append(line);

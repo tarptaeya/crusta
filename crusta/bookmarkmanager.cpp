@@ -85,6 +85,7 @@ void BookmarkManager::loadBookmarks(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -123,12 +124,13 @@ void BookmarkManager::openUrl(){
 
 void BookmarkManager::clearEntry(){
     QTreeWidgetItem* item=display->currentItem();
-    QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QString forbidden=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
     QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -146,15 +148,16 @@ void BookmarkManager::saveDescription(){
     if(display->currentItem()==NULL)
         return;
     QTreeWidgetItem* item=display->currentItem();
-    QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QString forbidden=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
     item->setText(2,description->text());
     description->setText("");
-    QString newline=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QString newline=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
     QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -176,6 +179,7 @@ void BookmarkManager::searchBookmark(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -257,6 +261,7 @@ void PrivateBookmarkManager::loadBookmarks(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -297,12 +302,13 @@ void PrivateBookmarkManager::openUrl(){
 
 void PrivateBookmarkManager::clearEntry(){
     QTreeWidgetItem* item=pdisplay->currentItem();
-    QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QString forbidden=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
     QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -320,15 +326,16 @@ void PrivateBookmarkManager::saveDescription(){
     if(pdisplay->currentItem()==NULL)
         return;
     QTreeWidgetItem* item=pdisplay->currentItem();
-    QString forbidden=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QString forbidden=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
     item->setText(2,description->text());
     description->setText("");
-    QString newline=item->text(0).toLatin1()+">>>>>"+item->text(1).toLatin1()+">>>>>"+item->text(2).toLatin1();
+    QString newline=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
     QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     if(f.open(QIODevice::ReadWrite | QIODevice::Text))
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -350,6 +357,7 @@ void PrivateBookmarkManager::searchBookmark(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();

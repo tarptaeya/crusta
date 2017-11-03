@@ -98,6 +98,7 @@ void AddressLineEdit::createCompleter(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -114,6 +115,7 @@ void AddressLineEdit::updateCompleter(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -125,7 +127,8 @@ void AddressLineEdit::updateCompleter(){
     QFile file(QDir::homePath()+"/.crusta_db/completer.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out<<s.toLatin1()+"\n";
+    out.setCodec("UTF-8");
+    out<<s.toUtf8()+"\n";
     file.close();
 }
 
@@ -134,6 +137,7 @@ void AddressLineEdit::loadSearchString(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -226,6 +230,7 @@ void AddressLineEdit::setDefaultSearch(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -250,6 +255,7 @@ void AddressLineEdit::setUAString(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -297,6 +303,7 @@ void AddressLineEdit::setUAString(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -327,6 +334,7 @@ void AddressLineEdit::restoreUAString(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();

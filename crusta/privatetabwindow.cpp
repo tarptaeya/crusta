@@ -222,6 +222,7 @@ void PrivateTabWindow::bookmarkPage(){
     if (input.open(QIODevice::ReadOnly))
     {
        QTextStream in(&input);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -263,12 +264,13 @@ void PrivateTabWindow::bookmarkPage(){
     bkmrk_ppup->setFixedSize(250,170);
     connect(remove_btn,&QPushButton::clicked,this,[this,bkmrk_ppup,description]{
         this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
-        QString forbidden=this->view->returnPrivateView()->title().toLatin1()+">>>>>"+this->view->returnPrivateView()->url().toString().toLatin1()+">>>>>"+description->text().toLatin1();
+        QString forbidden=this->view->returnPrivateView()->title().toUtf8()+">>>>>"+this->view->returnPrivateView()->url().toString().toUtf8()+">>>>>"+description->text().toUtf8();
         QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         if(f.open(QIODevice::ReadWrite | QIODevice::Text))
         {
             QString s;
             QTextStream t(&f);
+            t.setCodec("UTF-8");
             while(!t.atEnd())
             {
                 QString line = t.readLine();
@@ -289,6 +291,7 @@ void PrivateTabWindow::bookmarkPage(){
         if (input.open(QIODevice::ReadOnly))
         {
            QTextStream in(&input);
+           in.setCodec("UTF-8");
            while (!in.atEnd())
            {
               QString line = in.readLine();
@@ -310,7 +313,8 @@ void PrivateTabWindow::bookmarkPage(){
         QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream out(&file);
-        out << this->view->returnPrivateView()->title().toLatin1()+">>>>>"+this->view->returnPrivateView()->url().toString().toLatin1()+">>>>>"+description->text().toLatin1()+"\n";
+        out.setCodec("UTF-8");
+        out << this->view->returnPrivateView()->title().toUtf8()+">>>>>"+this->view->returnPrivateView()->url().toString().toUtf8()+">>>>>"+description->text().toUtf8()+"\n";
         file.close();
     }
 }
@@ -321,6 +325,7 @@ void PrivateTabWindow::updateStar(){
     if (input.open(QIODevice::ReadOnly))
     {
        QTextStream in(&input);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -410,6 +415,7 @@ void PrivateTabWindow::setHomePage(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();

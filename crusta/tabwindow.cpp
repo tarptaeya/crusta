@@ -87,6 +87,7 @@ void TabWindow::updateAddrBar(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -98,7 +99,8 @@ void TabWindow::updateAddrBar(){
     QFile file(QDir::homePath()+"/.crusta_db/completer.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out<<s.toLatin1()+"\n";
+    out.setCodec("UTF-8");
+    out<<s.toUtf8()+"\n";
     file.close();
 }
 
@@ -241,6 +243,7 @@ void TabWindow::bookmarkPage(){
     if (input.open(QIODevice::ReadOnly))
     {
        QTextStream in(&input);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -282,12 +285,13 @@ void TabWindow::bookmarkPage(){
     bkmrk_ppup->setFixedSize(250,170);
     connect(remove_btn,&QPushButton::clicked,this,[this,bkmrk_ppup,description]{
         this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
-        QString forbidden=this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+description->text().toLatin1();
+        QString forbidden=this->view->returnView()->title().toUtf8()+">>>>>"+this->view->returnView()->url().toString().toUtf8()+">>>>>"+description->text().toUtf8();
         QFile f(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         if(f.open(QIODevice::ReadWrite | QIODevice::Text))
         {
             QString s;
             QTextStream t(&f);
+            t.setCodec("UTF-8");
             while(!t.atEnd())
             {
                 QString line = t.readLine();
@@ -308,6 +312,7 @@ void TabWindow::bookmarkPage(){
         if (input.open(QIODevice::ReadOnly))
         {
            QTextStream in(&input);
+           in.setCodec("UTF-8");
            while (!in.atEnd())
            {
               QString line = in.readLine();
@@ -329,7 +334,8 @@ void TabWindow::bookmarkPage(){
         QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream out(&file);
-        out << this->view->returnView()->title().toLatin1()+">>>>>"+this->view->returnView()->url().toString().toLatin1()+">>>>>"+description->text().toLatin1()+"\n";
+        out.setCodec("UTF-8");
+        out << this->view->returnView()->title().toUtf8()+">>>>>"+this->view->returnView()->url().toString().toUtf8()+">>>>>"+description->text().toUtf8()+"\n";
         file.close();
     }
 }
@@ -340,6 +346,7 @@ void TabWindow::updateStar(){
     if (input.open(QIODevice::ReadOnly))
     {
        QTextStream in(&input);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -429,6 +436,7 @@ void TabWindow::setHomePage(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -473,6 +481,7 @@ void TabWindow::loadCompleted(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();

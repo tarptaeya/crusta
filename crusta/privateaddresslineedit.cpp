@@ -100,6 +100,7 @@ void PrivateAddressLineEdit::createCompleter(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -115,6 +116,7 @@ void PrivateAddressLineEdit::loadSearchString(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -207,6 +209,7 @@ void PrivateAddressLineEdit::setDefaultSearch(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -231,6 +234,7 @@ void PrivateAddressLineEdit::setUAString(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -277,6 +281,7 @@ void PrivateAddressLineEdit::setUAString(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();
@@ -307,6 +312,7 @@ void PrivateAddressLineEdit::restoreUAString(){
     {
         QString s;
         QTextStream t(&f);
+        t.setCodec("UTF-8");
         while(!t.atEnd())
         {
             QString line = t.readLine();

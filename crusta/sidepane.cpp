@@ -55,6 +55,7 @@ SidePane::SidePane(MainView* m){
     if(!f_.exists()){
         f_.open(QIODevice::WriteOnly);
         QTextStream in(&f_);
+        in.setCodec("UTF-8");
         in<<"http://m.facebook.com\nhttp://m.twitter.com\nhttp://time.is\n";
         f_.close();
     }
@@ -62,6 +63,7 @@ SidePane::SidePane(MainView* m){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -215,6 +217,7 @@ SidePane::SidePane(PrivateMainView* m){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -367,7 +370,8 @@ void SidePane::addNewButton(){
     QFile file(QDir::homePath()+"/.crusta_db/sidepanel.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out << urledit->text().toLatin1()+"\n";
+    out.setCodec("UTF-8");
+    out << urledit->text().toUtf8()+"\n";
     file.close();
     SidePaneButton* new_btn=new SidePaneButton();
     new_btn->setIcon(QIcon(":/res/videos/sidepanel_loader.gif"));
@@ -432,6 +436,7 @@ void SidePaneButton::buttonContext(const QPoint &point){
         {
             QString s;
             QTextStream t(&f);
+            t.setCodec("UTF-8");
             while(!t.atEnd())
             {
                 QString line = t.readLine();

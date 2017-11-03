@@ -94,6 +94,7 @@ void PermissionDialog::savePermissions(){
     file.open(QIODevice::WriteOnly);
     file.resize(0);
     QTextStream out(&file);
+    out.setCodec("UTF-8");
     out << s;
     file.close();
     this->accept();
@@ -105,6 +106,7 @@ void PermissionDialog::loadPermissions(){
     if(f.exists()){
         f.open(QIODevice::ReadOnly);
         QTextStream in(&f);
+        in.setCodec("UTF-8");
         while (!in.atEnd()){
            QString line = in.readLine();
            slist.append(line);

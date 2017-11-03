@@ -80,7 +80,7 @@ void MainView::closeTab(int index){
     QFile file(QDir::homePath()+"/.crusta_db/session.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream in(&file);
-    in << u.toString().toLatin1()+"\n";
+    in << u.toString().toUtf8()+"\n";
     file.close();
     webview->load(QUrl("http://"));
     if(this->tabWindow->count()==1){
@@ -319,6 +319,7 @@ MainView::MainView(){
     if (newVersion.open(QIODevice::ReadOnly))
     {
        QTextStream in(&newVersion);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           new_version = in.readLine();
@@ -332,6 +333,7 @@ MainView::MainView(){
     if (currentVersion.open(QIODevice::ReadOnly))
     {
        QTextStream in(&currentVersion);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           current_version = in.readLine();
@@ -356,6 +358,7 @@ MainView::MainView(){
         new_string+="Crusta/1.4.3 "+ua[len-1];
         f.open(QIODevice::WriteOnly);
         QTextStream in(&f);
+        in.setCodec("UTF-8");
         if(QLocale().languageToString(QLocale().system().language()) == "Russian"){
             in<<"engine>>>>>http://www.yandex.ru/?clid=2308389&q=\nIncognito engine>>>>>http://www.yandex.ru/?clid=2308389&q=\nUA String>>>>>"+new_string+"\nHome page>>>>>\nIncognito Home page>>>>>\ntheme>>>>>"+defaultTheme+"\n";
         }else{
@@ -368,6 +371,7 @@ MainView::MainView(){
     if(!f_.exists()){
         f_.open(QIODevice::WriteOnly);
         QTextStream in(&f_);
+        in.setCodec("UTF-8");
         in<<"1\n1\n0\n1\n1\n1\n";
         f_.close();
     }
@@ -375,6 +379,7 @@ MainView::MainView(){
     QFile vf_(QDir::homePath()+"/.crusta_db/current.txt");
     vf_.open(QIODevice::WriteOnly);
     QTextStream in(&vf_);
+    in.setCodec("UTF-8");
     in<<"1.4.3";  // current local version of crusta
     vf_.close();
 
@@ -382,6 +387,7 @@ MainView::MainView(){
     if(!fi.exists()){
         fi.open(QIODevice::WriteOnly);
         QTextStream in(&fi);
+        in.setCodec("UTF-8");
         in<< "whatsapp>>>>>https://web.whatsapp.com/\n"
             "twitter>>>>>https://twitter.com\n"
             "tumblr>>>>>https://tumblr.com\nfacebook>>>>>https://facebook.com\n"
@@ -641,6 +647,7 @@ void MainView::addNormalTab(){
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            while (!in.atEnd())
            {
               QString line = in.readLine();
@@ -666,6 +673,7 @@ void MainView::addNormalTab(){
             {
                 QString s;
                 QTextStream t(&f);
+                t.setCodec("UTF-8");
                 while(!t.atEnd())
                 {
                     QString line = t.readLine();
@@ -700,6 +708,7 @@ void MainView::addNormalTab(){
         if (inputFile.open(QIODevice::ReadOnly))
         {
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            while (!in.atEnd())
            {
               QString line = in.readLine();
@@ -900,6 +909,7 @@ void MainView::clearHistory(){
     QFile file(QDir::homePath()+"/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream out(&file);
+    out.setCodec("UTF-8");
     out <<"";
     file.close();
 }
@@ -918,7 +928,8 @@ void MainView::bookmarkTab(){
     QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
+    out.setCodec("UTF-8");
+    out << webview->title().toUtf8()+">>>>>"+webview->url().toString().toUtf8()+">>>>>"+"\n";
     file.close();
 }
 
@@ -932,7 +943,8 @@ void MainView::bookmarkAllTabs(){
         QFile file(QDir::homePath()+"/.crusta_db/bookmarks.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream out(&file);
-        out << webview->title().toLatin1()+">>>>>"+webview->url().toString().toLatin1()+">>>>>"+"\n";
+        out.setCodec("UTF-8");
+        out << webview->title().toUtf8()+">>>>>"+webview->url().toString().toUtf8()+">>>>>"+"\n";
         file.close();
     }
 }
@@ -1043,6 +1055,7 @@ void MainView::closeWindow(){
     QFile file(QDir::homePath()+"/.crusta_db/session.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream in(&file);
+    in.setCodec("UTF-8");
     in << "";
     file.close();
     if(this->split_mode_action->text()==QString(tr("&Exit Split Mode"))){
@@ -1077,6 +1090,7 @@ void MainView::restoreSession(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -1140,6 +1154,7 @@ void MainView::loadTheme(){
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
        while (!in.atEnd())
        {
           QString line = in.readLine();
@@ -1159,6 +1174,7 @@ void MainView::limitCompleterFile(){
         QString s="";
         if (inputFile.open(QIODevice::ReadOnly)){
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            int cnt=0;
            while (!in.atEnd()){
               QString line = in.readLine();
@@ -1171,7 +1187,8 @@ void MainView::limitCompleterFile(){
         QFile file(QDir::homePath()+"/.crusta_db/completer.txt");
         file.open(QIODevice::WriteOnly);
         QTextStream out(&file);
-        out<<s.toLatin1();
+        out.setCodec("UTF-8");
+        out<<s.toUtf8();
         file.close();
     }
 }
@@ -1182,6 +1199,7 @@ void MainView::limitHistoryFile(){
         QString s="";
         if (inputFile.open(QIODevice::ReadOnly)){
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            int cnt=0;
            while (!in.atEnd()){
               QString line = in.readLine();
@@ -1194,7 +1212,8 @@ void MainView::limitHistoryFile(){
         QFile file(QDir::homePath()+"/.crusta_db/history.txt");
         file.open(QIODevice::WriteOnly);
         QTextStream out(&file);
-        out<<s.toLatin1();
+        out.setCodec("UTF-8");
+        out<<s.toUtf8();
         file.close();
     }
 }
@@ -1205,6 +1224,7 @@ void MainView::limitDownloadFile(){
         QString s="";
         if (inputFile.open(QIODevice::ReadOnly)){
            QTextStream in(&inputFile);
+           in.setCodec("UTF-8");
            int cnt=0;
            while (!in.atEnd()){
               QString line = in.readLine();
@@ -1217,7 +1237,8 @@ void MainView::limitDownloadFile(){
         QFile file(QDir::homePath()+"/.crusta_db/downloads.txt");
         file.open(QIODevice::WriteOnly);
         QTextStream out(&file);
-        out<<s.toLatin1();
+        out.setCodec("UTF-8");
+        out<<s.toUtf8();
         file.close();
     }
 }
