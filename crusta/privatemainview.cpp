@@ -315,7 +315,7 @@ PrivateMainView::PrivateMainView(){
     connect(this->newtabbtn,&QPushButton::clicked,this,&PrivateMainView::addNormalTab);
     connect(this->tabWindow,&QTabWidget::currentChanged,this,&PrivateMainView::changeSpinner);
 
-    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:black;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid black;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}");
+    this->tabWindow->setStyleSheet("QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:#404244;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid 404244;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}");
 
 }
 
@@ -845,8 +845,8 @@ void PrivateMainView::closeWindow(){
         }
     }
     int side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
-    while(side_cnt!=4){
-        SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(2)->widget();
+    while(side_cnt!=5){
+        SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(3)->widget();
         side_btn->sidewebview->load(QUrl("http://"));
         this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);
         side_btn->sidewebview->page()->deleteLater();
@@ -877,7 +877,7 @@ void PrivateMainView::openDebugger(){
     if(!a.contains("--remote-debugging-port=")){
         QMessageBox* notify=new QMessageBox(this->window);
         notify->setWindowTitle("Crusta : Debugger");
-        //notify->setStyleSheet("QMessageBox{background-color:white;color:black} QLabel{color:black} QPushButton{border:0.5px solid black;width:100px;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+        //notify->setStyleSheet("QMessageBox{background-color:white;color:#404244} QLabel{color:#404244} QPushButton{border:0.5px solid #404244;width:100px;padding:4px 8px;color:white;background-color:#404244} QPushButton:hover{background-color:white;color:#404244}");
         notify->setText("Enable Debugging Mode By Launching Crusta With Argument '--remote-debugging-port=<port>' ");
         notify->exec();
         return;
@@ -900,7 +900,7 @@ void PrivateMainView::openDebugger(){
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Debugger");
-    //w->setStyleSheet("QWidget{background-color:white;color:black} QLabel{color:black} QLineEdit{color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
+    //w->setStyleSheet("QWidget{background-color:white;color:#404244} QLabel{color:#404244} QLineEdit{color:#404244;background-color:white;border: 1px solid #404244} QPushButton{border:0.5px solid #404244;padding:4px 8px;color:white;background-color:#404244} QPushButton:hover{background-color:white;color:#404244}");
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
         return;

@@ -39,6 +39,10 @@ SidePaneButton::SidePaneButton(){
 SidePane::SidePane(MainView* m){
     mainview=m;
     QWidget* left=new QWidget();
+    QPushButton* top = new QPushButton();
+    top->setFixedSize(40,32);
+    top->setStyleSheet("QPushButton{border: none;margin: 0; background-color: #404244}");
+    vbox->addWidget(top);
     vbox->addWidget(history);
     history->setToolTip(tr("History"));
     history->setContextMenuPolicy(Qt::NoContextMenu);
@@ -199,12 +203,18 @@ SidePane::SidePane(MainView* m){
     setLayout(hbox);
     setMaximumWidth(40+350+45);
     setObjectName("pane");
-    setStyleSheet("#pane{background-color: #f0f0f0}");
+    setStyleSheet("#pane{background-color: #f0f0f0;}");
 }
 
 SidePane::SidePane(PrivateMainView* m){
     pmainview=m;
     QWidget* left=new QWidget();
+    QPushButton* top = new QPushButton();
+    top->setFixedSize(40,32);
+    top->setIcon(QIcon(":/res/drawables/incognito.svg"));
+    top->setIconSize(QSize(25, 25));
+    top->setStyleSheet("QPushButton{border: none;margin: 0; background-color: #404244}");
+    vbox->addWidget(top);
     vbox->addWidget(bookmarks);
     bookmarks->setToolTip(tr("Bookmarks"));
     bookmarks->setContextMenuPolicy(Qt::NoContextMenu);
@@ -356,7 +366,7 @@ void SidePane::addNewButton(){
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));
     dg->setObjectName("dialog");
-    dg->setStyleSheet("#dialog{border: 2px solid #00b0e3}");
+    dg->setStyleSheet("#dialog{border: 2px solid #404244}");
     urledit->setFocus();
     if(!dg->exec()==QDialog::Accepted){
         return;

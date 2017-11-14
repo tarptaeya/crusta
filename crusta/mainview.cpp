@@ -308,7 +308,7 @@ void MainView::pastePageAction(){
 }
 
 MainView::MainView(){
-    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:#00b0e3;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid #00b0e3;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
+    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:#404244;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid #404244;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
     this->window->parentView=this;
 
     limitCompleterFile();
@@ -620,7 +620,7 @@ void MainView::createMenuBar(){
     this->zoom_out_action->setShortcut(QKeySequence(QKeySequence::ZoomOut));
     this->fullscreen_action->setShortcut(QKeySequence(QKeySequence::FullScreen));
     this->window->menu=this->menu;
-    this->menu->setStyleSheet("border: 1px solid #00b0e3");
+    this->menu->setStyleSheet("border: 1px solid #404244");
 }
 
 void MainView::createTabWindow(){
@@ -1065,8 +1065,8 @@ void MainView::closeWindow(){
         }
     }
     int side_cnt=this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
-    while(side_cnt!=5){
-        SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(3)->widget();
+    while(side_cnt!=6){
+        SidePaneButton* side_btn= (SidePaneButton*)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(4)->widget();
         side_btn->sidewebview->load(QUrl("http://"));
         this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);
         side_btn->sidewebview->page()->deleteLater();

@@ -58,12 +58,12 @@
        transform="matrix(0.02347197,0,0,0.02306641,-0.76911308,278.75854)"
        id="layer1-2"
        inkscape:label="Layer 1"
-       style="fill:#00b0e3;fill-opacity:1">
+       style="fill:#404244;fill-opacity:1">
       <path
          id="rect6452"
          transform="translate(52.863686,566.24279)"
          d="M 81.115234,0 C 49.770334,0 24.537109,25.235198 24.537109,56.580078 V 94.292969 H 0 v 94.662111 c 0,16.06429 12.933747,28.99804 28.998047,28.99804 H 156.70312 c 16.06451,0 28.99805,-12.93375 28.99805,-28.99804 V 94.292969 H 161.16406 V 56.580078 C 161.16406,25.235198 135.93074,0 104.58594,0 Z m 2.996094,17.291016 h 17.478512 c 23.3419,0 42.13282,18.792835 42.13282,42.134765 v 5.800781 23.265626 5.800781 H 41.978516 V 88.492188 65.226562 59.425781 c 0,-23.34193 18.790812,-42.134765 42.132812,-42.134765 z m 8.738281,97.162104 a 16.776493,16.776493 0 0 1 16.777341,16.7754 16.776493,16.776493 0 0 1 -9.628903,15.1582 l 6.779293,51.40625 H 93.279297 92.421875 78.923828 l 6.779297,-51.41016 a 16.776493,16.776493 0 0 1 -9.628906,-15.15429 16.776493,16.776493 0 0 1 16.77539,-16.7754 z"
-         style="opacity:1;fill:#00b0e3;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="opacity:1;fill:#404244;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          inkscape:connector-curvature="0" />
     </g>
   </g>

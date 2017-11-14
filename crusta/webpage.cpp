@@ -133,7 +133,7 @@ void WebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &msg){
     hbox->addWidget(okbtn);
     vbox->addLayout(hbox);
     jad->setObjectName("dialog");
-    jad->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    jad->setStyleSheet("#dialog{border: 1px solid #404244}");
     alertCount++;
     jad->move(view()->mapToGlobal(QPoint((view()->width()-jad->width()/2)/2,0)));
     jad->exec();
@@ -168,7 +168,7 @@ bool WebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString &msg, c
         connect(ok,&QPushButton::clicked,sd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,sd,&QDialog::reject);
         sd->setObjectName("dialog");
-        sd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        sd->setStyleSheet("#dialog{border: 1px solid #404244}");
         sd->setFixedWidth(300);
         if(sd->exec()==QDialog::Accepted){
             *result=input_t->text();
@@ -206,7 +206,7 @@ bool WebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString &msg, c
         connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
         jpd->setObjectName("dialog");
-        jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        jpd->setStyleSheet("#dialog{border: 1px solid #404244}");
         jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
         if(jpd->exec()==QDialog::Accepted){
             *result=input->text();
@@ -236,7 +236,7 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         connect(ok,&QPushButton::clicked,sd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,sd,&QDialog::reject);
         sd->setObjectName("dialog");
-        sd->setStyleSheet("#dialog{border: 1px solid #00b0e3; background-color: #fff}");
+        sd->setStyleSheet("#dialog{border: 1px solid #404244; background-color: #fff}");
         if(sd->exec()==QDialog::Accepted){
             SpeedDial().remove(msg.split(" ")[1]);
             this->load(this->url());
@@ -248,7 +248,7 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         QDialog* fd = new QDialog();
         fd->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
         fd->setObjectName("dialog");
-        fd->setStyleSheet("#dialog{border: 1px solid #00b0e3; background-color: #fff}");
+        fd->setStyleSheet("#dialog{border: 1px solid #404244; background-color: #fff}");
         QVBoxLayout* fdvbox = new QVBoxLayout();
         fdvbox->setSpacing(5);
         QLabel* title = new QLabel(tr("Speed-dial settings"));
@@ -377,7 +377,7 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg){
         connect(ok,&QPushButton::clicked,jcd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,jcd,&QDialog::reject);
         jcd->setObjectName("dialog");
-        jcd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        jcd->setStyleSheet("#dialog{border: 1px solid #404244}");
         jcd->move(view()->mapToGlobal(QPoint((view()->width()-jcd->width()/2)/2,0)));
         if(jcd->exec()==QDialog::Accepted){
             return true;
@@ -478,7 +478,7 @@ void PrivateWebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &
     hbox->addWidget(okbtn);
     vbox->addLayout(hbox);
     jad->setObjectName("dialog");
-    jad->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+    jad->setStyleSheet("#dialog{border: 1px solid #404244}");
     alertCount++;
     jad->move(view()->mapToGlobal(QPoint((view()->width()-jad->width()/2)/2,0)));
     jad->exec();
@@ -513,7 +513,7 @@ bool PrivateWebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString 
         connect(ok,&QPushButton::clicked,sd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,sd,&QDialog::reject);
         sd->setObjectName("dialog");
-        sd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        sd->setStyleSheet("#dialog{border: 1px solid #404244}");
         sd->setFixedWidth(300);
         if(sd->exec()==QDialog::Accepted){
             *result=input_t->text();
@@ -551,7 +551,7 @@ bool PrivateWebPage::javaScriptPrompt(const QUrl &securityOrigin, const QString 
         connect(ok,&QPushButton::clicked,jpd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,jpd,&QDialog::reject);
         jpd->setObjectName("dialog");
-        jpd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        jpd->setStyleSheet("#dialog{border: 1px solid #404244}");
         jpd->move(view()->mapToGlobal(QPoint((view()->width()-jpd->width()/2)/2,0)));
         if(jpd->exec()==QDialog::Accepted){
             *result=input->text();
@@ -581,7 +581,7 @@ bool PrivateWebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString
         connect(ok,&QPushButton::clicked,sd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,sd,&QDialog::reject);
         sd->setObjectName("dialog");
-        sd->setStyleSheet("#dialog{border: 1px solid #00b0e3; background-color: #fff}");
+        sd->setStyleSheet("#dialog{border: 1px solid #404244; background-color: #fff}");
         if(sd->exec()==QDialog::Accepted){
             SpeedDial().remove(msg.split(" ")[1]);
             this->load(this->url());
@@ -593,7 +593,7 @@ bool PrivateWebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString
         QDialog* fd = new QDialog();
         fd->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
         fd->setObjectName("dialog");
-        fd->setStyleSheet("#dialog{border: 1px solid #00b0e3; background-color: #fff}");
+        fd->setStyleSheet("#dialog{border: 1px solid #404244; background-color: #fff}");
         QVBoxLayout* fdvbox = new QVBoxLayout();
         fdvbox->setSpacing(5);
         QLabel* title = new QLabel(tr("Speed-dial settings"));
@@ -722,7 +722,7 @@ bool PrivateWebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString
         connect(ok,&QPushButton::clicked,jcd,&QDialog::accept);
         connect(cncl,&QPushButton::clicked,jcd,&QDialog::reject);
         jcd->setObjectName("dialog");
-        jcd->setStyleSheet("#dialog{border: 1px solid #00b0e3}");
+        jcd->setStyleSheet("#dialog{border: 1px solid #404244}");
         jcd->move(view()->mapToGlobal(QPoint((view()->width()-jcd->width()/2)/2,0)));
         if(jcd->exec()==QDialog::Accepted){
             return true;
