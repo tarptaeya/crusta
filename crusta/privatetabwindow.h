@@ -42,6 +42,8 @@ class PrivateTabWindow:public QObject{
     void homeContext(const QPoint& pos);
     QProgressBar* pbar=new QProgressBar();
     QTime loadStartTime;
+    QLabel* link_lbl = new QLabel();
+    void showLinkHovered(QString);
 public:
     QVBoxLayout* vbox=new QVBoxLayout();
     QWidget* tab=new QWidget();

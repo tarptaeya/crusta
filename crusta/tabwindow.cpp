@@ -147,6 +147,9 @@ void TabWindow::createControls(){
     hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
+    link_lbl->setParent(view);
+    link_lbl->setFixedHeight(20);
+    connect(view->page(),&QWebEnginePage::linkHovered, this,&TabWindow::showLinkHovered);
     vbox->addWidget(pbar);
     vbox->setSpacing(0);
     pbar->setMaximum(0);
@@ -187,6 +190,18 @@ TabWindow* TabWindow::returnThis(){
 void TabWindow::setWebView(WebView* v){
     view=v;
 }
+
+void TabWindow::showLinkHovered(QString url){
+    if(url.isEmpty()){
+        link_lbl->hide();
+    }else{
+        link_lbl->raise();
+        link_lbl->setText(url);
+        link_lbl->move(0,view->height()-20);
+        link_lbl->show();
+    }
+}
+
 
 QWidget* TabWindow::returnTab(WebView* view){
     this->vbox->setContentsMargins(0,0,0,0);

@@ -126,6 +126,9 @@ void PrivateTabWindow::createControls(){
     hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
     vbox->addWidget(view);
+    link_lbl->setParent(view);
+    link_lbl->setFixedHeight(20);
+    connect(view->page(),&QWebEnginePage::linkHovered, this,&PrivateTabWindow::showLinkHovered);
     vbox->addWidget(pbar);
     pbar->setMaximum(0);
     pbar->setMaximum(100);
@@ -165,6 +168,17 @@ PrivateTabWindow* PrivateTabWindow::returnThis(){
 
 void PrivateTabWindow::setWebView(PrivateWebView* v){
     view=v;
+}
+
+void PrivateTabWindow::showLinkHovered(QString url){
+    if(url.isEmpty()){
+        link_lbl->hide();
+    }else{
+        link_lbl->raise();
+        link_lbl->setText(url);
+        link_lbl->move(0,view->height()-20);
+        link_lbl->show();
+    }
 }
 
 QWidget* PrivateTabWindow::returnTab(PrivateWebView* view){
