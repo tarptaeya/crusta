@@ -58,6 +58,7 @@ Ways in which you can contribute towards Crusta
 - Report a Bug
 - Open an Issue
 - Suggestions for new features
+- Suggesting a new design feature
 - Translations
 - Pull Requests
 - Following Crusta on [twitter](http://twitter.com/crustabrowser)
