@@ -53,6 +53,7 @@ class SidePane: public QWidget{
     QVBoxLayout* vbox=new QVBoxLayout();
     QLabel* flexilabel=new QLabel();
 public:
+    QPushButton* top = new QPushButton();
     SidePane(MainView*m);
     SidePane(PrivateMainView*m);
     PrivateMainView* pmainview;

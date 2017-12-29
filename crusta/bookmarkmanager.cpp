@@ -69,7 +69,7 @@ BookmarkManager::BookmarkManager(MainView *m){
     QHBoxLayout* h1box=new QHBoxLayout();
     QLabel* editdescription=new QLabel(tr("Edit Desription : "));
     h1box->addWidget(editdescription);
-    editdescription->setStyleSheet("color: #404244");
+    editdescription->setStyleSheet("color: #00b0e3");
     h1box->addWidget(description);
     h1box->addWidget(save);
     vbox->addLayout(h1box);
@@ -203,13 +203,13 @@ void BookmarkManager::displayInfo(QTreeWidgetItem *item, int column){
     QString info = item->text(2);
     info_lbl_1->setText(title);
     info_lbl_1->setWordWrap(true);
-    info_lbl_1->setStyleSheet("font-size: 15px; color: #404244");
+    info_lbl_1->setStyleSheet("font-size: 15px; color: #00b0e3");
     info_lbl_2->setText(url);
     info_lbl_2->setWordWrap(true);
-    info_lbl_2->setStyleSheet("font-size: 11px; color: #404244");
+    info_lbl_2->setStyleSheet("font-size: 11px; color: #00b0e3");
     info_lbl_3->setText(info);
     info_lbl_3->setWordWrap(true);
-    info_lbl_3->setStyleSheet("font-size: 13px; color: #404244");
+    info_lbl_3->setStyleSheet("font-size: 13px; color: #00b0e3");
 }
 
 
@@ -381,11 +381,11 @@ void PrivateBookmarkManager::pdisplayInfo(QTreeWidgetItem *item, int column){
     QString info = item->text(2);
     info_lbl_1->setText(title);
     info_lbl_1->setWordWrap(true);
-    info_lbl_1->setStyleSheet("font-size: 15px; color: #404244");
+    info_lbl_1->setStyleSheet("font-size: 15px; color: #00b0e3");
     info_lbl_2->setText(url);
     info_lbl_2->setWordWrap(true);
-    info_lbl_2->setStyleSheet("font-size: 11px; color: #404244");
+    info_lbl_2->setStyleSheet("font-size: 11px; color: #00b0e3");
     info_lbl_3->setText(info);
     info_lbl_3->setWordWrap(true);
-    info_lbl_3->setStyleSheet("font-size: 13px; color: #404244");
+    info_lbl_3->setStyleSheet("font-size: 13px; color: #00b0e3");
 }

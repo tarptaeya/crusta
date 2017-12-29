@@ -877,7 +877,7 @@ void PrivateMainView::openDebugger(){
     if(!a.contains("--remote-debugging-port=")){
         QMessageBox* notify=new QMessageBox(this->window);
         notify->setWindowTitle("Crusta : Debugger");
-        //notify->setStyleSheet("QMessageBox{background-color:white;color:#404244} QLabel{color:#404244} QPushButton{border:0.5px solid #404244;width:100px;padding:4px 8px;color:white;background-color:#404244} QPushButton:hover{background-color:white;color:#404244}");
+        //notify->setStyleSheet("QMessageBox{background-color:white;color:#00b0e3} QLabel{color:#00b0e3} QPushButton{border:0.5px solid #00b0e3;width:100px;padding:4px 8px;color:white;background-color:#00b0e3} QPushButton:hover{background-color:white;color:#00b0e3}");
         notify->setText("Enable Debugging Mode By Launching Crusta With Argument '--remote-debugging-port=<port>' ");
         notify->exec();
         return;
@@ -900,7 +900,7 @@ void PrivateMainView::openDebugger(){
     w->setLayout(vbox);
     w->setFixedWidth(500);
     w->setWindowTitle("Crusta : Debugger");
-    //w->setStyleSheet("QWidget{background-color:white;color:#404244} QLabel{color:#404244} QLineEdit{color:#404244;background-color:white;border: 1px solid #404244} QPushButton{border:0.5px solid #404244;padding:4px 8px;color:white;background-color:#404244} QPushButton:hover{background-color:white;color:#404244}");
+    //w->setStyleSheet("QWidget{background-color:white;color:#00b0e3} QLabel{color:#00b0e3} QLineEdit{color:#00b0e3;background-color:white;border: 1px solid #00b0e3} QPushButton{border:0.5px solid #00b0e3;padding:4px 8px;color:white;background-color:#00b0e3} QPushButton:hover{background-color:white;color:#00b0e3}");
     connect(ok,&QPushButton::clicked,w,&QDialog::accept);
     if(w->exec()!=QDialog::Accepted){
         return;

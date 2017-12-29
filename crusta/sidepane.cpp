@@ -39,9 +39,8 @@ SidePaneButton::SidePaneButton(){
 SidePane::SidePane(MainView* m){
     mainview=m;
     QWidget* left=new QWidget();
-    QPushButton* top = new QPushButton();
     top->setFixedSize(40,32);
-    top->setStyleSheet("QPushButton{border: none;margin: 0; background-color: #404244}");
+    top->setStyleSheet("QPushButton{border: none;margin: 0; background-color: #00b0e3}");
     vbox->addWidget(top);
     vbox->addWidget(history);
     history->setToolTip(tr("History"));
@@ -366,7 +365,7 @@ void SidePane::addNewButton(){
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));
     dg->setObjectName("dialog");
-    dg->setStyleSheet("#dialog{border: 2px solid #404244}");
+    dg->setStyleSheet("#dialog{border: 2px solid #00b0e3}");
     urledit->setFocus();
     if(!dg->exec()==QDialog::Accepted){
         return;

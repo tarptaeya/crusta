@@ -57,7 +57,7 @@ void TabWindow::updateAddrBar(){
     if(forbidden==url){
         addr_bar->setText("");
         this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
-        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #404244");
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00b0e3");
         return;
     }
     QDir* viewer_file=new QDir(QCoreApplication::applicationDirPath());
@@ -77,7 +77,7 @@ void TabWindow::updateAddrBar(){
         this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00c400");
     } else {
         this->addr_bar->siteinfo_btn->setIcon(QIcon(":/res/drawables/normal_site.svg"));
-        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #404244");
+        this->addr_bar->siteinfo_btn->setStyleSheet("border: 1px solid #00b0e3");
     }
     connect(this->addr_bar->siteinfo_btn,&QPushButton::clicked,this,&TabWindow::showSiteInfo);
     this->addr_bar->initialize()->setText(url);
@@ -157,7 +157,7 @@ void TabWindow::createControls(){
     pbar->hide();
     pbar->setMaximumHeight(5);
     pbar->setTextVisible(false);
-    pbar->setStyleSheet("QProgressBar:chunk{background-color: #404244}");
+    pbar->setStyleSheet("QProgressBar:chunk{background-color: #00b0e3}");
     tab->setLayout(vbox);
     connect(view,&QWebEngineView::loadStarted,this,&TabWindow::loadBegin);
     connect(view,&QWebEngineView::loadFinished,this,&TabWindow::loadCompleted);
@@ -172,7 +172,7 @@ void TabWindow::createControls(){
     menu_btn->setFixedSize(30,30);
 
     tab->setStyleSheet("QWidget{background-color: #f0f0f0} QLineEdit{background: #fff; border-right: 0px} QPushButton{background-color: #f0f0f0} QPushButton::hover{background-color: #d0d0d0;}");
-    time_lbl->setStyleSheet("color: #404244");
+    time_lbl->setStyleSheet("color: #00b0e3");
 }
 
 QWidget* TabWindow::returnTab(){
@@ -296,7 +296,7 @@ void TabWindow::bookmarkPage(){
     p2hbox->addWidget(done_btn);
     vbox_bkmrk->addLayout(p2hbox);
     bkmrk_ppup->setWindowFlags(Qt::FramelessWindowHint|Qt::Popup);
-    bkmrk_ppup->setStyleSheet("QDialog{border: 1px solid #404244}");
+    bkmrk_ppup->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
     bkmrk_ppup->setFixedSize(250,170);
     connect(remove_btn,&QPushButton::clicked,this,[this,bkmrk_ppup,description]{
         this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
@@ -523,7 +523,7 @@ void TabWindow::showSiteInfo(){
         QLabel* site_lbl_1=new QLabel(tr("Information you send or get through the site is private."));
         site_lbl_1->setWordWrap(true);
         dvbox->addWidget(site_lbl_1);
-        dlg->setStyleSheet("QDialog{border: 1px solid #404244}");
+        dlg->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
         dlg->move(addr_bar->siteinfo_btn->mapToGlobal(QPoint(addr_bar->siteinfo_btn->x()-30,addr_bar->siteinfo_btn->y()+20)));
         dlg->exec();
     } else {
@@ -538,7 +538,7 @@ void TabWindow::showSiteInfo(){
         QLabel* site_lbl_1=new QLabel(tr("The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site."));
         site_lbl_1->setWordWrap(true);
         dvbox->addWidget(site_lbl_1);
-        dlg->setStyleSheet("QDialog{border: 1px solid #404244}");
+        dlg->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
         dlg->move(addr_bar->siteinfo_btn->mapToGlobal(QPoint(addr_bar->siteinfo_btn->x()-30,addr_bar->siteinfo_btn->y()+20)));
         dlg->exec();
     }
@@ -556,7 +556,7 @@ void TabWindow::showLoadTime(){
     QLabel* site_lbl_1=new QLabel("the duration from the start time for the first network request, to the response time for the final request made by the website.");
     site_lbl_1->setWordWrap(true);
     dvbox->addWidget(site_lbl_1);
-    dlg->setStyleSheet("QDialog{border: 1px solid #404244}");
+    dlg->setStyleSheet("QDialog{border: 1px solid #00b0e3}");
     dlg->move(time_lbl->mapToGlobal(QPoint(-140,30)));
     dlg->exec();
 }

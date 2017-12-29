@@ -64,6 +64,7 @@
 #include <QSettings>
 #include <QFont>
 #include <QLocale>
+#include <QString>
 
 #include <iostream>
 
@@ -308,7 +309,7 @@ void MainView::pastePageAction(){
 }
 
 MainView::MainView(){
-    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:#404244;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid #404244;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
+    defaultTheme="QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:#00b0e3;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid #00b0e3;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
     this->window->parentView=this;
 
     limitCompleterFile();
@@ -323,7 +324,6 @@ MainView::MainView(){
        while (!in.atEnd())
        {
           new_version = in.readLine();
-          std::cout<<new_version.toStdString()<<std::endl;
        }
        newVersion.close();
     }
@@ -620,7 +620,7 @@ void MainView::createMenuBar(){
     this->zoom_out_action->setShortcut(QKeySequence(QKeySequence::ZoomOut));
     this->fullscreen_action->setShortcut(QKeySequence(QKeySequence::FullScreen));
     this->window->menu=this->menu;
-    this->menu->setStyleSheet("border: 1px solid #404244");
+    this->menu->setStyleSheet("border: 1px solid #00b0e3");
 }
 
 void MainView::createTabWindow(){
@@ -1165,6 +1165,8 @@ void MainView::loadTheme(){
        }
        inputFile.close();
     }
+    QString bgcolor = QString(QString(theme.split(" ")[1]).split("{")[1]).split("}")[0];
+    ((SidePane*)side_pane->itemAt(0)->widget())->top->setStyleSheet(bgcolor+"; border: 0px solid");
     this->tabWindow->setStyleSheet(theme);
 }
 
