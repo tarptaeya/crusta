@@ -1168,6 +1168,7 @@ void MainView::loadTheme(){
     QString bgcolor = QString(QString(theme.split(" ")[1]).split("{")[1]).split("}")[0];
     ((SidePane*)side_pane->itemAt(0)->widget())->top->setStyleSheet(bgcolor+"; border: 0px solid");
     this->tabWindow->setStyleSheet(theme);
+    this->menu->setStyleSheet("border: 1px solid "+bgcolor.split(":")[1]);
 }
 
 void MainView::limitCompleterFile(){

@@ -364,8 +364,25 @@ void SidePane::addNewButton(){
     connect(cncl,&QPushButton::clicked,dg,&QDialog::reject);
     connect(ok,&QPushButton::clicked,dg,&QDialog::accept);
     dg->move(mapToGlobal(QPoint(add_pane_btn->x()+30,add_pane_btn->y()-30)));
+    QString theme;
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          if(line.split(">>>>>").length()<2)
+              continue;
+          if(line.split(">>>>>")[0]=="theme")
+              theme=line.split(">>>>>")[1];
+       }
+       inputFile.close();
+    }
+    QString bgcolor = QString(QString(theme.split(" ")[1]).split("{")[1]).split("}")[0];
     dg->setObjectName("dialog");
-    dg->setStyleSheet("#dialog{border: 2px solid #00b0e3}");
+    dg->setStyleSheet("#dialog{border: 2px solid "+ bgcolor.split(":")[1] +"}");
     urledit->setFocus();
     if(!dg->exec()==QDialog::Accepted){
         return;
