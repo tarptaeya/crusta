@@ -64,3 +64,8 @@ Ways in which you can contribute towards Crusta
 - Following Crusta on [twitter](http://twitter.com/crustabrowser)
 
 Please note that we use C++/Qt ,JS and CSS for Crusta, so please contribute in these languages only. 
+
+
+## Comming Soon
+- [ ] Pause/ Resume Downloads
+- [ ] Pinnable Tabs
