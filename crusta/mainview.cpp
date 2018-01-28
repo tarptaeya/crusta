@@ -141,6 +141,17 @@ void MainView::tabBarContext(QPoint point){
         QAction* rld_tab=new QAction();
         rld_tab=contextMenu->addAction(tr("&Reload Tab"));
         connect(rld_tab,&QAction::triggered,webview,&QWebEngineView::reload);
+        QAction* pn_tab = new QAction(tr("Pin Tab"));
+        contextMenu->addAction(pn_tab);
+        connect(pn_tab, &QAction::triggered,this,[this,index,pn_tab]{
+            if(pn_tab->text() == tr("Pin Tab")){
+                pn_tab->setText("Unpin Tab");
+                tabWindow->tabBar()->tabButton(index, QTabBar::RightSide)->resize(0, 0);
+            }else{
+                pn_tab->setText("Pin Tab");
+                tabWindow->tabBar()->tabButton(index, QTabBar::RightSide)->resize(20, 20);
+            }
+        });
         QAction* mute_tab=new QAction(tr("&Toggle Audio"));
         contextMenu->addAction(mute_tab);
         connect(mute_tab,&QAction::triggered,this,[this,webview]{webview->page()->setAudioMuted(!webview->page()->isAudioMuted());});
@@ -1149,7 +1160,6 @@ void MainView::openDebugger(){
 }
 
 void MainView::loadTheme(){
-    QString theme;
     QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
     if (inputFile.open(QIODevice::ReadOnly))
     {

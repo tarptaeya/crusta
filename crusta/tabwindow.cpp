@@ -157,7 +157,24 @@ void TabWindow::createControls(){
     pbar->hide();
     pbar->setMaximumHeight(5);
     pbar->setTextVisible(false);
-    pbar->setStyleSheet("QProgressBar:chunk{background-color: #00b0e3}");
+    QString theme;
+    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       in.setCodec("UTF-8");
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          if(line.split(">>>>>").length()<2)
+              continue;
+          if(line.split(">>>>>")[0]=="theme")
+              theme=line.split(">>>>>")[1];
+       }
+       inputFile.close();
+    }
+    QString bgcolor = QString(QString(theme.split(" ")[1]).split("{")[1]).split("}")[0];
+    pbar->setStyleSheet("QProgressBar:chunk{"+bgcolor+"}");
     tab->setLayout(vbox);
     connect(view,&QWebEngineView::loadStarted,this,&TabWindow::loadBegin);
     connect(view,&QWebEngineView::loadFinished,this,&TabWindow::loadCompleted);
@@ -478,24 +495,6 @@ void TabWindow::loadBegin(){
     loadStartTime=QTime::currentTime();
     time_lbl->setText("...");
     pbar->show();
-    QString theme;
-    QFile inputFile(QDir::homePath()+"/.crusta_db/settings.txt");
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       in.setCodec("UTF-8");
-       while (!in.atEnd())
-       {
-          QString line = in.readLine();
-          if(line.split(">>>>>").length()<2)
-              continue;
-          if(line.split(">>>>>")[0]=="theme")
-              theme=line.split(">>>>>")[1];
-       }
-       inputFile.close();
-    }
-    QString bgcolor = QString(QString(theme.split(" ")[1]).split("{")[1]).split("}")[0];
-    pbar->setStyleSheet("QProgressBar:chunk{"+bgcolor+"}");
     this->load_btn->setIcon(QIcon(":/res/drawables/close.svg"));
     load_btn->disconnect();
     connect(load_btn,&QPushButton::clicked,view,&QWebEngineView::stop);
