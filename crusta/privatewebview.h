@@ -55,6 +55,7 @@ class PrivateWebView:public QWebEngineView{
 protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
+    bool favLoaded;
     bool wasFullScreened=false;
     QString link="";
     PrivateWebPage* privatewebpage=new PrivateWebPage(new Profile());

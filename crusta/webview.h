@@ -55,6 +55,7 @@ class WebView:public QWebEngineView{
 protected:
     QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
 public:
+    bool favLoaded;
     int notif;
     int mouse;
     int geo;

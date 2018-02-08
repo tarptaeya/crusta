@@ -122,6 +122,7 @@ void WebView::spinnerStarted(){
                 loader->start();
                 spinner->setMovie(loader);
                 tabwidget->tabBar()->setTabButton(i,QTabBar::LeftSide,spinner);
+                favLoaded = false;
             }
         }
     }
@@ -145,8 +146,8 @@ void WebView::faviconChanged(QIcon fav){
                 QPixmap pix=fav.pixmap(16,16);
                 QLabel* lab=new QLabel();
                 lab->setPixmap(pix);
-                if(!page()->recentlyAudible())
-                    tabwidget->tabBar()->setTabButton(i,QTabBar::LeftSide,lab);
+                tabwidget->tabBar()->setTabButton(i,QTabBar::LeftSide,lab);
+                favLoaded = true;
             }
         }
     }

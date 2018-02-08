@@ -486,6 +486,7 @@ void TabWindow::setHomePage(){
 }
 
 void TabWindow::pageProgress(int p){
+    if(p==99) pbar->hide();
     pbar->setValue(p);
 }
 

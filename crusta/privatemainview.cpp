@@ -792,7 +792,7 @@ void PrivateMainView::changeSpinner(int index){
         QWidget* widget=this->tabWindow->widget(i);
         QLayout* layout=widget->layout();
         QWebEngineView* webview=(QWebEngineView*)layout->itemAt(1)->widget();
-        if(!webview->icon().isNull())
+        if(((PrivateWebView*)webview)->favLoaded)
             continue;
         QLabel* lbl=new QLabel();
         if(i!=index){
