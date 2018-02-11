@@ -19,7 +19,7 @@
 * ============================================================ */
 
 #include "mainview.h"
-#include "speeddial.h"
+#include "lib/speeddial/speeddial.h"
 #include <QIcon>
 #include <QDir>
 #include <QFont>

@@ -21,15 +21,15 @@
 #ifndef MAINVIEW_H
 #define MAINVIEW_H
 
-#include "fullscreennotifier.h"
-#include "permissions.h"
-#include "webview.h"
-#include "addresslineedit.h"
-#include "tabwindow.h"
-#include "presentationmodenotifier.h"
-#include "downloadwidget.h"
-#include "downloadmanager.h"
-#include "jseditor.h"
+#include "lib/utils/fullscreennotifier.h"
+#include "lib/utils/permissions.h"
+#include "lib/webview/webview.h"
+#include "lib/tabwidget/addresslineedit.h"
+#include "lib/tabwidget/tabwindow.h"
+#include "lib/utils/presentationmodenotifier.h"
+#include "lib/managers/downloadwidget.h"
+#include "lib/managers/downloadmanager.h"
+#include "lib/utils/jseditor.h"
 
 #include <QObject>
 #include <QPoint>

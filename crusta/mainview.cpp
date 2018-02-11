@@ -19,22 +19,22 @@
 * ============================================================ */
 
 #include "mainview.h"
-#include "permissions.h"
+#include "lib/utils/permissions.h"
 #include "privatemainview.h"
-#include "sidepane.h"
+#include "lib/sidepanel/sidepane.h"
 
-#include "fullscreennotifier.h"
-#include "webview.h"
-#include "addresslineedit.h"
-#include "tabwindow.h"
-#include "privatetabwindow.h"
-#include "presentationmodenotifier.h"
-#include "jseditor.h"
-#include "themeeditor.h"
-#include "historymanager.h"
-#include "bookmarkmanager.h"
-#include "siteinfo.h"
-#include "speeddial.h"
+#include "lib/utils/fullscreennotifier.h"
+#include "lib/webview/webview.h"
+#include "lib/tabwidget/addresslineedit.h"
+#include "lib/tabwidget/tabwindow.h"
+#include "lib/tabwidget/privatetabwindow.h"
+#include "lib/utils/presentationmodenotifier.h"
+#include "lib/utils/jseditor.h"
+#include "lib/utils/themeeditor.h"
+#include "lib/managers/historymanager.h"
+#include "lib/managers/bookmarkmanager.h"
+#include "lib/utils/siteinfo.h"
+#include "lib/speeddial/speeddial.h"
 
 #include <QObject>
 #include <QPoint>

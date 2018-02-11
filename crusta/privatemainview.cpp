@@ -20,14 +20,14 @@
 
 #include "privatemainview.h"
 
-#include "privatetabwindow.h"
-#include "presentationmodenotifier.h"
-#include "jseditor.h"
-#include "themeeditor.h"
-#include "bookmarkmanager.h"
-#include "siteinfo.h"
-#include "speeddial.h"
-#include "sidepane.h"
+#include "lib/tabwidget/privatetabwindow.h"
+#include "lib/utils/presentationmodenotifier.h"
+#include "lib/utils/jseditor.h"
+#include "lib/utils/themeeditor.h"
+#include "lib/managers/bookmarkmanager.h"
+#include "lib/utils/siteinfo.h"
+#include "lib/speeddial/speeddial.h"
+#include "lib/sidepanel/sidepane.h"
 
 #include <QObject>
 #include <QPoint>

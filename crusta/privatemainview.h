@@ -21,14 +21,14 @@
 #ifndef PRIVATEMAINVIEW_H
 #define PRIVATEMAINVIEW_H
 
-#include "fullscreennotifier.h"
-#include "privatewebview.h"
-#include "privateaddresslineedit.h"
-#include "privatetabwindow.h"
-#include "presentationmodenotifier.h"
-#include "downloadwidget.h"
-#include "downloadmanager.h"
-#include "jseditor.h"
+#include "lib/utils/fullscreennotifier.h"
+#include "lib/webview/privatewebview.h"
+#include "lib/tabwidget/privateaddresslineedit.h"
+#include "lib/tabwidget/privatetabwindow.h"
+#include "lib/utils/presentationmodenotifier.h"
+#include "lib/managers/downloadwidget.h"
+#include "lib/managers/downloadmanager.h"
+#include "lib/utils/jseditor.h"
 
 #include <QObject>
 #include <QPoint>

@@ -34,58 +34,58 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    fullscreennotifier.cpp \
-    addresslineedit.cpp \
-    presentationmodenotifier.cpp \
-    webview.cpp \
-    tabwindow.cpp \
     mainview.cpp \
-    timenotifier.cpp \
-    popup.cpp \
-    historymanager.cpp \
-    privatewebview.cpp \
-    downloadmanager.cpp \
-    privatetabwindow.cpp \
-    jseditor.cpp \
-    codeeditor.cpp \
-    downloadwidget.cpp \
-    themeeditor.cpp \
-    webpage.cpp \
-    bookmarkmanager.cpp \
-    siteinfo.cpp \
-    privateaddresslineedit.cpp \
     privatemainview.cpp \
-    crustaspeech.cpp \
-    permissions.cpp \
-    speeddial.cpp \
-    sidepane.cpp
+    lib/utils/codeeditor.cpp \
+    lib/webview/webpage.cpp \
+    lib/webview/webview.cpp \
+    lib/utils/jseditor.cpp \
+    lib/webview/popup.cpp \
+    lib/webview/privatewebview.cpp \
+    lib/utils/timenotifier.cpp \
+    lib/utils/themeeditor.cpp \
+    lib/utils/crustaspeech.cpp \
+    lib/utils/siteinfo.cpp \
+    lib/utils/fullscreennotifier.cpp \
+    lib/utils/permissions.cpp \
+    lib/managers/historymanager.cpp \
+    lib/managers/downloadmanager.cpp \
+    lib/managers/downloadwidget.cpp \
+    lib/managers/bookmarkmanager.cpp \
+    lib/utils/presentationmodenotifier.cpp \
+    lib/tabwidget/tabwindow.cpp \
+    lib/tabwidget/privatetabwindow.cpp \
+    lib/tabwidget/addresslineedit.cpp \
+    lib/tabwidget/privateaddresslineedit.cpp \
+    lib/speeddial/speeddial.cpp \
+    lib/sidepanel/sidepane.cpp
 
 HEADERS  += \
-    fullscreennotifier.h \
-    addresslineedit.h \
-    presentationmodenotifier.h \
-    webview.h \
-    tabwindow.h \
     mainview.h \
-    timenotifier.h \
-    popup.h \
-    historymanager.h \
-    privatewebview.h \
-    downloadmanager.h \
-    privatetabwindow.h \
-    jseditor.h \
-    codeeditor.h \
-    downloadwidget.h \
-    themeeditor.h \
-    webpage.h \
-    bookmarkmanager.h \
-    siteinfo.h \
-    privateaddresslineedit.h \
     privatemainview.h \
-    crustaspeech.h \
-    permissions.h \
-    speeddial.h \
-    sidepane.h
+    lib/utils/codeeditor.h \
+    lib/webview/webpage.h \
+    lib/webview/webview.h \
+    lib/utils/jseditor.h \
+    lib/webview/popup.h \
+    lib/webview/privatewebview.h \
+    lib/utils/timenotifier.h \
+    lib/utils/themeeditor.h \
+    lib/utils/crustaspeech.h \
+    lib/utils/siteinfo.h \
+    lib/utils/fullscreennotifier.h \
+    lib/utils/permissions.h \
+    lib/managers/historymanager.h \
+    lib/managers/downloadmanager.h \
+    lib/managers/downloadwidget.h \
+    lib/managers/bookmarkmanager.h \
+    lib/utils/presentationmodenotifier.h \
+    lib/tabwidget/tabwindow.h \
+    lib/tabwidget/privatetabwindow.h \
+    lib/tabwidget/addresslineedit.h \
+    lib/tabwidget/privateaddresslineedit.h \
+    lib/speeddial/speeddial.h \
+    lib/sidepanel/sidepane.h
 
 RESOURCES += \
     resource.qrc
