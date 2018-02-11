@@ -69,3 +69,4 @@ Please note that we use C++/Qt ,JS and CSS for Crusta, so please contribute in t
 ## Comming Soon
 - [ ] Pause/ Resume Downloads
 - [ ] Pinnable Tabs
+- [ ] Dynamic sized tabs
