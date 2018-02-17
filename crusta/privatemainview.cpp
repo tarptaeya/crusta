@@ -569,6 +569,7 @@ void PrivateMainView::addNormalTab(){
         else
             webview->load(QUrl("file:///"+exec_dir->absolutePath()+"/index.html"));
     }
+    tab->addr_bar->setFocus();
     PrivateMainView::addNewTabButton();
 }
 
