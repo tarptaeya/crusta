@@ -31,10 +31,11 @@
 
 
 
-class SiteInfoWidget:public QDialog{
+class SiteInfoWidget: public QDialog
+{
     Q_OBJECT
 public:
-    QVBoxLayout* vbox=new QVBoxLayout();
+    QVBoxLayout *vbox = new QVBoxLayout();
     SiteInfoWidget(QWebEngineView *view);
 };
 

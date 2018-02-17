@@ -31,25 +31,26 @@
 #include <QWebEngineDownloadItem>
 #include <QListWidgetItem>
 
-class DownloadWidget:public QWidget {
+class DownloadWidget: public QWidget
+{
     Q_OBJECT
 public:
-    QHBoxLayout* hbox=new QHBoxLayout();
-    QVBoxLayout* v0box=new QVBoxLayout();
-    QVBoxLayout* v1box=new QVBoxLayout();
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QVBoxLayout *v0box = new QVBoxLayout();
+    QVBoxLayout *v1box = new QVBoxLayout();
     DownloadWidget();
-    QLabel* icon=new QLabel();
-    QLabel* name=new QLabel();
-    QProgressBar* progress=new QProgressBar();
-    QPushButton* cancel=new QPushButton();
-    QPushButton* remove=new QPushButton();
-    QPushButton* open=new QPushButton();
-    QLabel* fraction=new QLabel();
+    QLabel *icon = new QLabel();
+    QLabel *name = new QLabel();
+    QProgressBar *progress = new QProgressBar();
+    QPushButton *cancel = new QPushButton();
+    QPushButton *remove = new QPushButton();
+    QPushButton *open = new QPushButton();
+    QLabel *fraction = new QLabel();
     QString path;
-    QListWidgetItem* item=new QListWidgetItem();
+    QListWidgetItem *item = new QListWidgetItem();
     void getName(QString);
     void getIcon(QIcon);
-    void computeFraction(qint64 bytesRecieved,qint64 bytesTotal);
+    void computeFraction(qint64 bytesRecieved, qint64 bytesTotal);
     void changeLayout_Completed();
     void changeLayout_Canceled();
     void changeLayout_Interrupted();

@@ -50,10 +50,11 @@
 
 
 
-class WebView:public QWebEngineView{
+class WebView: public QWebEngineView
+{
     Q_OBJECT
 protected:
-    QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
+    QWebEngineView *createWindow(QWebEnginePage::WebWindowType type);
 public:
     bool favLoaded;
     int notif;
@@ -62,20 +63,20 @@ public:
     int audio;
     int video;
     int av;
-    QString link="";
-    WebPage* webpage=new WebPage();
+    QString link = "";
+    WebPage *webpage = new WebPage();
     QString home_page;
     QString defaultSearch;
-    QLayout* layout;
-    QWidget* widget;
-    QLabel* urllabel;
-    QAction* exitFullScreen=new QAction();
-    QAction* timeAction=new QAction();
-    FullScreenNotifier* notifier=new FullScreenNotifier();
-    TimeNotifier* timeNotifier=new TimeNotifier();
-    QWebEngineView* view=new QWebEngineView();
-    QLabel* correction=new QLabel();
-    CrustaSpeech* c_speech=new CrustaSpeech();
+    QLayout *layout;
+    QWidget *widget;
+    QLabel *urllabel;
+    QAction *exitFullScreen = new QAction();
+    QAction *timeAction = new QAction();
+    FullScreenNotifier *notifier = new FullScreenNotifier();
+    TimeNotifier *timeNotifier = new TimeNotifier();
+    QWebEngineView *view = new QWebEngineView();
+    QLabel *correction = new QLabel();
+    CrustaSpeech *c_speech = new CrustaSpeech();
     void createWebView();
     WebView *returnView();
     void home();
@@ -84,7 +85,7 @@ public:
     void pageTitleChanged();
     void acceptFullScreen(QWebEngineFullScreenRequest request);
     void ExitAction();
-    void download(QWebEngineDownloadItem* download_item);
+    void download(QWebEngineDownloadItem *download_item);
     void downloadFinished(QString);
     void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
     void showLinkHovered(QString url);
@@ -92,7 +93,7 @@ public:
     void audioInfo();
     void showContextMenu(const QPoint &pos);
     void loadFinished();
-    void handleBeforePdf(qint64,qint64);
+    void handleBeforePdf(qint64, qint64);
     void espeak();
     void search(QString text);
     void downloadLink();

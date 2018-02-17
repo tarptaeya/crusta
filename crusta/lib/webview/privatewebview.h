@@ -50,36 +50,37 @@
 
 
 
-class PrivateWebView:public QWebEngineView{
+class PrivateWebView: public QWebEngineView
+{
     Q_OBJECT
 protected:
-    QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
+    QWebEngineView *createWindow(QWebEnginePage::WebWindowType type);
 public:
     bool favLoaded;
-    bool wasFullScreened=false;
-    QString link="";
-    PrivateWebPage* privatewebpage=new PrivateWebPage(new Profile());
+    bool wasFullScreened = false;
+    QString link = "";
+    PrivateWebPage *privatewebpage = new PrivateWebPage(new Profile());
     QString home_page;
     QString defaultSearch;
-    QLayout* layout;
-    QWidget* widget;
-    QLabel* urllabel;
-    QAction* exitFullScreen=new QAction();
-    QAction* timeAction=new QAction();
-    FullScreenNotifier* notifier=new FullScreenNotifier();
-    TimeNotifier* timeNotifier=new TimeNotifier();
-    QWebEngineView* view=new QWebEngineView();
+    QLayout *layout;
+    QWidget *widget;
+    QLabel *urllabel;
+    QAction *exitFullScreen = new QAction();
+    QAction *timeAction = new QAction();
+    FullScreenNotifier *notifier = new FullScreenNotifier();
+    TimeNotifier *timeNotifier = new TimeNotifier();
+    QWebEngineView *view = new QWebEngineView();
     void createPrivateWebView();
     PrivateWebView *returnPrivateView();
-    QLabel* correction=new QLabel();
-    CrustaSpeech* c_speech=new CrustaSpeech();
+    QLabel *correction = new QLabel();
+    CrustaSpeech *c_speech = new CrustaSpeech();
     void home();
     void spinnerStarted();
     void faviconChanged(QIcon fav);
     void pageTitleChanged();
     void acceptFullScreen(QWebEngineFullScreenRequest request);
     void ExitAction();
-    void download(QWebEngineDownloadItem* download_item);
+    void download(QWebEngineDownloadItem *download_item);
     void downloadFinished(QString);
     void permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
     void showLinkHovered(QString url);
@@ -87,7 +88,7 @@ public:
     void audioInfo();
     void authenticate(const QUrl u, QAuthenticator *authenticator);
     void showContextMenu(const QPoint &pos);
-    void handleBeforePdf(qint64,qint64);
+    void handleBeforePdf(qint64, qint64);
     void espeak();
     void search(QString text);
     void downloadLink();

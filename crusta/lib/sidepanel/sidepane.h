@@ -35,37 +35,39 @@
 #include <QWebEngineFullScreenRequest>
 
 
-class SidePaneButton: public QPushButton{
+class SidePaneButton: public QPushButton
+{
     Q_OBJECT
 public:
     int click;
     SidePaneButton();
     QString url;
     QString icon_;
-    QWebEngineView* sidewebview=new QWebEngineView();
+    QWebEngineView *sidewebview = new QWebEngineView();
     void buttonContext(const QPoint &point);
 };
 
 
-class SidePane: public QWidget{
+class SidePane: public QWidget
+{
     Q_OBJECT
-    QHBoxLayout* hbox=new QHBoxLayout();
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QLabel* flexilabel=new QLabel();
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QLabel *flexilabel = new QLabel();
 public:
-    QPushButton* top = new QPushButton();
-    SidePane(MainView*m);
-    SidePane(PrivateMainView*m);
-    PrivateMainView* pmainview;
-    MainView* mainview;
-    HistoryManager* history_manager;
-    BookmarkManager* bookmark_manager;
-    PrivateBookmarkManager* pbookmark_manager;
-    DownloadManager* download_manager;
-    SidePaneButton* history=new SidePaneButton();
-    SidePaneButton* bookmarks=new SidePaneButton();
-    SidePaneButton* downloads=new SidePaneButton();
-    SidePaneButton* add_pane_btn=new SidePaneButton();
+    QPushButton *top = new QPushButton();
+    SidePane(MainView *m);
+    SidePane(PrivateMainView *m);
+    PrivateMainView *pmainview;
+    MainView *mainview;
+    HistoryManager *history_manager;
+    BookmarkManager *bookmark_manager;
+    PrivateBookmarkManager *pbookmark_manager;
+    DownloadManager *download_manager;
+    SidePaneButton *history = new SidePaneButton();
+    SidePaneButton *bookmarks = new SidePaneButton();
+    SidePaneButton *downloads = new SidePaneButton();
+    SidePaneButton *add_pane_btn = new SidePaneButton();
     void addNewButton();
     void acceptFullScreenReuest(QWebEngineFullScreenRequest request);
 };

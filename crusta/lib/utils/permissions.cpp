@@ -26,7 +26,8 @@
 #include <QStringList>
 
 
-PermissionDialog::PermissionDialog(){
+PermissionDialog::PermissionDialog()
+{
     setLayout(vbox);
     setWindowTitle("Crusta : Permissions");
 
@@ -38,59 +39,73 @@ PermissionDialog::PermissionDialog(){
     vbox->addWidget(av->group);
 
     geo->allow->setChecked(true);
-    setFixedSize(sizeHint().width()*2,sizeHint().height());
+    setFixedSize(sizeHint().width() * 2, sizeHint().height());
 
-    QPushButton* ok=new QPushButton("Save");
-    QPushButton* cncl=new QPushButton("Cancel");
-    QHBoxLayout* hbox=new QHBoxLayout();
+    QPushButton *ok = new QPushButton("Save");
+    QPushButton *cncl = new QPushButton("Cancel");
+    QHBoxLayout *hbox = new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(ok);
     hbox->addWidget(cncl);
     vbox->addLayout(hbox);
     loadPermissions();
-    connect(cncl,&QPushButton::clicked,this,&PermissionDialog::close);
-    connect(ok,&QPushButton::clicked,this,&PermissionDialog::savePermissions);
+    connect(cncl, &QPushButton::clicked, this, &PermissionDialog::close);
+    connect(ok, &QPushButton::clicked, this, &PermissionDialog::savePermissions);
 }
 
-void PermissionDialog::savePermissions(){
-    QString s="";
-    if(notif->allow->isChecked())
-        s+="0\n";
-    else if(notif->ask->isChecked())
-        s+="1\n";
-    else
-        s+="2\n";
-    if(mouse->allow->isChecked())
-        s+="0\n";
-    else if(mouse->ask->isChecked())
-        s+="1\n";
-    else
-        s+="2\n";
-    if(geo->allow->isChecked())
-        s+="0\n";
-    else if(geo->ask->isChecked())
-        s+="1\n";
-    else
-        s+="2\n";
-    if(audio->allow->isChecked())
-        s+="0\n";
-    else if(audio->ask->isChecked())
-        s+="1\n";
-    else
-        s+="2\n";
-    if(video->allow->isChecked())
-        s+="0\n";
-    else if(video->ask->isChecked())
-        s+="1\n";
-    else
-        s+="2\n";
-    if(av->allow->isChecked())
-        s+="0\n";
-    else if(av->ask->isChecked())
-        s+="1\n";
-    else
-        s+="2\n";
-    QFile file(QDir::homePath()+"/.crusta_db/permissions.txt");
+void PermissionDialog::savePermissions()
+{
+    QString s = "";
+
+    if (notif->allow->isChecked()) {
+        s += "0\n";
+    } else if (notif->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    if (mouse->allow->isChecked()) {
+        s += "0\n";
+    } else if (mouse->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    if (geo->allow->isChecked()) {
+        s += "0\n";
+    } else if (geo->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    if (audio->allow->isChecked()) {
+        s += "0\n";
+    } else if (audio->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    if (video->allow->isChecked()) {
+        s += "0\n";
+    } else if (video->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    if (av->allow->isChecked()) {
+        s += "0\n";
+    } else if (av->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    QFile file(QDir::homePath() + "/.crusta_db/permissions.txt");
     file.open(QIODevice::WriteOnly);
     file.resize(0);
     QTextStream out(&file);
@@ -100,64 +115,80 @@ void PermissionDialog::savePermissions(){
     this->accept();
 }
 
-void PermissionDialog::loadPermissions(){
+void PermissionDialog::loadPermissions()
+{
     QStringList slist;
-    QFile f(QDir::homePath()+"/.crusta_db/permissions.txt");
-    if(f.exists()){
+    QFile f(QDir::homePath() + "/.crusta_db/permissions.txt");
+
+    if (f.exists()) {
         f.open(QIODevice::ReadOnly);
         QTextStream in(&f);
         in.setCodec("UTF-8");
-        while (!in.atEnd()){
-           QString line = in.readLine();
-           slist.append(line);
+
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            slist.append(line);
         }
+
         f.close();
-    }
-    else{
+    } else {
         return;
     }
-    if(slist[0]=="0")
+
+    if (slist[0] == "0") {
         notif->allow->setChecked(true);
-    else if(slist[0]=="1")
+    } else if (slist[0] == "1") {
         notif->ask->setChecked(true);
-    else
+    } else {
         notif->reject->setChecked(true);
-    if(slist[1]=="0")
+    }
+
+    if (slist[1] == "0") {
         mouse->allow->setChecked(true);
-    else if(slist[1]=="1")
+    } else if (slist[1] == "1") {
         mouse->ask->setChecked(true);
-    else
+    } else {
         mouse->reject->setChecked(true);
-    if(slist[2]=="0")
+    }
+
+    if (slist[2] == "0") {
         geo->allow->setChecked(true);
-    else if(slist[2]=="1")
+    } else if (slist[2] == "1") {
         geo->ask->setChecked(true);
-    else
+    } else {
         geo->reject->setChecked(true);
-    if(slist[3]=="0")
+    }
+
+    if (slist[3] == "0") {
         audio->allow->setChecked(true);
-    else if(slist[3]=="1")
+    } else if (slist[3] == "1") {
         audio->ask->setChecked(true);
-    else
+    } else {
         audio->reject->setChecked(true);
-    if(slist[4]=="0")
+    }
+
+    if (slist[4] == "0") {
         video->allow->setChecked(true);
-    else if(slist[4]=="1")
+    } else if (slist[4] == "1") {
         video->ask->setChecked(true);
-    else
+    } else {
         video->reject->setChecked(true);
-    if(slist[5]=="0")
+    }
+
+    if (slist[5] == "0") {
         av->allow->setChecked(true);
-    else if(slist[5]=="1")
+    } else if (slist[5] == "1") {
         av->ask->setChecked(true);
-    else
+    } else {
         av->reject->setChecked(true);
+    }
 }
 
-PermissionValue::PermissionValue(QString n){
-    name=n;
+PermissionValue::PermissionValue(QString n)
+{
+    name = n;
     group->setTitle(name);
-    QHBoxLayout* hbox=new QHBoxLayout();
+    QHBoxLayout *hbox = new QHBoxLayout();
     group->setLayout(hbox);
     hbox->addWidget(allow);
     hbox->addWidget(ask);

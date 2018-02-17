@@ -32,16 +32,17 @@
 
 
 
-class PresentationModeNotifier:public QObject{
+class PresentationModeNotifier: public QObject
+{
     Q_OBJECT
 public:
-    QLabel* label=new QLabel();
-    QTimer* timer=new QTimer();
+    QLabel *label = new QLabel();
+    QTimer *timer = new QTimer();
     int x;
     void createNotifier();
     void showNotifier();
     void fadeOut();
-    void setViewParent(QWebEngineView* view);
+    void setViewParent(QWebEngineView *view);
     void hideNotifier();
 };
 

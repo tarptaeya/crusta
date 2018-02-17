@@ -29,9 +29,10 @@
 #include <QVBoxLayout>
 #include <QListWidget>
 
-class SpeedDial: public QWidget{
+class SpeedDial: public QWidget
+{
     Q_OBJECT
-    QLineEdit* bgimage=new QLineEdit();
+    QLineEdit *bgimage = new QLineEdit();
 public:
     void save(QString bgimage, QString srchstr);
     void add(QString title, QString url);

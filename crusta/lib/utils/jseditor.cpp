@@ -21,25 +21,28 @@
 #include "jseditor.h"
 #include <QString>
 
-JsEditor::JsEditor(){
+JsEditor::JsEditor()
+{
     vbox->addWidget(editor);
     run_btn->setText(tr("&Run Script"));
     cncl_btn->setText(tr("&Cancel"));
     hbox->addWidget(run_btn);
     hbox->addWidget(cncl_btn);
     vbox->addLayout(hbox);
-    connect(run_btn,&QPushButton::clicked,this,&JsEditor::runJs);
-    connect(cncl_btn,&QPushButton::clicked,this,&JsEditor::hide);
+    connect(run_btn, &QPushButton::clicked, this, &JsEditor::runJs);
+    connect(cncl_btn, &QPushButton::clicked, this, &JsEditor::hide);
     setLayout(vbox);
     //setStyleSheet("QWidget{background-color:white;color:black} QPlainTextEdit{background-color:white;color:blue} QPushButton{border:0.5px solid black;background-color:black;color:white;padding:2px 4px;} QPushButton:hover{background-color:white;color:black}");
 }
 
-void JsEditor::setView(QWebEngineView* v){
-    view=v;
+void JsEditor::setView(QWebEngineView *v)
+{
+    view = v;
 }
 
-void JsEditor::runJs(){
-    QString code=editor->toPlainText();
+void JsEditor::runJs()
+{
+    QString code = editor->toPlainText();
     view->page()->runJavaScript(code);
     hide();
 }

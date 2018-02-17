@@ -30,17 +30,18 @@
 #include <QEasingCurve>
 #include <QWebEngineView>
 
-class TimeNotifier:public QObject{
+class TimeNotifier: public QObject
+{
     Q_OBJECT
 public:
-    QLabel* label=new QLabel();
-    QTimer* timer=new QTimer();
-    QWebEngineView* pview=new QWebEngineView();
+    QLabel *label = new QLabel();
+    QTimer *timer = new QTimer();
+    QWebEngineView *pview = new QWebEngineView();
     int x;
     void createNotifier();
     void showNotifier();
     void fadeOut();
-    void setViewParent(QWebEngineView* view);
+    void setViewParent(QWebEngineView *view);
     void hideNotifier();
 };
 

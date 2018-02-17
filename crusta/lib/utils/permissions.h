@@ -31,27 +31,29 @@
 
 
 
-class PermissionValue{
+class PermissionValue
+{
 public:
     QString name;
-    QGroupBox* group=new QGroupBox();
-    QRadioButton* allow=new QRadioButton("Allow");
-    QRadioButton* ask=new QRadioButton("Ask");
-    QRadioButton* reject=new QRadioButton("Never");
+    QGroupBox *group = new QGroupBox();
+    QRadioButton *allow = new QRadioButton("Allow");
+    QRadioButton *ask = new QRadioButton("Ask");
+    QRadioButton *reject = new QRadioButton("Never");
     PermissionValue(QString name);
 };
 
 
 
-class PermissionDialog: public QDialog{
+class PermissionDialog: public QDialog
+{
     Q_OBJECT
-    QVBoxLayout* vbox=new QVBoxLayout();
-    PermissionValue* notif=new PermissionValue("Notifications");
-    PermissionValue* mouse=new PermissionValue("Mouse Lock");
-    PermissionValue* geo=new PermissionValue("Geolocation");
-    PermissionValue* audio=new PermissionValue("Audio Capture");
-    PermissionValue* video=new PermissionValue("Video Capture");
-    PermissionValue* av=new PermissionValue("Audio Video Capture");
+    QVBoxLayout *vbox = new QVBoxLayout();
+    PermissionValue *notif = new PermissionValue("Notifications");
+    PermissionValue *mouse = new PermissionValue("Mouse Lock");
+    PermissionValue *geo = new PermissionValue("Geolocation");
+    PermissionValue *audio = new PermissionValue("Audio Capture");
+    PermissionValue *video = new PermissionValue("Video Capture");
+    PermissionValue *av = new PermissionValue("Audio Video Capture");
 public:
     PermissionDialog();
     void loadPermissions();

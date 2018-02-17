@@ -31,17 +31,18 @@
 #include <QObject>
 #include <QWidget>
 
-class JsEditor:public QWidget{
+class JsEditor: public QWidget
+{
     Q_OBJECT
 public:
-    CodeEditor* editor=new CodeEditor();
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QHBoxLayout* hbox=new QHBoxLayout();
-    QPushButton* run_btn=new QPushButton();
-    QPushButton* cncl_btn=new QPushButton();
-    QWebEngineView* view=new QWebEngineView();
+    CodeEditor *editor = new CodeEditor();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QPushButton *run_btn = new QPushButton();
+    QPushButton *cncl_btn = new QPushButton();
+    QWebEngineView *view = new QWebEngineView();
     JsEditor();
-    void setView(QWebEngineView* v);
+    void setView(QWebEngineView *v);
     void runJs();
 };
 

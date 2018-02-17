@@ -29,17 +29,18 @@
 #include <QAction>
 #include <QCompleter>
 
-class PrivateAddressLineEdit:public QLineEdit{
+class PrivateAddressLineEdit: public QLineEdit
+{
     Q_OBJECT
-    QCompleter* cmpleter=new QCompleter();
+    QCompleter *cmpleter = new QCompleter();
 public:
-    QPushButton* siteinfo_btn=new QPushButton(this);
-    QAction* default_search=new QAction(tr("Search Preference"));
-    QAction* changeUAstring=new QAction(tr("Edit UA String"));
+    QPushButton *siteinfo_btn = new QPushButton(this);
+    QAction *default_search = new QAction(tr("Search Preference"));
+    QAction *changeUAstring = new QAction(tr("Edit UA String"));
     QStringList list;
     void createAddressLineEdit();
-    QLineEdit* initialize();
-    void showContextMenu(const QPoint& pos);
+    QLineEdit *initialize();
+    void showContextMenu(const QPoint &pos);
     QString defaultSearch;
     PrivateAddressLineEdit();
     void createCompleter();

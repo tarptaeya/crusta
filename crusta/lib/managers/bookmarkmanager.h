@@ -34,30 +34,31 @@
 #ifndef BOOKMARKMANAGER_H
 #define BOOKMARKMANAGER_H
 
-class BookmarkManager:public QDialog{
+class BookmarkManager: public QDialog
+{
     Q_OBJECT
 public:
-    QWidget* info_lbl=new QWidget();
-    QLabel* info_lbl_1=new QLabel();
-    QLabel* info_lbl_2=new QLabel();
-    QLabel* info_lbl_3=new QLabel();
-    QTreeWidget* display=new QTreeWidget();
-    QAction* open=new QAction(tr("Open"));
-    QAction* del=new QAction(tr("Remove"));
-    QLineEdit* search=new QLineEdit();
-    QLineEdit* description=new QLineEdit();
-    QPushButton* save=new QPushButton(tr("Save Description"));
-    QPushButton* sbtn=new QPushButton(tr("Go"));
-    QVBoxLayout* vbox=new QVBoxLayout();
-    BookmarkManager(MainView* m);
-    MainView* mview;
+    QWidget *info_lbl = new QWidget();
+    QLabel *info_lbl_1 = new QLabel();
+    QLabel *info_lbl_2 = new QLabel();
+    QLabel *info_lbl_3 = new QLabel();
+    QTreeWidget *display = new QTreeWidget();
+    QAction *open = new QAction(tr("Open"));
+    QAction *del = new QAction(tr("Remove"));
+    QLineEdit *search = new QLineEdit();
+    QLineEdit *description = new QLineEdit();
+    QPushButton *save = new QPushButton(tr("Save Description"));
+    QPushButton *sbtn = new QPushButton(tr("Go"));
+    QVBoxLayout *vbox = new QVBoxLayout();
+    BookmarkManager(MainView *m);
+    MainView *mview;
     void loadBookmarks();
-    void showContextMenu(const QPoint& pos);
+    void showContextMenu(const QPoint &pos);
     void openUrl();
     void clearEntry();
     void saveDescription();
     void searchBookmark();
-    void displayInfo(QTreeWidgetItem* item,int column);
+    void displayInfo(QTreeWidgetItem *item, int column);
 };
 
 #endif // BOOKMARKMANAGER_H
@@ -65,29 +66,30 @@ public:
 #ifndef PRIVATEBOOKMARKMANAGER_H
 #define PRIVATEBOOKMARKMANAGER_H
 
-class PrivateBookmarkManager:public QDialog{
+class PrivateBookmarkManager: public QDialog
+{
 public:
-    QWidget* info_lbl=new QWidget();
-    QLabel* info_lbl_1=new QLabel();
-    QLabel* info_lbl_2=new QLabel();
-    QLabel* info_lbl_3=new QLabel();
-    QTreeWidget* pdisplay=new QTreeWidget();
-    QAction* open=new QAction(tr("Open"));
-    QAction* del=new QAction(tr("Remove"));
-    QLineEdit* search=new QLineEdit();
-    QLineEdit* description=new QLineEdit();
-    QPushButton* save=new QPushButton(tr("Save Description"));
-    QPushButton* sbtn=new QPushButton(tr("Go"));
-    QVBoxLayout* vbox=new QVBoxLayout();
-    PrivateBookmarkManager(PrivateMainView* m);
-    PrivateMainView* pmview;
+    QWidget *info_lbl = new QWidget();
+    QLabel *info_lbl_1 = new QLabel();
+    QLabel *info_lbl_2 = new QLabel();
+    QLabel *info_lbl_3 = new QLabel();
+    QTreeWidget *pdisplay = new QTreeWidget();
+    QAction *open = new QAction(tr("Open"));
+    QAction *del = new QAction(tr("Remove"));
+    QLineEdit *search = new QLineEdit();
+    QLineEdit *description = new QLineEdit();
+    QPushButton *save = new QPushButton(tr("Save Description"));
+    QPushButton *sbtn = new QPushButton(tr("Go"));
+    QVBoxLayout *vbox = new QVBoxLayout();
+    PrivateBookmarkManager(PrivateMainView *m);
+    PrivateMainView *pmview;
     void loadBookmarks();
-    void showContextMenu(const QPoint& pos);
+    void showContextMenu(const QPoint &pos);
     void openUrl();
     void clearEntry();
     void saveDescription();
     void searchBookmark();
-    void pdisplayInfo(QTreeWidgetItem* item,int column);
+    void pdisplayInfo(QTreeWidgetItem *item, int column);
 };
 
 #endif

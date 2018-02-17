@@ -22,28 +22,33 @@
 #include <QLabel>
 #include <QVoice>
 
-CrustaSpeech::CrustaSpeech(){
-    if(speech->availableVoices().size()!=0)
+CrustaSpeech::CrustaSpeech()
+{
+    if (speech->availableVoices().size() != 0) {
         speech->setVoice(speech->availableVoices()[0]);
+    }
+
     setLayout(vbox);
     setWindowTitle(tr("Crusta Speech"));
     vbox->addWidget(tts);
-    QHBoxLayout* hbox=new QHBoxLayout();
+    QHBoxLayout *hbox = new QHBoxLayout();
     hbox->addWidget(start_btn);
     hbox->addWidget(stop_btn);
     hbox->addWidget(new QLabel());
     vbox->addLayout(hbox);
-    connect(start_btn,&QPushButton::clicked,this,&CrustaSpeech::speak);
-    connect(stop_btn,&QPushButton::clicked,this,&CrustaSpeech::stop);
+    connect(start_btn, &QPushButton::clicked, this, &CrustaSpeech::speak);
+    connect(stop_btn, &QPushButton::clicked, this, &CrustaSpeech::stop);
 }
 
-void CrustaSpeech::speak(){
+void CrustaSpeech::speak()
+{
     speech->say(tts->toPlainText());
     start_btn->setDisabled(true);
     stop_btn->setDisabled(false);
 }
 
-void CrustaSpeech::stop(){
+void CrustaSpeech::stop()
+{
     speech->stop();
     start_btn->setDisabled(false);
     stop_btn->setDisabled(true);

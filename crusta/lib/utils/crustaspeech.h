@@ -28,14 +28,15 @@
 #include <QHBoxLayout>
 #include <QTextEdit>
 
-class CrustaSpeech:public QWidget{
+class CrustaSpeech: public QWidget
+{
     Q_OBJECT
-    QVBoxLayout* vbox=new QVBoxLayout();
+    QVBoxLayout *vbox = new QVBoxLayout();
 public:
-    QTextEdit* tts=new QTextEdit();
-    QTextToSpeech* speech=new QTextToSpeech();
-    QPushButton* start_btn=new QPushButton(tr("Speak"));
-    QPushButton* stop_btn=new QPushButton(tr("Stop"));
+    QTextEdit *tts = new QTextEdit();
+    QTextToSpeech *speech = new QTextToSpeech();
+    QPushButton *start_btn = new QPushButton(tr("Speak"));
+    QPushButton *stop_btn = new QPushButton(tr("Stop"));
     CrustaSpeech();
     void speak();
     void stop();

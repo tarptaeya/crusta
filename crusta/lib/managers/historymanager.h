@@ -39,23 +39,24 @@
 
 
 
-class HistoryManager:public QDialog{
+class HistoryManager: public QDialog
+{
     Q_OBJECT
 public:
-    QTreeWidget* display_area=new QTreeWidget();
-    QPushButton* clear_all=new QPushButton(tr("Clear All"));
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QAction* open=new QAction(tr("Open"));
-    QAction* del=new QAction(tr("Remove"));
-    QComboBox* date=new QComboBox();
-    MainView* mview;
+    QTreeWidget *display_area = new QTreeWidget();
+    QPushButton *clear_all = new QPushButton(tr("Clear All"));
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QAction *open = new QAction(tr("Open"));
+    QAction *del = new QAction(tr("Remove"));
+    QComboBox *date = new QComboBox();
+    MainView *mview;
     void createManager();
-    void showContextMenu(const QPoint& pos);
+    void showContextMenu(const QPoint &pos);
     void clearAll();
     void openUrl();
     void clearEntry();
     void setFilterDate();
-    HistoryManager(MainView* m);
+    HistoryManager(MainView *m);
 };
 
 

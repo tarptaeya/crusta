@@ -31,11 +31,12 @@
 #include <QHBoxLayout>
 #include <QListWidget>
 
-class DownloadManager:public QDialog{
+class DownloadManager: public QDialog
+{
     Q_OBJECT
 public:
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QListWidget* listwidget=new QListWidget();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QListWidget *listwidget = new QListWidget();
     DownloadManager();
     void addDownloadItem(DownloadWidget *w);
     void loadDownloads();

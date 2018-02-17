@@ -29,12 +29,14 @@
 #include <QWebEngineCertificateError>
 
 
-class Profile:public QWebEngineProfile{
+class Profile: public QWebEngineProfile
+{
 public:
     Profile();
 };
 
-class WebPage:public QWebEnginePage{
+class WebPage: public QWebEnginePage
+{
     Q_OBJECT
     QString key;
 protected:
@@ -55,7 +57,8 @@ public:
 
 
 
-class PrivateWebPage:public QWebEnginePage{
+class PrivateWebPage: public QWebEnginePage
+{
     QString  key;
 protected:
     QStringList chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes);
@@ -69,7 +72,7 @@ public:
     QString agent;
     void loadUAString();
     QString sdBgimage;
-    PrivateWebPage(QWebEngineProfile* profile,QObject* parent=0);
+    PrivateWebPage(QWebEngineProfile *profile, QObject *parent = 0);
 };
 
 #endif // WEBPAGE_H

@@ -30,17 +30,18 @@
 #include <QStringList>
 
 
-class AddressLineEdit:public QLineEdit{
+class AddressLineEdit: public QLineEdit
+{
     Q_OBJECT
-    QCompleter* cmpleter=new QCompleter();
+    QCompleter *cmpleter = new QCompleter();
 public:
-    QPushButton* siteinfo_btn = new QPushButton(this);
-    QAction* default_search=new QAction(tr("Search Preference"));
-    QAction* changeUAstring=new QAction(tr("Edit UA String"));
+    QPushButton *siteinfo_btn = new QPushButton(this);
+    QAction *default_search = new QAction(tr("Search Preference"));
+    QAction *changeUAstring = new QAction(tr("Edit UA String"));
     QStringList list;
     void createAddressLineEdit();
-    QLineEdit* initialize();
-    void showContextMenu(const QPoint& pos);
+    QLineEdit *initialize();
+    void showContextMenu(const QPoint &pos);
     QString defaultSearch;
     AddressLineEdit();
     void createCompleter();

@@ -53,18 +53,20 @@ class MainView;
 
 
 
-class Window:public QWidget{
+class Window: public QWidget
+{
     void closeEvent(QCloseEvent *event);
 public:
-    QMenu* menu=new QMenu();
-    MainView* parentView;
-    DownloadManager* d_manager=new DownloadManager();
+    QMenu *menu = new QMenu();
+    MainView *parentView;
+    DownloadManager *d_manager = new DownloadManager();
 };
 
 
 
 
-class MainView:public QMainWindow{
+class MainView: public QMainWindow
+{
     Q_OBJECT
 private:
     void quit();
@@ -95,75 +97,75 @@ public:
     void limitHistoryFile();
     void limitDownloadFile();
 public:
-    Window* window=new Window();
-    QTabWidget* tabWindow=new QTabWidget(this);
-    QHBoxLayout* box=new QHBoxLayout();
-    QHBoxLayout* side_pane=new QHBoxLayout();
-    QMenuBar* menubar=new QMenuBar();
-    QMenu* menu=new QMenu();
-    QPushButton* add_btn=new QPushButton();
-    QMenu* file_menu=new QMenu();
-    QMenu* edit_menu=new QMenu();
-    QMenu* view_menu=new QMenu();
-    QMenu* history_menu=new QMenu();
-    QMenu* bookmark_menu=new QMenu();
-    QMenu* recently_closed=new QMenu();
-    QMenu* tool_menu=new QMenu();
-    QMenu* help_menu=new QMenu();
-    QMenu* devTools=new QMenu();
-    QAction* new_tab_action=new QAction();
-    QAction* split_mode_action=new QAction();
-    QAction* new_window_action=new QAction();
-    QAction* incognito=new QAction();
-    QAction* closeCurrentTab=new QAction();
-    QAction* open_file=new QAction();
-    QAction* save_as_pdf=new QAction();
-    QAction* save_page=new QAction();
-    QAction* capture_screenshot=new QAction();
-    QAction* exit_action=new QAction();
-    QAction* undo_action=new QAction();
-    QAction* redo_action=new QAction();
-    QAction* cut_action=new QAction();
-    QAction* copy_action=new QAction();
-    QAction* paste_action=new QAction();
-    QAction* selectall_action=new QAction();
-    QAction* find_action=new QAction();
-    QAction* edit_permissions=new QAction();
-    QAction* speed_dial=new QAction();
-    QAction* toggle_spane_action=new QAction();
-    QAction* view_page_source_action=new QAction();
-    QAction* zoom_in_action=new QAction();
-    QAction* zoom_out_action=new QAction();
-    QAction* reset_zoom_action=new QAction();
-    QAction* presentation_action=new QAction();
-    QAction* preference=new QAction();
-    QAction* show_all_history=new QAction();
-    QAction* clearAllHist=new QAction();
-    QAction* restore_session=new QAction();
-    QAction* bookmark_tab=new QAction();
-    QAction* bookmark_all_tabs=new QAction();
-    QAction* show_all_bookmarks=new QAction();
-    QAction* web_inspector_action=new QAction();
-    QAction* viewSource=new QAction();
-    QAction* runJsCode=new QAction();
-    QAction* changeUA=new QAction();
-    QAction* pick_color=new QAction();
-    QAction* sitei=new QAction();
-    QAction* aboutCr=new QAction();
-    PresentationModeNotifier* p_notifier=new PresentationModeNotifier();
-    QAction* fullscreen_action=new QAction();
+    Window *window = new Window();
+    QTabWidget *tabWindow = new QTabWidget(this);
+    QHBoxLayout *box = new QHBoxLayout();
+    QHBoxLayout *side_pane = new QHBoxLayout();
+    QMenuBar *menubar = new QMenuBar();
+    QMenu *menu = new QMenu();
+    QPushButton *add_btn = new QPushButton();
+    QMenu *file_menu = new QMenu();
+    QMenu *edit_menu = new QMenu();
+    QMenu *view_menu = new QMenu();
+    QMenu *history_menu = new QMenu();
+    QMenu *bookmark_menu = new QMenu();
+    QMenu *recently_closed = new QMenu();
+    QMenu *tool_menu = new QMenu();
+    QMenu *help_menu = new QMenu();
+    QMenu *devTools = new QMenu();
+    QAction *new_tab_action = new QAction();
+    QAction *split_mode_action = new QAction();
+    QAction *new_window_action = new QAction();
+    QAction *incognito = new QAction();
+    QAction *closeCurrentTab = new QAction();
+    QAction *open_file = new QAction();
+    QAction *save_as_pdf = new QAction();
+    QAction *save_page = new QAction();
+    QAction *capture_screenshot = new QAction();
+    QAction *exit_action = new QAction();
+    QAction *undo_action = new QAction();
+    QAction *redo_action = new QAction();
+    QAction *cut_action = new QAction();
+    QAction *copy_action = new QAction();
+    QAction *paste_action = new QAction();
+    QAction *selectall_action = new QAction();
+    QAction *find_action = new QAction();
+    QAction *edit_permissions = new QAction();
+    QAction *speed_dial = new QAction();
+    QAction *toggle_spane_action = new QAction();
+    QAction *view_page_source_action = new QAction();
+    QAction *zoom_in_action = new QAction();
+    QAction *zoom_out_action = new QAction();
+    QAction *reset_zoom_action = new QAction();
+    QAction *presentation_action = new QAction();
+    QAction *preference = new QAction();
+    QAction *show_all_history = new QAction();
+    QAction *clearAllHist = new QAction();
+    QAction *restore_session = new QAction();
+    QAction *bookmark_tab = new QAction();
+    QAction *bookmark_all_tabs = new QAction();
+    QAction *show_all_bookmarks = new QAction();
+    QAction *web_inspector_action = new QAction();
+    QAction *viewSource = new QAction();
+    QAction *runJsCode = new QAction();
+    QAction *changeUA = new QAction();
+    QAction *pick_color = new QAction();
+    QAction *sitei = new QAction();
+    QAction *aboutCr = new QAction();
+    PresentationModeNotifier *p_notifier = new PresentationModeNotifier();
+    QAction *fullscreen_action = new QAction();
     int start_findwidget;
-    QPushButton* close_findwidget=new QPushButton();
-    QWidget* findwidget=new QWidget();
-    QHBoxLayout* hbox=new QHBoxLayout();
-    QCheckBox* match_case_btn=new QCheckBox();
-    QLabel* label=new QLabel();
-    QLineEdit* text=new QLineEdit();
-    DownloadWidget* downloadWidget=new DownloadWidget();
-    JsEditor* jsEditor=new JsEditor();
-    QPushButton* newtabbtn=new QPushButton();
+    QPushButton *close_findwidget = new QPushButton();
+    QWidget *findwidget = new QWidget();
+    QHBoxLayout *hbox = new QHBoxLayout();
+    QCheckBox *match_case_btn = new QCheckBox();
+    QLabel *label = new QLabel();
+    QLineEdit *text = new QLineEdit();
+    DownloadWidget *downloadWidget = new DownloadWidget();
+    JsEditor *jsEditor = new JsEditor();
+    QPushButton *newtabbtn = new QPushButton();
     QPageLayout currentPageLayout;
-    MainView* splitWindow;
+    MainView *splitWindow;
     MainView();
     QString defaultTheme;
     bool updateOn = false;
@@ -183,7 +185,7 @@ public:
     void tabAreaDoubleClicked(int index);
     void addNewTabButton();
     void editPreference();
-    void duplicateTab(QWebEngineView*);
+    void duplicateTab(QWebEngineView *);
     void reloadAllTabs();
     void closeOtherTabs(int index);
     void restoreTab(QUrl u);

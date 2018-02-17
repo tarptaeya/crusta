@@ -30,21 +30,22 @@
 #include "mainview.h"
 
 
-class ThemeEditor:public QDialog{
+class ThemeEditor: public QDialog
+{
     Q_OBJECT
 private:
-    QLineEdit* color=new QLineEdit();
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QPushButton* restore=new QPushButton();
-    QPushButton* ok=new QPushButton();
-    QPushButton* cncl=new QPushButton();
-    QPushButton* cdg=new QPushButton();
+    QLineEdit *color = new QLineEdit();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QPushButton *restore = new QPushButton();
+    QPushButton *ok = new QPushButton();
+    QPushButton *cncl = new QPushButton();
+    QPushButton *cdg = new QPushButton();
     void saveTheme();
     void restoreTheme();
     void setColor();
 public:
     ThemeEditor();
-    MainView* _parent=new MainView();
+    MainView *_parent = new MainView();
 };
 
 

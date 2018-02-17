@@ -27,7 +27,8 @@
 #include <QCoreApplication>
 #include <QtWebEngine>
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL, true);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);
@@ -37,21 +38,24 @@ int main(int argc, char *argv[]){
     a.setAttribute(Qt::AA_EnableHighDpiScaling);
     Q_INIT_RESOURCE(resource); // initialised the resource file;
 
-    if(!QDir(QDir::homePath()+"/.crusta_db").exists()){
-        QDir().mkdir(QDir::homePath()+"/.crusta_db");
+    if (!QDir(QDir::homePath() + "/.crusta_db").exists()) {
+        QDir().mkdir(QDir::homePath() + "/.crusta_db");
     }
-    if(!QDir(QDir::homePath()+"/.crusta_db/speeddial").exists()){
-        QDir().mkdir(QDir::homePath()+"/.crusta_db/speeddial");
+
+    if (!QDir(QDir::homePath() + "/.crusta_db/speeddial").exists()) {
+        QDir().mkdir(QDir::homePath() + "/.crusta_db/speeddial");
     }
-    if(!QDir(QDir::homePath()+"/.crusta_db/speeddial/img").exists()){
-        QDir().mkdir(QDir::homePath()+"/.crusta_db/speeddial/img");
-        SpeedDial* sd=new SpeedDial();
+
+    if (!QDir(QDir::homePath() + "/.crusta_db/speeddial/img").exists()) {
+        QDir().mkdir(QDir::homePath() + "/.crusta_db/speeddial/img");
+        SpeedDial *sd = new SpeedDial();
         sd->configure();
     }
+
     QFont f;
     f.setPointSize(10);
     a.setFont(f);
-    MainView* w=new MainView();
+    MainView *w = new MainView();
     w->showView();
     a.setWindowIcon(QIcon(":/res/drawables/icon_3.ico"));
     return a.exec();

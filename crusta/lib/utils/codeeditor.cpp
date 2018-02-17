@@ -59,7 +59,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
     lineNumberArea = new LineNumberArea(this);
 
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+    connect(this, SIGNAL(updateRequest(QRect, int)), this, SLOT(updateLineNumberArea(QRect, int)));
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
     updateLineNumberAreaWidth(0);
@@ -75,6 +75,7 @@ int CodeEditor::lineNumberAreaWidth()
 {
     int digits = 1;
     int max = qMax(1, blockCount());
+
     while (max >= 10) {
         max /= 10;
         ++digits;
@@ -100,13 +101,15 @@ void CodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 
 void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
-    if (dy)
+    if (dy) {
         lineNumberArea->scroll(0, dy);
-    else
+    } else {
         lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+    }
 
-    if (rect.contains(viewport()->rect()))
+    if (rect.contains(viewport()->rect())) {
         updateLineNumberAreaWidth(0);
+    }
 }
 
 //![slotUpdateRequest]

@@ -31,20 +31,21 @@
 
 
 
-class PopUp:public QObject{
+class PopUp: public QObject
+{
     Q_OBJECT
 public:
-    QWidget* widget=new QWidget();
-    QPushButton* btn=new QPushButton();
-    QLineEdit* lineedit=new QLineEdit();
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QWebEngineView* webview =new QWebEngineView();
+    QWidget *widget = new QWidget();
+    QPushButton *btn = new QPushButton();
+    QLineEdit *lineedit = new QLineEdit();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QWebEngineView *webview = new QWebEngineView();
     void createView();
     void updateURL();
     void updateFavicon(QIcon icon);
     void updateTitle();
     void close();
-    void setWebView(QWebEngineView*);
+    void setWebView(QWebEngineView *);
 };
 
 

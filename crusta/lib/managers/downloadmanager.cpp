@@ -33,51 +33,60 @@
 
 
 
-DownloadManager::DownloadManager(){
+DownloadManager::DownloadManager()
+{
     setLayout(vbox);
     setWindowTitle(tr("Crusta : Download Manager"));
     vbox->addWidget(listwidget);
-    vbox->setContentsMargins(3,10,10,10);
+    vbox->setContentsMargins(3, 10, 10, 10);
     loadDownloads();
     //setStyleSheet("QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
 }
 
-void DownloadManager::addDownloadItem(DownloadWidget *w){
-    QListWidgetItem* item=new QListWidgetItem();
-    listwidget->insertItem(0,item);
+void DownloadManager::addDownloadItem(DownloadWidget *w)
+{
+    QListWidgetItem *item = new QListWidgetItem();
+    listwidget->insertItem(0, item);
     item->setSizeHint(w->size());
-    w->item=item;
-    listwidget->setItemWidget(item,w);
-    this->setMinimumWidth(w->width()+45);
+    w->item = item;
+    listwidget->setItemWidget(item, w);
+    this->setMinimumWidth(w->width() + 45);
     //this->setMinimumHeight(w->height()*5);
 }
 
-void DownloadManager::loadDownloads(){
-    QFile inputFile(QDir::homePath()+"/.crusta_db/downloads.txt");
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       in.setCodec("UTF-8");
-       while (!in.atEnd())
-       {
-          QString line = in.readLine();
-          DownloadWidget* w=new DownloadWidget();
-          w->getName(line.split(">>>>>")[0].split('/')[line.split('/').length()-1]);
-          QFileIconProvider* fip=new QFileIconProvider();
-          QIcon icon=fip->icon(QFileInfo(line.split(">>>>>")[0]));
-          w->getIcon(icon);
-          w->path=line;
-          if(line.split(">>>>>").length()<3)
-              continue;
-          if(line.split(">>>>>")[1]=="Completed")
-              w->changeLayout_Completed();
-          else if(line.split(">>>>>")[1]=="Canceled")
-              w->changeLayout_Canceled();
-          else
-              w->changeLayout_Interrupted();
-          w->setFixedHeight(w->sizeHint().height());
-          this->addDownloadItem(w);
-       }
-       inputFile.close();
+void DownloadManager::loadDownloads()
+{
+    QFile inputFile(QDir::homePath() + "/.crusta_db/downloads.txt");
+
+    if (inputFile.open(QIODevice::ReadOnly)) {
+        QTextStream in(&inputFile);
+        in.setCodec("UTF-8");
+
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            DownloadWidget *w = new DownloadWidget();
+            w->getName(line.split(">>>>>")[0].split('/')[line.split('/').length() - 1]);
+            QFileIconProvider *fip = new QFileIconProvider();
+            QIcon icon = fip->icon(QFileInfo(line.split(">>>>>")[0]));
+            w->getIcon(icon);
+            w->path = line;
+
+            if (line.split(">>>>>").length() < 3) {
+                continue;
+            }
+
+            if (line.split(">>>>>")[1] == "Completed") {
+                w->changeLayout_Completed();
+            } else if (line.split(">>>>>")[1] == "Canceled") {
+                w->changeLayout_Canceled();
+            } else {
+                w->changeLayout_Interrupted();
+            }
+
+            w->setFixedHeight(w->sizeHint().height());
+            this->addDownloadItem(w);
+        }
+
+        inputFile.close();
     }
 }

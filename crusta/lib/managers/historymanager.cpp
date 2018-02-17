@@ -45,31 +45,35 @@
 
 
 
-void HistoryManager::createManager(){
+void HistoryManager::createManager()
+{
     display_area->clear();
     setWindowTitle(tr("Crusta : History Manager"));
     //setStyleSheet("QWidget{background-color:white;color:black} QComboBox{background-color:white;color:black} QComboBox QAbstractItemView{background-color:white;color:black} QTreeWidget{background-color:white;color:black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
-    QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       in.setCodec("UTF-8");
-       while (!in.atEnd())
-       {
-          QString line = in.readLine();
-          QStringList data=line.split(">>>>>");
-          if(!(data[0]=="" || data[1]=="" || data[2]=="")){
-              QTreeWidgetItem* item=new QTreeWidgetItem(data);
-              display_area->insertTopLevelItem(0,item);
-          }
-       }
-       inputFile.close();
+    QFile inputFile(QDir::homePath() + "/.crusta_db/history.txt");
+
+    if (inputFile.open(QIODevice::ReadOnly)) {
+        QTextStream in(&inputFile);
+        in.setCodec("UTF-8");
+
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            QStringList data = line.split(">>>>>");
+
+            if (!(data[0] == "" || data[1] == "" || data[2] == "")) {
+                QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                display_area->insertTopLevelItem(0, item);
+            }
+        }
+
+        inputFile.close();
     }
 }
 
-HistoryManager::HistoryManager(MainView *m){
-    mview=m;
-    QHBoxLayout* h2box=new QHBoxLayout();
+HistoryManager::HistoryManager(MainView *m)
+{
+    mview = m;
+    QHBoxLayout *h2box = new QHBoxLayout();
     h2box->addWidget(new QLabel());
     h2box->addWidget(date);
     date->addItem(tr("All Time"));
@@ -78,10 +82,10 @@ HistoryManager::HistoryManager(MainView *m){
     date->addItem(tr("This Week"));
     date->addItem(tr("This Month"));
     date->addItem(tr("Last 3 Months"));
-    connect(date,&QComboBox::currentTextChanged,this,&HistoryManager::setFilterDate);
+    connect(date, &QComboBox::currentTextChanged, this, &HistoryManager::setFilterDate);
     vbox->addLayout(h2box);
     vbox->addWidget(display_area);
-    QHBoxLayout* h1box=new QHBoxLayout();
+    QHBoxLayout *h1box = new QHBoxLayout();
     h1box->addWidget(clear_all);
     clear_all->setFixedWidth(125);
     h1box->addWidget(new QLabel());
@@ -94,131 +98,157 @@ HistoryManager::HistoryManager(MainView *m){
     display_area->setColumnCount(header.count());
     display_area->setHeaderLabels(header);
     display_area->setContextMenuPolicy(Qt::CustomContextMenu);
-    display_area->header()->resizeSection(0,200);
-    display_area->header()->resizeSection(1,300);
-    display_area->header()->resizeSection(2,100);
-    connect(display_area,&QTreeWidget::customContextMenuRequested,this,&HistoryManager::showContextMenu);
-    connect(clear_all,&QPushButton::clicked,this,&HistoryManager::clearAll);
-    connect(open,&QAction::triggered,this,&HistoryManager::openUrl);
-    connect(del,&QAction::triggered,this,&HistoryManager::clearEntry);
+    display_area->header()->resizeSection(0, 200);
+    display_area->header()->resizeSection(1, 300);
+    display_area->header()->resizeSection(2, 100);
+    connect(display_area, &QTreeWidget::customContextMenuRequested, this, &HistoryManager::showContextMenu);
+    connect(clear_all, &QPushButton::clicked, this, &HistoryManager::clearAll);
+    connect(open, &QAction::triggered, this, &HistoryManager::openUrl);
+    connect(del, &QAction::triggered, this, &HistoryManager::clearEntry);
     setMaximumWidth(395);
     setMinimumWidth(300);
 }
 
-void HistoryManager::showContextMenu(const QPoint &pos){
-    if(display_area->itemAt(pos)==NULL)return;
-    QMenu* cmenu=new QMenu();
+void HistoryManager::showContextMenu(const QPoint &pos)
+{
+    if (display_area->itemAt(pos) == NULL) {
+        return;
+    }
+
+    QMenu *cmenu = new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
     //cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
     cmenu->exec(display_area->mapToGlobal(pos));
 }
 
-void HistoryManager::clearAll(){
-    QFile file(QDir::homePath()+"/.crusta_db/history.txt");
+void HistoryManager::clearAll()
+{
+    QFile file(QDir::homePath() + "/.crusta_db/history.txt");
     file.open(QIODevice::WriteOnly);
     QTextStream out(&file);
     out.setCodec("UTF-8");
-    out <<"";
+    out << "";
     file.close();
     display_area->clear();
 }
 
-void HistoryManager::openUrl(){
-    QTreeWidgetItem* item=display_area->currentItem();
-    QUrl url=QUrl(item->text(1));
+void HistoryManager::openUrl()
+{
+    QTreeWidgetItem *item = display_area->currentItem();
+    QUrl url = QUrl(item->text(1));
     mview->addNormalTab();
-    int index=mview->tabWindow->count()-1;
+    int index = mview->tabWindow->count() - 1;
     mview->tabWindow->setCurrentIndex(index);
-    QWidget* widget=mview->tabWindow->widget(index);
-    QLayout* layout=widget->layout();
-    WebView* webview=(WebView*)layout->itemAt(1)->widget();
+    QWidget *widget = mview->tabWindow->widget(index);
+    QLayout *layout = widget->layout();
+    WebView *webview = (WebView *)layout->itemAt(1)->widget();
     webview->load(url);
 }
 
-void HistoryManager::clearEntry(){
-    QTreeWidgetItem* item=display_area->currentItem();
-    QString forbidden=item->text(0).toUtf8()+">>>>>"+item->text(1).toUtf8()+">>>>>"+item->text(2).toUtf8();
-    QFile f(QDir::homePath()+"/.crusta_db/history.txt");
-    if(f.open(QIODevice::ReadWrite | QIODevice::Text))
-    {
+void HistoryManager::clearEntry()
+{
+    QTreeWidgetItem *item = display_area->currentItem();
+    QString forbidden = item->text(0).toUtf8() + ">>>>>" + item->text(1).toUtf8() + ">>>>>" + item->text(2).toUtf8();
+    QFile f(QDir::homePath() + "/.crusta_db/history.txt");
+
+    if (f.open(QIODevice::ReadWrite | QIODevice::Text)) {
         QString s;
         QTextStream t(&f);
         t.setCodec("UTF-8");
-        while(!t.atEnd())
-        {
+
+        while (!t.atEnd()) {
             QString line = t.readLine();
-            if(line!=forbidden)
+
+            if (line != forbidden) {
                 s.append(line + "\n");
+            }
         }
+
         f.resize(0);
         t << s;
         f.close();
     }
+
     delete item;
 }
 
-void HistoryManager::setFilterDate(){
-    QDate filterDate=QDate::currentDate();
+void HistoryManager::setFilterDate()
+{
+    QDate filterDate = QDate::currentDate();
+
     switch (date->currentIndex()) {
     case 1:
-        filterDate=filterDate.addDays(0);
+        filterDate = filterDate.addDays(0);
         break;
+
     case 2:
-        filterDate=filterDate.addDays(-1);
+        filterDate = filterDate.addDays(-1);
         break;
+
     case 3:
-        filterDate=filterDate.addDays(-7);
+        filterDate = filterDate.addDays(-7);
         break;
+
     case 4:
-        filterDate=filterDate.addMonths(-1);
+        filterDate = filterDate.addMonths(-1);
         break;
+
     case 5:
-        filterDate=filterDate.addMonths(-3);
+        filterDate = filterDate.addMonths(-3);
         break;
+
     case 0:
         display_area->clear();
-        QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
-        if (inputFile.open(QIODevice::ReadOnly))
-        {
-           QTextStream in(&inputFile);
-           in.setCodec("UTF-8");
-           while (!in.atEnd())
-           {
-              QString line = in.readLine();
-              QStringList data=line.split(">>>>>");
-              if(!(data[0]=="" || data[1]=="" || data[2]=="")){
-                  QTreeWidgetItem* item=new QTreeWidgetItem(data);
-                  display_area->insertTopLevelItem(0,item);
-              }
-           }
-           inputFile.close();
+        QFile inputFile(QDir::homePath() + "/.crusta_db/history.txt");
+
+        if (inputFile.open(QIODevice::ReadOnly)) {
+            QTextStream in(&inputFile);
+            in.setCodec("UTF-8");
+
+            while (!in.atEnd()) {
+                QString line = in.readLine();
+                QStringList data = line.split(">>>>>");
+
+                if (!(data[0] == "" || data[1] == "" || data[2] == "")) {
+                    QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                    display_area->insertTopLevelItem(0, item);
+                }
+            }
+
+            inputFile.close();
         }
+
         return;
     }
+
     display_area->clear();
-    int index=date->currentIndex();
-    QFile inputFile(QDir::homePath()+"/.crusta_db/history.txt");
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       in.setCodec("UTF-8");
-       while (!in.atEnd())
-       {
-          QString line = in.readLine();
-          QStringList data=line.split(">>>>>");
-          if(!(data[0]=="" || data[1]=="" || data[2]=="")){
-              QDate itemDate=QDate::fromString(data[2]);
-              if(itemDate>=filterDate && index!=2){
-                    QTreeWidgetItem* item=new QTreeWidgetItem(data);
-                    display_area->insertTopLevelItem(0,item);
-              }
-              if(itemDate==filterDate && index==2){
-                    QTreeWidgetItem* item=new QTreeWidgetItem(data);
-                    display_area->insertTopLevelItem(0,item);
-              }
-          }
-       }
-       inputFile.close();
+    int index = date->currentIndex();
+    QFile inputFile(QDir::homePath() + "/.crusta_db/history.txt");
+
+    if (inputFile.open(QIODevice::ReadOnly)) {
+        QTextStream in(&inputFile);
+        in.setCodec("UTF-8");
+
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            QStringList data = line.split(">>>>>");
+
+            if (!(data[0] == "" || data[1] == "" || data[2] == "")) {
+                QDate itemDate = QDate::fromString(data[2]);
+
+                if (itemDate >= filterDate && index != 2) {
+                    QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                    display_area->insertTopLevelItem(0, item);
+                }
+
+                if (itemDate == filterDate && index == 2) {
+                    QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                    display_area->insertTopLevelItem(0, item);
+                }
+            }
+        }
+
+        inputFile.close();
     }
 }

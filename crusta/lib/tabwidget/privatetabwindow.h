@@ -33,36 +33,37 @@
 
 
 
-class PrivateTabWindow:public QObject{
+class PrivateTabWindow: public QObject
+{
     Q_OBJECT
     void viewHome();
     void updateAddrBar();
     void updateStar();
     void setHomePage();
-    void homeContext(const QPoint& pos);
-    QProgressBar* pbar=new QProgressBar();
+    void homeContext(const QPoint &pos);
+    QProgressBar *pbar = new QProgressBar();
     QTime loadStartTime;
-    QLabel* link_lbl = new QLabel();
+    QLabel *link_lbl = new QLabel();
     void showLinkHovered(QString);
 public:
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QWidget* tab=new QWidget();
-    QPushButton* back_btn=new QPushButton();
-    QPushButton* fwd_btn=new QPushButton();
-    QPushButton* up_btn=new QPushButton();
-    QPushButton* load_btn=new QPushButton();
-    QPushButton* time_lbl=new QPushButton();
-    QPushButton* home_btn=new QPushButton();
-    QPushButton* bookmark_btn=new QPushButton();
-    QPushButton* tool_btn=new QPushButton();
-    QPushButton* menu_btn=new QPushButton();
-    PrivateAddressLineEdit* addr_bar=new PrivateAddressLineEdit();
-    PrivateWebView* view=new PrivateWebView();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QWidget *tab = new QWidget();
+    QPushButton *back_btn = new QPushButton();
+    QPushButton *fwd_btn = new QPushButton();
+    QPushButton *up_btn = new QPushButton();
+    QPushButton *load_btn = new QPushButton();
+    QPushButton *time_lbl = new QPushButton();
+    QPushButton *home_btn = new QPushButton();
+    QPushButton *bookmark_btn = new QPushButton();
+    QPushButton *tool_btn = new QPushButton();
+    QPushButton *menu_btn = new QPushButton();
+    PrivateAddressLineEdit *addr_bar = new PrivateAddressLineEdit();
+    PrivateWebView *view = new PrivateWebView();
     void createControls();
-    QWidget* returnTab();
-    QWidget* returnTab(PrivateWebView *view);
-    PrivateTabWindow* returnThis();
-    void setWebView(PrivateWebView*);
+    QWidget *returnTab();
+    QWidget *returnTab(PrivateWebView *view);
+    PrivateTabWindow *returnThis();
+    void setWebView(PrivateWebView *);
     void loadUrl();
     void bookmarkPage();
     void pageProgress(int p);

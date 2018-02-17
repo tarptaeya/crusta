@@ -35,36 +35,37 @@
 
 
 
-class TabWindow:public QObject{
+class TabWindow: public QObject
+{
     Q_OBJECT
     void viewHome();
     void updateAddrBar();
     void updateStar();
     void setHomePage();
-    void homeContext(const QPoint& pos);
-    QProgressBar* pbar=new QProgressBar();
+    void homeContext(const QPoint &pos);
+    QProgressBar *pbar = new QProgressBar();
     QTime loadStartTime;
-    QLabel* link_lbl = new QLabel();
+    QLabel *link_lbl = new QLabel();
     void showLinkHovered(QString);
 public:
-    QVBoxLayout* vbox=new QVBoxLayout();
-    QWidget* tab=new QWidget();
-    QPushButton* back_btn=new QPushButton();
-    QPushButton* fwd_btn=new QPushButton();
-    QPushButton* up_btn=new QPushButton();
-    QPushButton* load_btn=new QPushButton();
-    QPushButton* time_lbl=new QPushButton();
-    QPushButton* home_btn=new QPushButton();
-    QPushButton* bookmark_btn=new QPushButton();
-    QPushButton* tool_btn=new QPushButton();
-    QPushButton* menu_btn=new QPushButton();
-    AddressLineEdit* addr_bar=new AddressLineEdit();
-    WebView* view=new WebView();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QWidget *tab = new QWidget();
+    QPushButton *back_btn = new QPushButton();
+    QPushButton *fwd_btn = new QPushButton();
+    QPushButton *up_btn = new QPushButton();
+    QPushButton *load_btn = new QPushButton();
+    QPushButton *time_lbl = new QPushButton();
+    QPushButton *home_btn = new QPushButton();
+    QPushButton *bookmark_btn = new QPushButton();
+    QPushButton *tool_btn = new QPushButton();
+    QPushButton *menu_btn = new QPushButton();
+    AddressLineEdit *addr_bar = new AddressLineEdit();
+    WebView *view = new WebView();
     void createControls();
-    QWidget* returnTab();
-    QWidget* returnTab(WebView *view);
-    TabWindow* returnThis();
-    void setWebView(WebView*);
+    QWidget *returnTab();
+    QWidget *returnTab(WebView *view);
+    TabWindow *returnThis();
+    void setWebView(WebView *);
     void loadUrl();
     void bookmarkPage();
     void pageProgress(int p);
