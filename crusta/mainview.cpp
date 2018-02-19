@@ -67,14 +67,14 @@
 #include <QString>
 
 #include <iostream>
-
+#include <memory>
 
 
 void MainView::closeTab(int index)
 {
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    std::unique_ptr<QWidget> widget(this->tabWindow->widget(index));
+    std::unique_ptr<QLayout>layout(widget->layout());
+    std::unique_ptr<QWebEngineView>webview((QWebEngineView *)layout->itemAt(1)->widget());
     QAction *hist = new QAction();
     hist->setText(webview->page()->title());
     hist->setIcon(webview->page()->icon());
@@ -95,6 +95,7 @@ void MainView::closeTab(int index)
     MainView::addNewTabButton();
     this->recently_closed->addAction(hist);
     connect(hist, &QAction::triggered, this, [this, u] {restoreTab(u);});
+    delete hist;
 }
 
 void MainView::zoomIn()
@@ -144,12 +145,10 @@ void MainView::tabBarContext(QPoint point)
         QLayout *layout = widget->layout();
         QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
 
-        QMenu *contextMenu = new QMenu();
-        QAction *rld_tab = new QAction();
-        rld_tab = contextMenu->addAction(tr("&Reload Tab"));
+        std::unique_ptr<QMenu>contextMenu(new QMenu());
+        QAction *rld_tab = contextMenu->addAction(tr("&Reload Tab"));
         connect(rld_tab, &QAction::triggered, webview, &QWebEngineView::reload);
-        QAction *pn_tab = new QAction(tr("Pin Tab"));
-        contextMenu->addAction(pn_tab);
+        QAction *pn_tab = contextMenu->addAction(tr("Pin Tab"));
         connect(pn_tab, &QAction::triggered, this, [this, index, pn_tab] {
             if (pn_tab->text() == tr("Pin Tab"))
             {
@@ -161,25 +160,20 @@ void MainView::tabBarContext(QPoint point)
                 tabWindow->tabBar()->tabButton(index, QTabBar::RightSide)->resize(20, 20);
             }
         });
-        QAction *mute_tab = new QAction(tr("&Toggle Audio"));
-        contextMenu->addAction(mute_tab);
+        QAction *mute_tab = contextMenu->addAction(tr("&Toggle Audio"));
         connect(mute_tab, &QAction::triggered, this, [this, webview] {webview->page()->setAudioMuted(!webview->page()->isAudioMuted());});
-        QAction *duplicate = new QAction();
-        duplicate = contextMenu->addAction(tr("&Duplicate Tab"));
+        QAction *duplicate = contextMenu->addAction(tr("&Duplicate Tab"));
         connect(duplicate, &QAction::triggered, this, [this, webview] {duplicateTab(webview);});
         contextMenu->addAction(this->bookmark_tab);
         contextMenu->addAction(this->bookmark_all_tabs);
-        QAction *closeoth = new QAction();
-        closeoth = contextMenu->addAction(tr("&Close Other Tabs"));
+        QAction *closeoth = contextMenu->addAction(tr("&Close Other Tabs"));
         connect(closeoth, &QAction::triggered, this, [this, index] {closeOtherTabs(index);});
         contextMenu->exec(this->tabWindow->tabBar()->mapToGlobal(point));
     } else {
-        QMenu *barContext = new QMenu();
-        QAction *ntab_bar = new QAction();
-        ntab_bar = barContext->addAction(tr("&New Tab"));
+        std::unique_ptr<QMenu>barContext(new QMenu());
+        QAction *ntab_bar = barContext->addAction(tr("&New Tab"));
         connect(ntab_bar, &QAction::triggered, this, &MainView::addNormalTab);
-        QAction *rlod = new QAction();
-        rlod = barContext->addAction(tr("&Reload All Tabs"));
+        QAction *rlod = barContext->addAction(tr("&Reload All Tabs"));
         connect(rlod, &QAction::triggered, this, &MainView::reloadAllTabs);
         barContext->addAction(this->bookmark_all_tabs);
         barContext->exec(this->tabWindow->tabBar()->mapToGlobal(point));
@@ -226,6 +220,7 @@ void MainView::FindText()
         animation->setStartValue(QPoint(0, this->start_findwidget));
         animation->setEndValue(QPoint(0, this->start_findwidget - 50));
         animation->start();
+        QTimer::singleShot(600, [animation](){ delete animation;});
         this->text->setFocus();
     } catch (...) {
         return;
@@ -257,6 +252,7 @@ void MainView::hideFindWidget()
     animation->setStartValue(QPoint(0, this->start_findwidget - 50));
     animation->setEndValue(QPoint(0, this->start_findwidget));
     animation->start();
+    QTimer::singleShot(800, [animation](){ delete animation;});
     int index = this->tabWindow->currentIndex();
     QWidget *widget = this->tabWindow->widget(index);
     QLayout *layout = widget->layout();
@@ -290,7 +286,10 @@ void MainView::enterPresentationMode()
     newwebview->addAction(newExitAction);
     this->p_notifier->setViewParent(newwebview);
     this->p_notifier->showNotifier();
-    connect(newExitAction, &QAction::triggered, newwebview, &QWebEngineView::close);
+    connect(newExitAction, &QAction::triggered, newwebview,[newwebview, newExitAction]{
+        newwebview->close();
+        delete newExitAction;
+    });
 }
 
 void MainView::undoPageAction()
@@ -433,7 +432,7 @@ MainView::MainView()
            "tumblr>>>>>https://tumblr.com\nfacebook>>>>>https://facebook.com\n"
            "yandex>>>>>http://www.yandex.ru/?clid=2308388\nlinkedin>>>>>https://linkedin.com\nyoutube>>>>>https://youtube.com\n";
         fi.close();
-        SpeedDial *sd = new SpeedDial();
+        std::unique_ptr<SpeedDial>sd(new SpeedDial());
 
         if (QLocale().languageToString(QLocale().system().language()) == "Russian") {
             QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine", "Yandex");
@@ -444,7 +443,7 @@ MainView::MainView()
         sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(), QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
     }
 
-    SpeedDial *sd = new SpeedDial();
+    std::unique_ptr<SpeedDial>sd(new SpeedDial());
     sd->configure();
     sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(), QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
 
@@ -657,8 +656,7 @@ void MainView::createMenuBar()
     connect(this->runJsCode, &QAction::triggered, this, &MainView::showJsCodeEditor);
     connect(this->changeUA, &QAction::triggered, this, &MainView::changeUAfx);
     connect(this->pick_color, &QAction::triggered, this, &MainView::pickColor);
-    QAction *help_ = new QAction(tr("Help"));
-    this->menu->addAction(help_);
+    QAction *help_ = this->menu->addAction(tr("Help"));
     connect(help_, &QAction::triggered, this, &MainView::help);
     this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
     this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));
@@ -723,7 +721,7 @@ void MainView::addNormalTab()
         }
 
         if (home.isEmpty()) {
-            QDir *exec_dir = new QDir(QDir::homePath() + "/.crusta_db");
+            std::unique_ptr<QDir>exec_dir(new QDir(QDir::homePath() + "/.crusta_db"));
             exec_dir->cd("speeddial");
             QString forbidden;
 
@@ -794,7 +792,7 @@ void MainView::addNormalTab()
             inputFile.close();
         }
 
-        QDir *exec_dir = new QDir(QDir::homePath() + "/.crusta_db");
+        std::unique_ptr<QDir>exec_dir(new QDir(QDir::homePath() + "/.crusta_db"));
         exec_dir->cd("speeddial");
 
         if (exec_dir->absolutePath().startsWith("/")) {
@@ -1020,7 +1018,7 @@ void MainView::help()
 
 void MainView::showHistory()
 {
-    HistoryManager *h = new HistoryManager(this);
+    std::unique_ptr<HistoryManager>h(new HistoryManager(this));
     h->createManager();
     h->show();
 }
@@ -1037,7 +1035,7 @@ void MainView::clearHistory()
 
 void MainView::showBookamrks()
 {
-    BookmarkManager *b = new BookmarkManager(this);
+    std::unique_ptr<BookmarkManager>b(new BookmarkManager(this));
     b->show();
 }
 
@@ -1081,16 +1079,16 @@ void MainView::quit()
 
     if (platform == QString("windows")) {
         if (updateOn && QFile(QDir::homePath() + "/.crusta_db/setup.exe").exists()) {
-            QDialog *ud = new QDialog();
+            QDialog* ud = new QDialog();
             ud->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::CoverWindow);
             ud->setWindowTitle(tr("Crusta Updater"));
-            QLabel *lbl = new QLabel(tr("A new version of Crusta is available.\nDo you want to launch the setup now?"));
-            QVBoxLayout *vbox_ud = new QVBoxLayout();
+            QLabel* lbl = new QLabel(tr("A new version of Crusta is available.\nDo you want to launch the setup now?"));
+            QVBoxLayout* vbox_ud = new QVBoxLayout();
             ud->setLayout(vbox_ud);
             vbox_ud->addWidget(lbl);
-            QPushButton *ok = new QPushButton(tr("Yes"));
-            QPushButton *later = new QPushButton(tr("Remind Later"));
-            QHBoxLayout *hbox_ud = new QHBoxLayout();
+            QPushButton* ok = new QPushButton(tr("Yes"));
+            QPushButton* later = new QPushButton(tr("Remind Later"));
+            QHBoxLayout* hbox_ud = new QHBoxLayout();
             hbox_ud->addWidget(ok);
             hbox_ud->addWidget(later);
             vbox_ud->addLayout(hbox_ud);
@@ -1123,7 +1121,7 @@ void MainView::showPageInfo()
     QWidget *widget = this->tabWindow->widget(index);
     QLayout *layout = widget->layout();
     QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
-    SiteInfoWidget *sw = new SiteInfoWidget(webview);
+    std::unique_ptr<SiteInfoWidget>sw(new SiteInfoWidget(webview));
     sw->exec();
 }
 
@@ -1438,7 +1436,7 @@ void MainView::limitDownloadFile()
 
 void MainView::editPermissions()
 {
-    PermissionDialog *pdg = new PermissionDialog();
+    std::unique_ptr<PermissionDialog>pdg(new PermissionDialog());
     pdg->show();
 }
 

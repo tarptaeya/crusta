@@ -27,6 +27,8 @@
 #include <QCoreApplication>
 #include <QtWebEngine>
 
+#include <memory>
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL, true);
@@ -55,7 +57,7 @@ int main(int argc, char *argv[])
     QFont f;
     f.setPointSize(10);
     a.setFont(f);
-    MainView *w = new MainView();
+    std::unique_ptr<MainView> w(new MainView());
     w->showView();
     a.setWindowIcon(QIcon(":/res/drawables/icon_3.ico"));
     return a.exec();
