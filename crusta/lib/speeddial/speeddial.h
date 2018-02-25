@@ -34,7 +34,7 @@ class SpeedDial: public QWidget
     Q_OBJECT
     QLineEdit *bgimage = new QLineEdit();
 public:
-    void save(QString bgimage, QString srchstr);
+    void save(QString bgimage);
     void add(QString title, QString url);
     void remove(QString forbidden);
     void configure();

@@ -279,44 +279,6 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg)
         QLabel *title = new QLabel(tr("Speed-dial settings"));
         title->setStyleSheet("font-size: 16px");
         fdvbox->addWidget(title);
-        QGroupBox *gbox1 = new QGroupBox();
-        QVBoxLayout *gvbox = new QVBoxLayout();
-        gbox1->setLayout(gvbox);
-        gbox1->setTitle(tr("Search Engine"));
-        QComboBox *src_en_text = new QComboBox();
-        src_en_text->insertItem(0, QIcon(":/res/fav/web.png"), tr("Other"));
-        src_en_text->insertItem(0, QIcon(":/res/fav/yandex.png"), tr("Yandex"));
-        src_en_text->insertItem(0, QIcon(":/res/fav/ecosia.png"), tr("Ecosia"));
-        QString currentSpeeddialSearchEngine = QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString();
-        gvbox->addWidget(src_en_text);
-        QLineEdit *oth_src_en_text = new QLineEdit();
-        oth_src_en_text->setPlaceholderText("http://your-favourite-search-string");
-        gvbox->addWidget(oth_src_en_text);
-        oth_src_en_text->hide();
-
-        if (currentSpeeddialSearchEngine == "Yandex" || currentSpeeddialSearchEngine == "Ecosia") {
-            src_en_text->setCurrentText(currentSpeeddialSearchEngine);
-        } else {
-            src_en_text->setCurrentText(currentSpeeddialSearchEngine);
-            oth_src_en_text->setText(currentSpeeddialSearchEngine);
-
-            if (oth_src_en_text->isHidden()) {
-                oth_src_en_text->show();
-            }
-        }
-
-        connect(src_en_text, &QComboBox::currentTextChanged, this, [this, oth_src_en_text](const QString s) {
-            if (s == "Other") {
-                if (!oth_src_en_text->isVisible()) {
-                    oth_src_en_text->show();
-                }
-            } else {
-                if (oth_src_en_text->isVisible()) {
-                    oth_src_en_text->hide();
-                }
-            }
-        });
-        fdvbox->addWidget(gbox1);
         QGroupBox *gbox2 = new QGroupBox();
         gbox2->setTitle(tr("Background"));
         QVBoxLayout *gvbox2 = new QVBoxLayout();
@@ -365,7 +327,7 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg)
             }
         });
         fdvbox->addWidget(gbox2);
-        fd->setFixedSize(300, 300);
+        fd->setFixedWidth(300);
         fd->setLayout(fdvbox);
         fd->move(view()->mapToGlobal(QPoint(view()->width() - 320, 20)));
         fd->exec();
@@ -382,14 +344,7 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg)
             QSettings("Tarptaeya", "Crusta").setValue("speeddial_bgimage", sdBgimage);
         }
 
-        if (src_en_text->currentText() == "Other") {
-            currentSpeeddialSearchEngine = oth_src_en_text->text();
-        } else {
-            currentSpeeddialSearchEngine = src_en_text->currentText();
-        }
-
-        QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine", currentSpeeddialSearchEngine);
-        SpeedDial().save(sdBgimage, currentSpeeddialSearchEngine);
+        SpeedDial().save(sdBgimage);
         this->load(this->url());
         return true;
     } else {
@@ -663,44 +618,6 @@ bool PrivateWebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString
         QLabel *title = new QLabel(tr("Speed-dial settings"));
         title->setStyleSheet("font-size: 16px");
         fdvbox->addWidget(title);
-        QGroupBox *gbox1 = new QGroupBox();
-        QVBoxLayout *gvbox = new QVBoxLayout();
-        gbox1->setLayout(gvbox);
-        gbox1->setTitle(tr("Search Engine"));
-        QComboBox *src_en_text = new QComboBox();
-        src_en_text->insertItem(0, QIcon(":/res/fav/web.png"), tr("Other"));
-        src_en_text->insertItem(0, QIcon(":/res/fav/yandex.png"), tr("Yandex"));
-        src_en_text->insertItem(0, QIcon(":/res/fav/ecosia.png"), tr("Ecosia"));
-        QString currentSpeeddialSearchEngine = QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString();
-        gvbox->addWidget(src_en_text);
-        QLineEdit *oth_src_en_text = new QLineEdit();
-        oth_src_en_text->setPlaceholderText("http://your-favourite-search-string");
-        gvbox->addWidget(oth_src_en_text);
-        oth_src_en_text->hide();
-
-        if (currentSpeeddialSearchEngine == "Yandex" || currentSpeeddialSearchEngine == "Ecosia") {
-            src_en_text->setCurrentText(currentSpeeddialSearchEngine);
-        } else {
-            src_en_text->setCurrentText(currentSpeeddialSearchEngine);
-            oth_src_en_text->setText(currentSpeeddialSearchEngine);
-
-            if (oth_src_en_text->isHidden()) {
-                oth_src_en_text->show();
-            }
-        }
-
-        connect(src_en_text, &QComboBox::currentTextChanged, this, [this, oth_src_en_text](const QString s) {
-            if (s == "Other") {
-                if (!oth_src_en_text->isVisible()) {
-                    oth_src_en_text->show();
-                }
-            } else {
-                if (oth_src_en_text->isVisible()) {
-                    oth_src_en_text->hide();
-                }
-            }
-        });
-        fdvbox->addWidget(gbox1);
         QGroupBox *gbox2 = new QGroupBox();
         gbox2->setTitle(tr("Background"));
         QVBoxLayout *gvbox2 = new QVBoxLayout();
@@ -749,7 +666,7 @@ bool PrivateWebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString
             }
         });
         fdvbox->addWidget(gbox2);
-        fd->setFixedSize(300, 300);
+        fd->setFixedWidth(300);
         fd->setLayout(fdvbox);
         fd->move(view()->mapToGlobal(QPoint(view()->width() - 320, 20)));
         fd->exec();
@@ -766,14 +683,7 @@ bool PrivateWebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString
             QSettings("Tarptaeya", "Crusta").setValue("speeddial_bgimage", sdBgimage);
         }
 
-        if (src_en_text->currentText() == "Other") {
-            currentSpeeddialSearchEngine = oth_src_en_text->text();
-        } else {
-            currentSpeeddialSearchEngine = src_en_text->currentText();
-        }
-
-        QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine", currentSpeeddialSearchEngine);
-        SpeedDial().save(sdBgimage, currentSpeeddialSearchEngine);
+        SpeedDial().save(sdBgimage);
         this->load(this->url());
         return true;
     } else {

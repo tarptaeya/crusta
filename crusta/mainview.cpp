@@ -440,12 +440,12 @@ MainView::MainView()
             QSettings("Tarptaeya", "Crusta").setValue("speeddial_srch_engine", "Ecosia");
         }
 
-        sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(), QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
+        sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString());
     }
 
     std::unique_ptr<SpeedDial>sd(new SpeedDial());
     sd->configure();
-    sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString(), QSettings("Tarptaeya", "Crusta").value("speeddial_srch_engine").toString());
+    sd->save(QSettings("Tarptaeya", "Crusta").value("speeddial_bgimage").toString());
 
     if (!QDir(QDir::homePath() + "/.crusta_db/sidepanel").exists()) {
         QDir().mkdir(QDir::homePath() + "/.crusta_db/sidepanel");

@@ -159,6 +159,7 @@ SidePane::SidePane(MainView *m)
     vbox->addWidget(add_pane_btn);
     add_pane_btn->setToolTip(tr("Add New Pane Button"));
     add_pane_btn->setIcon(QIcon(":/res/drawables/pane_add.svg"));
+    add_pane_btn->setContextMenuPolicy(Qt::NoContextMenu);
     vbox->setSpacing(0);
     vbox->setContentsMargins(0, 0, 0, 0);
     left->setLayout(vbox);
