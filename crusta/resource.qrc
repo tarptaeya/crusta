@@ -34,5 +34,7 @@
         <file>res/fav/web.png</file>
         <file>res/drawables/up.svg</file>
         <file>res/drawables/incognito.svg</file>
+        <file>res/drawables/noback.svg</file>
+        <file>res/drawables/noforward.svg</file>
     </qresource>
 </RCC>

@@ -123,11 +123,11 @@ void TabWindow::createControls()
 {
     QHBoxLayout *hbox = new QHBoxLayout();
     this->back_btn->setFlat(true);
-    //this->back_btn->setIcon(QIcon(":/res/drawables/back.svg"));
+    this->back_btn->setIcon(QIcon(":/res/drawables/noback.svg"));
     connect(this->back_btn, &QPushButton::clicked, this->view->returnView(), &QWebEngineView::back);
     hbox->addWidget(this->back_btn);
     this->fwd_btn->setFlat(true);
-    this->fwd_btn->setIcon(QIcon(":/res/drawables/forward.svg"));
+    this->fwd_btn->setIcon(QIcon(":/res/drawables/noforward.svg"));
     connect(this->fwd_btn, &QPushButton::clicked, this->view->returnView(), &QWebEngineView::forward);
     hbox->addWidget(this->fwd_btn);
     this->up_btn->setFlat(true);
@@ -630,6 +630,18 @@ void TabWindow::loadCompleted()
         }
 
         inputFile.close();
+    }
+
+    if (view->page()->history()->canGoBack()){
+        back_btn->setIcon(QIcon(":/res/drawables/back.svg"));
+    } else {
+        back_btn->setIcon(QIcon(":/res/drawables/noback.svg"));
+    }
+
+    if (view->page()->history()->canGoForward()){
+        fwd_btn->setIcon(QIcon(":/res/drawables/forward.svg"));
+    } else {
+        fwd_btn->setIcon(QIcon(":/res/drawables/noforward.svg"));
     }
 }
 
