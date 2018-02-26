@@ -123,7 +123,7 @@ void TabWindow::createControls()
 {
     QHBoxLayout *hbox = new QHBoxLayout();
     this->back_btn->setFlat(true);
-    this->back_btn->setIcon(QIcon(":/res/drawables/back.svg"));
+    //this->back_btn->setIcon(QIcon(":/res/drawables/back.svg"));
     connect(this->back_btn, &QPushButton::clicked, this->view->returnView(), &QWebEngineView::back);
     hbox->addWidget(this->back_btn);
     this->fwd_btn->setFlat(true);

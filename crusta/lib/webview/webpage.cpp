@@ -47,6 +47,9 @@ Profile::Profile()
 
 QStringList WebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes)
 {
+    Q_UNUSED(oldFiles);
+    Q_UNUSED(acceptedMimeTypes);
+
     QFileDialog *f = new QFileDialog();
 
     //f->setOption(QFileDialog::DontUseNativeDialog,true);
@@ -386,6 +389,9 @@ bool WebPage::javaScriptConfirm(const QUrl &securityOrigin, const QString &msg)
 
 QStringList PrivateWebPage::chooseFiles(FileSelectionMode mode, const QStringList &oldFiles, const QStringList &acceptedMimeTypes)
 {
+    Q_UNUSED(oldFiles);
+    Q_UNUSED(acceptedMimeTypes);
+
     QFileDialog *f = new QFileDialog();
 
     //f->setOption(QFileDialog::DontUseNativeDialog,true);

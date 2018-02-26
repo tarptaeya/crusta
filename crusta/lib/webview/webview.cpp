@@ -445,6 +445,46 @@ void WebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePage::Feat
         page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
         break;
     }
+
+    case QWebEnginePage::DesktopVideoCapture: {
+        if (dv == 0) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
+            return;
+        } else if (dv == 2) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
+        permission->setText(tr("Allow Desktop Video Capture for this site"));
+
+        if (dg->exec() != QDialog::Accepted) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
+        page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
+        break;
+    }
+
+    case QWebEnginePage::DesktopAudioVideoCapture: {
+        if (dav == 0) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
+            return;
+        } else if (dav == 2) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
+        permission->setText(tr("Allow Desktop Audio/Video Capture for this site"));
+
+        if (dg->exec() != QDialog::Accepted) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
+        page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
+        break;
+    }
     }
 }
 
@@ -907,5 +947,21 @@ void WebView::loadPermissions()
         av = 1;
     } else {
         av = 2;
+    }
+
+    if (slist[6] == "0") {
+        dv = 0;
+    } else if (slist[6] == "1") {
+        dv = 1;
+    } else {
+        dv = 2;
+    }
+
+    if (slist[7] == "0") {
+        dav = 0;
+    } else if (slist[7] == "1") {
+        dav = 1;
+    } else {
+        dav = 2;
     }
 }

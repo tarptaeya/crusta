@@ -48,6 +48,7 @@ class TabWindow: public QObject
     QLabel *link_lbl = new QLabel();
     void showLinkHovered(QString);
 public:
+    QVector<QUrl> historyVector;
     QVBoxLayout *vbox = new QVBoxLayout();
     QWidget *tab = new QWidget();
     QPushButton *back_btn = new QPushButton();

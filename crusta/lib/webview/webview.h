@@ -63,6 +63,8 @@ public:
     int audio;
     int video;
     int av;
+    int dv;
+    int dav;
     QString link = "";
     WebPage *webpage = new WebPage();
     QString home_page;

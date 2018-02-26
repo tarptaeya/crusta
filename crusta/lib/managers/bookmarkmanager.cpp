@@ -235,6 +235,8 @@ void BookmarkManager::searchBookmark()
 
 void BookmarkManager::displayInfo(QTreeWidgetItem *item, int column)
 {
+    Q_UNUSED(column);
+
     QString title = item->text(0);
     QString url = item->text(1);
     QString info = item->text(2);
@@ -450,6 +452,8 @@ void PrivateBookmarkManager::searchBookmark()
 
 void PrivateBookmarkManager::pdisplayInfo(QTreeWidgetItem *item, int column)
 {
+    Q_UNUSED(column);
+
     QString title = item->text(0);
     QString url = item->text(1);
     QString info = item->text(2);

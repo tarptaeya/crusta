@@ -392,6 +392,30 @@ void PrivateWebView::permissionHandler(const QUrl &securityOrigin, QWebEnginePag
         page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
         break;
     }
+
+    case QWebEnginePage::DesktopVideoCapture: {
+        permission->setText(tr("Allow Desktop Video Capture for this site"));
+
+        if (dg->exec() != QDialog::Accepted) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
+        page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
+        break;
+    }
+
+    case QWebEnginePage::DesktopAudioVideoCapture: {
+        permission->setText(tr("Allow Desktop Audio/Video Capture for this site"));
+
+        if (dg->exec() != QDialog::Accepted) {
+            page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionDeniedByUser);
+            return;
+        }
+
+        page()->setFeaturePermission(securityOrigin, feature, QWebEnginePage::PermissionGrantedByUser);
+        break;
+    }
     }
 }
 

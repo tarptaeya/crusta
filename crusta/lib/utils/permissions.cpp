@@ -37,6 +37,8 @@ PermissionDialog::PermissionDialog()
     vbox->addWidget(audio->group);
     vbox->addWidget(video->group);
     vbox->addWidget(av->group);
+    vbox->addWidget(dv->group);
+    vbox->addWidget(dav->group);
 
     geo->allow->setChecked(true);
     setFixedSize(sizeHint().width() * 2, sizeHint().height());
@@ -100,6 +102,22 @@ void PermissionDialog::savePermissions()
     if (av->allow->isChecked()) {
         s += "0\n";
     } else if (av->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    if (dv->allow->isChecked()) {
+        s += "0\n";
+    } else if (dv->ask->isChecked()) {
+        s += "1\n";
+    } else {
+        s += "2\n";
+    }
+
+    if (dav->allow->isChecked()) {
+        s += "0\n";
+    } else if (dav->ask->isChecked()) {
         s += "1\n";
     } else {
         s += "2\n";
@@ -181,6 +199,22 @@ void PermissionDialog::loadPermissions()
         av->ask->setChecked(true);
     } else {
         av->reject->setChecked(true);
+    }
+
+    if (slist[6] == "0") {
+        dv->allow->setChecked(true);
+    } else if (slist[6] == "1") {
+        dv->ask->setChecked(true);
+    } else {
+        dv->reject->setChecked(true);
+    }
+
+    if (slist[7] == "0") {
+        dav->allow->setChecked(true);
+    } else if (slist[7] == "1") {
+        dav->ask->setChecked(true);
+    } else {
+        dav->reject->setChecked(true);
     }
 }
 

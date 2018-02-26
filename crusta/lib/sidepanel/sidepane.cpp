@@ -434,7 +434,7 @@ void SidePane::addNewButton()
     dg->setStyleSheet("#dialog{border: 2px solid " + bgcolor.split(":")[1] + "}");
     urledit->setFocus();
 
-    if (!dg->exec() == QDialog::Accepted) {
+    if (dg->exec() != QDialog::Accepted) {
         return;
     }
 

@@ -410,7 +410,7 @@ MainView::MainView()
         f_.open(QIODevice::WriteOnly);
         QTextStream in(&f_);
         in.setCodec("UTF-8");
-        in << "1\n1\n0\n1\n1\n1\n";
+        in << "1\n1\n0\n1\n1\n1\n1\n1\n";
         f_.close();
     }
 
@@ -1436,7 +1436,7 @@ void MainView::limitDownloadFile()
 
 void MainView::editPermissions()
 {
-    std::unique_ptr<PermissionDialog>pdg(new PermissionDialog());
+    PermissionDialog* pdg= new PermissionDialog();
     pdg->show();
 }
 

@@ -54,6 +54,8 @@ class PermissionDialog: public QDialog
     PermissionValue *audio = new PermissionValue("Audio Capture");
     PermissionValue *video = new PermissionValue("Video Capture");
     PermissionValue *av = new PermissionValue("Audio Video Capture");
+    PermissionValue *dv = new PermissionValue("Desktop Video Capture");
+    PermissionValue *dav = new PermissionValue("Desktop Audio Video Capture");
 public:
     PermissionDialog();
     void loadPermissions();
