@@ -749,73 +749,80 @@ void WebView::downloadImage()
 
 void WebView::showContextMenu(const QPoint &pos)
 {
-    QMenu *contextMenu = new QMenu();
+    page()->runJavaScript(QString("function fun(){var elements = document.elementsFromPoint(")+QString::number(pos.x())+QString(",")+QString::number(pos.y())+QString(");"
+                                  "if(elements[0].tagName == 'IMG'){return true} else {return false}}; fun()"),[this, pos](const QVariant &isImage){
+        QMenu *contextMenu = new QMenu();
+        if (this->link != "" && !this->link.endsWith(".pdf")) {
+            QAction *open_link_in_new_tab = new QAction(tr("Open Link In New Tab"));
+            connect(open_link_in_new_tab, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
+            contextMenu->addAction(open_link_in_new_tab);
+            QAction *open_link_in_new_window = new QAction(tr("Open Link as PopUp"));
+            connect(open_link_in_new_window, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::OpenLinkInNewWindow);});
+            contextMenu->addAction(open_link_in_new_window);
+            contextMenu->addSeparator();
+            QAction *follow_link = new QAction(tr("Follow Link"));
+            connect(follow_link, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::OpenLinkInThisWindow);});
+            contextMenu->addAction(follow_link);
+            QAction *copy_link = new QAction(tr("Copy Link Address"));
+            connect(copy_link, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::CopyLinkToClipboard);});
+            contextMenu->addAction(copy_link);
+            contextMenu->addSeparator();
+        } else if (this->selectedText() != "") {
+            QString text = this->selectedText();
+            QAction *a_cut = new QAction(tr("Cut"));
+            connect(a_cut, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::Cut);});
+            contextMenu->addAction(a_cut);
+            QAction *a_copy = new QAction(tr("Copy"));
+            connect(a_copy, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::Copy);});
+            contextMenu->addAction(a_copy);
+            QAction *a_paste = new QAction(tr("Paste"));
+            connect(a_paste, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::Paste);});
+            contextMenu->addAction(a_paste);
+            contextMenu->addSeparator();
+            QAction *crusta_speak = new QAction(tr("Crusta Speak"));
+            connect(crusta_speak, &QAction::triggered, this, &WebView::espeak);
+            contextMenu->addAction(crusta_speak);
+            QAction *a_search = new QAction(tr("Search"));
+            connect(a_search, &QAction::triggered, this, [this, text] {this->search(text);});
+            contextMenu->addAction(a_search);
+            contextMenu->addSeparator();
+        }
 
-    if (link != "" && !link.endsWith(".pdf")) {
-        QAction *open_link_in_new_tab = new QAction(tr("Open Link In New Tab"));
-        connect(open_link_in_new_tab, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::OpenLinkInNewTab);});
-        contextMenu->addAction(open_link_in_new_tab);
-        QAction *open_link_in_new_window = new QAction(tr("Open Link as PopUp"));
-        connect(open_link_in_new_window, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::OpenLinkInNewWindow);});
-        contextMenu->addAction(open_link_in_new_window);
-        contextMenu->addSeparator();
-        QAction *follow_link = new QAction(tr("Follow Link"));
-        connect(follow_link, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::OpenLinkInThisWindow);});
-        contextMenu->addAction(follow_link);
-        QAction *copy_link = new QAction(tr("Copy Link Address"));
-        connect(copy_link, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::CopyLinkToClipboard);});
-        contextMenu->addAction(copy_link);
-        contextMenu->addSeparator();
-    } else if (this->selectedText() != "") {
-        QString text = this->selectedText();
-        QAction *a_cut = new QAction(tr("Cut"));
-        connect(a_cut, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::Cut);});
-        contextMenu->addAction(a_cut);
-        QAction *a_copy = new QAction(tr("Copy"));
-        connect(a_copy, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::Copy);});
-        contextMenu->addAction(a_copy);
-        QAction *a_paste = new QAction(tr("Paste"));
-        connect(a_paste, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::Paste);});
-        contextMenu->addAction(a_paste);
-        contextMenu->addSeparator();
-        QAction *crusta_speak = new QAction(tr("Crusta Speak"));
-        connect(crusta_speak, &QAction::triggered, this, &WebView::espeak);
-        contextMenu->addAction(crusta_speak);
-        QAction *a_search = new QAction(tr("Search"));
-        connect(a_search, &QAction::triggered, this, [this, text] {this->search(text);});
-        contextMenu->addAction(a_search);
-        contextMenu->addSeparator();
-    }
+        if (this->link != "") {
+            QAction *download_link = new QAction(tr("Download Link"));
+            connect(download_link, &QAction::triggered, this, &WebView::downloadLink);
+            contextMenu->addAction(download_link);
+            contextMenu->addSeparator();
+        }
 
-    if (link != "") {
-        QMenu *download = new QMenu(tr("Download"));
-        contextMenu->addMenu(download);
-        QAction *download_img = new QAction(tr("Download Image"));
-        connect(download_img, &QAction::triggered, this, &WebView::downloadImage);
-        download->addAction(download_img);
-        QAction *download_link = new QAction(tr("Download Link"));
-        connect(download_link, &QAction::triggered, this, &WebView::downloadLink);
-        download->addAction(download_link);
-        contextMenu->addSeparator();
-    }
+        if (isImage.toBool()){
+            QAction* copyImgToClipBoard = contextMenu->addAction(tr("Copy Image"));
+            connect(copyImgToClipBoard,&QAction::triggered, this, [this]{triggerPageAction(QWebEnginePage::CopyImageToClipboard);});
+            QAction* copyImgUrlToClipBoard = contextMenu->addAction(tr("Copy Image Url"));
+            connect(copyImgUrlToClipBoard,&QAction::triggered, this, [this]{triggerPageAction(QWebEnginePage::CopyImageUrlToClipboard);});
+            QAction* saveImage = contextMenu->addAction(tr("Save Image"));
+            connect(saveImage,&QAction::triggered, this, [this]{triggerPageAction(QWebEnginePage::DownloadImageToDisk);});
+            contextMenu->addSeparator();
+        }
 
-    QAction *back_page = new QAction(QIcon(":/res/drawables/back.svg"), tr("Back"));
-    connect(back_page, &QAction::triggered, this, &WebView::back);
-    contextMenu->addAction(back_page);
-    QAction *forward_page = new QAction(QIcon(":/res/drawables/forward.svg"), tr("Forward"));
-    connect(forward_page, &QAction::triggered, this, &WebView::forward);
-    contextMenu->addAction(forward_page);
-    QAction *reload_page = new QAction(QIcon(":/res/drawables/reload.svg"), tr("Reload"));
-    connect(reload_page, &QAction::triggered, this, &WebView::reload);
-    contextMenu->addAction(reload_page);
-    QAction *reload_and_bypass_cache = new QAction(tr("Reload And Bypass Cache"));
-    connect(reload_and_bypass_cache, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::ReloadAndBypassCache);});
-    contextMenu->addAction(reload_and_bypass_cache);
-    contextMenu->addSeparator();
-    QAction *view_page_source = new QAction(tr("View Page Source"));
-    connect(view_page_source, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::ViewSource);});
-    contextMenu->addAction(view_page_source);
-    contextMenu->exec(this->mapToGlobal(pos));
+        QAction *back_page = new QAction(QIcon(":/res/drawables/back.svg"), tr("Back"));
+        connect(back_page, &QAction::triggered, this, &WebView::back);
+        contextMenu->addAction(back_page);
+        QAction *forward_page = new QAction(QIcon(":/res/drawables/forward.svg"), tr("Forward"));
+        connect(forward_page, &QAction::triggered, this, &WebView::forward);
+        contextMenu->addAction(forward_page);
+        QAction *reload_page = new QAction(QIcon(":/res/drawables/reload.svg"), tr("Reload"));
+        connect(reload_page, &QAction::triggered, this, &WebView::reload);
+        contextMenu->addAction(reload_page);
+        QAction *reload_and_bypass_cache = new QAction(tr("Reload And Bypass Cache"));
+        connect(reload_and_bypass_cache, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::ReloadAndBypassCache);});
+        contextMenu->addAction(reload_and_bypass_cache);
+        contextMenu->addSeparator();
+        QAction *view_page_source = new QAction(tr("View Page Source"));
+        connect(view_page_source, &QAction::triggered, this, [this] {triggerPageAction(QWebEnginePage::ViewSource);});
+        contextMenu->addAction(view_page_source);
+        contextMenu->exec(this->mapToGlobal(pos));
+    });
 }
 
 void WebView::loadFinished()
