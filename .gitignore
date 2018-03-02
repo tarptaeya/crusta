@@ -3,7 +3,7 @@
 *.o
 *.moc
 *.ui
-*.pro.user*
+crusta/*.pro.user*
 out
-.qmake.stash
-Makefile
+crusta/.qmake.stash
+crusta/Makefile
