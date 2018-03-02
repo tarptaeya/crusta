@@ -123,20 +123,24 @@ void TabWindow::createControls()
 {
     QHBoxLayout *hbox = new QHBoxLayout();
     this->back_btn->setFlat(true);
+    this->back_btn->setToolTip(tr("Go Back"));
     this->back_btn->setIcon(QIcon(":/res/drawables/noback.svg"));
     connect(this->back_btn, &QPushButton::clicked, this->view->returnView(), &QWebEngineView::back);
     hbox->addWidget(this->back_btn);
     this->fwd_btn->setFlat(true);
+    this->fwd_btn->setToolTip(tr("Go Forward"));
     this->fwd_btn->setIcon(QIcon(":/res/drawables/noforward.svg"));
     connect(this->fwd_btn, &QPushButton::clicked, this->view->returnView(), &QWebEngineView::forward);
     hbox->addWidget(this->fwd_btn);
     this->up_btn->setFlat(true);
+    this->up_btn->setToolTip(tr("Go to the top of page"));
     this->up_btn->setIcon(QIcon(":/res/drawables/up.svg"));
     connect(up_btn, &QPushButton::clicked, this, [this] {
         view->page()->runJavaScript("window.scrollTo(0,0)");
     });
     hbox->addWidget(this->up_btn);
     this->load_btn->setFlat(true);
+    this->load_btn->setToolTip(tr("Reload Page"));
     this->load_btn->setIcon(QIcon(":/res/drawables/reload.svg"));
     connect(this->load_btn, &QPushButton::clicked, this->view->returnView(), &QWebEngineView::reload);
     hbox->addWidget(this->load_btn);
@@ -146,19 +150,23 @@ void TabWindow::createControls()
     connect(this->addr_bar->initialize(), &QLineEdit::returnPressed, this, &TabWindow::loadUrl);
     //hbox->addWidget(this->search_bar->initialize());
     this->time_lbl->setFlat(true);
+    this->time_lbl->setToolTip(tr("Page Timer"));
     connect(time_lbl, &QPushButton::clicked, this, &TabWindow::showLoadTime);
     hbox->addWidget(this->time_lbl);
     this->home_btn->setFlat(true);
+    this->home_btn->setToolTip(tr("Home"));
     this->home_btn->setIcon(QIcon(":/res/drawables/home.svg"));
     this->home_btn->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this->home_btn, &QPushButton::customContextMenuRequested, this, &TabWindow::homeContext);
     connect(this->home_btn, &QPushButton::clicked, this, &TabWindow::viewHome);
     hbox->addWidget(this->home_btn);
     this->bookmark_btn->setFlat(true);
+    this->bookmark_btn->setToolTip(tr("Bookmark page"));
     this->bookmark_btn->setIcon(QIcon(":/res/drawables/bookmark.svg"));
     connect(this->bookmark_btn, &QPushButton::clicked, this, &TabWindow::bookmarkPage);
     hbox->addWidget(this->bookmark_btn);
     this->menu_btn->setFlat(true);
+    this->menu_btn->setToolTip(tr("Options"));
     this->menu_btn->setIcon(QIcon(":/res/drawables/menu.svg"));
     hbox->addWidget(menu_btn);
     vbox->addLayout(hbox);
@@ -766,4 +774,3 @@ void TabWindow::showLoadTime()
     dlg->move(time_lbl->mapToGlobal(QPoint(-140, 30)));
     dlg->exec();
 }
-
