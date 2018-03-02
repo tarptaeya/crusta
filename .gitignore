@@ -1,0 +1,7 @@
+*.exe
+*.dll
+*.o
+*.moc
+*.ui
+*.pro.user*
+out

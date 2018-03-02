@@ -91,3 +91,9 @@ RESOURCES += \
     resource.qrc
 
 RC_ICONS += crusta.ico
+
+DESTDIR = $$PWD/../out
+OBJECTS_DIR = $$PWD/../out/.obj
+MOC_DIR = $$PWD/../out/.moc
+RCC_DIR = $$PWD/../out/.rcc
+UI_DIR = $$PWD/../out/.ui
