@@ -70,3 +70,4 @@ Please note that we use C++/Qt ,JS and CSS for Crusta, so please contribute in t
 - [ ] Pause/ Resume Downloads
 - [ ] Pinnable Tabs
 - [ ] Dynamic sized tabs
+- [ ] WebInspector (Qt 5.11) 
