@@ -45,10 +45,10 @@ ThemeEditor::ThemeEditor()
     connect(cncl, &QPushButton::clicked, this, &QDialog::reject);
     h1box->addWidget(ok);
     ok->setText(tr("OK"));
+    ok->setDefault(true);
     connect(ok, &QPushButton::clicked, this, &ThemeEditor::saveTheme);
     vbox->addLayout(h1box);
     setFixedWidth(500);
-    //setStyleSheet("QDialog{background-color:white;color:black} QLabel{color:black} QLineEdit{padding:3px 8px;color:black;background-color:white;border: 1px solid black} QPushButton{border:0.5px solid black;padding:4px 8px;color:white;background-color:black} QPushButton:hover{background-color:white;color:black}");
 }
 
 void ThemeEditor::restoreTheme()
