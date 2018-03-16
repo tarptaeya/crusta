@@ -19,28 +19,8 @@
 * ============================================================ */
 
 #include "historymanager.h"
-#include "lib/webview/webview.h"
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QLabel>
-#include <QComboBox>
-#include <QTreeWidget>
-#include <QString>
-#include <QStringList>
-#include <QFile>
-#include <QTextStream>
-#include <QTreeWidgetItem>
 #include <QDir>
-#include <QIcon>
-#include <QStringList>
-#include <QString>
-#include <QMenu>
-#include <QIODevice>
-#include <QDate>
 #include <QHeaderView>
 
 

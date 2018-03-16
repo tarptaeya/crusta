@@ -21,9 +21,7 @@
 #include "permissions.h"
 #include <QFile>
 #include <QDir>
-#include <QIODevice>
 #include <QTextStream>
-#include <QStringList>
 
 
 PermissionDialog::PermissionDialog()

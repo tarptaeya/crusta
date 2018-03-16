@@ -19,12 +19,7 @@
 * ============================================================ */
 
 #include "sidepane.h"
-#include <QWebEngineView>
-#include <QLabel>
 #include <QDir>
-#include <QMovie>
-
-#include <iostream>
 
 
 SidePaneButton::SidePaneButton()

@@ -19,18 +19,11 @@
 * ============================================================ */
 
 #include "downloadmanager.h"
-#include "downloadwidget.h"
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QListWidgetItem>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileIconProvider>
 #include <QTextStream>
-#include <QFile>
-
 
 
 DownloadManager::DownloadManager()

@@ -20,40 +20,13 @@
 
 #include "privatewebview.h"
 #include "../tabwidget/privatetabwindow.h"
-#include "../utils/fullscreennotifier.h"
-#include "../utils/timenotifier.h"
 #include "popup.h"
 #include "privatemainview.h"
-#include "../managers/downloadmanager.h"
 
-#include <QWebEngineView>
-#include <QWebEnginePage>
-#include <QWebEngineProfile>
-#include <QWebEngineSettings>
-#include <QWebEngineFullScreenRequest>
-#include <QString>
-#include <QStringList>
-#include <QLayout>
-#include <QAction>
-#include <QStackedWidget>
-#include <QTabWidget>
-#include <QWidget>
-#include <QLabel>
-#include <QMovie>
-#include <QIcon>
-#include <QTabBar>
-#include <QPixmap>
-#include <QUrl>
 #include <QDir>
-#include <QDateTime>
-#include <QFile>
-#include <QTextStream>
-#include <QIODevice>
 #include <QRadioButton>
-#include <QFileIconProvider>
 #include <QGroupBox>
 #include <QDesktopServices>
-#include <QDialog>
 #include <QFileDialog>
 #include <QProcess>
 

@@ -24,10 +24,16 @@
 #
 #-------------------------------------------------
 
+#-----------------------------------------------------------------
+#
+# Crusta now uses cmake, this file is included only for reference
+#
+#-----------------------------------------------------------------
+
 QT       += core gui charts
 QT       += location webenginewidgets webengine texttospeech multimedia
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
 TARGET = crusta
 TEMPLATE = app

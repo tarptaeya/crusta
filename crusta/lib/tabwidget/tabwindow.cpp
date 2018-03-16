@@ -19,26 +19,12 @@
 * ============================================================ */
 
 #include "tabwindow.h"
-#include "lib/webview/webview.h"
-#include "../webview/privatewebview.h"
 
-#include <QObject>
-#include <QVBoxLayout>
-#include <QWidget>
-#include <QPushButton>
 #include <QFile>
-#include <QTextStream>
-#include <QIODevice>
-#include <QString>
-#include <QWebEngineProfile>
-#include <QDialog>
-#include <QStringList>
 #include <QStringListModel>
 #include <QMenu>
 #include <QDir>
 #include <QWebEngineHistory>
-#include <iostream>
-
 
 
 void TabWindow::viewHome()

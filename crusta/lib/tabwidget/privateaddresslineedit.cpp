@@ -19,20 +19,12 @@
 * ============================================================ */
 
 #include "privateaddresslineedit.h"
-#include <QPushButton>
-#include <QLineEdit>
-#include <QIcon>
 #include <QMenu>
-#include <QString>
-#include <QStringList>
 #include <QDialog>
 #include <QLabel>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QFile>
-#include <QIODevice>
 #include <QTextStream>
-#include <QCompleter>
 #include <QStringListModel>
 #include <QDir>
 #include <QWebEngineProfile>

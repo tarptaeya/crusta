@@ -20,7 +20,6 @@
 
 #include "downloadwidget.h"
 
-#include <QLabel>
 #include <QUrl>
 #include <QDesktopServices>
 #include <QDir>

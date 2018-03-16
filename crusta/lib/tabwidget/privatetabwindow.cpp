@@ -19,22 +19,10 @@
 * ============================================================ */
 
 #include "privatetabwindow.h"
-#include "../webview/privatewebview.h"
 
-#include <QObject>
-#include <QVBoxLayout>
-#include <QWidget>
-#include <QPushButton>
 #include <QFile>
 #include <QMenu>
-#include <QTextStream>
-#include <QIODevice>
-#include <QString>
-#include <QWebEngineProfile>
-#include <QDialog>
-#include <QStringList>
 #include <QStringListModel>
-#include <QCompleter>
 #include <QDir>
 #include <QWebEngineHistory>
 

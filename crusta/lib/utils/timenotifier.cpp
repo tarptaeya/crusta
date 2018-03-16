@@ -21,15 +21,6 @@
 #include "timenotifier.h"
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QWebEngineView>
-#include <QAction>
-#include <QTime>
-#include <QTimer>
-#include <QLabel>
-#include <QObject>
-#include <QPropertyAnimation>
-#include <QGraphicsOpacityEffect>
-#include <Qt>
 
 void TimeNotifier::createNotifier()
 {

@@ -20,7 +20,6 @@
 
 #include "crustaspeech.h"
 #include <QLabel>
-#include <QVoice>
 
 CrustaSpeech::CrustaSpeech()
 {

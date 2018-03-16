@@ -21,12 +21,6 @@
 #include "fullscreennotifier.h"
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QWebEngineView>
-#include <QTimer>
-#include <QLabel>
-#include <QObject>
-#include <QPropertyAnimation>
-#include <QGraphicsOpacityEffect>
 
 void FullScreenNotifier::createNotifier()
 {

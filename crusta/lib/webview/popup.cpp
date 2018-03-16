@@ -20,15 +20,6 @@
 
 #include "popup.h"
 
-#include <QLineEdit>
-#include <QVBoxLayout>
-#include <QWebEngineView>
-#include <QWidget>
-#include <QIcon>
-#include <QPixmap>
-#include <QPushButton>
-
-
 
 void PopUp::setWebView(QWebEngineView *view)
 {

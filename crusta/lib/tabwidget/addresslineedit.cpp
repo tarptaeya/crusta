@@ -22,15 +22,11 @@
 
 #include <QDialog>
 #include <QDir>
-#include <QFile>
 #include <QHBoxLayout>
-#include <QIODevice>
 #include <QLabel>
 #include <QMenu>
-#include <QString>
 #include <QStringListModel>
 #include <QTextStream>
-#include <QVBoxLayout>
 #include <QWebEngineProfile>
 #include <QGroupBox>
 #include <QRadioButton>

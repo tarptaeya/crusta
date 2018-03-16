@@ -19,7 +19,6 @@
 * ============================================================ */
 
 #include "jseditor.h"
-#include <QString>
 
 JsEditor::JsEditor()
 {

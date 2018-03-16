@@ -7,3 +7,5 @@ crusta/*.pro.user*
 out
 crusta/.qmake.stash
 crusta/Makefile
+crusta/cmake-build-*
+crusta/.idea

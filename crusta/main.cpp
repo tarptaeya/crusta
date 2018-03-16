@@ -20,14 +20,8 @@
 
 #include "mainview.h"
 #include "lib/speeddial/speeddial.h"
-#include <QIcon>
 #include <QDir>
-#include <QFont>
-#include <QApplication>
-#include <QCoreApplication>
 #include <QtWebEngine>
-
-#include <memory>
 
 int main(int argc, char *argv[])
 {

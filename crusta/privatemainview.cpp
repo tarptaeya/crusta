@@ -20,40 +20,17 @@
 
 #include "privatemainview.h"
 
-#include "lib/tabwidget/privatetabwindow.h"
-#include "lib/utils/presentationmodenotifier.h"
-#include "lib/utils/jseditor.h"
 #include "lib/utils/themeeditor.h"
 #include "lib/managers/bookmarkmanager.h"
 #include "lib/utils/siteinfo.h"
-#include "lib/speeddial/speeddial.h"
 #include "lib/sidepanel/sidepane.h"
 
-#include <QObject>
-#include <QPoint>
-#include <QWidget>
-#include <QTabWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QMenuBar>
-#include <QMenu>
-#include <QPushButton>
-#include <QAction>
-#include <QCheckBox>
-#include <QLabel>
-#include <QLineEdit>
 #include <QFileDialog>
-#include <QDir>
-#include <QStatusBar>
-#include <QWebEngineDownloadItem>
 #include <QPrinter>
 #include <QPageSetupDialog>
-#include <QMessageBox>
 #include <QClipboard>
 #include <QSound>
 #include <QSettings>
-#include <QFont>
-
 
 
 void PrivateMainView::closeTab(int index)

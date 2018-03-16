@@ -21,20 +21,10 @@
 #include "speeddial.h"
 #include <QFile>
 #include <QTextStream>
-#include <QIODevice>
 #include <QDir>
-#include <QStringList>
 #include <QCoreApplication>
-#include <QLabel>
-#include <QPushButton>
-#include <QFileDialog>
-#include <QDialog>
-#include <QPixmap>
-#include <QUrl>
 #include <QWebEngineView>
 #include <QSettings>
-
-#include <iostream>
 
 void SpeedDial::save(QString bgimage)
 {

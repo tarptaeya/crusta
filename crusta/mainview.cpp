@@ -9,7 +9,7 @@
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* This program is distributed in the hope that it will be useful,
+* This program is distrib   uted in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
@@ -19,52 +19,20 @@
 * ============================================================ */
 
 #include "mainview.h"
-#include "lib/utils/permissions.h"
 #include "privatemainview.h"
 #include "lib/sidepanel/sidepane.h"
 
-#include "lib/utils/fullscreennotifier.h"
-#include "lib/webview/webview.h"
-#include "lib/tabwidget/addresslineedit.h"
-#include "lib/tabwidget/tabwindow.h"
-#include "lib/tabwidget/privatetabwindow.h"
-#include "lib/utils/presentationmodenotifier.h"
-#include "lib/utils/jseditor.h"
 #include "lib/utils/themeeditor.h"
-#include "lib/managers/historymanager.h"
-#include "lib/managers/bookmarkmanager.h"
 #include "lib/utils/siteinfo.h"
 #include "lib/speeddial/speeddial.h"
 
-#include <QObject>
-#include <QPoint>
-#include <QWidget>
-#include <QTabWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QMenuBar>
-#include <QMenu>
-#include <QPushButton>
-#include <QAction>
-#include <QCheckBox>
-#include <QLabel>
-#include <QLineEdit>
 #include <QFileDialog>
-#include <QDir>
-#include <QStatusBar>
-#include <QWebEngineDownloadItem>
 #include <QPrinter>
 #include <QPageSetupDialog>
-#include <QMessageBox>
-#include <QWebEngineProfile>
 #include <QClipboard>
 #include <QProcess>
 #include <QSound>
-#include <QSysInfo>
 #include <QSettings>
-#include <QFont>
-#include <QLocale>
-#include <QString>
 
 #include <iostream>
 #include <memory>

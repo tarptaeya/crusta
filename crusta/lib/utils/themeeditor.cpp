@@ -19,7 +19,6 @@
 * ============================================================ */
 
 #include "themeeditor.h"
-#include <QLabel>
 #include <QDir>
 
 ThemeEditor::ThemeEditor()

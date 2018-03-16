@@ -21,13 +21,6 @@
 #include "webpage.h"
 #include "../speeddial/speeddial.h"
 #include <QFileDialog>
-#include <QFile>
-#include <QTextStream>
-#include <QIODevice>
-#include <QDir>
-#include <QWebEngineProfile>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QLabel>
 #include <QCheckBox>
 #include <QPushButton>

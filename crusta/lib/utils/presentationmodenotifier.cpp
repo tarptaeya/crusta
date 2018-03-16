@@ -19,13 +19,6 @@
 * ============================================================ */
 
 #include "presentationmodenotifier.h"
-#include <QObject>
-#include <QLabel>
-#include <QTimer>
-#include <QGraphicsOpacityEffect>
-#include <QPropertyAnimation>
-#include <QApplication>
-#include <QDesktopWidget>
 
 
 void PresentationModeNotifier::createNotifier()

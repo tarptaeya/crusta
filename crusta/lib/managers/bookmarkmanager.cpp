@@ -19,13 +19,7 @@
 * ============================================================ */
 
 #include "bookmarkmanager.h"
-#include "../webview/privatewebview.h"
 
-#include <QFile>
-#include <QTextStream>
-#include <QIODevice>
-#include <QStringList>
-#include <QString>
 #include <QDir>
 #include <QHeaderView>
 #include <iostream>
