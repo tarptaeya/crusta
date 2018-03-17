@@ -202,6 +202,8 @@ public:
     void loadTheme();
     void editPermissions();
     void pickColor();
+
+    QWebEngineView *getWebView() const;
 };
 
 

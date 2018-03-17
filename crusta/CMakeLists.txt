@@ -63,7 +63,7 @@ set ( crusta_SRCS
 	lib/tabwidget/privateaddresslineedit.cpp
 	lib/speeddial/speeddial.cpp
 	lib/sidepanel/sidepane.cpp
-	)
+    lib/helpers/EnvironmentInfo.cpp)
 
 set ( crusta_RSCS
 	resource.qrc
@@ -96,7 +96,8 @@ set ( crusta_MOCS
 	lib/tabwidget/privateaddresslineedit.h
 	lib/speeddial/speeddial.h
 	lib/sidepanel/sidepane.h
-	)
+    lib/helpers/EnvironmentInfo.h
+    )
 QT5_WRAP_CPP(MOCS ${crusta_MOCS})
 
 add_executable ( crusta ${crusta_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )

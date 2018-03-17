@@ -1,6 +1,6 @@
 /* ============================================================
 * Crusta - Qt5 webengine browser
-* Copyright (C) 2017 Anmol Gautam <anmol@crustabrowser.com>
+* Copyright (C) 2017-2018 Anmol Gautam <anmol@crustabrowser.com>
 *
 * THIS FILE IS A PART OF CRUSTA
 *
@@ -37,6 +37,13 @@
 #include <iostream>
 #include <memory>
 
+QWebEngineView *MainView::getWebView() const {
+    int index = tabWindow->currentIndex();
+    QWidget *widget = tabWindow->widget(index);
+    QLayout *layout = widget->layout();
+    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    return webview;
+}
 
 void MainView::closeTab(int index)
 {
@@ -68,28 +75,19 @@ void MainView::closeTab(int index)
 
 void MainView::zoomIn()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->setZoomFactor(webview->zoomFactor() + .20);
 }
 
 void MainView::zoomOut()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->setZoomFactor(webview->zoomFactor() - .20);
 }
 
 void MainView::resetZoom()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->setZoomFactor(1);
 }
 
@@ -151,10 +149,7 @@ void MainView::tabBarContext(QPoint point)
 void MainView::FindText()
 {
     try {
-        int index = this->tabWindow->currentIndex();
-        QWidget *widget = this->tabWindow->widget(index);
-        QLayout *layout = widget->layout();
-        QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+        QWebEngineView *webview = getWebView();
         this->hbox = new QHBoxLayout();
         this->findwidget->setParent(webview);
 
@@ -197,10 +192,7 @@ void MainView::FindText()
 
 void MainView::findFindWidget()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     QString data = this->text->text();
 
     if (this->match_case_btn->isChecked()) {
@@ -232,24 +224,18 @@ void MainView::hideFindWidget()
 
 void MainView::selectAllText()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->triggerPageAction(QWebEnginePage::SelectAll);
 }
 
 void MainView::enterPresentationMode()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     QString qurl = webview->url().toString();
-    QWebEngineView *newwebview = new QWebEngineView();
+    auto *newwebview = new QWebEngineView();
     newwebview->load(QUrl(qurl));
     newwebview->showFullScreen();
-    QAction *newExitAction = new QAction();
+    auto *newExitAction = new QAction();
     newExitAction->setShortcut(Qt::Key_Escape);
     newwebview->addAction(newExitAction);
     this->p_notifier->setViewParent(newwebview);
@@ -262,46 +248,31 @@ void MainView::enterPresentationMode()
 
 void MainView::undoPageAction()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->triggerPageAction(QWebEnginePage::Undo);
 }
 
 void MainView::redoPageAction()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->triggerPageAction(QWebEnginePage::Redo);
 }
 
 void MainView::cutPageAction()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->triggerPageAction(QWebEnginePage::Cut);
 }
 
 void MainView::copyPageAction()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->triggerPageAction(QWebEnginePage::Copy);
 }
 
 void MainView::pastePageAction()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     webview->triggerPageAction(QWebEnginePage::Paste);
 }
 
@@ -776,9 +747,7 @@ void MainView::addNormalTab()
 void MainView::viewPageSource()
 {
     int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     QString qurl = webview->url().toString();
     qurl = QString("view-source:") + qurl;
     TabWindow *tab = new TabWindow();
@@ -788,7 +757,7 @@ void MainView::viewPageSource()
     this->tabWindow->setCurrentIndex(index);
     QWidget *wid = this->tabWindow->widget(index);
     QLayout *lay = wid->layout();
-    QWebEngineView *webv = (QWebEngineView *)lay->itemAt(1)->widget();
+    auto *webv = (QWebEngineView *)lay->itemAt(1)->widget();
     webv->load(QUrl(qurl));
     MainView::addNewTabButton();
 }
@@ -825,10 +794,7 @@ void MainView::savePage()
 {
     QFileDialog f;
     QString file_name = f.getSaveFileName(this->window, tr("Crusta : Save File"), QDir::homePath(), "WebPage, Complete", nullptr, f.options());
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
 
     if (file_name != QString("")) {
         webview->page()->save(file_name, QWebEngineDownloadItem::CompleteHtmlSaveFormat);
@@ -837,10 +803,7 @@ void MainView::savePage()
 
 void MainView::showJsCodeEditor()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     jsEditor->setView(webview);
     jsEditor->show();
 }
@@ -849,10 +812,7 @@ void MainView::openLocalFile()
 {
     QFileDialog f;
     QString filename = f.getOpenFileName(this->window, tr("Crusta : Open File"), QDir::homePath(), QString(), nullptr, f.options());
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
 
     if (filename == "") {
         return;
@@ -868,10 +828,7 @@ void MainView::openLocalFile()
 void MainView::screenShot()
 {
     QSound::play(":/res/audio/shutter.wav");
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     QPixmap pmap = webview->grab();
     QFileDialog f;
     QString filename = f.getSaveFileName(this->window, tr("Crusta : Open File"), QDir::homePath(), QString("Images (*.png *.xpm *.jpg *.bmp)"), nullptr, f.options());
@@ -897,7 +854,7 @@ void MainView::addNewTabButton()
     int cnt = this->tabWindow->count();
     int x = cnt * 175 + 5; //size of a tab;
 
-    if (newtabbtn->parent() == NULL) {
+    if (newtabbtn->parent() == nullptr) {
         newtabbtn->setParent(this->tabWindow->tabBar());
     }
 
@@ -909,7 +866,7 @@ void MainView::addNewTabButton()
 
 void MainView::editPreference()
 {
-    ThemeEditor *th = new ThemeEditor();
+    auto *th = new ThemeEditor();
     th->_parent = this;
     th->exec();
 }
@@ -1008,10 +965,7 @@ void MainView::showBookamrks()
 
 void MainView::bookmarkTab()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    WebView *webview = (WebView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
 
     QFile file(QDir::homePath() + "/.crusta_db/bookmarks.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
@@ -1084,10 +1038,7 @@ void MainView::quit()
 
 void MainView::showPageInfo()
 {
-    int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView();
     std::unique_ptr<SiteInfoWidget>sw(new SiteInfoWidget(webview));
     sw->exec();
 }
