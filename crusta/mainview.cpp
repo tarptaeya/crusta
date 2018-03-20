@@ -41,7 +41,7 @@ QWebEngineView *MainView::getWebView() const {
     int index = tabWindow->currentIndex();
     QWidget *widget = tabWindow->widget(index);
     QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    auto *webview = (QWebEngineView *)layout->itemAt(1)->widget();
     return webview;
 }
 
@@ -50,7 +50,7 @@ void MainView::closeTab(int index)
     std::unique_ptr<QWidget> widget(this->tabWindow->widget(index));
     std::unique_ptr<QLayout>layout(widget->layout());
     std::unique_ptr<QWebEngineView>webview((QWebEngineView *)layout->itemAt(1)->widget());
-    QAction *hist = new QAction();
+    auto *hist = new QAction();
     hist->setText(webview->page()->title());
     hist->setIcon(webview->page()->icon());
     QUrl u = webview->url();
@@ -109,7 +109,7 @@ void MainView::tabBarContext(QPoint point)
         int index = this->tabWindow->tabBar()->tabAt(point);
         QWidget *widget = this->tabWindow->widget(index);
         QLayout *layout = widget->layout();
-        QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+        auto *webview = (QWebEngineView *)layout->itemAt(1)->widget();
 
         std::unique_ptr<QMenu>contextMenu(new QMenu());
         QAction *rld_tab = contextMenu->addAction(tr("&Reload Tab"));
@@ -940,13 +940,6 @@ void MainView::help()
     webview->load(QUrl("http://www.crustabrowser.com/help"));
 }
 
-void MainView::showHistory()
-{
-    std::unique_ptr<HistoryManager>h(new HistoryManager(this));
-    h->createManager();
-    h->show();
-}
-
 void MainView::clearHistory()
 {
     QFile file(QDir::homePath() + "/.crusta_db/history.txt");
@@ -1309,40 +1302,6 @@ void MainView::limitHistoryFile()
         }
 
         QFile file(QDir::homePath() + "/.crusta_db/history.txt");
-        file.open(QIODevice::WriteOnly);
-        QTextStream out(&file);
-        out.setCodec("UTF-8");
-        out << s.toUtf8();
-        file.close();
-    }
-}
-
-void MainView::limitDownloadFile()
-{
-    QFile inputFile(QDir::homePath() + "/.crusta_db/downloads.txt");
-
-    while (inputFile.size() > 1000000) { //limit file to 1Mb
-        QString s = "";
-
-        if (inputFile.open(QIODevice::ReadOnly)) {
-            QTextStream in(&inputFile);
-            in.setCodec("UTF-8");
-            int cnt = 0;
-
-            while (!in.atEnd()) {
-                QString line = in.readLine();
-
-                if (cnt != 0) {
-                    s.append(line + "\n");
-                }
-
-                cnt++;
-            }
-
-            inputFile.close();
-        }
-
-        QFile file(QDir::homePath() + "/.crusta_db/downloads.txt");
         file.open(QIODevice::WriteOnly);
         QTextStream out(&file);
         out.setCodec("UTF-8");

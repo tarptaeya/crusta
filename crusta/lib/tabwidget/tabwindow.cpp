@@ -107,7 +107,7 @@ void TabWindow::updateAddrBar()
 
 void TabWindow::createControls()
 {
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *hbox = new QHBoxLayout();
     this->back_btn->setFlat(true);
     this->back_btn->setToolTip(tr("Go Back"));
     this->back_btn->setIcon(QIcon(":/res/drawables/noback.svg"));
@@ -190,13 +190,6 @@ QWidget *TabWindow::returnTab()
     return this->tab;
 }
 
-TabWindow *TabWindow::returnThis()
-{
-    this->vbox->setContentsMargins(0, 0, 0, 0);
-    createControls();
-    return this;
-}
-
 void TabWindow::setWebView(WebView *v)
 {
     view = v;
@@ -259,7 +252,7 @@ void TabWindow::loadUrl()
 void TabWindow::bookmarkPage()
 {
     QDialog *bkmrk_ppup = new QDialog();
-    QVBoxLayout *vbox_bkmrk = new QVBoxLayout();
+    auto *vbox_bkmrk = new QVBoxLayout();
     bkmrk_ppup->setLayout(vbox_bkmrk);
     QLabel *bkmrk_ppup_title = new QLabel(tr("Bookmark"));
     QString s = this->addr_bar->text();
@@ -296,21 +289,21 @@ void TabWindow::bookmarkPage()
     vbox_bkmrk->addWidget(bkmrk_ppup_title);
     QLabel *name_lbl = new QLabel(tr("Name"));
     name_lbl->setFixedWidth(60);
-    QHBoxLayout *p0hbox = new QHBoxLayout();
+    auto *p0hbox = new QHBoxLayout();
     p0hbox->addWidget(name_lbl);
-    QLineEdit *name_edt = new QLineEdit();
+    auto *name_edt = new QLineEdit();
     name_edt->setText(view->title());
     name_edt->setCursorPosition(0);
     p0hbox->addWidget(name_edt);
     vbox_bkmrk->addLayout(p0hbox);
-    QLineEdit *description = new QLineEdit();
+    auto *description = new QLineEdit();
     description->setPlaceholderText(tr("Description"));
     vbox_bkmrk->addWidget(description);
     QPushButton *remove_btn = new QPushButton(tr("Remove"));
     QPushButton *done_btn = new QPushButton(tr("Done"));
     done_btn->setDefault(true);
     connect(done_btn, &QPushButton::clicked, bkmrk_ppup, &QDialog::accept);
-    QHBoxLayout *p2hbox = new QHBoxLayout();
+    auto *p2hbox = new QHBoxLayout();
     p2hbox->addWidget(remove_btn);
     p2hbox->addWidget(done_btn);
     vbox_bkmrk->addLayout(p2hbox);
@@ -423,7 +416,7 @@ void TabWindow::updateStar()
 
 void TabWindow::homeContext(const QPoint &pos)
 {
-    QMenu *menu = new QMenu();
+    auto *menu = new QMenu();
     QAction *go_home = new QAction(tr("Home"));
     QAction *set_home = new QAction(tr("Set Home page"));
     connect(go_home, &QAction::triggered, this->view->returnView(), &WebView::home);
@@ -437,12 +430,12 @@ void TabWindow::setHomePage()
 {
     QDialog *w = new QDialog();
     QLabel *lbl = new QLabel(tr("Home page URL"));
-    QLineEdit *url = new QLineEdit();
+    auto *url = new QLineEdit();
     url->setText(this->view->returnView()->home_page);
     connect(url, &QLineEdit::returnPressed, w, &QDialog::accept);
 
-    QCompleter *c = new QCompleter();
-    QStringListModel *m = new QStringListModel();
+    auto *c = new QCompleter();
+    auto *m = new QStringListModel();
     QStringList l;
     l.append("default");
     l.append("https://duckduckgo.com");
@@ -456,10 +449,10 @@ void TabWindow::setHomePage()
     c->setFilterMode(Qt::MatchContains);
     url->setCompleter(c);
 
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *hbox = new QHBoxLayout();
     hbox->addWidget(lbl);
     hbox->addWidget(url);
-    QHBoxLayout *h1box = new QHBoxLayout();
+    auto *h1box = new QHBoxLayout();
     QPushButton *cncl = new QPushButton(tr("Cancel"));
     QPushButton *ok = new QPushButton(tr("Save"));
     h1box->addWidget(new QLabel());
@@ -467,7 +460,7 @@ void TabWindow::setHomePage()
     h1box->addWidget(ok);
     cncl->setFixedWidth(100);
     ok->setFixedWidth(100);
-    QVBoxLayout *vbox = new QVBoxLayout();
+    auto *vbox = new QVBoxLayout();
     vbox->addLayout(hbox);
     vbox->addLayout(h1box);
     w->setLayout(vbox);
@@ -595,7 +588,7 @@ void TabWindow::showSiteInfo()
         QDialog *dlg = new QDialog();
         dlg->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
         dlg->setFixedSize(250, 100);
-        QVBoxLayout *dvbox = new QVBoxLayout();
+        auto *dvbox = new QVBoxLayout();
         dlg->setLayout(dvbox);
         QLabel *site_lbl_0 = new QLabel(tr("Secure Connection"));
         site_lbl_0->setStyleSheet("font-size: 14px");
@@ -609,7 +602,7 @@ void TabWindow::showSiteInfo()
         QDialog *dlg = new QDialog();
         dlg->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
         dlg->setFixedSize(250, 150);
-        QVBoxLayout *dvbox = new QVBoxLayout();
+        auto *dvbox = new QVBoxLayout();
         dlg->setLayout(dvbox);
         QLabel *site_lbl_0 = new QLabel(tr("Insecure Connection"));
         site_lbl_0->setStyleSheet("font-size: 14px");
@@ -627,7 +620,7 @@ void TabWindow::showLoadTime()
     QDialog *dlg = new QDialog();
     dlg->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     dlg->setFixedSize(250, 110);
-    QVBoxLayout *dvbox = new QVBoxLayout();
+    auto *dvbox = new QVBoxLayout();
     dlg->setLayout(dvbox);
     QLabel *site_lbl_0 = new QLabel(time_lbl->text());
     site_lbl_0->setStyleSheet("font-size: 14px");

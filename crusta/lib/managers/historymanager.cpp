@@ -41,7 +41,7 @@ void HistoryManager::createManager()
             QStringList data = line.split(">>>>>");
 
             if (!(data[0] == "" || data[1] == "" || data[2] == "")) {
-                QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                auto *item = new QTreeWidgetItem(data);
                 display_area->insertTopLevelItem(0, item);
             }
         }
@@ -53,7 +53,7 @@ void HistoryManager::createManager()
 HistoryManager::HistoryManager(MainView *m)
 {
     mview = m;
-    QHBoxLayout *h2box = new QHBoxLayout();
+    auto *h2box = new QHBoxLayout();
     h2box->addWidget(new QLabel());
     h2box->addWidget(date);
     date->addItem(tr("All Time"));
@@ -65,7 +65,7 @@ HistoryManager::HistoryManager(MainView *m)
     connect(date, &QComboBox::currentTextChanged, this, &HistoryManager::setFilterDate);
     vbox->addLayout(h2box);
     vbox->addWidget(display_area);
-    QHBoxLayout *h1box = new QHBoxLayout();
+    auto *h1box = new QHBoxLayout();
     h1box->addWidget(clear_all);
     clear_all->setFixedWidth(125);
     h1box->addWidget(new QLabel());
@@ -91,11 +91,11 @@ HistoryManager::HistoryManager(MainView *m)
 
 void HistoryManager::showContextMenu(const QPoint &pos)
 {
-    if (display_area->itemAt(pos) == NULL) {
+    if (display_area->itemAt(pos) == nullptr) {
         return;
     }
 
-    QMenu *cmenu = new QMenu();
+    auto *cmenu = new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
     //cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
@@ -122,7 +122,7 @@ void HistoryManager::openUrl()
     mview->tabWindow->setCurrentIndex(index);
     QWidget *widget = mview->tabWindow->widget(index);
     QLayout *layout = widget->layout();
-    WebView *webview = (WebView *)layout->itemAt(1)->widget();
+    auto *webview = (WebView *)layout->itemAt(1)->widget();
     webview->load(url);
 }
 
@@ -191,14 +191,13 @@ void HistoryManager::setFilterDate()
                 QStringList data = line.split(">>>>>");
 
                 if (!(data[0] == "" || data[1] == "" || data[2] == "")) {
-                    QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                    auto *item = new QTreeWidgetItem(data);
                     display_area->insertTopLevelItem(0, item);
                 }
             }
 
             inputFile.close();
         }
-
         return;
     }
 
@@ -218,12 +217,12 @@ void HistoryManager::setFilterDate()
                 QDate itemDate = QDate::fromString(data[2]);
 
                 if (itemDate >= filterDate && index != 2) {
-                    QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                    auto *item = new QTreeWidgetItem(data);
                     display_area->insertTopLevelItem(0, item);
                 }
 
                 if (itemDate == filterDate && index == 2) {
-                    QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                    auto *item = new QTreeWidgetItem(data);
                     display_area->insertTopLevelItem(0, item);
                 }
             }

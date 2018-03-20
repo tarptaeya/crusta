@@ -38,7 +38,7 @@ DownloadManager::DownloadManager()
 
 void DownloadManager::addDownloadItem(DownloadWidget *w)
 {
-    QListWidgetItem *item = new QListWidgetItem();
+    auto *item = new QListWidgetItem();
     listwidget->insertItem(0, item);
     item->setSizeHint(w->size());
     w->item = item;
@@ -57,9 +57,9 @@ void DownloadManager::loadDownloads()
 
         while (!in.atEnd()) {
             QString line = in.readLine();
-            DownloadWidget *w = new DownloadWidget();
+            auto *w = new DownloadWidget();
             w->getName(line.split(">>>>>")[0].split('/')[line.split('/').length() - 1]);
-            QFileIconProvider *fip = new QFileIconProvider();
+            auto *fip = new QFileIconProvider();
             QIcon icon = fip->icon(QFileInfo(line.split(">>>>>")[0]));
             w->getIcon(icon);
             w->path = line;

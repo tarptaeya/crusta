@@ -55,7 +55,7 @@ class MainView;
 
 class Window: public QWidget
 {
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
 public:
     QMenu *menu = new QMenu();
     MainView *parentView;
@@ -95,15 +95,13 @@ public:
     void changeSpinner(int index);
     void limitCompleterFile();
     void limitHistoryFile();
-    void limitDownloadFile();
+
 public:
     Window *window = new Window();
     QTabWidget *tabWindow = new QTabWidget(this);
     QHBoxLayout *box = new QHBoxLayout();
     QHBoxLayout *side_pane = new QHBoxLayout();
-    QMenuBar *menubar = new QMenuBar();
     QMenu *menu = new QMenu();
-    QPushButton *add_btn = new QPushButton();
     QMenu *file_menu = new QMenu();
     QMenu *edit_menu = new QMenu();
     QMenu *view_menu = new QMenu();
@@ -111,8 +109,6 @@ public:
     QMenu *bookmark_menu = new QMenu();
     QMenu *recently_closed = new QMenu();
     QMenu *tool_menu = new QMenu();
-    QMenu *help_menu = new QMenu();
-    QMenu *devTools = new QMenu();
     QAction *new_tab_action = new QAction();
     QAction *split_mode_action = new QAction();
     QAction *new_window_action = new QAction();
@@ -139,7 +135,6 @@ public:
     QAction *reset_zoom_action = new QAction();
     QAction *presentation_action = new QAction();
     QAction *preference = new QAction();
-    QAction *show_all_history = new QAction();
     QAction *clearAllHist = new QAction();
     QAction *restore_session = new QAction();
     QAction *bookmark_tab = new QAction();
@@ -151,7 +146,6 @@ public:
     QAction *changeUA = new QAction();
     QAction *pick_color = new QAction();
     QAction *sitei = new QAction();
-    QAction *aboutCr = new QAction();
     PresentationModeNotifier *p_notifier = new PresentationModeNotifier();
     QAction *fullscreen_action = new QAction();
     int start_findwidget;
@@ -161,7 +155,6 @@ public:
     QCheckBox *match_case_btn = new QCheckBox();
     QLabel *label = new QLabel();
     QLineEdit *text = new QLineEdit();
-    DownloadWidget *downloadWidget = new DownloadWidget();
     JsEditor *jsEditor = new JsEditor();
     QPushButton *newtabbtn = new QPushButton();
     QPageLayout currentPageLayout;
@@ -190,7 +183,7 @@ public:
     void closeOtherTabs(int index);
     void restoreTab(QUrl u);
     void help();
-    void showHistory();
+
     void clearHistory();
     void showBookamrks();
     void openIncognito();

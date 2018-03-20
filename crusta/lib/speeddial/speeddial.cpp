@@ -133,7 +133,7 @@ void SpeedDial::configure()
     QDir d(QCoreApplication::applicationDirPath() + "/speeddial/img/");
     QStringList filesList = d.entryList(QStringList("*"));
 
-    for (QString file : filesList) {
+    for (const QString &file : filesList) {
         QFile::copy(a + file, b + file);
     }
 }

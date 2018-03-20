@@ -52,7 +52,7 @@ QLineEdit *AddressLineEdit::initialize()
 
 void AddressLineEdit::showContextMenu(const QPoint &pos)
 {
-    QMenu *contextMenu = new QMenu();
+    auto *contextMenu = new QMenu();
     QAction *undo = new QAction(tr("Undo"));
     connect(undo, &QAction::triggered, this, &QLineEdit::undo);
     contextMenu->addAction(undo);
@@ -91,7 +91,7 @@ AddressLineEdit::AddressLineEdit()
 
 void AddressLineEdit::createCompleter()
 {
-    QStringListModel *model = new QStringListModel();
+    auto *model = new QStringListModel();
     cmpleter->setModel(model);
     cmpleter->setCaseSensitivity(Qt::CaseInsensitive);
     cmpleter->setFilterMode(Qt::MatchContains);
@@ -171,20 +171,20 @@ void AddressLineEdit::loadSearchString()
 void AddressLineEdit::setDefaultSearch()
 {
     QDialog *w = new QDialog();
-    QVBoxLayout *vbox = new QVBoxLayout();
-    QGroupBox *gbox = new QGroupBox();
+    auto *vbox = new QVBoxLayout();
+    auto *gbox = new QGroupBox();
     gbox->setTitle(tr("Search Engine Settings"));
-    QVBoxLayout *gvbox = new QVBoxLayout();
+    auto *gvbox = new QVBoxLayout();
     gbox->setLayout(gvbox);
     QRadioButton *defaultOption = new QRadioButton(tr("Use default search engines"));
     QRadioButton *customOption = new QRadioButton(tr("Use custom search string"));
     gvbox->addWidget(defaultOption);
     gvbox->addWidget(customOption);
-    QComboBox *srch_cmb = new QComboBox();
+    auto *srch_cmb = new QComboBox();
     srch_cmb->addItem(QIcon(":/res/fav/ecosia.png"), tr("Ecosia"));
     srch_cmb->addItem(QIcon(":/res/fav/yandex.png"), tr("Yandex"));
     gvbox->addWidget(srch_cmb);
-    QLineEdit *cstm_srch = new QLineEdit();
+    auto *cstm_srch = new QLineEdit();
     cstm_srch->setText(defaultSearch);
     cstm_srch->setPlaceholderText(tr("http://your-favourite-search-engine-string"));
     gvbox->addWidget(cstm_srch);
@@ -216,7 +216,7 @@ void AddressLineEdit::setDefaultSearch()
         }
     });
     vbox->addWidget(gbox);
-    QHBoxLayout *h1box = new QHBoxLayout();
+    auto *h1box = new QHBoxLayout();
     QPushButton *cncl = new QPushButton(tr("Cancel"));
     QPushButton *ok = new QPushButton(tr("Save"));
     h1box->addWidget(new QLabel());
@@ -277,7 +277,7 @@ void AddressLineEdit::setUAString()
 {
     QDialog *w = new QDialog();
     QLabel *lbl = new QLabel(tr("HTTP USER AGENT"));
-    QLineEdit *ua = new QLineEdit();
+    auto *ua = new QLineEdit();
     QString http;
     QFile inputFile(QDir::homePath() + "/.crusta_db/settings.txt");
 
@@ -299,10 +299,10 @@ void AddressLineEdit::setUAString()
     }
 
     ua->setText(http);
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *hbox = new QHBoxLayout();
     hbox->addWidget(lbl);
     hbox->addWidget(ua);
-    QHBoxLayout *h1box = new QHBoxLayout();
+    auto *h1box = new QHBoxLayout();
     QPushButton *restore = new QPushButton(tr("Restore"));
     QPushButton *cncl = new QPushButton(tr("Cancel"));
     QPushButton *ok = new QPushButton(tr("Save"));
@@ -313,7 +313,7 @@ void AddressLineEdit::setUAString()
     cncl->setFixedWidth(100);
     ok->setFixedWidth(100);
     ok->setDefault(true);
-    QVBoxLayout *vbox = new QVBoxLayout();
+    auto *vbox = new QVBoxLayout();
     vbox->addLayout(hbox);
     vbox->addLayout(h1box);
     w->setLayout(vbox);

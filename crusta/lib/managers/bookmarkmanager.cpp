@@ -29,7 +29,7 @@ BookmarkManager::BookmarkManager(MainView *m)
 {
     mview = m;
     setLayout(vbox);
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *hbox = new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(search);
     hbox->addWidget(sbtn);
@@ -40,7 +40,7 @@ BookmarkManager::BookmarkManager(MainView *m)
     vbox->addWidget(display);
     vbox->addWidget(info_lbl);
     info_lbl->setMinimumHeight(200);
-    QVBoxLayout *lbl_vbox = new QVBoxLayout();
+    auto *lbl_vbox = new QVBoxLayout();
     info_lbl->setLayout(lbl_vbox);
     lbl_vbox->addWidget(info_lbl_1);
     lbl_vbox->addWidget(info_lbl_2);
@@ -61,7 +61,7 @@ BookmarkManager::BookmarkManager(MainView *m)
     connect(display, &QTreeWidget::customContextMenuRequested, this, &BookmarkManager::showContextMenu);
     connect(open, &QAction::triggered, this, &BookmarkManager::openUrl);
     connect(del, &QAction::triggered, this, &BookmarkManager::clearEntry);
-    QHBoxLayout *h1box = new QHBoxLayout();
+    auto *h1box = new QHBoxLayout();
     QLabel *editdescription = new QLabel(tr("Edit Desription : "));
     h1box->addWidget(editdescription);
     editdescription->setStyleSheet("color: #00b0e3");
@@ -96,7 +96,7 @@ void BookmarkManager::loadBookmarks()
             }
 
             if (!(data[0] == "" || data[1] == "")) {
-                QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                auto *item = new QTreeWidgetItem(data);
                 display->insertTopLevelItem(0, item);
 
             }
@@ -108,11 +108,11 @@ void BookmarkManager::loadBookmarks()
 
 void BookmarkManager::showContextMenu(const QPoint &pos)
 {
-    if (display->itemAt(pos) == NULL) {
+    if (display->itemAt(pos) == nullptr) {
         return;
     }
 
-    QMenu *cmenu = new QMenu();
+    auto *cmenu = new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
     cmenu->exec(display->mapToGlobal(pos));
@@ -127,7 +127,7 @@ void BookmarkManager::openUrl()
     mview->tabWindow->setCurrentIndex(index);
     QWidget *widget = mview->tabWindow->widget(index);
     QLayout *layout = widget->layout();
-    WebView *webview = (WebView *)layout->itemAt(1)->widget();
+    auto *webview = (WebView *)layout->itemAt(1)->widget();
     webview->load(url);
 }
 
@@ -160,7 +160,7 @@ void BookmarkManager::clearEntry()
 
 void BookmarkManager::saveDescription()
 {
-    if (display->currentItem() == NULL) {
+    if (display->currentItem() == nullptr) {
         return;
     }
 
@@ -217,7 +217,7 @@ void BookmarkManager::searchBookmark()
             QString master = data[2];
 
             if (master.contains(key)) {
-                QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                auto *item = new QTreeWidgetItem(data);
                 display->insertTopLevelItem(0, item);
 
             }
@@ -251,7 +251,7 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m)
 {
     pmview = m;
     setLayout(vbox);
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *hbox = new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(search);
     hbox->addWidget(sbtn);
@@ -262,7 +262,7 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m)
     vbox->addWidget(pdisplay);
     vbox->addWidget(info_lbl);
     info_lbl->setMinimumHeight(200);
-    QVBoxLayout *lbl_vbox = new QVBoxLayout();
+    auto *lbl_vbox = new QVBoxLayout();
     info_lbl->setLayout(lbl_vbox);
     lbl_vbox->addWidget(info_lbl_1);
     lbl_vbox->addWidget(info_lbl_2);
@@ -280,7 +280,7 @@ PrivateBookmarkManager::PrivateBookmarkManager(PrivateMainView *m)
     connect(pdisplay, &QTreeWidget::customContextMenuRequested, this, &PrivateBookmarkManager::showContextMenu);
     connect(open, &QAction::triggered, this, &PrivateBookmarkManager::openUrl);
     connect(del, &QAction::triggered, this, &PrivateBookmarkManager::clearEntry);
-    QHBoxLayout *h1box = new QHBoxLayout();
+    auto *h1box = new QHBoxLayout();
     h1box->addWidget(new QLabel(tr("Edit Desription : ")));
     h1box->addWidget(description);
     h1box->addWidget(save);
@@ -311,7 +311,7 @@ void PrivateBookmarkManager::loadBookmarks()
             }
 
             if (!(data[0] == "" || data[1] == "")) {
-                QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                auto item = new QTreeWidgetItem(data);
                 pdisplay->insertTopLevelItem(0, item);
 
             }
@@ -323,11 +323,11 @@ void PrivateBookmarkManager::loadBookmarks()
 
 void PrivateBookmarkManager::showContextMenu(const QPoint &pos)
 {
-    if (pdisplay->itemAt(pos) == NULL) {
+    if (pdisplay->itemAt(pos) == nullptr) {
         return;
     }
 
-    QMenu *cmenu = new QMenu();
+    auto *cmenu = new QMenu();
     cmenu->addAction(open);
     cmenu->addAction(del);
     //cmenu->setStyleSheet("QMenu{background-color:white;color:black} QMenu::selected{color:white;background-color:black}");
@@ -344,7 +344,7 @@ void PrivateBookmarkManager::openUrl()
     pmview->tabWindow->setCurrentIndex(index);
     QWidget *widget = pmview->tabWindow->widget(index);
     QLayout *layout = widget->layout();
-    PrivateWebView *webview = (PrivateWebView *)layout->itemAt(1)->widget();
+    auto *webview = (PrivateWebView *)layout->itemAt(1)->widget();
     webview->load(url);
 }
 
@@ -377,7 +377,7 @@ void PrivateBookmarkManager::clearEntry()
 
 void PrivateBookmarkManager::saveDescription()
 {
-    if (pdisplay->currentItem() == NULL) {
+    if (pdisplay->currentItem() == nullptr) {
         return;
     }
 
@@ -434,7 +434,7 @@ void PrivateBookmarkManager::searchBookmark()
             QString master = data[2];
 
             if (master.contains(key)) {
-                QTreeWidgetItem *item = new QTreeWidgetItem(data);
+                auto *item = new QTreeWidgetItem(data);
                 pdisplay->insertTopLevelItem(0, item);
 
             }

@@ -48,7 +48,6 @@ class TabWindow: public QObject
     QLabel *link_lbl = new QLabel();
     void showLinkHovered(QString);
 public:
-    QVector<QUrl> historyVector;
     QVBoxLayout *vbox = new QVBoxLayout();
     QWidget *tab = new QWidget();
     QPushButton *back_btn = new QPushButton();
@@ -58,14 +57,13 @@ public:
     QPushButton *time_lbl = new QPushButton();
     QPushButton *home_btn = new QPushButton();
     QPushButton *bookmark_btn = new QPushButton();
-    QPushButton *tool_btn = new QPushButton();
     QPushButton *menu_btn = new QPushButton();
     AddressLineEdit *addr_bar = new AddressLineEdit();
     WebView *view = new WebView();
     void createControls();
     QWidget *returnTab();
     QWidget *returnTab(WebView *view);
-    TabWindow *returnThis();
+
     void setWebView(WebView *);
     void loadUrl();
     void bookmarkPage();

@@ -55,14 +55,13 @@ public:
     QPushButton *time_lbl = new QPushButton();
     QPushButton *home_btn = new QPushButton();
     QPushButton *bookmark_btn = new QPushButton();
-    QPushButton *tool_btn = new QPushButton();
     QPushButton *menu_btn = new QPushButton();
     PrivateAddressLineEdit *addr_bar = new PrivateAddressLineEdit();
     PrivateWebView *view = new PrivateWebView();
     void createControls();
     QWidget *returnTab();
     QWidget *returnTab(PrivateWebView *view);
-    PrivateTabWindow *returnThis();
+
     void setWebView(PrivateWebView *);
     void loadUrl();
     void bookmarkPage();

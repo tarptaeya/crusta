@@ -82,12 +82,12 @@ SidePane::SidePane(MainView *m)
                 icon_name = icon_name.split(".")[0];
             }
 
-            SidePaneButton *new_side_btn = new SidePaneButton();
+            auto *new_side_btn = new SidePaneButton();
             new_side_btn->url = line;
             new_side_btn->icon_ = icon_name;
             new_side_btn->setToolTip(line);
             new_side_btn->setIcon(QIcon(QDir::homePath() + "/.crusta_db/sidepanel/ico/" + icon_name + ".png"));
-            QWebEnginePage *webpage = new QWebEnginePage();
+            auto *webpage = new QWebEnginePage();
             new_side_btn->sidewebview->hide();
             connect(webpage, &QWebEnginePage::fullScreenRequested, this, &SidePane::acceptFullScreenReuest);
             new_side_btn->sidewebview->setPage(webpage);
@@ -228,7 +228,7 @@ SidePane::SidePane(PrivateMainView *m)
 {
     pmainview = m;
     QWidget *left = new QWidget();
-    QPushButton *top = new QPushButton();
+    auto *top = new QPushButton();
     top->setFixedSize(40, 32);
     top->setIcon(QIcon(":/res/drawables/incognito.svg"));
     top->setIconSize(QSize(25, 25));
@@ -263,12 +263,12 @@ SidePane::SidePane(PrivateMainView *m)
                 icon_name = icon_name.split(".")[0];
             }
 
-            SidePaneButton *new_side_btn = new SidePaneButton();
+            auto *new_side_btn = new SidePaneButton();
             new_side_btn->url = line;
             new_side_btn->icon_ = icon_name;
             new_side_btn->setToolTip(line);
             new_side_btn->setIcon(QIcon(QDir::homePath() + "/.crusta_db/sidepanel/ico/" + icon_name + ".png"));
-            QWebEnginePage *webpage = new QWebEnginePage();
+            auto *webpage = new QWebEnginePage();
             new_side_btn->sidewebview->hide();
             connect(webpage, &QWebEnginePage::fullScreenRequested, this, &SidePane::acceptFullScreenReuest);
             new_side_btn->sidewebview->setPage(webpage);
@@ -388,12 +388,12 @@ SidePane::SidePane(PrivateMainView *m)
 void SidePane::addNewButton()
 {
     QDialog *dg = new QDialog();
-    QLineEdit *urledit = new QLineEdit();
+    auto *urledit = new QLineEdit();
     urledit->setMinimumWidth(200);
     urledit->setPlaceholderText("http://example.com");
     QPushButton *ok = new QPushButton(tr("Add"));
     QPushButton *cncl = new QPushButton(tr("Cancel"));
-    QHBoxLayout *box = new QHBoxLayout();
+    auto *box = new QHBoxLayout();
     box->addWidget(urledit);
     box->addWidget(ok);
     box->addWidget(cncl);
@@ -425,7 +425,7 @@ void SidePane::addNewButton()
     out.setCodec("UTF-8");
     out << urledit->text().toUtf8() + "\n";
     file.close();
-    SidePaneButton *new_btn = new SidePaneButton();
+    auto *new_btn = new SidePaneButton();
     new_btn->setIcon(QIcon(":/res/videos/sidepanel_loader.gif"));
     QMovie *loader = new QMovie(":/res/videos/sidepanel_loader.gif");
     loader->start();
@@ -433,7 +433,7 @@ void SidePane::addNewButton()
         new_btn->setIcon(QIcon(loader->currentPixmap()));
     });
     vbox->insertWidget(vbox->indexOf(flexilabel), new_btn);
-    QWebEnginePage *webpage = new QWebEnginePage();
+    auto *webpage = new QWebEnginePage();
     new_btn->sidewebview->setPage(webpage);
     new_btn->sidewebview->setTabletTracking(true);
     new_btn->sidewebview->load(QUrl(url));
@@ -485,7 +485,7 @@ void SidePane::acceptFullScreenReuest(QWebEngineFullScreenRequest request)
 
 void SidePaneButton::buttonContext(const QPoint &point)
 {
-    QMenu *menu = new QMenu();
+    auto *menu = new QMenu();
     QAction *remove = new QAction(tr("Remove"));
     menu->addAction(remove);
     connect(remove, &QAction::triggered, this, [this] {

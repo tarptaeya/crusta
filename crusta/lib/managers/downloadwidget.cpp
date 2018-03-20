@@ -76,15 +76,15 @@ void DownloadWidget::computeFraction(qint64 bytesRecieved, qint64 bytesTotal)
         fraction->setNum(size);
         fraction->setText(fraction->text() + "b");
     } else if (bytesTotal / 1000000.0 < 1) {
-        size = bytesTotal / 1000.0;
+        size = static_cast<float>(bytesTotal / 1000.0);
         fraction->setNum(size);
         fraction->setText(fraction->text() + "Kb");
     } else if (bytesTotal / 1000000000.0 < 1) {
-        size = bytesTotal / 1000000.0;
+        size = static_cast<float>(bytesTotal / 1000000.0);
         fraction->setNum(size);
         fraction->setText(fraction->text() + "Mb");
     } else {
-        size = bytesTotal / 1000000000.0;
+        size = static_cast<float>(bytesTotal / 1000000000.0);
         fraction->setNum(size);
         fraction->setText(fraction->text() + "Gb");
     }
