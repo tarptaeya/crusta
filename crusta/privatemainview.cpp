@@ -451,6 +451,8 @@ void PrivateMainView::createMenuBar()
     QAction *help_ = new QAction(tr("Help"));
     this->menu->addAction(help_);
     connect(help_, &QAction::triggered, this, &PrivateMainView::help);
+    QAction* about_qt = this->menu->addAction(tr("About Qt"));
+    connect(about_qt, &QAction::triggered, this, []{QApplication::aboutQt();});
     this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
     this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));
     this->open_file->setShortcut(QKeySequence(QKeySequence::Open));

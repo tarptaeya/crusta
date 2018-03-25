@@ -597,6 +597,8 @@ void MainView::createMenuBar()
     connect(this->pick_color, &QAction::triggered, this, &MainView::pickColor);
     QAction *help_ = this->menu->addAction(tr("Help"));
     connect(help_, &QAction::triggered, this, &MainView::help);
+    QAction* about_qt = this->menu->addAction(tr("About Qt"));
+    connect(about_qt, &QAction::triggered, this, []{QApplication::aboutQt();});
     this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
     this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));
     this->incognito->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_N));
