@@ -427,12 +427,6 @@ void PrivateMainView::createMenuBar()
     connect(this->bookmark_tab, &QAction::triggered, this, &PrivateMainView::bookmarkTab);
     this->bookmark_all_tabs = this->bookmark_menu->addAction(tr("&Bookmark All Tabs"));
     connect(this->bookmark_all_tabs, &QAction::triggered, this, &PrivateMainView::bookmarkAllTabs);
-//    this->show_all_bookmarks=this->bookmark_menu->addAction(tr("&Show All Bookmarks"));
-//    connect(this->show_all_bookmarks,&QAction::triggered,this,&PrivateMainView::showBookamrks);
-//    this->download_menu=this->menu->addMenu(tr("&Downloads"));
-//    this->show_all_downloads=this->download_menu->addAction(tr("&Download Manager"));
-//    connect(this->show_all_downloads,&QAction::triggered,this,&PrivateMainView::showDownloads);
-//    this->download_menu->addAction(tr("&Clear all Downloads"));
     this->tool_menu = this->menu->addMenu(tr("&Tools"));
     this->sitei = this->tool_menu->addAction(tr("&Site Info"));
     connect(this->sitei, &QAction::triggered, this, &PrivateMainView::showPageInfo);
@@ -448,10 +442,10 @@ void PrivateMainView::createMenuBar()
     connect(this->runJsCode, &QAction::triggered, this, &PrivateMainView::showJsCodeEditor);
     connect(this->changUA, &QAction::triggered, this, &PrivateMainView::changeUAfx);
     connect(this->pick_color, &QAction::triggered, this, &PrivateMainView::pickColor);
-    QAction *help_ = new QAction(tr("Help"));
-    this->menu->addAction(help_);
+    QMenu *help_menu = menu->addMenu(tr("Help"));
+    QAction *help_ = help_menu->addAction(tr("User manual"));
     connect(help_, &QAction::triggered, this, &PrivateMainView::help);
-    QAction* about_qt = this->menu->addAction(tr("About Qt"));
+    QAction* about_qt = help_menu->addAction(tr("About Qt"));
     connect(about_qt, &QAction::triggered, this, []{QApplication::aboutQt();});
     this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
     this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));

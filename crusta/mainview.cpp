@@ -595,9 +595,10 @@ void MainView::createMenuBar()
     connect(this->runJsCode, &QAction::triggered, this, &MainView::showJsCodeEditor);
     connect(this->changeUA, &QAction::triggered, this, &MainView::changeUAfx);
     connect(this->pick_color, &QAction::triggered, this, &MainView::pickColor);
-    QAction *help_ = this->menu->addAction(tr("Help"));
+    QMenu *help_menu = this->menu->addMenu(tr("Help"));
+    QAction *help_ = help_menu->addAction(tr("User manual"));
     connect(help_, &QAction::triggered, this, &MainView::help);
-    QAction* about_qt = this->menu->addAction(tr("About Qt"));
+    QAction* about_qt = help_menu->addAction(tr("About Qt"));
     connect(about_qt, &QAction::triggered, this, []{QApplication::aboutQt();});
     this->new_tab_action->setShortcut(QKeySequence(QKeySequence::AddTab));
     this->new_window_action->setShortcut(QKeySequence(QKeySequence::New));
