@@ -197,6 +197,8 @@ public:
     void pickColor();
 
     QWebEngineView *getWebView() const;
+
+    QWebEngineView *getWebView(int index) const;
 };
 
 

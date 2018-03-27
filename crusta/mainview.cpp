@@ -45,12 +45,17 @@ QWebEngineView *MainView::getWebView() const {
     return webview;
 }
 
+QWebEngineView *MainView::getWebView(int index) const {
+    QWidget* widget = tabWindow->widget(index);
+    QLayout* layout = widget->layout();
+    auto * webview = dynamic_cast<QWebEngineView *>(layout->itemAt(1)->widget());
+    return webview;
+}
+
 void MainView::closeTab(int index)
 {
-    std::unique_ptr<QWidget> widget(this->tabWindow->widget(index));
-    std::unique_ptr<QLayout>layout(widget->layout());
-    std::unique_ptr<QWebEngineView>webview((QWebEngineView *)layout->itemAt(1)->widget());
-    auto *hist = new QAction();
+    QWebEngineView *webview = getWebView(index);
+    auto *hist = new QAction;
     hist->setText(webview->page()->title());
     hist->setIcon(webview->page()->icon());
     QUrl u = webview->url();
@@ -61,16 +66,15 @@ void MainView::closeTab(int index)
     file.close();
     webview->load(QUrl("http://"));
 
-    if (this->tabWindow->count() == 1) {
+    if (tabWindow->count() == 1) {
         MainView::quit();
     }
 
     webview->page()->deleteLater();
-    this->tabWindow->removeTab(index);
+    tabWindow->removeTab(index);
     MainView::addNewTabButton();
-    this->recently_closed->addAction(hist);
+    recently_closed->addAction(hist);
     connect(hist, &QAction::triggered, this, [this, u] {restoreTab(u);});
-    delete hist;
 }
 
 void MainView::zoomIn()
@@ -153,7 +157,7 @@ void MainView::FindText()
         this->hbox = new QHBoxLayout();
         this->findwidget->setParent(webview);
 
-        if (findwidget->layout() == NULL) {
+        if (findwidget->layout() == nullptr) {
             this->findwidget->setLayout(this->hbox);
             this->hbox->addWidget(this->close_findwidget);
             this->hbox->addWidget(this->label);
@@ -216,9 +220,11 @@ void MainView::hideFindWidget()
     int index = this->tabWindow->currentIndex();
     QWidget *widget = this->tabWindow->widget(index);
     QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    auto *webview = dynamic_cast<QWebEngineView *>(layout->itemAt(1)->widget());
+    if (webview == nullptr)
+        return;
     webview->findText("");
-    this->findwidget->setParent(0);
+    this->findwidget->setParent(nullptr);
     this->text->setText("");
 }
 
@@ -279,7 +285,7 @@ void MainView::pastePageAction()
 MainView::MainView()
 {
     defaultTheme = "QTabWidget::tab-bar{left:0px;height:32} QTabBar{background-color:#00b0e3;} QTabBar::tab:selected{background-color:white;color:black;max-width:175px;min-width:175px;height:32px} QTabBar::tab:!selected{max-width:173px;min-width:173px;color:black;background-color:#dbdbdb;top:2px;border:0.5px solid #00b0e3;height:30px} QPushButton{border: none;background-color:#dbdbdb;} QPushButton:hover{background-color:white;}";
-    this->window->parentView = this;
+    window->parentView = this;
 
     limitCompleterFile();
     limitHistoryFile();
@@ -399,26 +405,26 @@ MainView::MainView()
         }
     }
 
-    this->box->setContentsMargins(0, 0, 0, 0);
-    this->tabWindow->tabBar()->setDocumentMode(true);
-    this->tabWindow->setElideMode(Qt::ElideRight);
-    this->tabWindow->tabBar()->setExpanding(false);
-    this->tabWindow->tabBar()->setShape(QTabBar::RoundedNorth);
-    this->tabWindow->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this->tabWindow->tabBar(), &QTabBar::tabCloseRequested, this, &MainView::closeTab);
-    connect(this->tabWindow->tabBar(), &QTabBar::customContextMenuRequested, this, &MainView::tabBarContext);
+    box->setContentsMargins(0, 0, 0, 0);
+    tabWindow->tabBar()->setDocumentMode(true);
+    tabWindow->setElideMode(Qt::ElideRight);
+    tabWindow->tabBar()->setExpanding(false);
+    tabWindow->tabBar()->setShape(QTabBar::RoundedNorth);
+    tabWindow->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(tabWindow->tabBar(), &QTabBar::tabCloseRequested, this, &MainView::closeTab);
+    connect(tabWindow->tabBar(), &QTabBar::customContextMenuRequested, this, &MainView::tabBarContext);
     createView();
     createMenuBar();
     createTabWindow();
     addNormalTab();
 
     addNewTabButton();
-    this->tabWindow->tabBar()->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
-    connect(this->tabWindow->tabBar(), &QTabBar::tabBarDoubleClicked, this, &MainView::tabAreaDoubleClicked);
-    connect(this->tabWindow->tabBar(), &QTabBar::tabMoved, this, &MainView::addNewTabButton);
-    connect(this->tabWindow, &QTabWidget::currentChanged, this, &MainView::addNewTabButton);
-    connect(this->newtabbtn, &QPushButton::clicked, this, &MainView::addNormalTab);
-    connect(this->tabWindow, &QTabWidget::currentChanged, this, &MainView::changeSpinner);
+    tabWindow->tabBar()->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
+    connect(tabWindow->tabBar(), &QTabBar::tabBarDoubleClicked, this, &MainView::tabAreaDoubleClicked);
+    connect(tabWindow->tabBar(), &QTabBar::tabMoved, this, &MainView::addNewTabButton);
+    connect(tabWindow, &QTabWidget::currentChanged, this, &MainView::addNewTabButton);
+    connect(newtabbtn, &QPushButton::clicked, this, &MainView::addNormalTab);
+    connect(tabWindow, &QTabWidget::currentChanged, this, &MainView::changeSpinner);
 
     loadTheme();
 
@@ -454,7 +460,7 @@ MainView::MainView()
 
 void MainView::createView()
 {
-    SidePane *pane = new SidePane(this);
+    auto *pane = new SidePane(this);
     this->window->setWindowTitle("Crusta");
     this->window->setLayout(box);
     box->addLayout(side_pane);
@@ -498,7 +504,7 @@ void MainView::showView()
 
 void MainView::newWindow()
 {
-    MainView *newView = new MainView();
+    auto *newView = new MainView();
     newView->showView();
 }
 
@@ -629,7 +635,7 @@ void MainView::createTabWindow()
 
 void MainView::addNormalTab()
 {
-    TabWindow *tab = new TabWindow();
+    auto *tab = new TabWindow();
     tab->menu_btn->setMenu(menu);
     tab->menu_btn->setStyleSheet("QPushButton::menu-indicator { image: none; }");
     this->tabWindow->addTab(tab->returnTab(), tr("new Tab"));
@@ -640,7 +646,7 @@ void MainView::addNormalTab()
         this->tabWindow->setTabText(0, tr("Connecting..."));
         QWidget *widget = this->tabWindow->widget(0);
         QLayout *layout = widget->layout();
-        WebView *webview = (WebView *)layout->itemAt(1)->widget();
+        auto *webview = (WebView *)layout->itemAt(1)->widget();
         QString home;
         QFile inputFile(QDir::homePath() + "/.crusta_db/settings.txt");
 
@@ -711,9 +717,8 @@ void MainView::addNormalTab()
             webview->load(home);
         }
     } else {
-        QWidget *widget = this->tabWindow->widget(cnt - 1);
-        QLayout *layout = widget->layout();
-        WebView *webview = (WebView *)layout->itemAt(1)->widget();
+        QWebEngineView *webview = getWebView(cnt - 1);
+
         QFile inputFile(QDir::homePath() + "/.crusta_db/settings.txt");
 
         if (inputFile.open(QIODevice::ReadOnly)) {
@@ -780,9 +785,7 @@ void MainView::saveAsPdf()
     QFileDialog f;
     QString file_name = f.getSaveFileName(this->window, tr("Crusta : Save File"), QDir::homePath(), "Pdf File(*.pdf)", nullptr, f.options());
     int index = this->tabWindow->currentIndex();
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView(index);
 
     if (file_name != "") {
         if (!file_name.endsWith(".pdf")) {
@@ -890,9 +893,7 @@ void MainView::reloadAllTabs()
     int cnt = this->tabWindow->count();
 
     for (int i = 0; i < cnt; i++) {
-        QWidget *widget = this->tabWindow->widget(i);
-        QLayout *layout = widget->layout();
-        QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+        QWebEngineView *webview = getWebView(i);
         webview->reload();
     }
 }
@@ -904,9 +905,7 @@ void MainView::closeOtherTabs(int index)
 
     while (i < cnt) {
         if (i != index) {
-            QWidget *widget = this->tabWindow->widget(i);
-            QLayout *layout = widget->layout();
-            QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+            QWebEngineView *webview = getWebView(i);
             webview->page()->windowCloseRequested();
 
             if (index > 0) {
@@ -927,9 +926,7 @@ void MainView::restoreTab(QUrl u)
 {
     MainView::addNormalTab();
     int index = this->tabWindow->count() - 1;
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView(index);
     webview->load(u);
 }
 
@@ -937,9 +934,7 @@ void MainView::help()
 {
     MainView::addNormalTab();
     int index = this->tabWindow->count() - 1;
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView(index);
     webview->load(QUrl("http://www.crustabrowser.com/help"));
 }
 
@@ -976,9 +971,7 @@ void MainView::bookmarkAllTabs()
     int cnt = this->tabWindow->count();
 
     for (int index = 0; index < cnt; index++) {
-        QWidget *widget = this->tabWindow->widget(index);
-        QLayout *layout = widget->layout();
-        WebView *webview = (WebView *)layout->itemAt(1)->widget();
+        QWebEngineView *webview = getWebView(index);
 
         QFile file(QDir::homePath() + "/.crusta_db/bookmarks.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Append);
@@ -1000,12 +993,12 @@ void MainView::quit()
             ud->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::CoverWindow);
             ud->setWindowTitle(tr("Crusta Updater"));
             QLabel* lbl = new QLabel(tr("A new version of Crusta is available.\nDo you want to launch the setup now?"));
-            QVBoxLayout* vbox_ud = new QVBoxLayout();
+            auto * vbox_ud = new QVBoxLayout();
             ud->setLayout(vbox_ud);
             vbox_ud->addWidget(lbl);
             QPushButton* ok = new QPushButton(tr("Yes"));
             QPushButton* later = new QPushButton(tr("Remind Later"));
-            QHBoxLayout* hbox_ud = new QHBoxLayout();
+            auto * hbox_ud = new QHBoxLayout();
             hbox_ud->addWidget(ok);
             hbox_ud->addWidget(later);
             vbox_ud->addLayout(hbox_ud);
@@ -1044,9 +1037,7 @@ void MainView::changeSpinner(int index)
     int cnt = this->tabWindow->count();
 
     for (int i = 0; i < cnt; i++) {
-        QWidget *widget = this->tabWindow->widget(i);
-        QLayout *layout = widget->layout();
-        QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+        QWebEngineView *webview = getWebView(i);
 
         if (((WebView *)webview)->favLoaded) {
             continue;
@@ -1070,13 +1061,13 @@ void MainView::changeSpinner(int index)
 
 void MainView::openIncognito()
 {
-    PrivateMainView *pmainview = new PrivateMainView();
+    auto *pmainview = new PrivateMainView();
     pmainview->showView();
 }
 
 void MainView::changeUAfx()
 {
-    AddressLineEdit *ad = new AddressLineEdit();
+    auto *ad = new AddressLineEdit();
     ad->setUAString();
     ad->deleteLater();
 }
@@ -1123,7 +1114,7 @@ void MainView::closeWindow()
     int side_cnt = this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->count();
 
     while (side_cnt != 6) {
-        SidePaneButton *side_btn = (SidePaneButton *)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(4)->widget();
+        auto *side_btn = (SidePaneButton *)this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->itemAt(4)->widget();
         side_btn->sidewebview->load(QUrl("http://"));
         this->side_pane->itemAt(0)->widget()->layout()->itemAt(0)->widget()->layout()->removeWidget(side_btn);
         side_btn->sidewebview->page()->deleteLater();
@@ -1166,9 +1157,7 @@ void MainView::openUrl(QString url)
 {
     this->addNormalTab();
     int index = this->tabWindow->count() - 1;
-    QWidget *widget = this->tabWindow->widget(index);
-    QLayout *layout = widget->layout();
-    QWebEngineView *webview = (QWebEngineView *)layout->itemAt(1)->widget();
+    QWebEngineView *webview = getWebView(index);
     webview->load(QUrl(url));
 }
 
@@ -1177,7 +1166,7 @@ void MainView::openDebugger()
     QString a = QCoreApplication::arguments().last();
 
     if (!a.contains("--remote-debugging-port=")) {
-        QMessageBox *notify = new QMessageBox(this->window);
+        auto *notify = new QMessageBox(this->window);
         notify->setWindowTitle("Crusta : Debugger");
         notify->setText("Enable Debugging Mode By Launching Crusta With Argument '--remote-debugging-port=<port>' ");
         notify->exec();
@@ -1186,16 +1175,16 @@ void MainView::openDebugger()
 
     QDialog *w = new QDialog();
     QLabel *lbl = new QLabel(tr("REMOTE DEBUGGING PORT :"));
-    QLineEdit *port = new QLineEdit();
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *port = new QLineEdit();
+    auto *hbox = new QHBoxLayout();
     hbox->addWidget(lbl);
     hbox->addWidget(port);
-    QHBoxLayout *h1box = new QHBoxLayout();
+    auto *h1box = new QHBoxLayout();
     QPushButton *ok = new QPushButton(tr("OK"));
     h1box->addWidget(new QLabel());
     h1box->addWidget(ok);
     ok->setFixedWidth(100);
-    QVBoxLayout *vbox = new QVBoxLayout();
+    auto *vbox = new QVBoxLayout();
     vbox->addLayout(hbox);
     vbox->addLayout(h1box);
     w->setLayout(vbox);
@@ -1212,7 +1201,7 @@ void MainView::openDebugger()
     }
 
     QString _port = port->text();
-    QWebEngineView *debugger = new QWebEngineView();
+    auto *debugger = new QWebEngineView();
     debugger->load(QUrl("http://localhost:" + _port));
     debugger->show();
 }
@@ -1315,7 +1304,7 @@ void MainView::limitHistoryFile()
 
 void MainView::editPermissions()
 {
-    PermissionDialog* pdg= new PermissionDialog();
+    auto * pdg= new PermissionDialog;
     pdg->show();
 }
 
