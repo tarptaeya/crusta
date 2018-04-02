@@ -185,7 +185,7 @@ public:
     void help();
 
     void clearHistory();
-    void showBookamrks();
+
     void openIncognito();
     void changeUAfx();
     void spiltModefx();

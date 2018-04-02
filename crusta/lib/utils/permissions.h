@@ -39,7 +39,8 @@ public:
     QRadioButton *allow = new QRadioButton("Allow");
     QRadioButton *ask = new QRadioButton("Ask");
     QRadioButton *reject = new QRadioButton("Never");
-    PermissionValue(QString name);
+
+    explicit PermissionValue(QString name);
 };
 
 

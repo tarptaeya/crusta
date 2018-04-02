@@ -35,7 +35,7 @@ void FullScreenNotifier::showNotifier()
     this->label->setAlignment(Qt::AlignCenter);
     this->label->move(this->x, 60);
     this->label->setStyleSheet("border: 3px solid black;;background-color:#f0f0f0;color:black");
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
+    auto *effect = new QGraphicsOpacityEffect();
     this->label->setGraphicsEffect(effect);
     QPropertyAnimation *a = new QPropertyAnimation(effect, "opacity");
     a->setDuration(1000);
@@ -50,7 +50,7 @@ void FullScreenNotifier::showNotifier()
 
 void FullScreenNotifier::fadeOut()
 {
-    this->label->setParent(0);
+    this->label->setParent(nullptr);
     this->label->hide();
 }
 

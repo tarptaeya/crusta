@@ -717,7 +717,7 @@ void MainView::addNormalTab()
             webview->load(home);
         }
     } else {
-        QWebEngineView *webview = getWebView(cnt - 1);
+        WebView *webview = dynamic_cast<WebView *>(getWebView(cnt - 1));
 
         QFile inputFile(QDir::homePath() + "/.crusta_db/settings.txt");
 
@@ -758,7 +758,7 @@ void MainView::viewPageSource()
     QWebEngineView *webview = getWebView();
     QString qurl = webview->url().toString();
     qurl = QString("view-source:") + qurl;
-    TabWindow *tab = new TabWindow();
+    auto *tab = new TabWindow();
     tab->menu_btn->setMenu(menu);
     index++;
     this->tabWindow->insertTab(index, tab->returnTab(), tr("new Tab"));
@@ -946,12 +946,6 @@ void MainView::clearHistory()
     out.setCodec("UTF-8");
     out << "";
     file.close();
-}
-
-void MainView::showBookamrks()
-{
-    std::unique_ptr<BookmarkManager>b(new BookmarkManager(this));
-    b->show();
 }
 
 void MainView::bookmarkTab()

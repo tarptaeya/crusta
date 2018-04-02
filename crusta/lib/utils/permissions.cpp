@@ -41,9 +41,9 @@ PermissionDialog::PermissionDialog()
     geo->allow->setChecked(true);
     setFixedSize(sizeHint().width() * 2, sizeHint().height());
 
-    QPushButton *ok = new QPushButton("Save");
-    QPushButton *cncl = new QPushButton("Cancel");
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto ok = new QPushButton("Save");
+    auto cncl = new QPushButton("Cancel");
+    auto hbox = new QHBoxLayout();
     hbox->addWidget(new QLabel());
     hbox->addWidget(ok);
     hbox->addWidget(cncl);
@@ -218,9 +218,9 @@ void PermissionDialog::loadPermissions()
 
 PermissionValue::PermissionValue(QString n)
 {
-    name = n;
+    name = std::move(n);
     group->setTitle(name);
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *hbox = new QHBoxLayout();
     group->setLayout(hbox);
     hbox->addWidget(allow);
     hbox->addWidget(ask);

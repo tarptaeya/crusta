@@ -30,7 +30,7 @@ CrustaSpeech::CrustaSpeech()
     setLayout(vbox);
     setWindowTitle(tr("Crusta Speech"));
     vbox->addWidget(tts);
-    QHBoxLayout *hbox = new QHBoxLayout();
+    auto *hbox = new QHBoxLayout();
     hbox->addWidget(start_btn);
     hbox->addWidget(stop_btn);
     hbox->addWidget(new QLabel());
