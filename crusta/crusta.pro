@@ -38,6 +38,8 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 TARGET = crusta
 TEMPLATE = app
 
+target.path = /usr/local/bin/
+INSTALLS += target
 
 SOURCES += main.cpp\
     mainview.cpp \
