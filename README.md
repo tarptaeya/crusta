@@ -66,7 +66,8 @@ Ways in which you can contribute towards Crusta
 Please note that we use C++/Qt ,JS and CSS for Crusta, so please contribute in these languages only. 
 
 
-## Comming Soon
+## Comming Soon 
+**To be done as a part of Crusta v2.0 i.e. CrustaX**
 - [ ] Pause/ Resume Downloads
 - [ ] Pinnable Tabs
 - [ ] Dynamic sized tabs
