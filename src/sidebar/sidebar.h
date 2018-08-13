@@ -10,7 +10,6 @@ public:
         Free,
         Docked
     };
-
     explicit SideBar(QWidget *parent = nullptr);
     ~SideBar();
 };

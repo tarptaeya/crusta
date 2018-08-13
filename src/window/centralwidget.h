@@ -12,6 +12,5 @@ public:
     explicit CentralWidget(QWidget *parent = nullptr);
     ~CentralWidget();
 private:
-    SideBar *m_sideBar;
-    QList<TabView *> m_tabViewList;
+    SideBar *m_sideBar = nullptr;
 };

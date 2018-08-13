@@ -5,6 +5,7 @@ DEFINES += QT_DEPRECIATED_WARNINGS
 SOURCES += \
     src/main.cpp \
     src/bootstrap/appmanager.cpp \
+    src/bootstrap/settings.cpp \
     src/tabview/tabview.cpp \
     src/window/window.cpp \
     src/window/centralwidget.cpp \
@@ -17,9 +18,11 @@ SOURCES += \
     src/sidebar/sidebarpopup.cpp \
     src/utils/dimensions.cpp \
     src/utils/strings.cpp \
+    src/utils/layouts.cpp \
 
 HEADERS += \
     src/bootstrap/appmanager.h \
+    src/bootstrap/settings.h \
     src/tabview/tabview.h \
     src/window/window.h \
     src/window/centralwidget.h \
@@ -32,6 +35,7 @@ HEADERS += \
     src/sidebar/sidebarpopup.h \
     src/utils/dimensions.h \
     src/utils/strings.h \
+    src/utils/layouts.h \
 
 TEMPLATE = app
 TARGET = crusta
