@@ -1,4 +1,4 @@
-![Banner](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/banner.png) 
+![Banner](https://github.com/CrustaBrowser/CrustaBrowser/blob/v1/banner.png) 
 
 ## About
 
@@ -64,11 +64,3 @@ Ways in which you can contribute towards Crusta
 - Following Crusta on [twitter](http://twitter.com/crustabrowser)
 
 Please note that we use C++/Qt ,JS and CSS for Crusta, so please contribute in these languages only. 
-
-
-## Comming Soon 
-**To be done as a part of Crusta v2.0 i.e. CrustaX**
-- [ ] Pause/ Resume Downloads
-- [ ] Pinnable Tabs
-- [ ] Dynamic sized tabs
-- [ ] WebInspector (Qt 5.11) 
