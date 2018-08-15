@@ -1,4 +1,4 @@
-QT += core gui widgets webengine
+QT += core gui widgets webengine webenginewidgets
 
 DEFINES += QT_DEPRECIATED_WARNINGS
 
@@ -6,7 +6,10 @@ SOURCES += \
     src/main.cpp \
     src/bootstrap/appmanager.cpp \
     src/bootstrap/settings.cpp \
-    src/tabview/tabview.cpp \
+    src/tabview/tabwidget.cpp \
+    src/tabview/tab.cpp \
+    src/tabview/tabbar.cpp \
+    src/tabview/stackedwidget.cpp \
     src/window/window.cpp \
     src/window/centralwidget.cpp \
     src/window/menubar.cpp \
@@ -23,7 +26,10 @@ SOURCES += \
 HEADERS += \
     src/bootstrap/appmanager.h \
     src/bootstrap/settings.h \
-    src/tabview/tabview.h \
+    src/tabview/tabwidget.h \
+    src/tabview/tab.h \
+    src/tabview/tabbar.h \
+    src/tabview/stackedwidget.h \
     src/window/window.h \
     src/window/centralwidget.h \
     src/window/menubar.h \

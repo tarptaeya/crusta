@@ -3,7 +3,7 @@
 #include <QSplitter>
 
 class SideBar;
-class TabView;
+class TabWidget;
 
 class CentralWidget : public QSplitter
 {

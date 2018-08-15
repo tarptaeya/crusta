@@ -6,6 +6,7 @@
 SideBar::SideBar(QWidget *parent)
     : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground);
     setObjectName(Strings::sideBarName());
     setFixedWidth(Dimensions::sideBarWidth());
 }
