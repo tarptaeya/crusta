@@ -15,6 +15,7 @@ private:
 
     TabBarButton *m_backButton = nullptr;
     TabBarButton *m_forwardButton = nullptr;
+    TabBarButton *m_stopReloadButton = nullptr;
     TabBarButton *m_homeButton = nullptr;
     TabBarButton *m_newTabButton = nullptr;
     TabBarButton *m_tabListButton = nullptr;

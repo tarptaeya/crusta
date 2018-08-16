@@ -47,6 +47,8 @@ HEADERS += \
     src/utils/strings.h \
     src/utils/layouts.h \
 
+RESOURCES += assets/assets.qrc
+
 TEMPLATE = app
 TARGET = crusta
 
