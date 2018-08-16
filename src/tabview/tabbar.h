@@ -5,11 +5,13 @@
 
 class TabBarButton;
 class OmniBar;
+class Tab;
 
 class TabBar : public QWidget
 {
 public:
     explicit TabBar(QWidget *parent = nullptr);
+    void setVirtualTab(QWidget *widget);
 private:
     QHBoxLayout *m_hBoxLayout = nullptr;
 
@@ -22,4 +24,11 @@ private:
     TabBarButton *m_optionsButton = nullptr;
 
     OmniBar *m_omniBar = nullptr;
+
+    Tab *m_virtualTab = nullptr;
+
+    QList<QMetaObject::Connection> m_connections;
+
+    void createVirtualConnections();
+    void destroyVirtualConnections();
 };

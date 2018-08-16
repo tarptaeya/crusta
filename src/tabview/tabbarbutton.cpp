@@ -8,3 +8,13 @@ TabBarButton::TabBarButton(QWidget *parent)
     setFlat(true);
     setIconSize(QSize(24, 24));
 }
+
+QVariant TabBarButton::data() const
+{
+    return m_data;
+}
+
+void TabBarButton::setData(QVariant data)
+{
+    m_data = data;
+}

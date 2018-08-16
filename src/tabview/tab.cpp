@@ -19,3 +19,8 @@ QString Tab::title() const
 {
     return m_title;
 }
+
+WebView *Tab::webview() const
+{
+    return m_webView;
+}

@@ -16,6 +16,7 @@ public:
     };
     explicit Tab(QWidget *parent = nullptr);
     QString title() const;
+    WebView *webview() const;
 private:
     QString m_title;
     WebView *m_webView;
