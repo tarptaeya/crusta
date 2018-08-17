@@ -1,7 +1,10 @@
 #include "tabwidget.h"
 #include "tabbar.h"
+#include "tab.h"
 #include "stackedwidget.h"
+#include "../webview/webview.h"
 #include <QVBoxLayout>
+#include <QUrl>
 
 TabWidget::TabWidget(QWidget *parent)
     : QWidget(parent)
@@ -24,4 +27,17 @@ TabWidget::TabWidget(QWidget *parent)
 
 TabWidget::~TabWidget()
 {
+}
+
+void TabWidget::addTab()
+{
+    addTab(QStringLiteral(""), QUrl(""));
+}
+
+void TabWidget::addTab(const QString &title, const QUrl &url)
+{
+    Tab *tab = new Tab(m_stakedWidget);
+    tab->webview()->load(url);
+    int index = m_stakedWidget->addWidget(tab);
+    m_stakedWidget->setCurrentIndex(index);
 }

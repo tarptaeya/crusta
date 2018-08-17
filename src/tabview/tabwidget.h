@@ -11,6 +11,8 @@ class TabWidget : public QWidget
 public:
     explicit TabWidget(QWidget *parent = nullptr);
     ~TabWidget();
+    void addTab();
+    void addTab(const QString &title, const QUrl &url);
 private:
     TabBar *m_tabBar = nullptr;
     StackedWidget *m_stakedWidget = nullptr;

@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QHBoxLayout>
 
+class TabWidget;
 class TabBarButton;
 class OmniBar;
 class Tab;
@@ -13,6 +14,7 @@ public:
     explicit TabBar(QWidget *parent = nullptr);
     void setVirtualTab(QWidget *widget);
 private:
+    TabWidget *m_tabWidget = nullptr;
     QHBoxLayout *m_hBoxLayout = nullptr;
 
     TabBarButton *m_backButton = nullptr;

@@ -1,6 +1,7 @@
 #include "tabbar.h"
 #include "tabbarbutton.h"
 #include "tab.h"
+#include "tabwidget.h"
 #include "omnibar/omnibar.h"
 #include "../utils/dimensions.h"
 #include "../webview/webview.h"
@@ -10,6 +11,9 @@ TabBar::TabBar(QWidget *parent)
 {
     setAttribute(Qt::WA_StyledBackground);
     setFixedHeight(Dimensions::tabBarHeight());
+
+    m_tabWidget = qobject_cast<TabWidget *>(parent);
+    Q_ASSERT(m_tabWidget != nullptr);
 
     m_hBoxLayout = new QHBoxLayout(this);
     setLayout(m_hBoxLayout);
@@ -42,6 +46,14 @@ TabBar::TabBar(QWidget *parent)
     m_hBoxLayout->addWidget(m_newTabButton);
     m_hBoxLayout->addWidget(m_tabListButton);
     m_hBoxLayout->addWidget(m_optionsButton);
+
+    connect(m_newTabButton, &TabBarButton::clicked, this, [this]{
+        if (!m_tabWidget) {
+            qWarning() << "Unable to cast parent to TabWidget *";
+            return;
+        }
+        m_tabWidget->addTab();
+    });
 }
 
 void TabBar::setVirtualTab(QWidget *widget)
