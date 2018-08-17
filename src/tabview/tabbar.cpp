@@ -97,12 +97,16 @@ void TabBar::createVirtualConnections()
             m_virtualTab->webview()->reload();
         }
     });
+    const QMetaObject::Connection connection6 = connect(m_virtualTab->webview(), &WebView::urlChanged, [this](const QUrl &url){
+        m_omniBar->setUrl(url);
+    });
 
     m_connections.append(connection1);
     m_connections.append(connection2);
     m_connections.append(connection3);
     m_connections.append(connection4);
     m_connections.append(connection5);
+    m_connections.append(connection6);
 }
 
 void TabBar::destroyVirtualConnections()
