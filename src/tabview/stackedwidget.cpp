@@ -15,8 +15,8 @@ StackedWidget::StackedWidget(QWidget *parent)
         m_tabWidgetList.append(tab);
     });
 
-    Tab *tabWidget = new Tab(this);
-    addWidget(tabWidget);
+    Tab *tab = new Tab(this);
+    addWidget(tab);
 }
 
 int StackedWidget::addWidget(QWidget *widget)
