@@ -2,9 +2,6 @@
 #include "../bootstrap/appmanager.h"
 #include "../bootstrap/settings.h"
 
-int Dimensions::DEFAULT_SIDEBAR_WIDTH = 50;
-int Dimensions::DEFAULT_TABBAR_HEIGHT = 40;
-
 Dimensions::Dimensions()
 {
 }
@@ -12,7 +9,7 @@ Dimensions::Dimensions()
 int Dimensions::sideBarWidth()
 {
     appManager->settings()->beginGroup(APPEARANCE);
-    int width = appManager->settings()->value(QStringLiteral("sideBarWidth"), DEFAULT_SIDEBAR_WIDTH).toInt();
+    int width = appManager->settings()->value(QStringLiteral("sideBarWidth"), 50).toInt();
     appManager->settings()->endGroup();
     return width;
 }
@@ -20,7 +17,17 @@ int Dimensions::sideBarWidth()
 int Dimensions::tabBarHeight()
 {
     appManager->settings()->beginGroup(APPEARANCE);
-    int width = appManager->settings()->value(QStringLiteral("tabBarWidth"), DEFAULT_TABBAR_HEIGHT).toInt();
+    int width = appManager->settings()->value(QStringLiteral("tabBarWidth"), 40).toInt();
     appManager->settings()->endGroup();
     return width;
+}
+
+int Dimensions::onmibarHeightOffsetFromParent()
+{
+    return 10;
+}
+
+QMargins Dimensions::omnibarMargins()
+{
+    return QMargins(10, 4, 10, 4);
 }
