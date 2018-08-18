@@ -11,5 +11,7 @@
         <file>html/speeddial/index.html</file>
         <file>html/speeddial/index.css</file>
         <file>html/speeddial/index.js</file>
+        <file>icons/settings.svg</file>
+        <file>icons/plus.svg</file>
     </qresource>
 </RCC>
