@@ -1,6 +1,7 @@
 #include "appmanager.h"
 #include "../window/window.h"
 #include "settings.h"
+#include "../pages/scripts.h"
 
 AppManager::AppManager(QObject *parent)
     : QObject(parent)
@@ -13,6 +14,8 @@ AppManager::AppManager(QObject *parent)
     m_application.patchVersion = 0;
     // set developmentBuild to false when releasing
     m_application.mode = Development;
+
+    setUpWebEngineProfile();
 }
 
 AppManager::~AppManager()
@@ -86,4 +89,23 @@ Settings *AppManager::settings()
         m_settings = new Settings(this);
     }
     return m_settings;
+}
+
+QWebEngineProfile *AppManager::webEngineProfile() const
+{
+    return m_webEngineProfile;
+}
+
+void AppManager::setUpWebEngineProfile()
+{
+    m_webEngineProfile = new QWebEngineProfile();
+
+    QWebEngineScript webChannelScript;
+    webChannelScript.setInjectionPoint(QWebEngineScript::DocumentCreation);
+    webChannelScript.setName("webChannelScript");
+    webChannelScript.setRunsOnSubFrames(true);
+    webChannelScript.setSourceCode(Scripts::webChannelScript());
+    webChannelScript.setWorldId(QWebEngineScript::MainWorld);
+
+    m_webEngineProfile->scripts()->insert(webChannelScript);
 }

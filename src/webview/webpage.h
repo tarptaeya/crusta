@@ -1,9 +1,10 @@
 #pragma once
 
 #include <QWebEnginePage>
+#include <QWebEngineProfile>
 
 class WebPage : public QWebEnginePage
 {
 public:
-    explicit WebPage(QObject *parent = nullptr);
+    explicit WebPage(QWebEngineProfile *profile = nullptr);
 };

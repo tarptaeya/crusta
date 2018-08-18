@@ -13,5 +13,6 @@
         <file>html/speeddial/index.js</file>
         <file>icons/settings.svg</file>
         <file>icons/plus.svg</file>
+        <file>html/webchannel.js</file>
     </qresource>
 </RCC>

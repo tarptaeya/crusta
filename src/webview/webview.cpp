@@ -8,7 +8,7 @@
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
 {
-    m_webPage = new WebPage(this);
+    m_webPage = new WebPage(appManager->webEngineProfile());
     setPage(m_webPage);
     setFocus();
 }

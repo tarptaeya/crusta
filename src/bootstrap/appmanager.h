@@ -1,11 +1,15 @@
 #pragma once
 
 #include <QObject>
+#include <QWebEngineProfile>
+#include <QWebEngineScriptCollection>
+#include <QWebEngineScript>
 
 #define appManager AppManager::instance()
 
 class Window;
 class Settings;
+class ExternalJsObject;
 
 class AppManager : public QObject
 {
@@ -40,9 +44,12 @@ public:
 
     void bootstrap();
     Settings *settings();
-
+    QWebEngineProfile *webEngineProfile() const;
 private:
     Application m_application;
     QList<Window *> m_windowList;
     Settings *m_settings = nullptr;
+    QWebEngineProfile *m_webEngineProfile = nullptr;
+
+    void setUpWebEngineProfile();
 };

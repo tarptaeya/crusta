@@ -1,4 +1,4 @@
-QT += core gui widgets webengine webenginewidgets
+QT += core gui widgets webengine webenginewidgets webchannel
 
 DEFINES += QT_DEPRECIATED_WARNINGS
 
@@ -24,6 +24,9 @@ SOURCES += \
     src/utils/dimensions.cpp \
     src/utils/strings.cpp \
     src/utils/layouts.cpp \
+    src/pages/externaljsobject.cpp \
+    src/pages/scripts.cpp \
+    src/pages/speeddial/speeddial.cpp \
 
 HEADERS += \
     src/bootstrap/appmanager.h \
@@ -46,6 +49,9 @@ HEADERS += \
     src/utils/dimensions.h \
     src/utils/strings.h \
     src/utils/layouts.h \
+    src/pages/externaljsobject.h \
+    src/pages/scripts.h \
+    src/pages/speeddial/speeddial.h \
 
 RESOURCES += \
     assets/assets.qrc \
