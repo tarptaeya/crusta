@@ -4,6 +4,7 @@
 #include <QSettings>
 
 #define APPEARANCE QStringLiteral("appearance")
+#define WEBENGINE QStringLiteral("webengine")
 
 class Settings : public QSettings
 {

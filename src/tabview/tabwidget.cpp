@@ -23,6 +23,8 @@ TabWidget::TabWidget(QWidget *parent)
     connect(m_stakedWidget, &StackedWidget::currentChanged, this, [this]{
         m_tabBar->setVirtualTab(m_stakedWidget->currentWidget());
     });
+
+    addTab();
 }
 
 TabWidget::~TabWidget()
@@ -31,13 +33,17 @@ TabWidget::~TabWidget()
 
 void TabWidget::addTab()
 {
-    addTab(QStringLiteral(""), QUrl(""));
+    addTab(QUrl(""));
 }
 
-void TabWidget::addTab(const QString &title, const QUrl &url)
+void TabWidget::addTab(const QUrl &url)
 {
     Tab *tab = new Tab(m_stakedWidget);
-    tab->webview()->load(url);
+    if (!url.isEmpty()) {
+        tab->webview()->load(url);
+    } else {
+        tab->webview()->loadStartupUrl();
+    }
     int index = m_stakedWidget->addWidget(tab);
     m_stakedWidget->setCurrentIndex(index);
 }

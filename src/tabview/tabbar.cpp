@@ -28,13 +28,13 @@ TabBar::TabBar(QWidget *parent)
     m_tabListButton = new TabBarButton(this);
     m_optionsButton = new TabBarButton(this);
 
-    m_backButton->setIcon(QIcon(":/back.svg"));
-    m_forwardButton->setIcon(QIcon(":/forward.svg"));
-    m_stopReloadButton->setIcon(QIcon(":/refresh.svg"));
-    m_homeButton->setIcon(QIcon(":/home.svg"));
-    m_newTabButton->setIcon(QIcon(":/add.svg"));
-    m_tabListButton->setIcon(QIcon(":/list.svg"));
-    m_optionsButton->setIcon(QIcon(":/options.svg"));
+    m_backButton->setIcon(QIcon(":/icons/back.svg"));
+    m_forwardButton->setIcon(QIcon(":/icons/forward.svg"));
+    m_stopReloadButton->setIcon(QIcon(":/icons/refresh.svg"));
+    m_homeButton->setIcon(QIcon(":/icons/home.svg"));
+    m_newTabButton->setIcon(QIcon(":/icons/add.svg"));
+    m_tabListButton->setIcon(QIcon(":/icons/list.svg"));
+    m_optionsButton->setIcon(QIcon(":/icons/options.svg"));
 
     m_omniBar = new OmniBar(this);
 
@@ -83,11 +83,11 @@ void TabBar::createVirtualConnections()
         m_virtualTab->webview()->forward();
     });
     const QMetaObject::Connection connection3 = connect(m_virtualTab->webview(), &WebView::loadStarted, [this]{
-        m_stopReloadButton->setIcon(QIcon(":/close.svg"));
+        m_stopReloadButton->setIcon(QIcon(":/icons/close.svg"));
         m_stopReloadButton->setData(QVariant::fromValue(QStringLiteral("STOP")));
     });
     const QMetaObject::Connection connection4 = connect(m_virtualTab->webview(), &WebView::loadFinished, [this]{
-        m_stopReloadButton->setIcon(QIcon(":/refresh.svg"));
+        m_stopReloadButton->setIcon(QIcon(":/icons/refresh.svg"));
         m_stopReloadButton->setData(QVariant::fromValue(QStringLiteral("RELOAD")));
     });
     const QMetaObject::Connection connection5 = connect(m_stopReloadButton, &TabBarButton::clicked, [this]{

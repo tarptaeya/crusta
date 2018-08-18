@@ -1,12 +1,15 @@
 <RCC>
     <qresource prefix="/">
-        <file>back.svg</file>
-        <file>forward.svg</file>
-        <file>options.svg</file>
-        <file>home.svg</file>
-        <file>add.svg</file>
-        <file>list.svg</file>
-        <file>close.svg</file>
-        <file>refresh.svg</file>
+        <file>icons/add.svg</file>
+        <file>icons/back.svg</file>
+        <file>icons/close.svg</file>
+        <file>icons/forward.svg</file>
+        <file>icons/home.svg</file>
+        <file>icons/list.svg</file>
+        <file>icons/options.svg</file>
+        <file>icons/refresh.svg</file>
+        <file>html/speeddial/index.html</file>
+        <file>html/speeddial/index.css</file>
+        <file>html/speeddial/index.js</file>
     </qresource>
 </RCC>
