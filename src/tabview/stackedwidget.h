@@ -9,9 +9,9 @@ class StackedWidget : public QStackedWidget
     Q_OBJECT
 public:
     explicit StackedWidget(QWidget *parent = nullptr);
-    int addWidget(QWidget *widget);
+    int addWidget(Tab *tab);
 private:
     QList<Tab *> m_tabWidgetList;
 Q_SIGNALS:
-    void widgetAdded(QWidget *widget);
+    void widgetAdded(Tab *tab);
 };

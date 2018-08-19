@@ -19,7 +19,6 @@ TabWidget::TabWidget(QWidget *parent)
     m_stakedWidget = new StackedWidget(this);
     vBoxLayout->addWidget(m_stakedWidget);
 
-    m_tabBar->setVirtualTab(m_stakedWidget->currentWidget());
     connect(m_stakedWidget, &StackedWidget::currentChanged, this, [this]{
         m_tabBar->setVirtualTab(m_stakedWidget->currentWidget());
     });
