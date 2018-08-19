@@ -11,6 +11,8 @@ SOURCES += \
     src/tabview/tabbar.cpp \
     src/tabview/stackedwidget.cpp \
     src/tabview/tabbarbutton.cpp \
+    src/tabview/tablist.cpp \
+    src/tabview/tablistitem.cpp \
     src/tabview/omnibar/omnibar.cpp \
     src/window/window.cpp \
     src/window/centralwidget.cpp \
@@ -36,6 +38,8 @@ HEADERS += \
     src/tabview/tabbar.h \
     src/tabview/stackedwidget.h \
     src/tabview/tabbarbutton.h \
+    src/tabview/tablist.h \
+    src/tabview/tablistitem.h \
     src/tabview/omnibar/omnibar.h \
     src/window/window.h \
     src/window/centralwidget.h \

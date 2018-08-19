@@ -54,6 +54,10 @@ TabBar::TabBar(QWidget *parent)
         }
         m_tabWidget->addTab();
     });
+
+    connect(m_tabListButton, &TabBarButton::clicked, this, [this]{
+        m_tabWidget->toggleTabList();
+    });
 }
 
 void TabBar::setVirtualTab(QWidget *widget)
