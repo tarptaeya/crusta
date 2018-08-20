@@ -26,6 +26,7 @@ TabWidget::TabWidget(QWidget *parent)
     splitter->addWidget(m_stakedWidget);
 
     m_tabList = new TabList(this);
+    m_tabList->setVirtualTabWidget(this);
     splitter->addWidget(m_tabList);
     splitter->setStretchFactor(0, 1);
     splitter->setStretchFactor(1, 0);
@@ -58,6 +59,20 @@ void TabWidget::addTab(const QUrl &url)
         tab->webview()->loadStartupUrl();
     }
     int index = m_stakedWidget->addWidget(tab);
+    m_stakedWidget->setCurrentIndex(index);
+    m_tabList->addTab(tab);
+}
+
+void TabWidget::closeTab(Tab *tab)
+{
+    m_stakedWidget->removeWidget(tab);
+    m_tabList->closeTab(tab);
+    tab->closeTab();
+}
+
+void TabWidget::currentTabChanged(Tab *tab)
+{
+    int index = m_tabList->indexOf(tab);
     m_stakedWidget->setCurrentIndex(index);
 }
 

@@ -27,6 +27,11 @@ int Dimensions::tabListWidth()
     return 250;
 }
 
+int Dimensions::tabListItemHeight()
+{
+    return 30;
+}
+
 int Dimensions::onmibarHeightOffsetFromParent()
 {
     return 10;

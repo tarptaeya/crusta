@@ -29,6 +29,7 @@ SOURCES += \
     src/pages/externaljsobject.cpp \
     src/pages/scripts.cpp \
     src/pages/speeddial/speeddial.cpp \
+    src/extra/qclickablelabel.cpp \
 
 HEADERS += \
     src/bootstrap/appmanager.h \
@@ -56,6 +57,7 @@ HEADERS += \
     src/pages/externaljsobject.h \
     src/pages/scripts.h \
     src/pages/speeddial/speeddial.h \
+    src/extra/qclickablelabel.h \
 
 RESOURCES += \
     assets/assets.qrc \

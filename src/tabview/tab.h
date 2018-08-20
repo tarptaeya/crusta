@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class WebView;
+class TabListItem;
 
 class Tab : public QWidget
 {
@@ -17,7 +18,11 @@ public:
     explicit Tab(QWidget *parent = nullptr);
     QString title() const;
     WebView *webview() const;
+    TabListItem *tabListItem() const;
+    void setTabListItem(TabListItem *tabListItem);
+    void closeTab();
 private:
     QString m_title;
-    WebView *m_webView;
+    WebView *m_webView = nullptr;
+    TabListItem *m_tabListItem = nullptr;
 };

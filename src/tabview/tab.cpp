@@ -24,3 +24,18 @@ WebView *Tab::webview() const
 {
     return m_webView;
 }
+
+TabListItem *Tab::tabListItem() const
+{
+    return m_tabListItem;
+}
+
+void Tab::setTabListItem(TabListItem *tabListItem)
+{
+    m_tabListItem = tabListItem;
+}
+
+void Tab::closeTab()
+{
+    deleteLater();
+}

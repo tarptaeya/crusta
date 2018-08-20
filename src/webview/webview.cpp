@@ -13,6 +13,11 @@ WebView::WebView(QWidget *parent)
     setFocus();
 }
 
+WebView::~WebView()
+{
+    m_webPage->deleteLater();
+}
+
 void WebView::loadStartupUrl()
 {
     appManager->settings()->beginGroup(WEBENGINE);
