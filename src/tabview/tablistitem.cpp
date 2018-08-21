@@ -59,6 +59,32 @@ void TabListItem::resizeEvent(QResizeEvent *event)
     }
 }
 
+void TabListItem::enterEvent(QEvent *event)
+{
+    QWidget::enterEvent(event);
+
+    m_state = Hovered;
+    update();
+}
+
+void TabListItem::leaveEvent(QEvent *event)
+{
+    QWidget::leaveEvent(event);
+
+    m_state = Normal;
+    update();
+}
+
+void TabListItem::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+
+    if (m_state == Hovered) {
+        QPainter painter(this);
+        painter.fillRect(0, 0, width(), height(), QColor::fromRgb(240, 240, 240));
+    }
+}
+
 void TabListItem::setFavicon(const QIcon &favicon)
 {
     m_favicon->setPixmap(favicon.pixmap(16, 16));
