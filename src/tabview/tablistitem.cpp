@@ -50,6 +50,15 @@ void TabListItem::mousePressEvent(QMouseEvent *event)
     m_tabWidget->currentTabChanged(m_tab);
 }
 
+void TabListItem::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+
+    if (m_tab) {
+        setTitle(m_tab->webview()->title());
+    }
+}
+
 void TabListItem::setFavicon(const QIcon &favicon)
 {
     m_favicon->setPixmap(favicon.pixmap(16, 16));
@@ -57,5 +66,6 @@ void TabListItem::setFavicon(const QIcon &favicon)
 
 void TabListItem::setTitle(const QString &title)
 {
-    m_title->setText(title);
+    const QString elidedTitle = m_title->fontMetrics().elidedText(title, Qt::ElideRight, m_title->width() - 10); // 10 is arbitrary
+    m_title->setText(elidedTitle);
 }

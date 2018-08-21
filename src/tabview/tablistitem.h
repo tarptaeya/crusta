@@ -17,6 +17,7 @@ public:
     void setVirtualTab(Tab *tab);
     void setVirtualTabWidget(TabWidget *tabWidget);
     void mousePressEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 private:
     QHBoxLayout *m_hBoxLayout = nullptr;
     Tab *m_tab = nullptr;
