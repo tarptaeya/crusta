@@ -6,6 +6,7 @@ class Tab;
 class TabBar;
 class StackedWidget;
 class TabList;
+class WebView;
 
 class TabWidget : public QWidget
 {
@@ -15,6 +16,8 @@ public:
     ~TabWidget();
     void addTab();
     void addTab(const QUrl &url);
+    void addTab(WebView *webview);
+    int addBackgroundTab(WebView *webview);
     void closeTab(Tab *tab);
     void currentTabChanged(Tab *tab);
     void toggleTabList();

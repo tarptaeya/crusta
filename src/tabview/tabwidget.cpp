@@ -47,20 +47,33 @@ TabWidget::~TabWidget()
 
 void TabWidget::addTab()
 {
-    addTab(QUrl(""));
+    addTab(QUrl("http://google.com"));
 }
 
 void TabWidget::addTab(const QUrl &url)
 {
-    Tab *tab = new Tab(m_stakedWidget);
+    WebView *webview = new WebView;
     if (!url.isEmpty()) {
-        tab->webview()->load(url);
+        webview->load(url);
     } else {
-        tab->webview()->loadStartupUrl();
+        webview->loadStartupUrl();
     }
-    int index = m_stakedWidget->addWidget(tab);
+    addTab(webview);
+}
+
+void TabWidget::addTab(WebView *webview)
+{
+    int index = addBackgroundTab(webview);
     m_stakedWidget->setCurrentIndex(index);
+}
+
+int TabWidget::addBackgroundTab(WebView *webview)
+{
+    Tab *tab = new Tab(m_stakedWidget, webview);
+    tab->setVirtualTabWidget(this);
     m_tabList->addTab(tab);
+    int index = m_stakedWidget->addWidget(tab);
+    return index;
 }
 
 void TabWidget::closeTab(Tab *tab)

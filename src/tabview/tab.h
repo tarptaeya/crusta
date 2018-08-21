@@ -4,6 +4,7 @@
 
 class WebView;
 class TabListItem;
+class TabWidget;
 
 class Tab : public QWidget
 {
@@ -15,14 +16,14 @@ public:
         Android,
         Custom
     };
-    explicit Tab(QWidget *parent = nullptr);
-    QString title() const;
+    explicit Tab(QWidget *parent = nullptr, WebView *webview = nullptr);
     WebView *webview() const;
     TabListItem *tabListItem() const;
     void setTabListItem(TabListItem *tabListItem);
     void closeTab();
+    void setVirtualTabWidget(TabWidget *tabWidget);
 private:
-    QString m_title;
     WebView *m_webView = nullptr;
     TabListItem *m_tabListItem = nullptr;
+    TabWidget *m_tabWidget = nullptr;
 };

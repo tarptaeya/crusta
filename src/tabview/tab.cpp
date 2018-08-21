@@ -1,23 +1,21 @@
 #include "tab.h"
+#include "tabwidget.h"
 #include "../webview/webview.h"
 #include <QVBoxLayout>
 
-Tab::Tab(QWidget *parent)
+Tab::Tab(QWidget *parent, WebView *webview)
     : QWidget(parent)
 {
-    m_title = tr("New Tab");
-    m_webView = new WebView(this);
+    m_webView = webview;
+    if (!m_webView) {
+        m_webView = new WebView(this);
+    }
 
     QVBoxLayout *vBoxLayout = new QVBoxLayout(this);
     setLayout(vBoxLayout);
     vBoxLayout->setContentsMargins(0, 0, 0, 0);
     vBoxLayout->setSpacing(0);
     vBoxLayout->addWidget(m_webView);
-}
-
-QString Tab::title() const
-{
-    return m_title;
 }
 
 WebView *Tab::webview() const
@@ -38,4 +36,10 @@ void Tab::setTabListItem(TabListItem *tabListItem)
 void Tab::closeTab()
 {
     deleteLater();
+}
+
+void Tab::setVirtualTabWidget(TabWidget *tabWidget)
+{
+    m_tabWidget = tabWidget;
+    m_webView->setVirtualTabWidget(tabWidget);
 }
