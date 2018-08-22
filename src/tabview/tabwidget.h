@@ -19,6 +19,8 @@ public:
     void addTab(WebView *webview);
     int addBackgroundTab(WebView *webview);
     void closeTab(Tab *tab);
+    void closeTabsAfter(Tab *tab);
+    void closeTabsBefore(Tab *tab);
     void currentTabChanged(Tab *tab);
     void toggleTabList();
 private:

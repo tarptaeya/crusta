@@ -4,6 +4,11 @@
 #include "../webview/webview.h"
 #include "../utils/dimensions.h"
 #include <QIcon>
+#include <QMouseEvent>
+#include <QMenu>
+#include <QAction>
+#include <QApplication>
+#include <QClipboard>
 
 TabListItem::TabListItem(QWidget *parent)
     : QWidget(parent)
@@ -23,6 +28,9 @@ TabListItem::TabListItem(QWidget *parent)
     m_hBoxLayout->addWidget(m_title);
     m_hBoxLayout->addWidget(m_closeTabButton);
     setFixedHeight(Dimensions::tabListItemHeight());
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, &TabListItem::customContextMenuRequested, this, &TabListItem::showContextMenu);
 }
 
 void TabListItem::setVirtualTab(Tab *tab)
@@ -47,7 +55,9 @@ void TabListItem::setVirtualTabWidget(TabWidget *tabWidget)
 void TabListItem::mousePressEvent(QMouseEvent *event)
 {
     QWidget::mousePressEvent(event);
-    m_tabWidget->currentTabChanged(m_tab);
+    if (event->button() == Qt::LeftButton) {
+        m_tabWidget->currentTabChanged(m_tab);
+    }
 }
 
 void TabListItem::resizeEvent(QResizeEvent *event)
@@ -115,4 +125,35 @@ void TabListItem::setTitle(const QString &title)
 {
     const QString elidedTitle = m_title->fontMetrics().elidedText(title, Qt::ElideRight, m_title->width() - 10); // 10 is arbitrary
     m_title->setText(elidedTitle);
+}
+
+void TabListItem::showContextMenu(const QPoint &pos)
+{
+    QMenu *menu = new QMenu(this);
+    QAction *copyUrlAction = menu->addAction(tr("Copy URL"));
+    connect(copyUrlAction, &QAction::triggered, this, [this]{
+        qApp->clipboard()->setText(m_tab->webview()->url().toString());
+    });
+    QAction *muteUnmuteAction;
+    if (m_tab->webview()->page()->isAudioMuted()) {
+        muteUnmuteAction = menu->addAction(tr("Unmute Tab"));
+    } else {
+        muteUnmuteAction = menu->addAction(tr("Mute Tab"));
+    }
+    connect(muteUnmuteAction, &QAction::triggered, this, [this]{
+        m_tab->webview()->page()->setAudioMuted(!m_tab->webview()->page()->isAudioMuted());
+    });
+    QAction *closeAction = menu->addAction(tr("Close Tab"));
+    connect(closeAction, &QAction::triggered, this, [this]{
+        m_tabWidget->closeTab(m_tab);
+    });
+    QAction * closeAfterAction = menu->addAction(tr("Close all After"));
+    connect(closeAfterAction, &QAction::triggered, this, [this]{
+        m_tabWidget->closeTabsAfter(m_tab);
+    });
+    QAction * closeBeforeAction = menu->addAction(tr("Close all Before"));
+    connect(closeBeforeAction, &QAction::triggered, this, [this]{
+        m_tabWidget->closeTabsBefore(m_tab);
+    });
+    menu->exec(mapToGlobal(pos));
 }

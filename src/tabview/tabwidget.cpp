@@ -90,6 +90,31 @@ void TabWidget::closeTab(Tab *tab)
     handleTabChanged(m_tabList->tabAt(index));
 }
 
+void TabWidget::closeTabsAfter(Tab *tab)
+{
+    int i = m_tabList->tabs().length() - 1;
+    while (i > -1) {
+        Tab *otherTab = m_tabList->tabs().at(i);
+        if (otherTab == tab) {
+            break;
+        }
+        closeTab(otherTab);
+        i--;
+    }
+}
+
+void TabWidget::closeTabsBefore(Tab *tab)
+{
+    int i = 0;
+    while (i < m_tabList->tabs().length()) {
+        Tab *otherTab = m_tabList->tabs().at(i);
+        if (otherTab == tab) {
+            break;
+        }
+        closeTab(otherTab);
+    }
+}
+
 void TabWidget::currentTabChanged(Tab *tab)
 {
     int index = m_tabList->indexOf(tab);

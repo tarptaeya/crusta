@@ -38,4 +38,5 @@ private:
 
     void setFavicon(const QIcon &favicon);
     void setTitle(const QString &title);
+    void showContextMenu(const QPoint &pos);
 };
