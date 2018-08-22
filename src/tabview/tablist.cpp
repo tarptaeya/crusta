@@ -48,12 +48,14 @@ void TabList::addTab(Tab *tab)
     tabListItem->setVirtualTab(tab);
     tabListItem->setVirtualTabWidget(m_tabWidget);
     m_vBoxLayout->insertWidget(0, tabListItem);
+    m_tabs.append(tab);
     m_tabCount++;
 }
 
 void TabList::closeTab(Tab *tab)
 {
     m_vBoxLayout->removeWidget(tab->tabListItem());
+    m_tabs.removeOne(tab);
     tab->tabListItem()->deleteLater();
     m_tabCount--;
 }
@@ -65,6 +67,15 @@ void TabList::setVirtualTabWidget(TabWidget *tabWidget)
 
 int TabList::indexOf(Tab *tab)
 {
-    int index = m_vBoxLayout->indexOf(tab->tabListItem());
-    return m_tabCount - index - 1;
+    return m_tabs.indexOf(tab);
+}
+
+Tab *TabList::tabAt(int index)
+{
+    return m_tabs.at(index);
+}
+
+QList<Tab *> TabList::tabs() const
+{
+    return m_tabs;
 }

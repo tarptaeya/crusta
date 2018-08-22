@@ -14,6 +14,7 @@ class TabListItem : public QWidget
     Q_OBJECT
     enum State {
         Normal,
+        Current,
         Hovered
     };
 public:
@@ -25,6 +26,7 @@ public:
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
     void paintEvent(QPaintEvent *event);
+    void setCurrent(bool current);
 private:
     State m_state = Normal;
     QHBoxLayout *m_hBoxLayout = nullptr;

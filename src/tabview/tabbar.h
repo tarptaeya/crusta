@@ -12,7 +12,7 @@ class TabBar : public QWidget
 {
 public:
     explicit TabBar(QWidget *parent = nullptr);
-    void setVirtualTab(QWidget *widget);
+    void setVirtualTab(Tab *tab);
 private:
     TabWidget *m_tabWidget = nullptr;
     QHBoxLayout *m_hBoxLayout = nullptr;

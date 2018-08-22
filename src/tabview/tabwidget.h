@@ -25,4 +25,6 @@ private:
     TabBar *m_tabBar = nullptr;
     StackedWidget *m_stakedWidget = nullptr;
     TabList *m_tabList = nullptr;
+
+    void handleTabChanged(Tab *tab);
 };

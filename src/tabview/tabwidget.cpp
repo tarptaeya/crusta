@@ -3,6 +3,7 @@
 #include "tab.h"
 #include "stackedwidget.h"
 #include "tablist.h"
+#include "tablistitem.h"
 #include "../webview/webview.h"
 #include <QVBoxLayout>
 #include <QSplitter>
@@ -35,7 +36,9 @@ TabWidget::TabWidget(QWidget *parent)
     setLayout(vBoxLayout);
 
     connect(m_stakedWidget, &StackedWidget::currentChanged, this, [this]{
-        m_tabBar->setVirtualTab(m_stakedWidget->currentWidget());
+        Tab *tab = qobject_cast<Tab *>(m_stakedWidget->currentWidget());
+        m_tabBar->setVirtualTab(tab);
+        handleTabChanged(tab);
     });
 
     addTab();
@@ -47,7 +50,7 @@ TabWidget::~TabWidget()
 
 void TabWidget::addTab()
 {
-    addTab(QUrl("http://google.com"));
+    addTab(QUrl("http://duckduckgo.com"));
 }
 
 void TabWidget::addTab(const QUrl &url)
@@ -81,6 +84,10 @@ void TabWidget::closeTab(Tab *tab)
     m_stakedWidget->removeWidget(tab);
     m_tabList->closeTab(tab);
     tab->closeTab();
+
+    // FIXME: make modular
+    int index = m_stakedWidget->currentIndex();
+    handleTabChanged(m_tabList->tabAt(index));
 }
 
 void TabWidget::currentTabChanged(Tab *tab)
@@ -96,4 +103,16 @@ void TabWidget::toggleTabList()
     } else {
         m_tabList->show();
     }
+}
+
+void TabWidget::handleTabChanged(Tab *tab)
+{
+    if (!tab) {
+        return;
+    }
+
+    for (Tab *tab_ : m_tabList->tabs()) {
+        tab_->tabListItem()->setCurrent(false);
+    }
+    tab->tabListItem()->setCurrent(true);
 }

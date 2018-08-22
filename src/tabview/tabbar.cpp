@@ -60,14 +60,13 @@ TabBar::TabBar(QWidget *parent)
     });
 }
 
-void TabBar::setVirtualTab(QWidget *widget)
+void TabBar::setVirtualTab(Tab *tab)
 {
-    destroyVirtualConnections();
-    Tab *tab = qobject_cast<Tab *>(widget);
     if (!tab) {
-        qDebug() << "Unable to cast QWidget * to Tab *";
         return;
     }
+
+    destroyVirtualConnections();
     m_virtualTab = tab;
     createVirtualConnections();
 }

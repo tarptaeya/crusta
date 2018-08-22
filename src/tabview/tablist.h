@@ -16,9 +16,12 @@ public:
     void closeTab(Tab *tab);
     void setVirtualTabWidget(TabWidget *tabWidget);
     int indexOf(Tab *tab);
+    Tab *tabAt(int index);
+    QList<Tab *> tabs() const;
 private:
     int m_preferedWidth = 0;
     int m_tabCount = 0;
     QVBoxLayout *m_vBoxLayout = nullptr;
     TabWidget *m_tabWidget = nullptr;
+    QList<Tab *> m_tabs;
 };

@@ -63,6 +63,10 @@ void TabListItem::enterEvent(QEvent *event)
 {
     QWidget::enterEvent(event);
 
+    if (m_state == Current) {
+        return;
+    }
+
     m_state = Hovered;
     update();
 }
@@ -70,6 +74,10 @@ void TabListItem::enterEvent(QEvent *event)
 void TabListItem::leaveEvent(QEvent *event)
 {
     QWidget::leaveEvent(event);
+
+    if (m_state == Current) {
+        return;
+    }
 
     m_state = Normal;
     update();
@@ -79,10 +87,23 @@ void TabListItem::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
 
-    if (m_state == Hovered) {
+    if (m_state == Current) {
         QPainter painter(this);
         painter.fillRect(0, 0, width(), height(), QColor::fromRgb(240, 240, 240));
+    } else if (m_state == Hovered) {
+        QPainter painter(this);
+        painter.fillRect(0, 0, width(), height(), QColor::fromRgb(247, 247, 247));
     }
+}
+
+void TabListItem::setCurrent(bool current)
+{
+    if (current) {
+        m_state = Current;
+    } else {
+        m_state = Normal;
+    }
+    update();
 }
 
 void TabListItem::setFavicon(const QIcon &favicon)
