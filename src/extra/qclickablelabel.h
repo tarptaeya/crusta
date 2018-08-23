@@ -8,6 +8,8 @@ class QClickableLabel : public QLabel
 public:
     explicit QClickableLabel(QWidget *parent = nullptr);
     void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 Q_SIGNALS:
     void clicked();
+    void doubleClicked();
 };

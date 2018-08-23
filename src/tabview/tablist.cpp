@@ -1,6 +1,7 @@
 #include "tablist.h"
 #include "tablistitem.h"
 #include "tab.h"
+#include "tabwidget.h"
 #include "../bootstrap/appmanager.h"
 #include "../bootstrap/settings.h"
 #include "../utils/dimensions.h"
@@ -32,8 +33,14 @@ TabList::TabList(QWidget *parent)
     vBoxLayout->addWidget(scrollArea);
     setLayout(vBoxLayout);
 
-    QWidget *paddingWidget = new QWidget(widget);
-    m_vBoxLayout->addWidget(paddingWidget);
+    QClickableLabel *paddingLabel = new QClickableLabel(widget);
+    connect(paddingLabel, &QClickableLabel::doubleClicked, this, [this]{
+        if (!m_tabWidget) {
+            return;
+        }
+        m_tabWidget->addTab();
+    });
+    m_vBoxLayout->addWidget(paddingLabel);
 }
 
 void TabList::show()

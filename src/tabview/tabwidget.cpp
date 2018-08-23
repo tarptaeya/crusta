@@ -50,7 +50,7 @@ TabWidget::~TabWidget()
 
 void TabWidget::addTab()
 {
-    addTab(QUrl("http://duckduckgo.com"));
+    addTab(QUrl(""));
 }
 
 void TabWidget::addTab(const QUrl &url)

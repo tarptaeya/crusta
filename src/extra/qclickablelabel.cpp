@@ -11,3 +11,10 @@ void QClickableLabel::mouseReleaseEvent(QMouseEvent *event)
 
     emit clicked();
 }
+
+void QClickableLabel::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QLabel::mouseDoubleClickEvent(event);
+
+    emit doubleClicked();
+}
