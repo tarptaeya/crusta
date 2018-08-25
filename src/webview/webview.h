@@ -12,9 +12,19 @@ public:
     ~WebView();
     void loadStartupUrl();
     void setVirtualTabWidget(TabWidget *tabWidget);
+    void search(const QString &text);
+    bool isLoading() const;
+    QString hoveredLink() const;
 protected:
     QWebEngineView *createWindow(QWebEnginePage::WebWindowType type);
 private:
     WebPage *m_webPage = nullptr;
     TabWidget *m_tabWidget = nullptr;
+    bool m_isLoading = false;
+    QString m_hoveredLink;
+
+    void handleLoadStarted();
+    void handleLoadFinished();
+    void handleLinkHovered(const QString &url);
+    void showContextMenu(const QPoint &pos);
 };

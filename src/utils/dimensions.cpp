@@ -41,3 +41,8 @@ QMargins Dimensions::omnibarMargins()
 {
     return QMargins(10, 4, 10, 4);
 }
+
+int Dimensions::contextMenuTextLength()
+{
+    return 10;
+}

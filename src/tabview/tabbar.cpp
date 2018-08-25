@@ -58,6 +58,13 @@ TabBar::TabBar(QWidget *parent)
     connect(m_tabListButton, &TabBarButton::clicked, this, [this]{
         m_tabWidget->toggleTabList();
     });
+
+    connect(m_omniBar, &OmniBar::returnPressed, this, [this]{
+        if (!m_virtualTab) {
+            return;
+        }
+        m_virtualTab->webview()->search(m_omniBar->text());
+    });
 }
 
 void TabBar::setVirtualTab(Tab *tab)

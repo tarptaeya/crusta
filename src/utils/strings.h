@@ -10,4 +10,5 @@ public:
 
     static QString windowName();
     static QString sideBarName();
+    static QString elideString(QString source, int length);
 };

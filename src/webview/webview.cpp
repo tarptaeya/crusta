@@ -3,8 +3,15 @@
 #include "../tabview/tabwidget.h"
 #include "../bootstrap/appmanager.h"
 #include "../bootstrap/settings.h"
+#include "../utils/dimensions.h"
+#include "../utils/strings.h"
 #include <QUrl>
-
+#include <QMenu>
+#include <QAction>
+#include <QPoint>
+#include <QWebEngineHistory>
+#include <QApplication>
+#include <QClipboard>
 
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
@@ -12,6 +19,13 @@ WebView::WebView(QWidget *parent)
     m_webPage = new WebPage(appManager->webEngineProfile());
     setPage(m_webPage);
     setFocus();
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, &WebView::customContextMenuRequested, this, &WebView::showContextMenu);
+
+    connect(this, &WebView::loadStarted, this, &WebView::handleLoadStarted);
+    connect(this, &WebView::loadFinished, this, &WebView::handleLoadFinished);
+    connect(m_webPage, &WebPage::linkHovered, this, &WebView::handleLinkHovered);
 }
 
 WebView::~WebView()
@@ -32,6 +46,12 @@ void WebView::setVirtualTabWidget(TabWidget *tabWidget)
     m_tabWidget = tabWidget;
 }
 
+void WebView::search(const QString &text)
+{
+    // TODO
+    load(QUrl::fromUserInput(text));
+}
+
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 {
     WebView *webview = new WebView;
@@ -50,4 +70,84 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
         break;
     }
     return webview;
+}
+
+void WebView::handleLoadStarted()
+{
+    m_isLoading = true;
+}
+
+void WebView::handleLoadFinished()
+{
+    m_isLoading = false;
+}
+
+void WebView::handleLinkHovered(const QString &url)
+{
+    m_hoveredLink = url;
+}
+
+void WebView::showContextMenu(const QPoint &pos)
+{
+    QMenu *menu = new QMenu(this);
+
+    if (!m_hoveredLink.isEmpty()) {
+        QAction *openInNewTabAction = menu->addAction(tr("Open link in new tab"));
+        connect(openInNewTabAction, &QAction::triggered, this, [this]{
+            m_webPage->triggerAction(WebPage::OpenLinkInNewTab);
+        });
+        QAction *openInNewBackgroundTabAction = menu->addAction(tr("Open link in new background tab"));
+        connect(openInNewBackgroundTabAction, &QAction::triggered, this, [this]{
+            m_webPage->triggerAction(WebPage::OpenLinkInNewBackgroundTab);
+        });
+        QAction *copyLinkURLAction = menu->addAction(tr("Copy link address"));
+        connect(copyLinkURLAction, &QAction::triggered, this, [this]{
+            m_webPage->triggerAction(WebPage::CopyLinkToClipboard);
+        });
+        menu->addSeparator();
+    }
+
+    QString text = selectedText();
+    QString elidedText = Strings::elideString(text, Dimensions::contextMenuTextLength());
+    if (!text.isEmpty()) {
+        QAction *selectedTextCopyAction = menu->addAction(tr("Copy \"%1\"").arg(elidedText));
+        connect(selectedTextCopyAction, &QAction::triggered, this, [text]{
+            qApp->clipboard()->setText(text);
+        });
+        QAction *selectedTextSearchAction = menu->addAction(tr("Search \"%1\"").arg(elidedText));
+        menu->addSeparator();
+    }
+
+    QAction *backAction = menu->addAction(tr("Back"));
+    backAction->setEnabled(history()->canGoBack());
+    connect(backAction, &QAction::triggered, this, &WebView::back);
+    QAction *forwardAction = menu->addAction(tr("Forward"));
+    forwardAction->setEnabled(history()->canGoForward());
+    connect(forwardAction, &QAction::triggered, this, &WebView::forward);
+    QAction *stopReloadAction = menu->addAction(m_isLoading ? tr("Stop") : tr("Reload"));
+    connect(stopReloadAction, &QAction::triggered, this, [this]{
+        if (m_isLoading) {
+            stop();
+        } else {
+            reload();
+        }
+    });
+    menu->addSeparator();
+
+    QAction *saveAction = menu->addAction(tr("Save page"));
+    connect(saveAction, &QAction::triggered, this, [this]{
+        m_webPage->triggerAction(WebPage::SavePage);
+    });
+    menu->addSeparator();
+
+    QAction *viewPageSourceAction = menu->addAction(tr("View page source"));
+    connect(viewPageSourceAction, &QAction::triggered, this, [this]{
+        m_webPage->triggerAction(WebPage::ViewSource);
+    });
+    QAction *inspectElementAction = menu->addAction(tr("Inspect element"));
+    connect(inspectElementAction, &QAction::triggered, this, [this]{
+        m_webPage->triggerAction(WebPage::InspectElement);
+    });
+
+    menu->exec(mapToGlobal(pos));
 }
