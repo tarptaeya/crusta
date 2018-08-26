@@ -101,6 +101,9 @@ void TabBar::createVirtualConnections()
         m_stopReloadButton->setData(QVariant::fromValue(QStringLiteral("RELOAD")));
     });
     const QMetaObject::Connection connection5 = connect(m_stopReloadButton, &TabBarButton::clicked, [this]{
+        if (!m_virtualTab) {
+            return;
+        }
         if (m_stopReloadButton->data().toString() == QStringLiteral("STOP")) {
             m_virtualTab->webview()->stop();
         } else {

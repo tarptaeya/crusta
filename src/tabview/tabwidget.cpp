@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QUrl>
+#include <QApplication>
 
 TabWidget::TabWidget(QWidget *parent)
     : QWidget(parent)
@@ -81,6 +82,11 @@ int TabWidget::addBackgroundTab(WebView *webview)
 
 void TabWidget::closeTab(Tab *tab)
 {
+    bool isLast = false;
+    if (m_tabList->tabs().length() == 1) {
+        isLast = true;
+    }
+
     m_stakedWidget->removeWidget(tab);
     m_tabList->closeTab(tab);
     tab->closeTab();
@@ -88,6 +94,10 @@ void TabWidget::closeTab(Tab *tab)
     // FIXME: make modular
     int index = m_stakedWidget->currentIndex();
     handleTabChanged(m_tabList->tabAt(index));
+
+    if (isLast) {
+        qApp->exit(0);
+    }
 }
 
 void TabWidget::closeTabsAfter(Tab *tab)
