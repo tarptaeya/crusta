@@ -1,4 +1,4 @@
-QT += core gui widgets webengine webenginewidgets webchannel
+QT += core gui widgets webengine webenginewidgets webchannel sql
 
 DEFINES += QT_DEPRECIATED_WARNINGS
 
@@ -6,6 +6,7 @@ SOURCES += \
     src/main.cpp \
     src/bootstrap/appmanager.cpp \
     src/bootstrap/settings.cpp \
+    src/bootstrap/database.cpp \
     src/tabview/tabwidget.cpp \
     src/tabview/tab.cpp \
     src/tabview/tabbar.cpp \
@@ -30,10 +31,12 @@ SOURCES += \
     src/pages/scripts.cpp \
     src/pages/speeddial/speeddial.cpp \
     src/extra/qclickablelabel.cpp \
+    src/data/historyitem.cpp \
 
 HEADERS += \
     src/bootstrap/appmanager.h \
     src/bootstrap/settings.h \
+    src/bootstrap/database.h \
     src/tabview/tabwidget.h \
     src/tabview/tab.h \
     src/tabview/tabbar.h \
@@ -58,6 +61,7 @@ HEADERS += \
     src/pages/scripts.h \
     src/pages/speeddial/speeddial.h \
     src/extra/qclickablelabel.h \
+    src/data/historyitem.h \
 
 RESOURCES += \
     assets/assets.qrc \

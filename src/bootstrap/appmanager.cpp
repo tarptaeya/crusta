@@ -1,6 +1,7 @@
 #include "appmanager.h"
 #include "../window/window.h"
 #include "settings.h"
+#include "database.h"
 #include "../pages/scripts.h"
 
 AppManager::AppManager(QObject *parent)
@@ -16,6 +17,9 @@ AppManager::AppManager(QObject *parent)
     m_application.mode = Development;
 
     setUpWebEngineProfile();
+
+    m_database = new Database(this);
+    m_database->createDatabases();
 }
 
 AppManager::~AppManager()
@@ -94,6 +98,11 @@ Settings *AppManager::settings()
 QWebEngineProfile *AppManager::webEngineProfile() const
 {
     return m_webEngineProfile;
+}
+
+Database *AppManager::database() const
+{
+    return m_database;
 }
 
 void AppManager::setUpWebEngineProfile()

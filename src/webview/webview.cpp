@@ -3,8 +3,10 @@
 #include "../tabview/tabwidget.h"
 #include "../bootstrap/appmanager.h"
 #include "../bootstrap/settings.h"
+#include "../bootstrap/database.h"
 #include "../utils/dimensions.h"
 #include "../utils/strings.h"
+#include "../data/historyitem.h"
 #include <QUrl>
 #include <QMenu>
 #include <QAction>
@@ -12,6 +14,8 @@
 #include <QWebEngineHistory>
 #include <QApplication>
 #include <QClipboard>
+#include <QBuffer>
+#include <QPixmap>
 
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
@@ -75,11 +79,27 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 void WebView::handleLoadStarted()
 {
     m_isLoading = true;
+    m_loadingTime = QTime::currentTime().msecsSinceStartOfDay();
 }
 
 void WebView::handleLoadFinished()
 {
     m_isLoading = false;
+    m_loadingTime = QTime::currentTime().msecsSinceStartOfDay() - m_loadingTime;
+
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    icon().pixmap(16, 16).save(&buffer, "PNG");
+
+    HistoryItem item;
+    item.setTimestamp(QDateTime::currentDateTime().toSecsSinceEpoch());
+    item.setFavicon(byteArray);
+    item.setTitle(title());
+    item.setUrl(url().toString());
+    item.setLoadingTime(m_loadingTime);
+
+    appManager->database()->addHistoryEntry(item);
 }
 
 void WebView::handleLinkHovered(const QString &url)

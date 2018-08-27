@@ -22,6 +22,7 @@ private:
     TabWidget *m_tabWidget = nullptr;
     bool m_isLoading = false;
     QString m_hoveredLink;
+    int m_loadingTime;
 
     void handleLoadStarted();
     void handleLoadFinished();

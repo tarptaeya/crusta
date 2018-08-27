@@ -10,6 +10,7 @@
 class Window;
 class Settings;
 class ExternalJsObject;
+class Database;
 
 class AppManager : public QObject
 {
@@ -45,11 +46,13 @@ public:
     void bootstrap();
     Settings *settings();
     QWebEngineProfile *webEngineProfile() const;
+    Database *database() const;
 private:
     Application m_application;
     QList<Window *> m_windowList;
     Settings *m_settings = nullptr;
     QWebEngineProfile *m_webEngineProfile = nullptr;
+    Database *m_database;
 
     void setUpWebEngineProfile();
 };
