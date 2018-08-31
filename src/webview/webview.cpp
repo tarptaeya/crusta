@@ -56,6 +56,11 @@ void WebView::search(const QString &text)
     load(QUrl::fromUserInput(text));
 }
 
+int WebView::loadingTime() const
+{
+    return m_loadingTime;
+}
+
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 {
     WebView *webview = new WebView;

@@ -15,6 +15,7 @@ public:
     void search(const QString &text);
     bool isLoading() const;
     QString hoveredLink() const;
+    int loadingTime() const;
 protected:
     QWebEngineView *createWindow(QWebEnginePage::WebWindowType type);
 private:

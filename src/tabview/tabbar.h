@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../extra/qclickablelabel.h"
 #include <QWidget>
 #include <QHBoxLayout>
 
@@ -23,6 +24,7 @@ private:
     TabBarButton *m_homeButton = nullptr;
     TabBarButton *m_newTabButton = nullptr;
     TabBarButton *m_tabListButton = nullptr;
+    QClickableLabel *m_loadingTimeLabel = nullptr;
     TabBarButton *m_optionsButton = nullptr;
 
     OmniBar *m_omniBar = nullptr;

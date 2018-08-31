@@ -24,6 +24,7 @@ TabBar::TabBar(QWidget *parent)
     m_forwardButton = new TabBarButton(this);
     m_stopReloadButton = new TabBarButton(this);
     m_homeButton = new TabBarButton(this);
+    m_loadingTimeLabel = new QClickableLabel(this);
     m_newTabButton = new TabBarButton(this);
     m_tabListButton = new TabBarButton(this);
     m_optionsButton = new TabBarButton(this);
@@ -37,12 +38,15 @@ TabBar::TabBar(QWidget *parent)
     m_optionsButton->setIcon(QIcon(":/icons/options.svg"));
 
     m_omniBar = new OmniBar(this);
+    m_loadingTimeLabel->setMinimumWidth(height());
+    m_loadingTimeLabel->setMargin(10);
 
     m_hBoxLayout->addWidget(m_backButton);
     m_hBoxLayout->addWidget(m_forwardButton);
     m_hBoxLayout->addWidget(m_stopReloadButton);
     m_hBoxLayout->addWidget(m_homeButton);
     m_hBoxLayout->addWidget(m_omniBar);
+    m_hBoxLayout->addWidget(m_loadingTimeLabel);
     m_hBoxLayout->addWidget(m_newTabButton);
     m_hBoxLayout->addWidget(m_tabListButton);
     m_hBoxLayout->addWidget(m_optionsButton);
@@ -95,10 +99,12 @@ void TabBar::createVirtualConnections()
     const QMetaObject::Connection connection3 = connect(m_virtualTab->webview(), &WebView::loadStarted, [this]{
         m_stopReloadButton->setIcon(QIcon(":/icons/close.svg"));
         m_stopReloadButton->setData(QVariant::fromValue(QStringLiteral("STOP")));
+        m_loadingTimeLabel->setText("...");
     });
     const QMetaObject::Connection connection4 = connect(m_virtualTab->webview(), &WebView::loadFinished, [this]{
         m_stopReloadButton->setIcon(QIcon(":/icons/refresh.svg"));
         m_stopReloadButton->setData(QVariant::fromValue(QStringLiteral("RELOAD")));
+        m_loadingTimeLabel->setText(QString("%1s").arg(QString::number(m_virtualTab->webview()->loadingTime() / 10 / 100.0)));
     });
     const QMetaObject::Connection connection5 = connect(m_stopReloadButton, &TabBarButton::clicked, [this]{
         if (!m_virtualTab) {
