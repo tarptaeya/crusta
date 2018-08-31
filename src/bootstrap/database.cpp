@@ -18,6 +18,7 @@ void Database::createDatabases()
         return;
     }
     createHistoryDatabase();
+    createSpeeddialDatabase();
 }
 
 bool Database::addHistoryEntry(HistoryItem item)
@@ -44,5 +45,11 @@ bool Database::addHistoryEntry(HistoryItem item)
 void Database::createHistoryDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS history (timestamp INTEGER, favicon BLOB, title TEXT, url TEXT, visitCount INTEGER, loadingTime INTEGER)");
+    query.exec();
+}
+
+void Database::createSpeeddialDatabase()
+{
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS speeddial (image BLOB, title TEXT, url TEXT)");
     query.exec();
 }
