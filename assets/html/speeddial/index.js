@@ -1,16 +1,21 @@
-// QtCreator doesn't supports ES6 syntax currently
+// ==UserScript==
+// @run-at   document-end
+// @include  qrc:/html/speeddial/index.html
+// ==/UserScript==
+
+var addDial;
 
 function createAddDial() {
-    var element = document.createElement('div')
-    element.id = 'add-dial-container'
+    addDial = document.createElement('div')
+    addDial.id = 'add-dial-container'
     var blurryElement = document.createElement('div')
     blurryElement.id = 'add-dial-blurry-element'
-    element.appendChild(blurryElement)
+    addDial.appendChild(blurryElement)
     var imageElement = document.createElement('img')
     imageElement.id = 'add-dial-image'
     imageElement.src = '../../icons/plus.svg'
-    element.appendChild(imageElement)
-    document.querySelector('#container').appendChild(element)
+    addDial.appendChild(imageElement)
+    document.querySelector('#container').appendChild(addDial)
 }
 
 function blurAddDial() {
@@ -19,7 +24,7 @@ function blurAddDial() {
     element.style.backgroundPosition = (-boundingRect.left) + 'px' + ' ' + (-boundingRect.top) + 'px'
 }
 
-function createDial() {
+function createDial(url) {
     var dial = {}
     dial.element = document.createElement('div')
     dial.element.className = 'dial'
@@ -36,13 +41,31 @@ function createDial() {
         setTimeout(function() {
             dial.element.removeChild(ripple)
         }, 2000)
+
+        location.href = url
     })
-    document.querySelector('#container').appendChild(dial.element)
+    document.querySelector('#container').insertBefore(dial.element, addDial)
+}
+
+function initChannel() {
+    var speeddial = window.external.externalObject.speeddial
+    addDial.addEventListener('click', function() {
+        speeddial.addDial()
+    })
+    speeddial.dialAdded.connect(function(url) {
+        createDial(url)
+    })
 }
 
 window.onload = function() {
     createAddDial()
     blurAddDial()
+
+    if (window.external.externalObject) {
+        initChannel()
+    } else {
+        document.addEventListener('__init_webchannel', initChannel)
+    }
 }
 
 window.onresize = function() {

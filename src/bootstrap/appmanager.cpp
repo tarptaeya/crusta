@@ -107,14 +107,21 @@ Database *AppManager::database() const
 
 void AppManager::setUpWebEngineProfile()
 {
-    m_webEngineProfile = new QWebEngineProfile();
+    m_webEngineProfile = new QWebEngineProfile(this);
 
     QWebEngineScript webChannelScript;
     webChannelScript.setInjectionPoint(QWebEngineScript::DocumentCreation);
     webChannelScript.setName("webChannelScript");
     webChannelScript.setRunsOnSubFrames(true);
     webChannelScript.setSourceCode(Scripts::webChannelScript());
-    webChannelScript.setWorldId(QWebEngineScript::MainWorld);
-
+    webChannelScript.setWorldId(QWebEngineScript::ApplicationWorld);
     m_webEngineProfile->scripts()->insert(webChannelScript);
+
+    QWebEngineScript speeddialScript;
+    speeddialScript.setInjectionPoint(QWebEngineScript::DocumentReady);
+    speeddialScript.setName("speeddialScript");
+    speeddialScript.setRunsOnSubFrames(true);
+    speeddialScript.setSourceCode(Scripts::speeddialScript());
+    speeddialScript.setWorldId(QWebEngineScript::ApplicationWorld);
+    m_webEngineProfile->scripts()->insert(speeddialScript);
 }

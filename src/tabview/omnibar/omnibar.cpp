@@ -8,7 +8,7 @@ OmniBar::OmniBar(QWidget *parent)
     int height = parent->height() - Dimensions::onmibarHeightOffsetFromParent();
     setFixedHeight(height);
     setAttribute(Qt::WA_MacShowFocusRect, 0);
-    setTextMargins(Dimensions::omnibarMargins());
+    setTextMargins(Dimensions::lineEditMargins());
 }
 
 void OmniBar::setUrl(const QUrl &url)

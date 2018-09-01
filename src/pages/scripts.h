@@ -7,4 +7,5 @@ class Scripts
 public:
     explicit Scripts();
     static QString webChannelScript();
+    static QString speeddialScript();
 };

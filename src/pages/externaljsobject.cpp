@@ -1,17 +1,15 @@
 #include "externaljsobject.h"
 
-ExternalJsObject::ExternalJsObject(QObject *parent)
+ExternalJsObject::ExternalJsObject(QObject *parent, QWebEnginePage *page)
     : QObject(parent)
 {
-    m_speeddial = new Speeddial(this);
+    m_speeddial = new Speeddial(this, page);
 }
 
-QWebChannel *ExternalJsObject::setUpWebChannel()
+void ExternalJsObject::setUpWebChannel(QWebChannel *channel, QWebEnginePage *page)
 {
-    QWebChannel *channel = new QWebChannel();
-    ExternalJsObject *externalJsObject = new ExternalJsObject(channel);
+    ExternalJsObject *externalJsObject = new ExternalJsObject(channel, page);
     channel->registerObject("externalObject", externalJsObject);
-    return channel;
 }
 
 QObject *ExternalJsObject::speeddial() const

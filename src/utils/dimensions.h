@@ -11,6 +11,6 @@ public:
     static int tabListWidth();
     static int tabListItemHeight();
     static int onmibarHeightOffsetFromParent();
-    static QMargins omnibarMargins();
+    static QMargins lineEditMargins();
     static int contextMenuTextLength();
 };

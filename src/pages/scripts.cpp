@@ -21,5 +21,16 @@ QString Scripts::webChannelScript()
         qDebug() << "webchannel.js not found";
         return QStringLiteral("");
     }
-    return QString("%1 %2").arg(QString::fromLatin1(file1.readAll()), QString::fromLatin1(file2.readAll()));
+    return QString("%1; %2").arg(QString::fromLatin1(file1.readAll()), QString::fromLatin1(file2.readAll()));
+}
+
+QString Scripts::speeddialScript()
+{
+    QFile file(":html/speeddial/index.js");
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "speeddial/index.js not found";
+        return QStringLiteral("");
+    }
+
+    return QString("%1").arg(QString::fromLatin1(file.readAll()));
 }

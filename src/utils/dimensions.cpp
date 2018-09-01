@@ -37,7 +37,7 @@ int Dimensions::onmibarHeightOffsetFromParent()
     return 10;
 }
 
-QMargins Dimensions::omnibarMargins()
+QMargins Dimensions::lineEditMargins()
 {
     return QMargins(10, 4, 10, 4);
 }
