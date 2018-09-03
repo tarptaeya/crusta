@@ -17,8 +17,8 @@ Speeddial::Speeddial(QObject *parent, QWebEnginePage *page)
 void Speeddial::addDial()
 {
     QDialog dialog;
-    dialog.setParent(m_page->view());
 #ifdef Q_OS_MAC
+    dialog.setParent(m_page->view());
     dialog.setWindowFlag(Qt::Sheet);
 #else
     dialog.setWindowTitle(tr("Add new dial"));
