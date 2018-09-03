@@ -9,6 +9,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
+#include <QPalette>
 
 TabListItem::TabListItem(QWidget *parent)
     : QWidget(parent)
@@ -99,10 +100,10 @@ void TabListItem::paintEvent(QPaintEvent *event)
 
     if (m_state == Current) {
         QPainter painter(this);
-        painter.fillRect(0, 0, width(), height(), QColor::fromRgb(240, 240, 240));
+        painter.fillRect(0, 0, width(), height(), qApp->palette().highlight().color());
     } else if (m_state == Hovered) {
         QPainter painter(this);
-        painter.fillRect(0, 0, width(), height(), QColor::fromRgb(247, 247, 247));
+        painter.fillRect(0, 0, width(), height(), qApp->palette().mid().color());
     }
 }
 
