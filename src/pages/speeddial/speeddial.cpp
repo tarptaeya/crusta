@@ -11,6 +11,8 @@
 #include <QLabel>
 #include <QUrl>
 
+QList<SpeeddialItem> Speeddial::m_speeddialItems = QList<SpeeddialItem>();
+
 Speeddial::Speeddial(QObject *parent, QWebEnginePage *page)
     : QObject(parent)
 {
@@ -27,6 +29,10 @@ void Speeddial::addDial()
     dialog.setWindowTitle(tr("Add new dial"));
 #endif
     QVBoxLayout vBoxLayout;
+
+    QLineEdit titleLineEdit;
+    titleLineEdit.setPlaceholderText(tr("Enter title of new dial"));
+    vBoxLayout.addWidget(&titleLineEdit);
 
     QLineEdit urlLineEdit;
     urlLineEdit.setPlaceholderText(tr("Enter URL of new dial"));
@@ -66,34 +72,56 @@ void Speeddial::addDial()
 
     dialog.setMinimumWidth(300);
     if (dialog.exec() == QDialog::Accepted) {
+        const QString title = titleLineEdit.text();
         const QString url = urlLineEdit.text();
-        saveDialToDatabase(url);
-        emit dialAdded(url);
+        saveDialToDatabase(title, url);
+
+        QVariantMap map;
+        map.insert(QStringLiteral("title"), title);
+        map.insert(QStringLiteral("url"), url);
+        emit dialAdded(map);
     }
 }
 
 void Speeddial::removeDial(const QString &url)
 {
     appManager->database()->removeSpeeddialEntry(url);
+    for (int i = 0; i < m_speeddialItems.count(); i++) {
+        SpeeddialItem item = m_speeddialItems.at(i);
+        if (item.url() == url) {
+            m_speeddialItems.removeAt(i);
+            break;
+        }
+    }
 }
 
 void Speeddial::loadDialsFromDatabase()
 {
+    m_speeddialItems.clear();
+
     QList<SpeeddialItem> speeddialItems = appManager->database()->loadSpeeddialEntries();
     QVariantList dials;
     for (SpeeddialItem item : qAsConst(speeddialItems)) {
         QVariantMap map;
-        map.insert(QStringLiteral("image"), item.image());
+        map.insert(QStringLiteral("image"), item.image().toBase64());
         map.insert(QStringLiteral("title"), item.title());
         map.insert(QStringLiteral("url"), item.url());
         dials << map;
+
+        m_speeddialItems.append(item);
     }
     emit dialsAdded(dials);
 }
 
-void Speeddial::saveDialToDatabase(const QString &url)
+QList<SpeeddialItem> Speeddial::speeddialItems()
+{
+    return m_speeddialItems;
+}
+
+void Speeddial::saveDialToDatabase(const QString &title, const QString &url)
 {
     SpeeddialItem item;
+    item.setTitle(title);
     item.setUrl(url);
     appManager->database()->addSpeeddialEntry(item);
 }

@@ -29,4 +29,6 @@ private:
     void handleLoadFinished();
     void handleLinkHovered(const QString &url);
     void showContextMenu(const QPoint &pos);
+    QByteArray grabAsByteArray();
+    bool matchesCurrentUrl(const QUrl &otherUrl);
 };

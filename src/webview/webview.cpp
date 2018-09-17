@@ -7,6 +7,8 @@
 #include "../utils/dimensions.h"
 #include "../utils/strings.h"
 #include "../data/historyitem.h"
+#include "../data/speeddialitem.h"
+#include "../pages/speeddial/speeddial.h"
 #include <QUrl>
 #include <QMenu>
 #include <QAction>
@@ -105,6 +107,17 @@ void WebView::handleLoadFinished()
     item.setLoadingTime(m_loadingTime);
 
     appManager->database()->addHistoryEntry(item);
+
+    const QList<SpeeddialItem> speeddialItems = Speeddial::speeddialItems();
+    for (SpeeddialItem item : speeddialItems) {
+        QUrl itemUrl = QUrl::fromEncoded(item.url().toUtf8());
+        if (matchesCurrentUrl(itemUrl)) {
+            item.setTitle(title());
+            item.setImage(grabAsByteArray());
+            appManager->database()->addSpeeddialEntry(item);
+            break;
+        }
+    }
 }
 
 void WebView::handleLinkHovered(const QString &url)
@@ -175,4 +188,19 @@ void WebView::showContextMenu(const QPoint &pos)
     });
 
     menu->exec(mapToGlobal(pos));
+}
+
+QByteArray WebView::grabAsByteArray()
+{
+    QPixmap pixmap = grab();
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap.save(&buffer, "PNG");
+    return byteArray;
+}
+
+bool WebView::matchesCurrentUrl(const QUrl &otherUrl)
+{
+    return otherUrl.adjusted(QUrl::RemoveScheme).host() == url().adjusted(QUrl::RemoveScheme).host();
 }

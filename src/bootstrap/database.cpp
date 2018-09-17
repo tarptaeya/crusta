@@ -49,7 +49,13 @@ bool Database::addSpeeddialEntry(SpeeddialItem item)
     query.prepare("SELECT * FROM speeddial WHERE url = ?");
     query.addBindValue(item.url());
     if (query.exec() && query.next()) {
-        return false;
+        if (!item.title().isEmpty() && !item.image().isEmpty()) {
+            query.prepare("UPDATE speeddial SET image = ?  WHERE url = ?");
+            query.addBindValue(item.image());
+            query.addBindValue(item.url());
+        } else {
+            return false;
+        }
     } else {
         query.prepare("INSERT INTO speeddial (image, title, url) VALUES (?, ?, ?)");
         query.addBindValue(item.image());

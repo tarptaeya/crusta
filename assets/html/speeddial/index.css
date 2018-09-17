@@ -28,6 +28,7 @@ html, body {
 
 .dial {
     background-color: white;
+    background-size: cover;
     margin: 10px;
     border-radius: 2px;
     position: relative;
@@ -56,6 +57,8 @@ html, body {
 .dial > .titlebar {
     position: absolute;
     text-align: center;
+    background-color: #f0f0f0;
+    padding: 2px;
     bottom: 0;
     width: 100%;
 }

@@ -24,10 +24,11 @@ function blurAddDial() {
     element.style.backgroundPosition = (-boundingRect.left) + 'px' + ' ' + (-boundingRect.top) + 'px'
 }
 
-function createDial(url) {
+function createDial(item) {
     var dial = {}
     dial.element = document.createElement('div')
     dial.element.className = 'dial'
+    dial.element.style.backgroundImage = 'url("data:image/png;base64, ' + item.image + '")'
     dial.element.addEventListener('click', function(event) {
         var ripple = document.createElement('div')
         ripple.className = 'ripple'
@@ -42,7 +43,7 @@ function createDial(url) {
             dial.element.removeChild(ripple)
         }, 2000)
 
-        location.href = url
+        location.href = item.url
     })
     dial.removeButton = document.createElement('div')
     dial.removeButton.className = 'removebutton'
@@ -53,7 +54,7 @@ function createDial(url) {
         var result = confirm('Remove the dial?')
         if (result) {
             var speeddial = window.external.externalObject.speeddial
-            speeddial.removeDial(url)
+            speeddial.removeDial(item.url)
 
             document.querySelector('#container').removeChild(dial.element)
         }
@@ -62,7 +63,7 @@ function createDial(url) {
 
     dial.titlebar = document.createElement('div')
     dial.titlebar.className = 'titlebar'
-    dial.titlebar.innerHTML = '' + Math.random()
+    dial.titlebar.innerHTML = item.title
     dial.element.appendChild(dial.titlebar)
 
     document.querySelector('#container').insertBefore(dial.element, addDial)
@@ -75,13 +76,13 @@ function initChannel() {
         speeddial.addDial()
     })
 
-    speeddial.dialAdded.connect(function(url) {
-        createDial(url)
+    speeddial.dialAdded.connect(function(item) {
+        createDial(item)
     })
 
     speeddial.dialsAdded.connect(function(items) {
         items.forEach(function(item) {
-            createDial(item.url)
+            createDial(item)
         })
     })
 
