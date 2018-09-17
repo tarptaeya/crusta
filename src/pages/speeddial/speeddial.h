@@ -9,6 +9,7 @@ class Speeddial : public QObject
 public:
     explicit Speeddial(QObject *parent, QWebEnginePage *page);
     Q_INVOKABLE void addDial();
+    Q_INVOKABLE void removeDial(const QString &url);
     Q_INVOKABLE void loadDialsFromDatabase();
 Q_SIGNALS:
     void dialAdded(const QString &url);

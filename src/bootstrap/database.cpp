@@ -59,6 +59,14 @@ bool Database::addSpeeddialEntry(SpeeddialItem item)
     return query.exec();
 }
 
+bool Database::removeSpeeddialEntry(const QString &url)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM speeddial WHERE url = ?");
+    query.addBindValue(url);
+    return query.exec();
+}
+
 QList<SpeeddialItem> Database::loadSpeeddialEntries()
 {
     QList<SpeeddialItem> speeddialItems;

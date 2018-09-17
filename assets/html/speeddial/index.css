@@ -42,6 +42,24 @@ html, body {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.32);
 }
 
+.dial > .removebutton {
+    right: 3px;
+    top: 3px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.dial > .removebutton:hover {
+    color: #dc143c;
+}
+
+.dial > .titlebar {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+}
+
 #add-dial-container {
     margin: 10px;
     border-radius: 2px;

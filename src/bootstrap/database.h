@@ -14,6 +14,7 @@ public:
 
     bool addHistoryEntry(HistoryItem item);
     bool addSpeeddialEntry(SpeeddialItem item);
+    bool removeSpeeddialEntry(const QString &url);
     QList<SpeeddialItem> loadSpeeddialEntries();
 private:
     QSqlDatabase m_db;

@@ -44,6 +44,27 @@ function createDial(url) {
 
         location.href = url
     })
+    dial.removeButton = document.createElement('div')
+    dial.removeButton.className = 'removebutton'
+    dial.removeButton.innerHTML = '&times;'
+    dial.removeButton.addEventListener('click', function(event) {
+        event.stopPropagation();
+
+        var result = confirm('Remove the dial?')
+        if (result) {
+            var speeddial = window.external.externalObject.speeddial
+            speeddial.removeDial(url)
+
+            document.querySelector('#container').removeChild(dial.element)
+        }
+    })
+    dial.element.appendChild(dial.removeButton)
+
+    dial.titlebar = document.createElement('div')
+    dial.titlebar.className = 'titlebar'
+    dial.titlebar.innerHTML = '' + Math.random()
+    dial.element.appendChild(dial.titlebar)
+
     document.querySelector('#container').insertBefore(dial.element, addDial)
 }
 

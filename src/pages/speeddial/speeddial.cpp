@@ -72,6 +72,11 @@ void Speeddial::addDial()
     }
 }
 
+void Speeddial::removeDial(const QString &url)
+{
+    appManager->database()->removeSpeeddialEntry(url);
+}
+
 void Speeddial::loadDialsFromDatabase()
 {
     QList<SpeeddialItem> speeddialItems = appManager->database()->loadSpeeddialEntries();
