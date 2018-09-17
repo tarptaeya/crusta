@@ -32,6 +32,8 @@ SOURCES += \
     src/pages/speeddial/speeddial.cpp \
     src/extra/qclickablelabel.cpp \
     src/data/historyitem.cpp \
+    src/data/speeddialitem.cpp \
+    src/data/abstractdataitem.cpp
 
 HEADERS += \
     src/bootstrap/appmanager.h \
@@ -62,6 +64,8 @@ HEADERS += \
     src/pages/speeddial/speeddial.h \
     src/extra/qclickablelabel.h \
     src/data/historyitem.h \
+    src/data/speeddialitem.h \
+    src/data/abstractdataitem.h
 
 RESOURCES += \
     assets/assets.qrc \

@@ -1,5 +1,6 @@
 #include "database.h"
 #include "../data/historyitem.h"
+#include "../data/speeddialitem.h"
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
@@ -40,6 +41,41 @@ bool Database::addHistoryEntry(HistoryItem item)
         query.addBindValue(item.loadingTime());
     }
     return query.exec();
+}
+
+bool Database::addSpeeddialEntry(SpeeddialItem item)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM speeddial WHERE url = ?");
+    query.addBindValue(item.url());
+    if (query.exec() && query.next()) {
+        return false;
+    } else {
+        query.prepare("INSERT INTO speeddial (image, title, url) VALUES (?, ?, ?)");
+        query.addBindValue(item.image());
+        query.addBindValue(item.title());
+        query.addBindValue(item.url());
+    }
+    return query.exec();
+}
+
+QList<SpeeddialItem> Database::loadSpeeddialEntries()
+{
+    QList<SpeeddialItem> speeddialItems;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM speeddial");
+    query.exec();
+    while (query.next()) {
+        QByteArray image = query.value(0).toByteArray();
+        QString title = query.value(1).toString();
+        QString url = query.value(2).toString();
+        SpeeddialItem item;
+        item.setImage(image);
+        item.setTitle(title);
+        item.setUrl(url);
+        speeddialItems.append(item);
+    }
+    return speeddialItems;
 }
 
 void Database::createHistoryDatabase()

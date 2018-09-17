@@ -24,26 +24,6 @@ void HistoryItem::setFavicon(const QByteArray &favicon)
     m_favicon = favicon;
 }
 
-QString HistoryItem::title() const
-{
-    return m_title;
-}
-
-void HistoryItem::setTitle(const QString &title)
-{
-    m_title = title;
-}
-
-QString HistoryItem::url() const
-{
-    return m_url;
-}
-
-void HistoryItem::setUrl(const QString &url)
-{
-    m_url = url;
-}
-
 int HistoryItem::visitCount() const
 {
     return m_visitCount;

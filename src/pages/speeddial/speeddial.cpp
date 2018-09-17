@@ -1,4 +1,7 @@
 #include "speeddial.h"
+#include "../../bootstrap/appmanager.h"
+#include "../../bootstrap/database.h"
+#include "../../data/speeddialitem.h"
 #include <QDialog>
 #include <QLabel>
 #include <QHBoxLayout>
@@ -63,6 +66,29 @@ void Speeddial::addDial()
 
     dialog.setMinimumWidth(300);
     if (dialog.exec() == QDialog::Accepted) {
-        emit dialAdded(urlLineEdit.text());
+        const QString url = urlLineEdit.text();
+        saveDialToDatabase(url);
+        emit dialAdded(url);
     }
+}
+
+void Speeddial::loadDialsFromDatabase()
+{
+    QList<SpeeddialItem> speeddialItems = appManager->database()->loadSpeeddialEntries();
+    QVariantList dials;
+    for (SpeeddialItem item : qAsConst(speeddialItems)) {
+        QVariantMap map;
+        map.insert(QStringLiteral("image"), item.image());
+        map.insert(QStringLiteral("title"), item.title());
+        map.insert(QStringLiteral("url"), item.url());
+        dials << map;
+    }
+    emit dialsAdded(dials);
+}
+
+void Speeddial::saveDialToDatabase(const QString &url)
+{
+    SpeeddialItem item;
+    item.setUrl(url);
+    appManager->database()->addSpeeddialEntry(item);
 }

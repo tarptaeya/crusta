@@ -49,12 +49,22 @@ function createDial(url) {
 
 function initChannel() {
     var speeddial = window.external.externalObject.speeddial
+
     addDial.addEventListener('click', function() {
         speeddial.addDial()
     })
+
     speeddial.dialAdded.connect(function(url) {
         createDial(url)
     })
+
+    speeddial.dialsAdded.connect(function(items) {
+        items.forEach(function(item) {
+            createDial(item.url)
+        })
+    })
+
+    speeddial.loadDialsFromDatabase()
 }
 
 window.onload = function() {
