@@ -14,5 +14,8 @@
         <file>icons/settings.svg</file>
         <file>icons/plus.svg</file>
         <file>html/webchannel.js</file>
+        <file>icons/colors.svg</file>
+        <file>icons/globe.svg</file>
+        <file>icons/pc.svg</file>
     </qresource>
 </RCC>

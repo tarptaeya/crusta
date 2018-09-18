@@ -32,6 +32,8 @@ public:
     Q_INVOKABLE void addDial();
     Q_INVOKABLE void removeDial(const QString &url);
     Q_INVOKABLE void loadDialsFromDatabase();
+    Q_INVOKABLE void saveSetting(const QVariantMap &map);
+    Q_INVOKABLE QVariantMap loadSettings();
     static QList<SpeeddialItem> speeddialItems();
 Q_SIGNALS:
     void dialAdded(QVariantMap map);

@@ -26,6 +26,10 @@ html, body {
     height: 100%;
 }
 
+body {
+    background-repeat: no-repeat;
+}
+
 #header {
     height: 70px;
     width: 100%;
@@ -42,6 +46,75 @@ html, body {
     width: 87%;
     margin: auto;
     display: block;
+    text-align: center;
+}
+
+#modal-container {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.06);
+    animation: 0.3s ease opensmodal
+}
+
+#settings-modal {
+    width: 274px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.32);
+    animation: 0.3s ease openssettingsbar
+}
+
+.modal-heading {
+    padding: 8px;
+    font-size: 1.35em;
+}
+
+.modal-tab-container {
+    width: calc(274px - 16px);
+    margin: auto;
+    height: 274px;
+    border: 1px solid #404040;
+    border-radius: 5px;
+}
+
+.modal-tab-header {
+    text-align: center;
+    height: 30px;
+}
+
+.modal-tab-tab {
+    display: inline-block;
+    width: calc((274px - 16px) / 3);
+    padding-top: 3px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pressed {
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.16), inset 0 1px 2px rgba(0, 0, 0, 0.32);
+}
+
+.modal-tab-area {
+    display: none;
+    width: 100%;
+    height: calc(100% - 30px);
+    background-color: #f0f0f0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.16), inset 0 1px 2px rgba(0, 0, 0, 0.32);
+}
+
+#use-image-area {
+    cursor: pointer;
+    line-height: calc(274px - 30px);
     text-align: center;
 }
 
@@ -97,6 +170,7 @@ html, body {
     width: 100%;
     height: 100%;
     filter: blur(4px);
+    background-repeat: no-repeat;
 }
 
 #add-dial-image {
@@ -113,12 +187,30 @@ html, body {
     transform: scale(0);
     border-radius: 50%;
     background-color: #e0e0e0;
-    animation: 1s wave linear;
+    animation: 1s ease wave;
 }
 
 @keyframes wave {
     to {
         transform: scale(2.5);
         opacity: 0;
+    }
+}
+
+@keyframes opensmodal {
+    from {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+        background-color: rgba(0, 0, 0, 0.06);
+    }
+}
+
+@keyframes openssettingsbar {
+    from {
+        right: -274px;
+    }
+    to {
+        right: 0;
     }
 }

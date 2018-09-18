@@ -20,6 +20,7 @@
 #include "speeddial.h"
 #include "../../bootstrap/appmanager.h"
 #include "../../bootstrap/database.h"
+#include "../../bootstrap/settings.h"
 #include "../../data/speeddialitem.h"
 #include <QDialog>
 #include <QLabel>
@@ -29,6 +30,8 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QUrl>
+#include <QStandardPaths>
+#include <QDir>
 
 QList<SpeeddialItem> Speeddial::m_speeddialItems = QList<SpeeddialItem>();
 
@@ -130,6 +133,41 @@ void Speeddial::loadDialsFromDatabase()
         m_speeddialItems.append(item);
     }
     emit dialsAdded(dials);
+}
+
+void Speeddial::saveSetting(const QVariantMap &map)
+{
+    const QString key = map.keys().at(0);
+    appManager->settings()->beginGroup(SPEEDDIAL);
+    if (key == QStringLiteral("background")) {
+        const QByteArray value = map.value(key).toByteArray();
+        // Base64 data here will contain data:image/png;base64, in the beginning
+        // so remove it
+        QByteArray adjustedValue = value.mid(value.indexOf(',') + 1);
+
+        QImage image;
+        image.loadFromData(QByteArray::fromBase64(adjustedValue));
+        const QString picturesDirectory = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+        const QString crustaPicturesDirectory = QString("%1%2%3").arg(picturesDirectory, QDir::separator(), QStringLiteral("crusta"));
+        QDir dir(crustaPicturesDirectory);
+        if (!dir.exists()) {
+            dir.mkdir(crustaPicturesDirectory);
+        }
+        const QString backgroundPath = QString("%1%2%3").arg(crustaPicturesDirectory, QDir::separator(), QStringLiteral("background.png"));
+        image.save(backgroundPath, "PNG");
+        appManager->settings()->setValue(QStringLiteral("background"), QUrl::fromLocalFile(backgroundPath).toString());
+    }
+    appManager->settings()->endGroup();
+}
+
+QVariantMap Speeddial::loadSettings()
+{
+    QVariantMap map;
+    appManager->settings()->beginGroup(SPEEDDIAL);
+    QString backgroundImage = appManager->settings()->value(QStringLiteral("background")).toString();
+    map.insert(QStringLiteral("background"), backgroundImage);
+    appManager->settings()->endGroup();
+    return map;
 }
 
 QList<SpeeddialItem> Speeddial::speeddialItems()

@@ -40,6 +40,29 @@ function createAddDial() {
 
 function blurAddDial() {
     var element = document.querySelector('#add-dial-blurry-element')
+    element.style.backgroundImage = document.body.style.backgroundImage
+
+    var width = document.body.clientWidth
+    var height = document.body.clientHeight
+
+    var imageProxy = new Image()
+    // https://stackoverflow.com/a/6397564/7526789
+    imageProxy.src = document.body.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '')
+    var imageWidth = imageProxy.width
+    var imageHeight = imageProxy.height
+
+    var size
+
+    if (width * imageHeight > height * imageWidth) {
+        size = width + 'px ' + ((width * imageHeight) / imageWidth) + 'px'
+        document.body.style.backgroundSize = size
+        element.style.backgroundSize = size
+    } else {
+        size = ((imageWidth * height) / imageHeight) +'px ' + height + 'px'
+        document.body.style.backgroundSize = size
+        element.style.backgroundSize = size
+    }
+
     var boundingRect = element.getBoundingClientRect()
     element.style.backgroundPosition = (-boundingRect.left) + 'px' + ' ' + (-boundingRect.top) + 'px'
 }
@@ -77,6 +100,7 @@ function createDial(item) {
             speeddial.removeDial(item.url)
 
             document.querySelector('#container').removeChild(dial.element)
+            blurAddDial()
         }
     })
     dial.element.appendChild(dial.removeButton)
@@ -87,13 +111,73 @@ function createDial(item) {
     dial.element.appendChild(dial.titlebar)
 
     document.querySelector('#container').insertBefore(dial.element, addDial)
+    blurAddDial()
 }
 
 function initChannel() {
     var speeddial = window.external.externalObject.speeddial
+    var modalContainer = document.querySelector('#modal-container')
 
     addDial.addEventListener('click', function() {
         speeddial.addDial()
+    })
+
+    document.querySelector('#settings-button').addEventListener('click', function() {
+        modalContainer.style.display = 'block'
+    })
+
+    document.querySelectorAll('.modal-tab-tab').forEach(function(tab) {
+        tab.addEventListener('click', function(event) {
+            document.querySelectorAll('.modal-tab-tab').forEach(function(tab) {
+                tab.className = 'modal-tab-tab'
+            })
+            tab.className = 'modal-tab-tab pressed'
+
+            document.querySelectorAll('.modal-tab-area').forEach(function(area) {
+                area.style.display = 'none'
+            })
+
+            if (tab.id === 'use-image') {
+                document.querySelector('#use-image-area').style.display = 'block'
+            } else if (tab.id === 'use-solid-color') {
+                document.querySelector('#use-solid-color-area').style.display = 'block'
+            } else if (tab.id === 'use-unsplash') {
+                document.querySelector('#use-unsplash-area').style.display = 'block'
+            }
+        })
+    })
+
+    document.querySelectorAll('.modal-tab-area').forEach(function(area) {
+        if (area.id === 'use-image-area') {
+            area.addEventListener('click', function() {
+                var fileInput = document.querySelector('#use-image-area-file')
+                fileInput.click();
+                fileInput.addEventListener('change', function() {
+                    if (!fileInput.files[0]) {
+                        return
+                    }
+
+                    var fileReader = new FileReader();
+                    fileReader.onload = function(event) {
+                        document.body.style.backgroundImage = 'url(' + event.target.result + ')'
+                        speeddial.saveSetting({background: event.target.result})
+                        blurAddDial()
+                    }
+
+                    fileReader.readAsDataURL(fileInput.files[0])
+                })
+            })
+        }
+    })
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modalContainer) {
+            modalContainer.style.display = 'none'
+        }
+    })
+
+    speeddial.loadSettings(function(map) {
+        document.body.style.backgroundImage = 'url(\'' + map.background + '\')'
     })
 
     speeddial.dialAdded.connect(function(item) {

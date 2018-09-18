@@ -24,6 +24,7 @@
 
 #define APPEARANCE QStringLiteral("appearance")
 #define WEBENGINE QStringLiteral("webengine")
+#define SPEEDDIAL QStringLiteral("speeddial")
 
 class Settings : public QSettings
 {
