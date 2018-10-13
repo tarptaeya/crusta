@@ -19,7 +19,7 @@
 * ============================================================ */
 #include "window.h"
 #include "centralwidget.h"
-#include "../utils/strings.h"
+#include "strings.h"
 
 Window::Window(QWidget *parent)
     : QMainWindow(parent)

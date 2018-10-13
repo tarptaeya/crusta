@@ -21,9 +21,9 @@
 #include "tablistitem.h"
 #include "tab.h"
 #include "tabwidget.h"
-#include "../bootstrap/appmanager.h"
-#include "../bootstrap/settings.h"
-#include "../utils/dimensions.h"
+#include "appmanager.h"
+#include "settings.h"
+#include "dimensions.h"
 #include <QScrollArea>
 
 TabList::TabList(QWidget *parent)

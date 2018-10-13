@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "webpage.h"
-#include "../pages/externaljsobject.h"
+#include "externaljsobject.h"
 #include <QWebEngineScript>
 
 WebPage::WebPage(QWebEngineProfile *profile)

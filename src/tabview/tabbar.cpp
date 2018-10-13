@@ -22,8 +22,8 @@
 #include "tab.h"
 #include "tabwidget.h"
 #include "omnibar/omnibar.h"
-#include "../utils/dimensions.h"
-#include "../webview/webview.h"
+#include "dimensions.h"
+#include "webview.h"
 
 TabBar::TabBar(QWidget *parent)
     : QWidget(parent)

@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "layouts.h"
-#include "../bootstrap/appmanager.h"
-#include "../bootstrap/settings.h"
+#include "appmanager.h"
+#include "settings.h"
 
 Layouts::Layouts()
 {

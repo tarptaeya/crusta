@@ -18,10 +18,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "speeddial.h"
-#include "../../bootstrap/appmanager.h"
-#include "../../bootstrap/database.h"
-#include "../../bootstrap/settings.h"
-#include "../../data/speeddialitem.h"
+#include "appmanager.h"
+#include "database.h"
+#include "settings.h"
+#include "speeddialitem.h"
 #include <QDialog>
 #include <QLabel>
 #include <QHBoxLayout>

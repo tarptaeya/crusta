@@ -19,15 +19,15 @@
 * ============================================================ */
 #include "webview.h"
 #include "webpage.h"
-#include "../tabview/tabwidget.h"
-#include "../bootstrap/appmanager.h"
-#include "../bootstrap/settings.h"
-#include "../bootstrap/database.h"
-#include "../utils/dimensions.h"
-#include "../utils/strings.h"
-#include "../data/historyitem.h"
-#include "../data/speeddialitem.h"
-#include "../pages/speeddial/speeddial.h"
+#include "tabwidget.h"
+#include "appmanager.h"
+#include "settings.h"
+#include "database.h"
+#include "dimensions.h"
+#include "strings.h"
+#include "historyitem.h"
+#include "speeddialitem.h"
+#include "speeddial/speeddial.h"
 #include <QUrl>
 #include <QMenu>
 #include <QAction>

@@ -18,9 +18,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "centralwidget.h"
-#include "../sidebar/sidebar.h"
-#include "../tabview/tabwidget.h"
-#include "../utils/layouts.h"
+#include "sidebar.h"
+#include "tabwidget.h"
+#include "layouts.h"
 
 CentralWidget::CentralWidget(QWidget *parent)
     : QSplitter(parent)

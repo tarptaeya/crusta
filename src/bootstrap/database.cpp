@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "database.h"
-#include "../data/historyitem.h"
-#include "../data/speeddialitem.h"
+#include "historyitem.h"
+#include "speeddialitem.h"
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>

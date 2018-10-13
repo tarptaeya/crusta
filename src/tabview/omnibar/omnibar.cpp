@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "omnibar.h"
-#include "../../utils/dimensions.h"
+#include "dimensions.h"
 #include <QUrl>
 #include <QApplication>
 #include <QPalette>

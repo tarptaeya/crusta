@@ -23,7 +23,7 @@
 #include "stackedwidget.h"
 #include "tablist.h"
 #include "tablistitem.h"
-#include "../webview/webview.h"
+#include "webview.h"
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QUrl>

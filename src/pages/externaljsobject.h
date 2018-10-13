@@ -19,7 +19,7 @@
 * ============================================================ */
 #pragma once
 
-#include "speeddial/speeddial.h"
+#include "speeddial.h"
 #include <QObject>
 #include <QWebChannel>
 #include <QWebEnginePage>

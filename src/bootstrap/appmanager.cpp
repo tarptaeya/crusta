@@ -18,10 +18,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "appmanager.h"
-#include "../window/window.h"
+#include "window.h"
 #include "settings.h"
 #include "database.h"
-#include "../pages/scripts.h"
+#include "scripts.h"
 
 AppManager::AppManager(QObject *parent)
     : QObject(parent)

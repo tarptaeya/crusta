@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "sidebar.h"
-#include "../utils/strings.h"
-#include "../utils/dimensions.h"
+#include "strings.h"
+#include "dimensions.h"
 #include <QDebug>
 
 SideBar::SideBar(QWidget *parent)

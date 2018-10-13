@@ -19,7 +19,7 @@
 * ============================================================ */
 #include "tab.h"
 #include "tabwidget.h"
-#include "../webview/webview.h"
+#include "webview.h"
 #include <QVBoxLayout>
 
 Tab::Tab(QWidget *parent, WebView *webview)

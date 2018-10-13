@@ -20,8 +20,8 @@
 #include "tablistitem.h"
 #include "tab.h"
 #include "tabwidget.h"
-#include "../webview/webview.h"
-#include "../utils/dimensions.h"
+#include "webview.h"
+#include "dimensions.h"
 #include <QIcon>
 #include <QMouseEvent>
 #include <QMenu>

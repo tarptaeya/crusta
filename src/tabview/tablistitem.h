@@ -19,7 +19,7 @@
 * ============================================================ */
 #pragma once
 
-#include "../extra/qclickablelabel.h"
+#include "qclickablelabel.h"
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QLabel>
