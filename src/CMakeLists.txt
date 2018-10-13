@@ -1,0 +1,63 @@
+include_directories(
+    bootstrap
+    data
+    extra
+    pages
+    pages/speeddial
+    sidebar
+    tabview
+    utils
+    webview
+    window
+)
+
+set(
+    SRCS
+    main.cpp
+    bootstrap/appmanager.cpp
+    bootstrap/database.cpp
+    bootstrap/settings.cpp
+    data/abstractdataitem.cpp
+    data/historyitem.cpp
+    data/speeddialitem.cpp
+    extra/lineedit.cpp
+    extra/qclickablelabel.cpp
+    pages/speeddial/speeddial.cpp
+    pages/externaljsobject.cpp
+    pages/scripts.cpp
+    sidebar/sidebar.cpp
+    sidebar/sidebarbutton.cpp
+    sidebar/sidebarpopup.cpp
+    tabview/omnibar/omnibar.cpp
+    tabview/stackedwidget.cpp
+    tabview/tab.cpp
+    tabview/tabbar.cpp
+    tabview/tabbarbutton.cpp
+    tabview/tablist.cpp
+    tabview/tablistitem.cpp
+    tabview/tabwidget.cpp
+    utils/dimensions.cpp
+    utils/layouts.cpp
+    utils/strings.cpp
+    webview/webpage.cpp
+    webview/webview.cpp
+    window/centralwidget.cpp
+    window/menubar.cpp
+    window/statusbar.cpp
+    window/window.cpp
+)
+
+qt5_add_resources(
+    SRCS
+    assets/assets.qrc
+)
+
+add_executable(Crusta ${SRCS})
+target_link_libraries(
+    Crusta
+    Qt5::Widgets
+    Qt5::Network
+    Qt5::Sql
+    Qt5::WebEngineWidgets
+    Qt5::WebChannel
+)

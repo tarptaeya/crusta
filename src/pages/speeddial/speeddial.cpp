@@ -32,6 +32,8 @@
 #include <QUrl>
 #include <QStandardPaths>
 #include <QDir>
+#include <QPalette>
+#include <QApplication>
 
 QList<SpeeddialItem> Speeddial::m_speeddialItems = QList<SpeeddialItem>();
 
@@ -61,10 +63,21 @@ void Speeddial::addDial()
     vBoxLayout.addWidget(&urlLineEdit);
 
     QLabel errorLabel;
-    QPalette palette;
-    palette.setColor(errorLabel.foregroundRole(), Qt::red);
-    errorLabel.setPalette(palette);
+
+    QPalette labelPalette;
+    labelPalette.setColor(errorLabel.foregroundRole(), Qt::red);
+    errorLabel.setPalette(labelPalette);
     vBoxLayout.addWidget(&errorLabel);
+
+    const QColor textColor = qApp->palette().text().color();
+    const QColor baseColor = QColor(256 - textColor.red(), 256 - textColor.green(), 256 - textColor.blue(), 256 - textColor.alpha());
+
+    QPalette lineEditPalette;
+    lineEditPalette.setColor(QPalette::Text, textColor);
+    lineEditPalette.setColor(QPalette::Base, baseColor);
+
+    titleLineEdit.setPalette(lineEditPalette);
+    urlLineEdit.setPalette(lineEditPalette);
 
     QWidget spacer;
     QPushButton okButton(tr("Ok"));

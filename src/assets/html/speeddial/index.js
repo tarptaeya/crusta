@@ -140,12 +140,12 @@ function initChannel() {
             if (tab.id === 'use-image') {
                 document.querySelector('#use-image-area').style.display = 'block'
             } else if (tab.id === 'use-solid-color') {
-                document.querySelector('#use-solid-color-area').style.display = 'block'
-            } else if (tab.id === 'use-unsplash') {
-                document.querySelector('#use-unsplash-area').style.display = 'block'
+                document.querySelector('#use-solid-color-area').style.display = 'table-cell'
             }
         })
     })
+
+    document.querySelector('#use-image').click()
 
     document.querySelectorAll('.modal-tab-area').forEach(function(area) {
         if (area.id === 'use-image-area') {
@@ -195,7 +195,7 @@ function initChannel() {
 
 window.onload = function() {
     createAddDial()
-    blurAddDial()
+    setTimeout(blurAddDial, 200)
 
     if (window.external.externalObject) {
         initChannel()
@@ -204,6 +204,8 @@ window.onload = function() {
     }
 }
 
+var timeout
 window.onresize = function() {
-    blurAddDial()
+    clearTimeout(timeout)
+    timeout = setTimeout(blurAddDial, 10)
 }

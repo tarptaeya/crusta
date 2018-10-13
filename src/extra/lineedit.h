@@ -17,32 +17,11 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
-#include "omnibar.h"
-#include "../../utils/dimensions.h"
-#include <QUrl>
-#include <QApplication>
-#include <QPalette>
-#include <QDebug>
+#pragma once
 
-OmniBar::OmniBar(QWidget *parent)
-    : QLineEdit(parent)
+#include <QLineEdit>
+
+class LineEdit : public QLineEdit
 {
-    int height = parent->height() - Dimensions::onmibarHeightOffsetFromParent();
-    setFixedHeight(height);
-    setAttribute(Qt::WA_MacShowFocusRect, 0);
-    setTextMargins(Dimensions::lineEditMargins());
-
-    const QColor textColor = qApp->palette().text().color();
-    const QColor baseColor = QColor(256 - textColor.red(), 256 - textColor.green(), 256 - textColor.blue(), 256 - textColor.alpha());
-
-    QPalette palette;
-    palette.setColor(QPalette::Text, textColor);
-    palette.setColor(QPalette::Base, baseColor);
-    setPalette(palette);
-}
-
-void OmniBar::setUrl(const QUrl &url)
-{
-    setText(url.toString());
-    setCursorPosition(0);
-}
+public:
+};
