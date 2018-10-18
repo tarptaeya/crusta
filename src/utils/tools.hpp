@@ -3,6 +3,8 @@
 #include <QString>
 #include <QFile>
 
+#define QSL QStringLiteral
+
 namespace CrTools {
 
 QString readFile(const QString &fileName)
@@ -15,12 +17,6 @@ QString readFile(const QString &fileName)
     fileContents = QString::fromUtf8(file.readAll());
     file.close();
     return fileContents;
-}
-
-QString styleParser(const QString &styleSource)
-{
-    QString parsedString = styleSource;
-    return parsedString;
 }
 
 }

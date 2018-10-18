@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 {
     QApplication application(argc, argv);
 
-    application.setStyleSheet(CrTools::styleParser(CrTools::readFile(":/styles/stylesheet.css")));
+    application.setStyleSheet(CrTools::readFile(":/styles/stylesheet.css"));
 
     QCoreApplication::setOrganizationName(appManager->organisationName());
     QCoreApplication::setOrganizationDomain(appManager->organisationDomain());
