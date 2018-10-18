@@ -20,6 +20,7 @@
 #include "window.h"
 #include "centralwidget.h"
 #include "strings.h"
+#include "tabwidget.h"
 
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
@@ -33,4 +34,9 @@ Window::Window(QWidget *parent)
 
 Window::~Window()
 {
+}
+
+TabWidget *Window::tabWidget()
+{
+    return m_centralWidget->tabWidget();
 }

@@ -22,6 +22,8 @@
 #include "settings.h"
 #include "database.h"
 #include "scripts.h"
+#include "tab.h"
+#include "tabwidget.h"
 
 AppManager::AppManager(QObject *parent)
     : QObject(parent)
@@ -122,6 +124,31 @@ QWebEngineProfile *AppManager::webEngineProfile() const
 Database *AppManager::database() const
 {
     return m_database;
+}
+
+int AppManager::addTab(Tab *tab, int type)
+{
+    int index = -1;
+    for (Window *window : qAsConst(m_windowList)) {
+        if (window->isActiveWindow()) {
+            index = window->tabWidget()->addTab(tab, type);
+            break;
+        }
+    }
+    return index;
+}
+
+TabWidget *AppManager::getTabWidget(Tab *tab)
+{
+    TabWidget *tabWidget = nullptr;
+    for (Window *window : qAsConst(m_windowList)) {
+        int index = window->tabWidget()->indexOf(tab);
+        if (index != -1) {
+            tabWidget = window->tabWidget();
+            break;
+        }
+    }
+    return tabWidget;
 }
 
 void AppManager::setUpWebEngineProfile()

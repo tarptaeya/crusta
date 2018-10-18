@@ -22,6 +22,7 @@
 #include <QMainWindow>
 
 class CentralWidget;
+class TabWidget;
 
 class Window : public QMainWindow
 {
@@ -33,7 +34,7 @@ public:
     };
     explicit Window(QWidget *parent = nullptr);
     ~Window();
-
+    TabWidget *tabWidget();
 private:
     bool m_isPrivate;
     CentralWidget *m_centralWidget = nullptr;

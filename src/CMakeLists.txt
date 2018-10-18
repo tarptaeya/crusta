@@ -28,14 +28,12 @@ set(
     sidebar/sidebar.cpp
     sidebar/sidebarbutton.cpp
     sidebar/sidebarpopup.cpp
-    tabview/omnibar/omnibar.cpp
-    tabview/stackedwidget.cpp
+    tabview/bookmarksbar.cpp
+    tabview/infobar.cpp
     tabview/tab.cpp
     tabview/tabbar.cpp
-    tabview/tabbarbutton.cpp
-    tabview/tablist.cpp
-    tabview/tablistitem.cpp
     tabview/tabwidget.cpp
+    tabview/toolbar.cpp
     utils/dimensions.cpp
     utils/layouts.cpp
     utils/strings.cpp

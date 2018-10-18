@@ -30,6 +30,9 @@ class CentralWidget : public QSplitter
 public:
     explicit CentralWidget(QWidget *parent = nullptr);
     ~CentralWidget();
+
+    TabWidget *tabWidget();
 private:
     SideBar *m_sideBar = nullptr;
+    TabWidget *m_tabWidget = nullptr;
 };

@@ -17,18 +17,9 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
-#pragma once
+#include "toolbar.h"
 
-#include <QPushButton>
-#include <QVariant>
-
-class TabBarButton : public QPushButton
+ToolBar::ToolBar(QWidget *parent)
+    : QWidget(parent)
 {
-    Q_OBJECT
-public:
-    explicit TabBarButton(QWidget *parent);
-    QVariant data() const;
-    void setData(QVariant data);
-private:
-    QVariant m_data;
-};
+}

@@ -17,26 +17,9 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
-#include "stackedwidget.h"
-#include "tab.h"
-#include <QDebug>
+#include "bookmarksbar.h"
 
-StackedWidget::StackedWidget(QWidget *parent)
-    : QStackedWidget(parent)
+BookmarksBar::BookmarksBar(QWidget *parent)
+    : QWidget(parent)
 {
-    setContentsMargins(0, 0, 0, 0);
-    connect(this, &StackedWidget::widgetAdded, this, [this](Tab *tab){
-        m_tabWidgetList.append(tab);
-    });
-}
-
-int StackedWidget::addWidget(Tab *tab)
-{
-    int index = QStackedWidget::addWidget(tab);
-    if (index == -1) {
-        qWarning() << "Adding widget to StackedWidget failed";
-        return index;
-    }
-    emit widgetAdded(tab);
-    return index;
 }

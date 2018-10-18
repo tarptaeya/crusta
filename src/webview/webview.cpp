@@ -19,7 +19,7 @@
 * ============================================================ */
 #include "webview.h"
 #include "webpage.h"
-#include "tabwidget.h"
+#include "tab.h"
 #include "appmanager.h"
 #include "settings.h"
 #include "database.h"
@@ -66,11 +66,6 @@ void WebView::loadStartupUrl()
     load(url);
 }
 
-void WebView::setVirtualTabWidget(TabWidget *tabWidget)
-{
-    m_tabWidget = tabWidget;
-}
-
 void WebView::search(const QString &text)
 {
     // TODO
@@ -85,12 +80,14 @@ int WebView::loadingTime() const
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 {
     WebView *webview = new WebView;
+    Tab *tab = new Tab;
+    tab->setWebView(webview);
     switch (type) {
     case QWebEnginePage::WebBrowserTab:
-        m_tabWidget->addTab(webview);
+        appManager->addTab(tab, Tab::Active);
         break;
     case QWebEnginePage::WebBrowserBackgroundTab:
-        m_tabWidget->addBackgroundTab(webview);
+        appManager->addTab(tab, Tab::Background);
         break;
     case QWebEnginePage::WebBrowserWindow:
 

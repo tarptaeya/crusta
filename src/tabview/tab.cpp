@@ -18,47 +18,66 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "tab.h"
+#include "bookmarksbar.h"
+#include "infobar.h"
+#include "toolbar.h"
 #include "tabwidget.h"
 #include "webview.h"
-#include <QVBoxLayout>
+#include "appmanager.h"
 
-Tab::Tab(QWidget *parent, WebView *webview)
+Tab::Tab(QWidget *parent)
     : QWidget(parent)
 {
-    m_webView = webview;
-    if (!m_webView) {
-        m_webView = new WebView(this);
-    }
-
-    QVBoxLayout *vBoxLayout = new QVBoxLayout(this);
-    setLayout(vBoxLayout);
-    vBoxLayout->setContentsMargins(0, 0, 0, 0);
-    vBoxLayout->setSpacing(0);
-    vBoxLayout->addWidget(m_webView);
+    m_vBoxLayout = new QVBoxLayout(this);
+    m_vBoxLayout->setContentsMargins(0, 0, 0, 0);
+    m_vBoxLayout->setSpacing(0);
+    setLayout(m_vBoxLayout);
 }
 
-WebView *Tab::webview() const
+QString Tab::title() const
+{
+    if (!m_webView) {
+        return QString();
+    }
+    return m_webView->title();
+}
+
+QString Tab::urlString() const
+{
+    if (!m_webView) {
+        return QString();
+    }
+    return QString::fromUtf8(m_webView->url().toEncoded());
+}
+
+QIcon Tab::icon() const
+{
+    if (!m_webView) {
+        return QIcon();
+    }
+    return m_webView->icon();
+}
+
+WebView *Tab::webView()
 {
     return m_webView;
 }
 
-TabListItem *Tab::tabListItem() const
+void Tab::setWebView(WebView *webView)
 {
-    return m_tabListItem;
-}
+    if (m_webView) {
+        return;
+    }
+    m_webView = webView;
+    m_vBoxLayout->addWidget(m_webView);
 
-void Tab::setTabListItem(TabListItem *tabListItem)
-{
-    m_tabListItem = tabListItem;
-}
+    connect(m_webView, &WebView::titleChanged, this, [this](const QString &title){
+        TabWidget *tabWidget = appManager->getTabWidget(this);
+        tabWidget->setTabText(tabWidget->indexOf(this), title);
+    });
 
-void Tab::closeTab()
-{
-    deleteLater();
-}
-
-void Tab::setVirtualTabWidget(TabWidget *tabWidget)
-{
-    m_tabWidget = tabWidget;
-    m_webView->setVirtualTabWidget(tabWidget);
+    connect(m_webView, &WebView::iconChanged, this, [this](const QIcon &icon){
+        TabWidget *tabWidget = appManager->getTabWidget(this);
+        tabWidget->setTabIcon(tabWidget->indexOf(this), icon);
+    });
 }

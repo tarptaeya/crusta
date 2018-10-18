@@ -19,12 +19,10 @@
 * ============================================================ */
 #pragma once
 
-#include <QLineEdit>
+#include <QWidget>
 
-class OmniBar : public QLineEdit
+class ToolBar : public QWidget
 {
-    Q_OBJECT
 public:
-    explicit OmniBar(QWidget *parent = nullptr);
-    void setUrl(const QUrl &url);
+    explicit ToolBar(QWidget *parent = nullptr);
 };

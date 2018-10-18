@@ -20,29 +20,33 @@
 #pragma once
 
 #include <QWidget>
+#include <QVBoxLayout>
+#include <QIcon>
 
+class ToolBar;
+class BookmarksBar;
+class InfoBar;
 class WebView;
-class TabListItem;
-class TabWidget;
 
 class Tab : public QWidget
 {
-    Q_OBJECT
 public:
-    enum DisplayMode {
-        Desktop,
-        IPhone,
-        Android,
-        Custom
+    enum Type {
+        Active,
+        Background
     };
-    explicit Tab(QWidget *parent = nullptr, WebView *webview = nullptr);
-    WebView *webview() const;
-    TabListItem *tabListItem() const;
-    void setTabListItem(TabListItem *tabListItem);
-    void closeTab();
-    void setVirtualTabWidget(TabWidget *tabWidget);
+    explicit Tab(QWidget *parent = nullptr);
+    QString title() const;
+    QString urlString() const;
+    QIcon icon() const;
+    WebView *webView();
+    void setWebView(WebView *webView);
 private:
+    ToolBar *m_toolBar = nullptr;
+    BookmarksBar *m_bookmarksBar = nullptr;
+    InfoBar *m_infoBar = nullptr;
     WebView *m_webView = nullptr;
-    TabListItem *m_tabListItem = nullptr;
-    TabWidget *m_tabWidget = nullptr;
+    QVBoxLayout *m_vBoxLayout = nullptr;
+
+    int index();
 };

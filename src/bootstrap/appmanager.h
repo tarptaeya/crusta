@@ -30,6 +30,8 @@ class Window;
 class Settings;
 class ExternalJsObject;
 class Database;
+class Tab;
+class TabWidget;
 
 class AppManager : public QObject
 {
@@ -66,6 +68,9 @@ public:
     Settings *settings();
     QWebEngineProfile *webEngineProfile() const;
     Database *database() const;
+
+    int addTab(Tab *tab, int type);
+    TabWidget *getTabWidget(Tab *tab);
 private:
     Application m_application;
     QList<Window *> m_windowList;

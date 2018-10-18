@@ -25,8 +25,8 @@
 CentralWidget::CentralWidget(QWidget *parent)
     : QSplitter(parent)
 {
-    TabWidget *tabWidget = new TabWidget(this);
-    addWidget(tabWidget);
+    m_tabWidget = new TabWidget(this);
+    addWidget(m_tabWidget);
     m_sideBar = new SideBar(this);
     if (Layouts::sideBarPosition() == Layouts::Left) {
         insertWidget(0, m_sideBar);
@@ -41,4 +41,9 @@ CentralWidget::CentralWidget(QWidget *parent)
 
 CentralWidget::~CentralWidget()
 {
+}
+
+TabWidget *CentralWidget::tabWidget()
+{
+    return m_tabWidget;
 }

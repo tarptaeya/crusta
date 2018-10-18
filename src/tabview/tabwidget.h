@@ -19,33 +19,16 @@
 * ============================================================ */
 #pragma once
 
-#include <QWidget>
+#include <QTabWidget>
 
 class Tab;
 class TabBar;
-class StackedWidget;
-class TabList;
-class WebView;
 
-class TabWidget : public QWidget
+class TabWidget : public QTabWidget
 {
-    Q_OBJECT
 public:
     explicit TabWidget(QWidget *parent = nullptr);
-    ~TabWidget();
-    void addTab();
-    void addTab(const QUrl &url);
-    void addTab(WebView *webview);
-    int addBackgroundTab(WebView *webview);
-    void closeTab(Tab *tab);
-    void closeTabsAfter(Tab *tab);
-    void closeTabsBefore(Tab *tab);
-    void currentTabChanged(Tab *tab);
-    void toggleTabList();
+    int addTab(Tab *tab, int type = -1);
 private:
     TabBar *m_tabBar = nullptr;
-    StackedWidget *m_stakedWidget = nullptr;
-    TabList *m_tabList = nullptr;
-
-    void handleTabChanged(Tab *tab);
 };

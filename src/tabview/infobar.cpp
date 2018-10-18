@@ -17,30 +17,9 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
-#pragma once
+#include "infobar.h"
 
-#include <QWidget>
-#include <QVBoxLayout>
-
-class Tab;
-class TabWidget;
-
-class TabList : public QWidget
+InfoBar::InfoBar(QWidget *parent)
+    : QWidget(parent)
 {
-    Q_OBJECT
-public:
-    explicit TabList(QWidget *parent = nullptr);
-    void show();
-    void addTab(Tab *tab);
-    void closeTab(Tab *tab);
-    void setVirtualTabWidget(TabWidget *tabWidget);
-    int indexOf(Tab *tab);
-    Tab *tabAt(int index);
-    QList<Tab *> tabs() const;
-private:
-    int m_preferedWidth = 0;
-    int m_tabCount = 0;
-    QVBoxLayout *m_vBoxLayout = nullptr;
-    TabWidget *m_tabWidget = nullptr;
-    QList<Tab *> m_tabs;
-};
+}
