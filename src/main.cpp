@@ -18,11 +18,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "appmanager.h"
+#include "tools.hpp"
 #include <QApplication>
 
 int main(int argc, char **argv)
 {
     QApplication application(argc, argv);
+
+    application.setStyleSheet(CrTools::readFile(":/styles/stylesheet.css"));
 
     QCoreApplication::setOrganizationName(appManager->organisationName());
     QCoreApplication::setOrganizationDomain(appManager->organisationDomain());

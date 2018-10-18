@@ -21,6 +21,8 @@
 
 #include <QTabBar>
 
+class TabWidget;
+
 class TabBar : public QTabBar
 {
 public:

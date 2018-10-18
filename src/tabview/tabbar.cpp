@@ -18,6 +18,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "tabbar.h"
+#include "tabwidget.h"
+
+#include <QDebug>
 
 TabBar::TabBar(QWidget *parent)
     : QTabBar(parent)

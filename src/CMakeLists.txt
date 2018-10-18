@@ -37,6 +37,7 @@ set(
     utils/dimensions.cpp
     utils/layouts.cpp
     utils/strings.cpp
+    utils/tools.hpp
     webview/webpage.cpp
     webview/webview.cpp
     window/centralwidget.cpp

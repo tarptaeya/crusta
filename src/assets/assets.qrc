@@ -17,5 +17,6 @@
         <file>icons/colors.svg</file>
         <file>icons/globe.svg</file>
         <file>icons/pc.svg</file>
+        <file>styles/stylesheet.css</file>
     </qresource>
 </RCC>
