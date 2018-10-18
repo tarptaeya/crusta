@@ -1,42 +1,28 @@
 QTabWidget::tab-bar {
-    height: 35px;
+    left: 32px;
+    height: 32px;
 }
 
 QTabBar::tab {
-    height: 32px;
-    margin-top: 4px;
-    border: 1px solid #777;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    height: 30px;
+    color: #666;
+    background-color: transparent;
+    border-top: 2px solid transparent;
 }
 
 QTabBar::tab:selected {
+    background: #fff;
     color: #000;
-    background-color: #fff;
-    border-color: #444;
-    margin-top: 2px;
-    margin-left: -3px;
-    margin-right: -3px;
-}
-
-QTabBar::tab:first:selected {
-    margin-left: 0;
-}
-
-QTabBar::tab:last:selected {
-    margin-right: 0;
-}
-
-QTabBar::tab:only-one {
-    margin-left: 0;
-    margin-right: 0;
-}
-
-QTabBar::tab:!selected {
-    color: #444;
-    background-color: #ddd;
+    border-color: #6464ff;
 }
 
 QTabBar::tab:hover:!selected {
-    background-color: #eee;
+    border-color: #777;
+}
+
+#addTabButton {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: #fff;
 }

@@ -32,7 +32,10 @@ TabBar::TabBar(QWidget *parent)
 {
     m_addTabButton = new AddTabButton(this);
 
+    setAttribute(Qt::WA_StyledBackground);
+    setContentsMargins(0, 0, 0, 0);
     setDocumentMode(true);
+    setElideMode(Qt::ElideRight);
     setMovable(true);
     setTabsClosable(true);
     setUsesScrollButtons(true);
@@ -68,10 +71,11 @@ QSize TabBar::tabSizeHint(int index) const
 
 void TabBar::updateAddTabButton(int tabWidth) const
 {
-    int margin = 4;
-    int side = size().height() - 2 * margin;
-    m_addTabButton->setSide(side);
-
+    // from stylesheet ->
+    // width = height = 20px
+    // height of tabbar = 32px;
+    // so, margin = (32 - 20) / 2 => 6;
+    int margin = 6;
     int xPos = tabWidth * count() + margin;
     m_addTabButton->move(xPos, margin);
 }
