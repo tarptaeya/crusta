@@ -21,11 +21,14 @@
 
 #include <QTabBar>
 
-class TabWidget;
+class AddTabButton;
 
 class TabBar : public QTabBar
 {
 public:
     explicit TabBar(QWidget *parent = nullptr);
     QSize tabSizeHint(int index) const;
+private:
+    AddTabButton *m_addTabButton;
+    void updateAddTabButton(int tabWidth) const;
 };

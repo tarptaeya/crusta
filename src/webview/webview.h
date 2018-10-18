@@ -28,7 +28,8 @@ class WebView : public QWebEngineView
 public:
     explicit WebView(QWidget *parent = nullptr);
     ~WebView();
-    void loadStartupUrl();
+    void loadStartupPage();
+    void loadNewTabPage();
     void search(const QString &text);
     bool isLoading() const;
     QString hoveredLink() const;

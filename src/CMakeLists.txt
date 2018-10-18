@@ -28,6 +28,7 @@ set(
     sidebar/sidebar.cpp
     sidebar/sidebarbutton.cpp
     sidebar/sidebarpopup.cpp
+    tabview/addtabbutton.cpp
     tabview/bookmarksbar.cpp
     tabview/infobar.cpp
     tabview/tab.cpp

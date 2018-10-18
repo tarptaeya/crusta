@@ -18,19 +18,31 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "tabbar.h"
-#include "tabwidget.h"
+#include "tab.h"
+#include "addtabbutton.h"
+#include "webview.h"
+#include "appmanager.h"
 
 #define MAX_TAB_WIDTH 300
-#define MIN_TAB_WIDTH 75
+#define MIN_TAB_WIDTH 50
 #define AUX_WIDTH 50
 
 TabBar::TabBar(QWidget *parent)
     : QTabBar(parent)
 {
+    m_addTabButton = new AddTabButton(this);
+
     setDocumentMode(true);
     setMovable(true);
     setTabsClosable(true);
     setUsesScrollButtons(true);
+
+    connect(m_addTabButton, &AddTabButton::clicked, this, []{
+        Tab *tab = new Tab;
+        WebView *webView = new WebView;
+        tab->setWebView(webView);
+        appManager->addTab(tab, Tab::Active);
+    });
 }
 
 QSize TabBar::tabSizeHint(int index) const
@@ -43,7 +55,23 @@ QSize TabBar::tabSizeHint(int index) const
     if (width < MIN_TAB_WIDTH) {
         width = MIN_TAB_WIDTH;
     }
+
     QSize size = QTabBar::tabSizeHint(index);
     size.setWidth(width);
+
+    if (index == count - 1) {
+        updateAddTabButton(width);
+    }
+
     return size;
+}
+
+void TabBar::updateAddTabButton(int tabWidth) const
+{
+    int margin = 4;
+    int side = size().height() - 2 * margin;
+    m_addTabButton->setSide(side);
+
+    int xPos = tabWidth * count() + margin;
+    m_addTabButton->move(xPos, margin);
 }

@@ -58,12 +58,17 @@ WebView::~WebView()
     m_webPage->deleteLater();
 }
 
-void WebView::loadStartupUrl()
+void WebView::loadStartupPage()
 {
     appManager->settings()->beginGroup(WEBENGINE);
     const QUrl url = appManager->settings()->value(QStringLiteral("startupUrl"), QUrl("qrc:/html/speeddial/index.html")).toUrl();
     appManager->settings()->endGroup();
     load(url);
+}
+
+void WebView::loadNewTabPage()
+{
+    // TODO
 }
 
 void WebView::search(const QString &text)
