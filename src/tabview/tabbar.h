@@ -27,4 +27,5 @@ class TabBar : public QTabBar
 {
 public:
     explicit TabBar(QWidget *parent = nullptr);
+    QSize tabSizeHint(int index) const;
 };

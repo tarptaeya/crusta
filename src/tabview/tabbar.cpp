@@ -20,7 +20,9 @@
 #include "tabbar.h"
 #include "tabwidget.h"
 
-#include <QDebug>
+#define MAX_TAB_WIDTH 300
+#define MIN_TAB_WIDTH 75
+#define AUX_WIDTH 50
 
 TabBar::TabBar(QWidget *parent)
     : QTabBar(parent)
@@ -28,4 +30,20 @@ TabBar::TabBar(QWidget *parent)
     setDocumentMode(true);
     setMovable(true);
     setTabsClosable(true);
+    setUsesScrollButtons(true);
+}
+
+QSize TabBar::tabSizeHint(int index) const
+{
+    int count = this->count() ? this->count() : 1;
+    int width = (this->size().width() - AUX_WIDTH) / count;
+    if (width > MAX_TAB_WIDTH) {
+        width = MAX_TAB_WIDTH;
+    }
+    if (width < MIN_TAB_WIDTH) {
+        width = MIN_TAB_WIDTH;
+    }
+    QSize size = QTabBar::tabSizeHint(index);
+    size.setWidth(width);
+    return size;
 }
