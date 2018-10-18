@@ -17,4 +17,10 @@ QString readFile(const QString &fileName)
     return fileContents;
 }
 
+QString styleParser(const QString &styleSource)
+{
+    QString parsedString = styleSource;
+    return parsedString;
+}
+
 }
