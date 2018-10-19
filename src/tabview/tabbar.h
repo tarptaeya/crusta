@@ -29,6 +29,6 @@ public:
     explicit TabBar(QWidget *parent = nullptr);
     QSize tabSizeHint(int index) const;
 private:
-    AddTabButton *m_addTabButton;
+    AddTabButton *m_addTabButton = nullptr;
     void updateAddTabButton(int tabWidth) const;
 };
