@@ -40,6 +40,8 @@ TabBar::TabBar(QWidget *parent)
     setMovable(true);
     setUsesScrollButtons(true);
 
+    setMouseTracking(true);
+
     connect(m_addTabButton, &AddTabButton::clicked, this, []{
         Tab *tab = new Tab;
         WebView *webView = new WebView;
@@ -59,6 +61,10 @@ QSize TabBar::tabSizeHint(int index) const
         width = MIN_TAB_WIDTH;
     }
 
+    if (m_state == CLOSING) {
+        width = m_previousWidth;
+    }
+
     QSize size = QTabBar::tabSizeHint(index);
     size.setWidth(width);
 
@@ -72,6 +78,24 @@ QSize TabBar::tabSizeHint(int index) const
 void TabBar::tabInserted(int index)
 {
     addTabCloseButton(index);
+}
+
+void TabBar::mouseMoveEvent(QMouseEvent *event)
+{
+    QTabBar::mouseMoveEvent(event);
+
+    if (m_previousMousePos == QCursor::pos()) {
+        return;
+    }
+
+    if (m_state == CLOSING) {
+        m_state = NORMAL;
+
+        // FIXME:
+        QSize size = this->size();
+        resize(size.width() - 1, size.height());
+        resize(size);
+    }
 }
 
 void TabBar::updateAddTabButton(int tabWidth) const
@@ -94,6 +118,9 @@ void TabBar::addTabCloseButton(int index)
     Tab *tab = qobject_cast<Tab *>(m_tabWidget->widget(index));
 
     connect(tabCloseButton, &QPushButton::clicked, this, [this, tab]{
+        m_previousWidth = tabSizeHint(0).width();
+        m_previousMousePos = QCursor::pos();
+        m_state = CLOSING;
         tabCloseRequested(tab->index());
     });
 }

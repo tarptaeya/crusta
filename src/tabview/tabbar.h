@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QTabBar>
+#include <QPoint>
 
 class AddTabButton;
 class TabWidget;
@@ -27,14 +28,24 @@ class TabWidget;
 class TabBar : public QTabBar
 {
     Q_OBJECT
+    enum State {
+        CLOSING,
+        NORMAL
+    };
 public:
     explicit TabBar(QWidget *parent = nullptr);
     QSize tabSizeHint(int index) const;
 protected:
     void tabInserted(int index);
+    void mouseMoveEvent(QMouseEvent *event);
 private:
     AddTabButton *m_addTabButton = nullptr;
     TabWidget *m_tabWidget = nullptr;
+
+    State m_state = NORMAL;
+    int m_previousWidth = 0;
+    QPoint m_previousMousePos = QPoint(-1, -1);
+
     void updateAddTabButton(int tabWidth) const;
     void addTabCloseButton(int index);
 };
