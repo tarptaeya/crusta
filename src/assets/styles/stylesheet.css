@@ -3,6 +3,11 @@ QTabWidget::tab-bar {
     height: 32px;
 }
 
+QTabBar::tear {
+    width: 0;
+    border: none;
+}
+
 QTabBar::tab {
     height: 30px;
     color: #666;
@@ -20,7 +25,20 @@ QTabBar::tab:hover:!selected {
     border-color: #777;
 }
 
-QTabBar > QPushButton {
+#tab-close-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    color: #666;
+    background-color: transparent;
+}
+
+#tab-close-button:hover {
+    color: rgba(255, 0, 0, 1);
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+#add-tab-button {
     width: 20px;
     height: 20px;
     border: none;

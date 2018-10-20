@@ -25,7 +25,7 @@
 
 #define MAX_TAB_WIDTH 300
 #define MIN_TAB_WIDTH 50
-#define AUX_WIDTH 50
+#define AUX_WIDTH 32
 
 TabBar::TabBar(QWidget *parent)
     : QTabBar(parent)
@@ -33,11 +33,9 @@ TabBar::TabBar(QWidget *parent)
     m_addTabButton = new AddTabButton(this);
 
     setAttribute(Qt::WA_StyledBackground);
-    setContentsMargins(0, 0, 0, 0);
     setDocumentMode(true);
     setElideMode(Qt::ElideRight);
     setMovable(true);
-    setTabsClosable(true);
     setUsesScrollButtons(true);
 
     connect(m_addTabButton, &AddTabButton::clicked, this, []{
@@ -69,6 +67,11 @@ QSize TabBar::tabSizeHint(int index) const
     return size;
 }
 
+void TabBar::tabInserted(int index)
+{
+    addTabCloseButton(index);
+}
+
 void TabBar::updateAddTabButton(int tabWidth) const
 {
     // from stylesheet ->
@@ -78,4 +81,16 @@ void TabBar::updateAddTabButton(int tabWidth) const
     int margin = 6;
     int xPos = tabWidth * count() + margin;
     m_addTabButton->move(xPos, margin);
+}
+
+void TabBar::addTabCloseButton(int index)
+{
+    QPushButton *tabCloseButton = new QPushButton;
+    tabCloseButton->setObjectName("tab-close-button");
+    tabCloseButton->setText("\u2a09");
+    setTabButton(index, QTabBar::RightSide, tabCloseButton);
+
+    connect(tabCloseButton, &QPushButton::clicked, this, [this, index]{
+        tabCloseRequested(index);
+    });
 }

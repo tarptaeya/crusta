@@ -28,7 +28,10 @@ class TabBar : public QTabBar
 public:
     explicit TabBar(QWidget *parent = nullptr);
     QSize tabSizeHint(int index) const;
+protected:
+    void tabInserted(int index);
 private:
     AddTabButton *m_addTabButton = nullptr;
     void updateAddTabButton(int tabWidth) const;
+    void addTabCloseButton(int index);
 };
