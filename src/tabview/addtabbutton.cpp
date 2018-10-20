@@ -3,5 +3,4 @@
 AddTabButton::AddTabButton(QWidget *parent)
     : QPushButton(parent)
 {
-    setObjectName("addTabButton");
 }

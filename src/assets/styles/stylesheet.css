@@ -20,7 +20,7 @@ QTabBar::tab:hover:!selected {
     border-color: #777;
 }
 
-#addTabButton {
+QTabBar > QPushButton {
     width: 20px;
     height: 20px;
     border: none;
