@@ -22,9 +22,11 @@
 #include <QTabBar>
 
 class AddTabButton;
+class TabWidget;
 
 class TabBar : public QTabBar
 {
+    Q_OBJECT
 public:
     explicit TabBar(QWidget *parent = nullptr);
     QSize tabSizeHint(int index) const;
@@ -32,6 +34,7 @@ protected:
     void tabInserted(int index);
 private:
     AddTabButton *m_addTabButton = nullptr;
+    TabWidget *m_tabWidget = nullptr;
     void updateAddTabButton(int tabWidth) const;
     void addTabCloseButton(int index);
 };

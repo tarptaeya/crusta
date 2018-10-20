@@ -33,6 +33,8 @@ TabWidget::TabWidget(QWidget *parent)
     webView->load(QUrl("https://google.com"));
     tab->setWebView(webView);
     addTab(tab, Tab::Active);
+
+    connect(m_tabBar, &TabBar::tabCloseRequested, this, &TabWidget::closeTab);
 }
 
 int TabWidget::addTab(Tab *tab, int type)
@@ -42,4 +44,10 @@ int TabWidget::addTab(Tab *tab, int type)
         setCurrentIndex(index);
     }
     return index;
+}
+
+void TabWidget::closeTab(int index)
+{
+    Tab *tab = qobject_cast<Tab *>(widget(index));
+    tab->deleteLater();
 }

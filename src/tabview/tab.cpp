@@ -84,3 +84,8 @@ void Tab::setWebView(WebView *webView)
         tabWidget->setTabIcon(tabWidget->indexOf(this), icon);
     });
 }
+
+int Tab::index()
+{
+    return appManager->indexOfTab(this);
+}

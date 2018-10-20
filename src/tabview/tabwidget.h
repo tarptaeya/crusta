@@ -26,9 +26,11 @@ class TabBar;
 
 class TabWidget : public QTabWidget
 {
+    Q_OBJECT
 public:
     explicit TabWidget(QWidget *parent = nullptr);
     int addTab(Tab *tab, int type = -1);
+    void closeTab(int index);
 private:
     TabBar *m_tabBar = nullptr;
 };

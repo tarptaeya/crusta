@@ -151,6 +151,19 @@ TabWidget *AppManager::getTabWidget(Tab *tab)
     return tabWidget;
 }
 
+int AppManager::indexOfTab(Tab *tab)
+{
+    int tabIndex = -1;
+    for (Window *window : qAsConst(m_windowList)) {
+        int index = window->tabWidget()->indexOf(tab);
+        if (index != -1) {
+            tabIndex = index;
+            break;
+        }
+    }
+    return tabIndex;
+}
+
 void AppManager::setUpWebEngineProfile()
 {
     m_webEngineProfile = new QWebEngineProfile(this);

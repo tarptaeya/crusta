@@ -30,6 +30,7 @@ class WebView;
 
 class Tab : public QWidget
 {
+    Q_OBJECT
 public:
     enum Type {
         Active,
@@ -41,12 +42,12 @@ public:
     QIcon icon() const;
     WebView *webView();
     void setWebView(WebView *webView);
+
+    int index();
 private:
     ToolBar *m_toolBar = nullptr;
     BookmarksBar *m_bookmarksBar = nullptr;
     InfoBar *m_infoBar = nullptr;
     WebView *m_webView = nullptr;
     QVBoxLayout *m_vBoxLayout = nullptr;
-
-    int index();
 };

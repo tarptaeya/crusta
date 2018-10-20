@@ -19,6 +19,7 @@
 * ============================================================ */
 #include "tabbar.h"
 #include "tab.h"
+#include "tabwidget.h"
 #include "addtabbutton.h"
 #include "webview.h"
 #include "appmanager.h"
@@ -31,6 +32,7 @@ TabBar::TabBar(QWidget *parent)
     : QTabBar(parent)
 {
     m_addTabButton = new AddTabButton(this);
+    m_tabWidget = qobject_cast<TabWidget *>(parent);
 
     setAttribute(Qt::WA_StyledBackground);
     setDocumentMode(true);
@@ -89,8 +91,9 @@ void TabBar::addTabCloseButton(int index)
     tabCloseButton->setObjectName("tab-close-button");
     tabCloseButton->setText("\u2a09");
     setTabButton(index, QTabBar::RightSide, tabCloseButton);
+    Tab *tab = qobject_cast<Tab *>(m_tabWidget->widget(index));
 
-    connect(tabCloseButton, &QPushButton::clicked, this, [this, index]{
-        tabCloseRequested(index);
+    connect(tabCloseButton, &QPushButton::clicked, this, [this, tab]{
+        tabCloseRequested(tab->index());
     });
 }
