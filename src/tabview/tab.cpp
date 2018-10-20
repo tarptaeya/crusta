@@ -32,6 +32,9 @@ Tab::Tab(QWidget *parent)
     m_vBoxLayout->setContentsMargins(0, 0, 0, 0);
     m_vBoxLayout->setSpacing(0);
     setLayout(m_vBoxLayout);
+
+    m_toolBar = new ToolBar(this);
+    m_vBoxLayout->addWidget(m_toolBar, 0);
 }
 
 QString Tab::title() const
@@ -69,7 +72,7 @@ void Tab::setWebView(WebView *webView)
         return;
     }
     m_webView = webView;
-    m_vBoxLayout->addWidget(m_webView);
+    m_vBoxLayout->addWidget(m_webView, 1);
 
     connect(m_webView, &WebView::titleChanged, this, [this](const QString &title){
         TabWidget *tabWidget = appManager->getTabWidget(this);

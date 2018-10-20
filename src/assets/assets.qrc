@@ -18,5 +18,12 @@
         <file>icons/globe.svg</file>
         <file>icons/pc.svg</file>
         <file>styles/stylesheet.css</file>
+        <file>icons/secure_globe.svg</file>
+        <file>icons/favourite.svg</file>
+        <file>icons/red_favourite.svg</file>
+        <file>icons/download.svg</file>
+        <file>icons/widgets.svg</file>
+        <file>icons/shield.svg</file>
+        <file>icons/active_shield.svg</file>
     </qresource>
 </RCC>

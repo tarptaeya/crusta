@@ -20,9 +20,24 @@
 #pragma once
 
 #include <QWidget>
+#include <QHBoxLayout>
+
+class OmniBar;
+class ToolBarButton;
 
 class ToolBar : public QWidget
 {
 public:
     explicit ToolBar(QWidget *parent = nullptr);
+private:
+    ToolBarButton *m_backButton = nullptr;
+    ToolBarButton *m_forwardButton = nullptr;
+    ToolBarButton *m_stopReloadButton = nullptr;
+    ToolBarButton *m_favouritesButton = nullptr;
+    OmniBar *m_omniBar = nullptr;
+    ToolBarButton *m_shieldButton = nullptr;
+    ToolBarButton *m_downloadsButton = nullptr;
+    QHBoxLayout *m_hBoxLayout = nullptr;
+
+    QWidget *spacerWidget(int width);
 };

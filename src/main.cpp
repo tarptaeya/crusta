@@ -25,6 +25,9 @@ int main(int argc, char **argv)
 {
     QApplication application(argc, argv);
 
+    application.setAttribute(Qt::AA_EnableHighDpiScaling, true);
+    application.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+
     application.setStyleSheet(CrTools::readFile(":/styles/stylesheet.css"));
 
     QCoreApplication::setOrganizationName(appManager->organisationName());

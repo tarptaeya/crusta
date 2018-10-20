@@ -35,6 +35,9 @@ set(
     tabview/tabbar.cpp
     tabview/tabwidget.cpp
     tabview/toolbar.cpp
+    tabview/omnibar.cpp
+    tabview/toolbarbutton.cpp
+    tabview/toolbarpopup.cpp
     utils/dimensions.cpp
     utils/layouts.cpp
     utils/strings.cpp
