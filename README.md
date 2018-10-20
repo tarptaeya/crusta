@@ -1,5 +1,7 @@
 ![Banner](https://github.com/CrustaBrowser/CrustaBrowser/blob/master/banner.png) 
 
+[![Build Status](https://travis-ci.org/Crusta/CrustaBrowser.svg?branch=master)](https://travis-ci.org/Crusta/CrustaBrowser)
+
 ## About
 
 Crusta is a feature rich web-browser, based on Qt5 and is licenced under GNU GPLv3. Crusta is available for all major desktop platforms (Linux, Mac and Windows) and will soon be available for mobile platforms.
