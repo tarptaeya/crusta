@@ -52,6 +52,8 @@ QTabBar::tab:hover:!selected {
 
 #tool-bar-button {
     margin: 1px;
+    margin-left: 4px;
+    margin-right: 4px;
     min-width: 24px;
     max-width: 24px;
     min-height: 24px;
