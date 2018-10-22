@@ -35,6 +35,29 @@ Tab::Tab(QWidget *parent)
 
     m_toolBar = new ToolBar(this);
     m_vBoxLayout->addWidget(m_toolBar, 0);
+
+    connect(m_toolBar, &ToolBar::backRequested, this, [this]{
+        if (!m_webView) {
+            return;
+        }
+        m_webView->back();
+    });
+    connect(m_toolBar, &ToolBar::forwardRequested, this, [this]{
+        if (!m_webView) {
+            return;
+        }
+        m_webView->forward();
+    });
+    connect(m_toolBar, &ToolBar::stopReloadRequested, this, [this]{
+        if (!m_webView) {
+            return;
+        }
+        if (m_webView->isLoading()) {
+            m_webView->stop();
+        } else {
+            m_webView->reload();
+        }
+    });
 }
 
 QString Tab::title() const

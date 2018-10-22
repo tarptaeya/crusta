@@ -23,4 +23,5 @@ AddTabButton::AddTabButton(QWidget *parent)
     : QPushButton(parent)
 {
     setObjectName("add-tab-button");
+    setIcon(QIcon(":/icons/plus.svg"));
 }

@@ -27,6 +27,7 @@ ToolBar::ToolBar(QWidget *parent)
     : QWidget(parent)
 {
     setObjectName("tool-bar");
+    setAttribute(Qt::WA_StyledBackground, true);
 
     m_hBoxLayout = new QHBoxLayout(this);
     m_hBoxLayout->setContentsMargins(5, 5, 5, 5);
@@ -55,6 +56,10 @@ ToolBar::ToolBar(QWidget *parent)
     m_hBoxLayout->addWidget(spacerWidget(SPACER_WIDGET_WIDTH));
     m_hBoxLayout->addWidget(m_shieldButton);
     m_hBoxLayout->addWidget(m_downloadsButton);
+
+    connect(m_backButton, &ToolBarButton::clicked, this, [this]{ emit backRequested(); });
+    connect(m_forwardButton, &ToolBarButton::clicked, this, [this]{ emit forwardRequested(); });
+    connect(m_stopReloadButton, &ToolBarButton::clicked, this, [this]{ emit stopReloadRequested(); });
 }
 
 QWidget *ToolBar::spacerWidget(int width)

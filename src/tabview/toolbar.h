@@ -27,8 +27,13 @@ class ToolBarButton;
 
 class ToolBar : public QWidget
 {
+    Q_OBJECT
 public:
     explicit ToolBar(QWidget *parent = nullptr);
+Q_SIGNALS:
+    void backRequested();
+    void forwardRequested();
+    void stopReloadRequested();
 private:
     ToolBarButton *m_backButton = nullptr;
     ToolBarButton *m_forwardButton = nullptr;

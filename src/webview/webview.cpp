@@ -77,6 +77,11 @@ void WebView::search(const QString &text)
     load(QUrl::fromUserInput(text));
 }
 
+bool WebView::isLoading() const
+{
+    return m_isLoading;
+}
+
 int WebView::loadingTime() const
 {
     return m_loadingTime;
