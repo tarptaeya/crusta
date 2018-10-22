@@ -82,6 +82,11 @@ void ToolBar::setIsLoading(bool isLoading)
     }
 }
 
+void ToolBar::setAddress(const QUrl &url)
+{
+    m_omniBar->setAddress(url);
+}
+
 QWidget *ToolBar::spacerWidget(int width)
 {
     QWidget *widget = new QWidget(this);

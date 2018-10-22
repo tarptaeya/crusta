@@ -118,6 +118,8 @@ void Tab::setWebView(WebView *webView)
         m_toolBar->setIsCanGoForward(m_webView->history()->canGoForward());
         m_toolBar->setIsLoading(false);
     });
+
+    connect(m_webView, &WebView::urlChanged, m_toolBar, &ToolBar::setAddress);
 }
 
 int Tab::index()

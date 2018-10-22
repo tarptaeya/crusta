@@ -33,6 +33,7 @@ public:
     void setIsCanGoBack(bool canGoBack);
     void setIsCanGoForward(bool canGoForward);
     void setIsLoading(bool isLoading);
+    void setAddress(const QUrl &url);
 Q_SIGNALS:
     void backRequested();
     void forwardRequested();
