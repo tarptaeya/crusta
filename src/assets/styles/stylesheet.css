@@ -75,3 +75,12 @@ QTabBar::tab:hover:!selected {
     selection-color: #fff;
     selection-background-color: #6464ff;
 }
+
+#progress-bar {
+    max-height: 2px;
+    background-color: #fff;
+}
+
+#progress-bar::chunk {
+    background-color: #6464ff;
+}

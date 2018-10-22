@@ -20,10 +20,10 @@
 #pragma once
 
 #include <QWidget>
-#include <QHBoxLayout>
 
 class OmniBar;
 class ToolBarButton;
+class ProgressBar;
 
 class ToolBar : public QWidget
 {
@@ -34,6 +34,7 @@ public:
     void setIsCanGoForward(bool canGoForward);
     void setIsLoading(bool isLoading);
     void setAddress(const QUrl &url);
+    void setProgress(int progress);
 Q_SIGNALS:
     void backRequested();
     void forwardRequested();
@@ -46,7 +47,7 @@ private:
     OmniBar *m_omniBar = nullptr;
     ToolBarButton *m_shieldButton = nullptr;
     ToolBarButton *m_downloadsButton = nullptr;
-    QHBoxLayout *m_hBoxLayout = nullptr;
+    ProgressBar *m_progressBar = nullptr;
 
     QWidget *spacerWidget(int width);
 };

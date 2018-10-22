@@ -20,6 +20,10 @@
 #include "toolbar.h"
 #include "omnibar.h"
 #include "toolbarbutton.h"
+#include "progressbar.h"
+
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #define SPACER_WIDGET_WIDTH 75
 #define QSL QStringLiteral
@@ -30,10 +34,9 @@ ToolBar::ToolBar(QWidget *parent)
     setObjectName("tool-bar");
     setAttribute(Qt::WA_StyledBackground, true);
 
-    m_hBoxLayout = new QHBoxLayout(this);
-    m_hBoxLayout->setContentsMargins(5, 5, 5, 5);
-    m_hBoxLayout->setSpacing(0);
-    setLayout(m_hBoxLayout);
+    QHBoxLayout *hBoxLayout = new QHBoxLayout;
+    hBoxLayout->setContentsMargins(5, 5, 5, 5);
+    hBoxLayout->setSpacing(0);
 
     m_backButton = new ToolBarButton(this);
     m_backButton->setIconFromFileName(QSL(":/icons/back.svg"));
@@ -48,15 +51,24 @@ ToolBar::ToolBar(QWidget *parent)
     m_downloadsButton = new ToolBarButton(this);
     m_downloadsButton->setIconFromFileName(QSL(":/icons/download.svg"));
 
-    m_hBoxLayout->addWidget(m_backButton);
-    m_hBoxLayout->addWidget(m_forwardButton);
-    m_hBoxLayout->addWidget(m_stopReloadButton);
-    m_hBoxLayout->addWidget(m_favouritesButton);
-    m_hBoxLayout->addWidget(spacerWidget(SPACER_WIDGET_WIDTH));
-    m_hBoxLayout->addWidget(m_omniBar);
-    m_hBoxLayout->addWidget(spacerWidget(SPACER_WIDGET_WIDTH));
-    m_hBoxLayout->addWidget(m_shieldButton);
-    m_hBoxLayout->addWidget(m_downloadsButton);
+    hBoxLayout->addWidget(m_backButton);
+    hBoxLayout->addWidget(m_forwardButton);
+    hBoxLayout->addWidget(m_stopReloadButton);
+    hBoxLayout->addWidget(m_favouritesButton);
+    hBoxLayout->addWidget(spacerWidget(SPACER_WIDGET_WIDTH));
+    hBoxLayout->addWidget(m_omniBar);
+    hBoxLayout->addWidget(spacerWidget(SPACER_WIDGET_WIDTH));
+    hBoxLayout->addWidget(m_shieldButton);
+    hBoxLayout->addWidget(m_downloadsButton);
+
+    QVBoxLayout *vBoxLayout = new QVBoxLayout;
+    vBoxLayout->setContentsMargins(0, 0, 0, 0);
+    vBoxLayout->setSpacing(0);
+    vBoxLayout->addLayout(hBoxLayout);
+    setLayout(vBoxLayout);
+
+    m_progressBar = new ProgressBar(this);
+    vBoxLayout->addWidget(m_progressBar);
 
     connect(m_backButton, &ToolBarButton::clicked, this, [this]{ emit backRequested(); });
     connect(m_forwardButton, &ToolBarButton::clicked, this, [this]{ emit forwardRequested(); });
@@ -85,6 +97,11 @@ void ToolBar::setIsLoading(bool isLoading)
 void ToolBar::setAddress(const QUrl &url)
 {
     m_omniBar->setAddress(url);
+}
+
+void ToolBar::setProgress(int progress)
+{
+    m_progressBar->setValue(progress % 100);
 }
 
 QWidget *ToolBar::spacerWidget(int width)

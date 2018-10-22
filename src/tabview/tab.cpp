@@ -120,6 +120,8 @@ void Tab::setWebView(WebView *webView)
     });
 
     connect(m_webView, &WebView::urlChanged, m_toolBar, &ToolBar::setAddress);
+
+    connect(m_webView, &WebView::loadProgress, m_toolBar, &ToolBar::setProgress);
 }
 
 int Tab::index()

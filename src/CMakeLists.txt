@@ -38,6 +38,7 @@ set(
     tabview/omnibar.cpp
     tabview/toolbarbutton.cpp
     tabview/toolbarpopup.cpp
+    tabview/progressbar.cpp
     utils/dimensions.cpp
     utils/layouts.cpp
     utils/strings.cpp
