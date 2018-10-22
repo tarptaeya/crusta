@@ -25,6 +25,8 @@
 #include "webview.h"
 #include "appmanager.h"
 
+#include <QWebEngineHistory>
+
 Tab::Tab(QWidget *parent)
     : QWidget(parent)
 {
@@ -105,6 +107,16 @@ void Tab::setWebView(WebView *webView)
     connect(m_webView, &WebView::iconChanged, this, [this](const QIcon &icon){
         TabWidget *tabWidget = appManager->getTabWidget(this);
         tabWidget->setTabIcon(tabWidget->indexOf(this), icon);
+    });
+
+    connect(m_webView, &WebView::loadStarted, this, [this]{
+        m_toolBar->setIsLoading(true);
+    });
+
+    connect(m_webView, &WebView::loadFinished, this, [this]{
+        m_toolBar->setIsCanGoBack(m_webView->history()->canGoBack());
+        m_toolBar->setIsCanGoForward(m_webView->history()->canGoForward());
+        m_toolBar->setIsLoading(false);
     });
 }
 

@@ -22,6 +22,7 @@
 #include "toolbarbutton.h"
 
 #define SPACER_WIDGET_WIDTH 75
+#define QSL QStringLiteral
 
 ToolBar::ToolBar(QWidget *parent)
     : QWidget(parent)
@@ -35,17 +36,17 @@ ToolBar::ToolBar(QWidget *parent)
     setLayout(m_hBoxLayout);
 
     m_backButton = new ToolBarButton(this);
-    m_backButton->setIconFromFileName(":/icons/back.svg");
+    m_backButton->setIconFromFileName(QSL(":/icons/back.svg"));
     m_forwardButton = new ToolBarButton(this);
-    m_forwardButton->setIconFromFileName(":/icons/forward.svg");
+    m_forwardButton->setIconFromFileName(QSL(":/icons/forward.svg"));
     m_stopReloadButton = new ToolBarButton(this);
     m_favouritesButton = new ToolBarButton(this);
-    m_favouritesButton->setIconFromFileName(":/icons/widgets.svg");
+    m_favouritesButton->setIconFromFileName(QSL(":/icons/widgets.svg"));
     m_omniBar = new OmniBar(this);
     m_shieldButton = new ToolBarButton(this);
-    m_shieldButton->setIconFromFileName(":/icons/shield.svg");
+    m_shieldButton->setIconFromFileName(QSL(":/icons/shield.svg"));
     m_downloadsButton = new ToolBarButton(this);
-    m_downloadsButton->setIconFromFileName(":/icons/download.svg");
+    m_downloadsButton->setIconFromFileName(QSL(":/icons/download.svg"));
 
     m_hBoxLayout->addWidget(m_backButton);
     m_hBoxLayout->addWidget(m_forwardButton);
@@ -60,6 +61,25 @@ ToolBar::ToolBar(QWidget *parent)
     connect(m_backButton, &ToolBarButton::clicked, this, [this]{ emit backRequested(); });
     connect(m_forwardButton, &ToolBarButton::clicked, this, [this]{ emit forwardRequested(); });
     connect(m_stopReloadButton, &ToolBarButton::clicked, this, [this]{ emit stopReloadRequested(); });
+}
+
+void ToolBar::setIsCanGoBack(bool canGoBack)
+{
+    m_backButton->setEnabled(canGoBack);
+}
+
+void ToolBar::setIsCanGoForward(bool canGoForward)
+{
+    m_forwardButton->setEnabled(canGoForward);
+}
+
+void ToolBar::setIsLoading(bool isLoading)
+{
+    if (isLoading) {
+        m_stopReloadButton->setIconFromFileName(QSL(":/icons/close.svg"));
+    } else {
+        m_stopReloadButton->setIconFromFileName(QSL(":/icons/refresh.svg"));
+    }
 }
 
 QWidget *ToolBar::spacerWidget(int width)

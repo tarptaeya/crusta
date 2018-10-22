@@ -30,6 +30,9 @@ class ToolBar : public QWidget
     Q_OBJECT
 public:
     explicit ToolBar(QWidget *parent = nullptr);
+    void setIsCanGoBack(bool canGoBack);
+    void setIsCanGoForward(bool canGoForward);
+    void setIsLoading(bool isLoading);
 Q_SIGNALS:
     void backRequested();
     void forwardRequested();
