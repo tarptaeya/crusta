@@ -1,6 +1,9 @@
 QTabWidget::tab-bar {
-    left: 32px;
     height: 32px;
+}
+
+QTabBar {
+    background-color: #ddd;
 }
 
 QTabBar::tear {
@@ -79,6 +82,7 @@ QTabBar::tab:hover:!selected {
 #progress-bar {
     max-height: 2px;
     background-color: #fff;
+    border: none;
 }
 
 #progress-bar::chunk {
