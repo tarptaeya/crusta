@@ -22,12 +22,13 @@
 #include "dimensions.h"
 #include <QDebug>
 
+#define QSL QStringLiteral
+
 SideBar::SideBar(QWidget *parent)
     : QWidget(parent)
 {
     setAttribute(Qt::WA_StyledBackground);
-    setObjectName(Strings::sideBarName());
-    setFixedWidth(Dimensions::sideBarWidth());
+    setObjectName(QSL("sideBar"));
 }
 
 SideBar::~SideBar()

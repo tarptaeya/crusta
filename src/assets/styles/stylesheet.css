@@ -88,3 +88,9 @@ QTabBar::tab:hover:!selected {
 #progress-bar::chunk {
     background-color: #6464ff;
 }
+
+#sideBar {
+    max-width: 32px;
+    min-width: 32px;
+    background-color: #fff;
+}
