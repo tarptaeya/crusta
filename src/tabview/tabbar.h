@@ -35,6 +35,8 @@ class TabBar : public QTabBar
 public:
     explicit TabBar(QWidget *parent = nullptr);
     QSize tabSizeHint(int index) const;
+
+    void addNewTab();
 protected:
     void tabInserted(int index);
     void mouseMoveEvent(QMouseEvent *event);
@@ -48,4 +50,5 @@ private:
 
     void updateAddTabButton(int tabWidth) const;
     void addTabCloseButton(int index);
+    void showContextMenu(const QPoint &pos);
 };

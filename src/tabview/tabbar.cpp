@@ -41,13 +41,9 @@ TabBar::TabBar(QWidget *parent)
     setUsesScrollButtons(true);
 
     setMouseTracking(true);
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(m_addTabButton, &AddTabButton::clicked, this, []{
-        Tab *tab = new Tab;
-        WebView *webView = new WebView;
-        tab->setWebView(webView);
-        appManager->addTab(tab, Tab::Active);
-    });
+    connect(m_addTabButton, &AddTabButton::clicked, this, &TabBar::addNewTab);
 }
 
 QSize TabBar::tabSizeHint(int index) const
@@ -73,6 +69,14 @@ QSize TabBar::tabSizeHint(int index) const
     }
 
     return size;
+}
+
+void TabBar::addNewTab()
+{
+    Tab *tab = new Tab;
+    WebView *webView = new WebView;
+    tab->setWebView(webView);
+    appManager->addTab(tab, Tab::Active);
 }
 
 void TabBar::tabInserted(int index)

@@ -33,4 +33,7 @@ public:
     void closeTab(int index);
 private:
     TabBar *m_tabBar = nullptr;
+
+    Tab *getTab(int index);
+    void showTabBarContextMenu(const QPoint &pos);
 };
