@@ -19,6 +19,7 @@
 * ============================================================ */
 #pragma once
 
+#include <QObject>
 #include <QPushButton>
 
 class AddTabButton : public QPushButton

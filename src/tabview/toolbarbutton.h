@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QObject>
 #include <QToolButton>
 
 class ToolBarButton : public QToolButton

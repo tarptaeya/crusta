@@ -19,6 +19,7 @@
 * ============================================================ */
 #pragma once
 
+#include <QObject>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 
