@@ -1,4 +1,5 @@
 #include "omnibar.h"
+#include "siteinfopopup.h"
 #include <QTimer>
 
 #define QSL QStringLiteral
@@ -16,6 +17,14 @@ OmniBar::OmniBar(QWidget *parent)
     m_bookmarkPageAction = new QAction(this);
     m_bookmarkPageAction->setIcon(QIcon(QSL(":/icons/favourite.svg")));
     addAction(m_bookmarkPageAction, QLineEdit::TrailingPosition);
+
+    m_siteInfoPopup = new SiteInfoPopup();
+    m_siteInfoPopup->setParentAction(m_siteInfoAction);
+
+    connect(m_siteInfoAction, &QAction::triggered, this, [this] {
+        m_siteInfoPopup->setUrl(m_address);
+        m_siteInfoPopup->show();
+    });
 }
 
 void OmniBar::setAddress(const QUrl &address)

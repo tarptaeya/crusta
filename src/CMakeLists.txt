@@ -39,6 +39,7 @@ set(
     tabview/toolbarbutton.cpp
     tabview/toolbarpopup.cpp
     tabview/progressbar.cpp
+    tabview/siteinfopopup.cpp
     utils/dimensions.cpp
     utils/layouts.cpp
     utils/strings.cpp

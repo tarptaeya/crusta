@@ -4,6 +4,8 @@
 #include <QAction>
 #include <QUrl>
 
+class SiteInfoPopup;
+
 class OmniBar : public QLineEdit
 {
 public:
@@ -15,4 +17,6 @@ private:
     QUrl m_address;
     QAction *m_siteInfoAction = nullptr;
     QAction *m_bookmarkPageAction = nullptr;
+
+    SiteInfoPopup *m_siteInfoPopup = nullptr;
 };
