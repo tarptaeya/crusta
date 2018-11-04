@@ -1,5 +1,6 @@
 #include "omnibar.h"
 #include "siteinfopopup.h"
+#include "bookmarkpopup.h"
 #include <QTimer>
 
 #define QSL QStringLiteral
@@ -21,9 +22,16 @@ OmniBar::OmniBar(QWidget *parent)
     m_siteInfoPopup = new SiteInfoPopup();
     m_siteInfoPopup->setParentAction(m_siteInfoAction);
 
+    m_bookmarkPopup = new BookmarkPopup();
+    m_bookmarkPopup->setParentAction(m_bookmarkPageAction);
+
     connect(m_siteInfoAction, &QAction::triggered, this, [this] {
         m_siteInfoPopup->setUrl(m_address);
         m_siteInfoPopup->show();
+    });
+
+    connect(m_bookmarkPageAction, &QAction::triggered, this, [this] {
+        m_bookmarkPopup->show();
     });
 }
 

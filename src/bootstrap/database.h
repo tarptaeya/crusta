@@ -39,4 +39,5 @@ private:
     QSqlDatabase m_db;
     void createHistoryDatabase();
     void createSpeeddialDatabase();
+    void createBookmarksDatabase();
 };

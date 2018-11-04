@@ -39,6 +39,7 @@ void Database::createDatabases()
     }
     createHistoryDatabase();
     createSpeeddialDatabase();
+    createBookmarksDatabase();
 }
 
 bool Database::addHistoryEntry(HistoryItem item)
@@ -120,5 +121,11 @@ void Database::createHistoryDatabase()
 void Database::createSpeeddialDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS speeddial (image BLOB, title TEXT, url TEXT)");
+    query.exec();
+}
+
+void Database::createBookmarksDatabase()
+{
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT, visitCount INTEGER, folder TEXT)");
     query.exec();
 }

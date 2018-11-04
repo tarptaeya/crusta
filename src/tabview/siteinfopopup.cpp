@@ -10,11 +10,6 @@ SiteInfoPopup::SiteInfoPopup(QWidget *parent)
     vBoxLayout->addWidget(m_typeLabel);
 }
 
-void SiteInfoPopup::setParentAction(QAction *action)
-{
-    m_parentAction = action;
-}
-
 void SiteInfoPopup::setUrl(const QUrl &url)
 {
     const QString scheme = url.scheme();
@@ -32,7 +27,7 @@ void SiteInfoPopup::setUrl(const QUrl &url)
 
 void SiteInfoPopup::show()
 {
-    QWidget *parentWidget = m_parentAction->parentWidget();
+    QWidget *parentWidget = ToolBarPopup::parentAction()->parentWidget();
     QPoint point = parentWidget->mapToGlobal(parentWidget->rect().bottomLeft());
     move(point);
     ToolBarPopup::show();
