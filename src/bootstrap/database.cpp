@@ -126,6 +126,6 @@ void Database::createSpeeddialDatabase()
 
 void Database::createBookmarksDatabase()
 {
-    QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT, visitCount INTEGER, folder TEXT)");
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT, folder TEXT)");
     query.exec();
 }

@@ -20,6 +20,7 @@ set(
     data/abstractdataitem.cpp
     data/historyitem.cpp
     data/speeddialitem.cpp
+    data/bookmarksitem.cpp
     extra/lineedit.cpp
     extra/qclickablelabel.cpp
     pages/speeddial/speeddial.cpp
