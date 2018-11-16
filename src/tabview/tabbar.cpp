@@ -25,7 +25,6 @@
 #include "appmanager.h"
 
 #define MAX_TAB_WIDTH 300
-#define MIN_TAB_WIDTH 50
 #define AUX_WIDTH 32
 
 TabBar::TabBar(QWidget *parent)
@@ -50,23 +49,25 @@ QSize TabBar::tabSizeHint(int index) const
 {
     int count = this->count() ? this->count() : 1;
     int width = (this->size().width() - AUX_WIDTH) / count;
+    int remaining = (this->size().width() - AUX_WIDTH) % count;
     if (width > MAX_TAB_WIDTH) {
         width = MAX_TAB_WIDTH;
-    }
-    if (width < MIN_TAB_WIDTH) {
-        width = MIN_TAB_WIDTH;
     }
 
     if (m_state == CLOSING) {
         width = m_previousWidth;
     }
 
-    QSize size = QTabBar::tabSizeHint(index);
-    size.setWidth(width);
+    if (index == currentIndex()) {
+        width += remaining;
+    }
 
     if (index == count - 1) {
         updateAddTabButton(width);
     }
+
+    QSize size = QTabBar::tabSizeHint(index);
+    size.setWidth(width);
 
     return size;
 }
@@ -109,7 +110,18 @@ void TabBar::updateAddTabButton(int tabWidth) const
     // height of tabbar = 32px;
     // so, margin = (32 - 20) / 2 => 6;
     int margin = 6;
-    int xPos = tabWidth * count() + margin;
+    int width = 20;
+    int xPos;
+    if (tabWidth == MAX_TAB_WIDTH) {
+        xPos = tabWidth * count() + margin;
+    } else {
+        xPos = size().width() - (width + margin);
+    }
+
+    if (TabBar::isRightToLeft()) {
+        xPos = size().width() - xPos - width;
+    }
+
     m_addTabButton->move(xPos, margin);
 }
 
