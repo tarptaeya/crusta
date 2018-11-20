@@ -11,7 +11,6 @@ class SiteInfoPopup : public ToolBarPopup
 public:
     explicit SiteInfoPopup(QWidget *parent = nullptr);
     void setUrl(const QUrl &url);
-    void show();
 private:
     QLabel *m_typeLabel = nullptr;
 };

@@ -3,6 +3,8 @@
 #include "bookmarkpopup.h"
 #include <QTimer>
 
+#include <QDebug>
+
 #define QSL QStringLiteral
 
 OmniBar::OmniBar(QWidget *parent)

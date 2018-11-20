@@ -9,7 +9,6 @@ class BookmarkPopup : public ToolBarPopup
 {
 public:
     explicit BookmarkPopup(QWidget *parent = nullptr);
-    void show();
 private:
     QLineEdit *m_titleEntry = nullptr;
     QComboBox *m_folder = nullptr;

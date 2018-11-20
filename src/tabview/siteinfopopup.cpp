@@ -3,6 +3,8 @@
 SiteInfoPopup::SiteInfoPopup(QWidget *parent)
     : ToolBarPopup(parent)
 {
+    position = Leading;
+
     QVBoxLayout *vBoxLayout = new QVBoxLayout(this);
     setLayout(vBoxLayout);
 
@@ -23,12 +25,4 @@ void SiteInfoPopup::setUrl(const QUrl &url)
         m_typeLabel->setText(QStringLiteral("Unknown connection state"));
     }
     // TODO: permissions
-}
-
-void SiteInfoPopup::show()
-{
-    QWidget *parentWidget = ToolBarPopup::parentAction()->parentWidget();
-    QPoint point = parentWidget->mapToGlobal(parentWidget->rect().bottomLeft());
-    move(point);
-    ToolBarPopup::show();
 }

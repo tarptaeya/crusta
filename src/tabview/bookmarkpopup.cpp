@@ -6,6 +6,8 @@
 BookmarkPopup::BookmarkPopup(QWidget *parent)
     : ToolBarPopup(parent)
 {
+    position = Trailing;
+
     m_titleEntry = new QLineEdit;
     m_folder = new QComboBox;
     m_saveBtn = new QPushButton(tr("Save"));
@@ -25,13 +27,4 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
     m_saveBtn->setDefault(true);
     vBoxLayout->addLayout(h1BoxLayout);
     setLayout(vBoxLayout);
-}
-
-void BookmarkPopup::show()
-{
-    QWidget *parentWidget = ToolBarPopup::parentAction()->parentWidget();
-    QPoint point = parentWidget->mapToGlobal(parentWidget->rect().bottomRight());
-    point.setX(point.x() - rect().width());
-    move(point);
-    ToolBarPopup::show();
 }
