@@ -148,18 +148,18 @@ bool Database::isBookmarked(const QString &urlString)
 
 void Database::createHistoryDatabase()
 {
-    QSqlQuery query("CREATE TABLE IF NOT EXISTS history (timestamp INTEGER, favicon BLOB, title TEXT, url TEXT, visitCount INTEGER, loadingTime INTEGER)");
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS history (timestamp INTEGER, favicon BLOB, title TEXT, url TEXT PRIMARY KEY, visitCount INTEGER, loadingTime INTEGER)");
     query.exec();
 }
 
 void Database::createSpeeddialDatabase()
 {
-    QSqlQuery query("CREATE TABLE IF NOT EXISTS speeddial (image BLOB, title TEXT, url TEXT)");
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS speeddial (image BLOB, title TEXT, url TEXT PRIMARY KEY)");
     query.exec();
 }
 
 void Database::createBookmarksDatabase()
 {
-    QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT, folder TEXT)");
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT PRIMARY KEY, folder TEXT)");
     query.exec();
 }
