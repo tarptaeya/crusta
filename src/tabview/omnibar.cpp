@@ -1,9 +1,9 @@
 #include "omnibar.h"
 #include "siteinfopopup.h"
 #include "bookmarkpopup.h"
+#include "appmanager.h"
+#include "database.h"
 #include <QTimer>
-
-#include <QDebug>
 
 #define QSL QStringLiteral
 
@@ -48,6 +48,13 @@ void OmniBar::setAddress(const QUrl &address)
     } else if (address.scheme() == QSL("http")) {
         m_siteInfoAction->setIcon(QIcon(QSL(":/icons/globe.svg")));
     }
+
+    const QString urlString = QString::fromUtf8(address.toEncoded());
+    if (appManager->database()->isBookmarked(urlString)) {
+        updateBookmarksIcon(true);
+    } else {
+        updateBookmarksIcon(false);
+    }
 }
 
 void OmniBar::focusInEvent(QFocusEvent *event)
@@ -68,4 +75,13 @@ void OmniBar::focusOutEvent(QFocusEvent *event)
 
     setAlignment(Qt::AlignCenter);
     setAddress(m_address);
+}
+
+void OmniBar::updateBookmarksIcon(bool isBookmarked)
+{
+    if (isBookmarked) {
+        m_bookmarkPageAction->setIcon(QIcon(QSL(":/icons/red_favourite.svg")));
+    } else {
+        m_bookmarkPageAction->setIcon(QIcon(QSL(":/icons/favourite.svg")));
+    }
 }

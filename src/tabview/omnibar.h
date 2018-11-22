@@ -11,6 +11,7 @@ public:
     void setAddress(const QUrl &address);
     void focusInEvent(QFocusEvent *event);
     void focusOutEvent(QFocusEvent *event);
+    void updateBookmarksIcon(bool isBookmarked);
 private:
     QUrl m_address;
     QAction *m_siteInfoAction = nullptr;

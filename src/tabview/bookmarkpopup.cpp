@@ -5,6 +5,7 @@
 #include "webview.h"
 #include "tools.h"
 #include "database.h"
+#include "omnibar.h"
 #include <QVBoxLayout>
 
 #define QSL QStringLiteral
@@ -47,7 +48,8 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
         item.setTitle(m_titleEntry->text());
         item.setUrl(tab->urlString());
         item.setFavicon(convertIconToByteArray(tab->webView()->icon()));
-        appManager->database()->addBookmarksEntry(item);
+        bool isBookmarked = appManager->database()->addBookmarksEntry(item);
+        (static_cast<OmniBar *>(parentAction()->parentWidget()))->updateBookmarksIcon(isBookmarked);
         hide();
     });    
 }
