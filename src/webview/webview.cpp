@@ -28,6 +28,7 @@
 #include "historyitem.h"
 #include "speeddialitem.h"
 #include "speeddial/speeddial.h"
+#include "tools.h"
 #include <QUrl>
 #include <QMenu>
 #include <QAction>
@@ -120,14 +121,9 @@ void WebView::handleLoadFinished()
     m_isLoading = false;
     m_loadingTime = QTime::currentTime().msecsSinceStartOfDay() - m_loadingTime;
 
-    QByteArray byteArray;
-    QBuffer buffer(&byteArray);
-    buffer.open(QIODevice::WriteOnly);
-    icon().pixmap(16, 16).save(&buffer, "PNG");
-
     HistoryItem item;
     item.setTimestamp(QDateTime::currentDateTime().toSecsSinceEpoch());
-    item.setFavicon(byteArray);
+    item.setFavicon(convertIconToByteArray(icon()));
     item.setTitle(title());
     item.setUrl(url().toString());
     item.setLoadingTime(m_loadingTime);

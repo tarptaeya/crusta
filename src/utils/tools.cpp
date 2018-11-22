@@ -1,11 +1,4 @@
-#pragma once
-
-#include <QString>
-#include <QFile>
-
-#define QSL QStringLiteral
-
-namespace CrTools {
+#include "tools.h"
 
 QString readFile(const QString &fileName)
 {
@@ -19,4 +12,11 @@ QString readFile(const QString &fileName)
     return fileContents;
 }
 
+QByteArray convertIconToByteArray(const QIcon &icon)
+{
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    icon.pixmap(16, 16).save(&buffer, "PNG");
+    return byteArray;
 }

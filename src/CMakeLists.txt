@@ -45,7 +45,7 @@ set(
     utils/dimensions.cpp
     utils/layouts.cpp
     utils/strings.cpp
-    utils/tools.hpp
+    utils/tools.cpp
     webview/webpage.cpp
     webview/webview.cpp
     window/centralwidget.cpp

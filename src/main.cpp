@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
 #include "appmanager.h"
-#include "tools.hpp"
+#include "tools.h"
 #include <QApplication>
 
 int main(int argc, char **argv)
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     application.setAttribute(Qt::AA_EnableHighDpiScaling, true);
     application.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-    application.setStyleSheet(CrTools::readFile(":/styles/stylesheet.css"));
+    application.setStyleSheet(readFile(":/styles/stylesheet.css"));
 
     QCoreApplication::setOrganizationName(appManager->organisationName());
     QCoreApplication::setOrganizationDomain(appManager->organisationDomain());

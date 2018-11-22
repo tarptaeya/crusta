@@ -71,6 +71,7 @@ public:
 
     int addTab(Tab *tab, int type);
     TabWidget *getTabWidget(Tab *tab);
+    Tab *getCurrentTab();
     int indexOfTab(Tab *tab);
 private:
     Application m_application;

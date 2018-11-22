@@ -21,19 +21,17 @@ OmniBar::OmniBar(QWidget *parent)
     m_bookmarkPageAction->setIcon(QIcon(QSL(":/icons/favourite.svg")));
     addAction(m_bookmarkPageAction, QLineEdit::TrailingPosition);
 
-    m_siteInfoPopup = new SiteInfoPopup();
-    m_siteInfoPopup->setParentAction(m_siteInfoAction);
-
-    m_bookmarkPopup = new BookmarkPopup();
-    m_bookmarkPopup->setParentAction(m_bookmarkPageAction);
-
     connect(m_siteInfoAction, &QAction::triggered, this, [this] {
-        m_siteInfoPopup->setUrl(m_address);
-        m_siteInfoPopup->show();
+        SiteInfoPopup *siteInfoPopup = new SiteInfoPopup();
+        siteInfoPopup->setParentAction(m_siteInfoAction);
+        siteInfoPopup->setUrl(m_address);
+        siteInfoPopup->show();
     });
 
     connect(m_bookmarkPageAction, &QAction::triggered, this, [this] {
-        m_bookmarkPopup->show();
+        BookmarkPopup *bookmarkPopup = new BookmarkPopup();
+        bookmarkPopup->setParentAction(m_bookmarkPageAction);
+        bookmarkPopup->show();
     });
 }
 

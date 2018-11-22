@@ -31,9 +31,10 @@ public:
     explicit TabWidget(QWidget *parent = nullptr);
     int addTab(Tab *tab, int type = -1);
     void closeTab(int index);
+
+    Tab *getTab(int index);
 private:
     TabBar *m_tabBar = nullptr;
 
-    Tab *getTab(int index);
     void showTabBarContextMenu(const QPoint &pos);
 };

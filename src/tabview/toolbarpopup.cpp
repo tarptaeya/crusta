@@ -32,4 +32,12 @@ void ToolBarPopup::show()
         point.setX(point.x() - rect().width());
     }
     move(point);
+
+}
+
+void ToolBarPopup::hideEvent(QHideEvent *event)
+{
+    QWidget::hideEvent(event);
+
+    deleteLater();
 }

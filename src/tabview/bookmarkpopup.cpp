@@ -1,4 +1,8 @@
 #include "bookmarkpopup.h"
+#include "appmanager.h"
+#include "bookmarksitem.h"
+#include "tab.h"
+#include "webview.h"
 #include <QVBoxLayout>
 
 #define QSL QStringLiteral
@@ -7,6 +11,11 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
     : ToolBarPopup(parent)
 {
     position = Trailing;
+
+    Tab *tab = appManager->getCurrentTab();
+    if (!tab) {
+        return;
+    }
 
     m_titleEntry = new QLineEdit;
     m_folder = new QComboBox;
@@ -27,4 +36,13 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
     m_saveBtn->setDefault(true);
     vBoxLayout->addLayout(h1BoxLayout);
     setLayout(vBoxLayout);
+
+    m_titleEntry->setText(tab->title());
+
+    connect(m_cancelBtn, &QPushButton::clicked, this, &BookmarkPopup::hide);
+    connect(m_saveBtn, &QPushButton::clicked, this, [this, tab]{
+        BookmarksItem *item = new BookmarksItem();
+        item->setTitle(m_titleEntry->text());
+        item->setUrl(tab->urlString());
+    });
 }

@@ -17,6 +17,8 @@ public:
 
     void show();
 
+    void hideEvent(QHideEvent *event);
+
     Position position = Leading;
 private:
     QAction *m_parentAction = nullptr;

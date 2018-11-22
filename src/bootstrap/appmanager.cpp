@@ -151,6 +151,16 @@ TabWidget *AppManager::getTabWidget(Tab *tab)
     return tabWidget;
 }
 
+Tab *AppManager::getCurrentTab()
+{
+    for (Window *window : qAsConst(m_windowList)) {
+        if (window->isActiveWindow()) {
+            return window->tabWidget()->getTab(window->tabWidget()->currentIndex());
+        }
+    }
+    return nullptr;
+}
+
 int AppManager::indexOfTab(Tab *tab)
 {
     int tabIndex = -1;
