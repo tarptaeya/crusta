@@ -24,6 +24,7 @@
 
 class HistoryItem;
 class SpeeddialItem;
+class BookmarksItem;
 
 class Database : public QObject
 {
@@ -35,6 +36,8 @@ public:
     bool addSpeeddialEntry(SpeeddialItem item);
     bool removeSpeeddialEntry(const QString &url);
     QList<SpeeddialItem> loadSpeeddialEntries();
+    bool addBookmarksEntry(BookmarksItem item);
+    bool isBookmarked(const QString &urlString);
 private:
     QSqlDatabase m_db;
     void createHistoryDatabase();

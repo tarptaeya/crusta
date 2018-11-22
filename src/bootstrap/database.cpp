@@ -20,6 +20,7 @@
 #include "database.h"
 #include "historyitem.h"
 #include "speeddialitem.h"
+#include "bookmarksitem.h"
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
@@ -110,6 +111,39 @@ QList<SpeeddialItem> Database::loadSpeeddialEntries()
         speeddialItems.append(item);
     }
     return speeddialItems;
+}
+
+bool Database::addBookmarksEntry(BookmarksItem item)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM bookmarks WHERE url = ?");
+    query.addBindValue(item.url());
+    if (query.exec() && query.next()) {
+        query.prepare("UPDATE bookmarks SET title = ?, folder = ?, favicon = ? WHERE url = ?");
+        query.addBindValue(item.title());
+        query.addBindValue(item.folder());
+        query.addBindValue(item.favicon());
+        query.addBindValue(item.url());
+    } else {
+        query.prepare("INSERT INTO bookmarks (favicon, title, url, folder) VALUES (?, ?, ?, ?)");
+        query.addBindValue(item.favicon());
+        query.addBindValue(item.title());
+        query.addBindValue(item.url());
+        query.addBindValue(item.folder());
+    }
+    return query.exec();
+
+}
+
+bool Database::isBookmarked(const QString &urlString)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM bookmarks WHERE url = ?");
+    query.addBindValue(urlString);
+    if (query.exec() && query.next()) {
+        return true;
+    }
+    return false;
 }
 
 void Database::createHistoryDatabase()

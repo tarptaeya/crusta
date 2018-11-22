@@ -3,6 +3,8 @@
 #include "bookmarksitem.h"
 #include "tab.h"
 #include "webview.h"
+#include "tools.h"
+#include "database.h"
 #include <QVBoxLayout>
 
 #define QSL QStringLiteral
@@ -41,8 +43,11 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
 
     connect(m_cancelBtn, &QPushButton::clicked, this, &BookmarkPopup::hide);
     connect(m_saveBtn, &QPushButton::clicked, this, [this, tab]{
-        BookmarksItem *item = new BookmarksItem();
-        item->setTitle(m_titleEntry->text());
-        item->setUrl(tab->urlString());
-    });
+        BookmarksItem item;
+        item.setTitle(m_titleEntry->text());
+        item.setUrl(tab->urlString());
+        item.setFavicon(convertIconToByteArray(tab->webView()->icon()));
+        appManager->database()->addBookmarksEntry(item);
+        hide();
+    });    
 }
