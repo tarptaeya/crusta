@@ -135,15 +135,28 @@ bool Database::addBookmarksEntry(BookmarksItem item)
 
 }
 
-bool Database::isBookmarked(const QString &urlString)
+BookmarksItem Database::isBookmarked(const QString &urlString)
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM bookmarks WHERE url = ?");
     query.addBindValue(urlString);
     if (query.exec() && query.next()) {
-        return true;
+        QString title = query.value(1).toString();
+        QString url = query.value(2).toString();
+        BookmarksItem item;
+        item.setTitle(title);
+        item.setUrl(url);
+        return item;
     }
-    return false;
+    return BookmarksItem();
+}
+
+bool Database::removeBookmarksEntry(const QString &url)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM bookmarks WHERE url = ?");
+    query.addBindValue(url);
+    return query.exec();
 }
 
 void Database::createHistoryDatabase()

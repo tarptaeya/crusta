@@ -3,6 +3,7 @@
 #include "bookmarkpopup.h"
 #include "appmanager.h"
 #include "database.h"
+#include "bookmarksitem.h"
 #include <QTimer>
 
 #define QSL QStringLiteral
@@ -50,7 +51,7 @@ void OmniBar::setAddress(const QUrl &address)
     }
 
     const QString urlString = QString::fromUtf8(address.toEncoded());
-    if (appManager->database()->isBookmarked(urlString)) {
+    if (!appManager->database()->isBookmarked(urlString).url().isEmpty()) {
         updateBookmarksIcon(true);
     } else {
         updateBookmarksIcon(false);

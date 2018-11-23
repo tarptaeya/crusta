@@ -37,7 +37,8 @@ public:
     bool removeSpeeddialEntry(const QString &url);
     QList<SpeeddialItem> loadSpeeddialEntries();
     bool addBookmarksEntry(BookmarksItem item);
-    bool isBookmarked(const QString &urlString);
+    BookmarksItem isBookmarked(const QString &urlString);
+    bool removeBookmarksEntry(const QString &url);
 private:
     QSqlDatabase m_db;
     void createHistoryDatabase();

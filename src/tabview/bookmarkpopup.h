@@ -13,6 +13,6 @@ private:
     QLineEdit *m_titleEntry = nullptr;
     QComboBox *m_folder = nullptr;
     QPushButton *m_saveBtn = nullptr;
-    QPushButton *m_addToSpeedDial = nullptr;
+    QPushButton *m_otherBtn = nullptr;
     QPushButton *m_cancelBtn = nullptr;
 };

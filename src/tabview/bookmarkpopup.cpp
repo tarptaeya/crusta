@@ -6,6 +6,7 @@
 #include "tools.h"
 #include "database.h"
 #include "omnibar.h"
+#include "bookmarksitem.h"
 #include <QVBoxLayout>
 
 #define QSL QStringLiteral
@@ -20,12 +21,17 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
         return;
     }
 
+    BookmarksItem item = appManager->database()->isBookmarked(tab->urlString());
+
     m_titleEntry = new QLineEdit;
     m_folder = new QComboBox;
     m_saveBtn = new QPushButton(tr("Save"));
-    m_addToSpeedDial = new QPushButton(tr("Add to startpage"));
+    m_otherBtn = new QPushButton(item.url().isEmpty() ? tr("Add to speeddial") : tr("Delete"));
     m_cancelBtn = new QPushButton(tr("Cancel"));
 
+    if (!item.folder().isEmpty()) {
+        m_folder->addItem(item.folder());
+    }
     m_folder->addItem(QSL("Others"));
     m_folder->addItem(QSL("Bookmark toolbar"));
 
@@ -34,7 +40,7 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
     vBoxLayout->addWidget(m_folder);
     QHBoxLayout *h1BoxLayout = new QHBoxLayout;
     h1BoxLayout->addWidget(m_cancelBtn);
-    h1BoxLayout->addWidget(m_addToSpeedDial);
+    h1BoxLayout->addWidget(m_otherBtn);
     h1BoxLayout->addWidget(m_saveBtn);
     m_saveBtn->setDefault(true);
     vBoxLayout->addLayout(h1BoxLayout);
@@ -43,6 +49,16 @@ BookmarkPopup::BookmarkPopup(QWidget *parent)
     m_titleEntry->setText(tab->title());
 
     connect(m_cancelBtn, &QPushButton::clicked, this, &BookmarkPopup::hide);
+    connect(m_otherBtn, &QPushButton::clicked, this, [this, item] {
+        if (!item.url().isEmpty()) {
+            appManager->database()->removeBookmarksEntry(item.url());
+            (static_cast<OmniBar *>(parentAction()->parentWidget()))->updateBookmarksIcon(false);
+        } else {
+
+        }
+
+        hide();
+    });
     connect(m_saveBtn, &QPushButton::clicked, this, [this, tab]{
         BookmarksItem item;
         item.setTitle(m_titleEntry->text());
