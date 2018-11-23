@@ -19,6 +19,7 @@
 * ============================================================ */
 
 function registerWebChannel() {
+
     // @disable-check M127
     new QWebChannel(qt.webChannelTransport, function(channel) {
         if (window.external) {

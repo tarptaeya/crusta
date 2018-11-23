@@ -181,7 +181,7 @@ void AppManager::setUpWebEngineProfile()
     QWebEngineScript webChannelScript;
     webChannelScript.setInjectionPoint(QWebEngineScript::DocumentCreation);
     webChannelScript.setName("webChannelScript");
-    webChannelScript.setRunsOnSubFrames(true);
+    webChannelScript.setRunsOnSubFrames(false);
     webChannelScript.setSourceCode(Scripts::webChannelScript());
     webChannelScript.setWorldId(QWebEngineScript::ApplicationWorld);
     m_webEngineProfile->scripts()->insert(webChannelScript);
@@ -189,7 +189,7 @@ void AppManager::setUpWebEngineProfile()
     QWebEngineScript speeddialScript;
     speeddialScript.setInjectionPoint(QWebEngineScript::DocumentReady);
     speeddialScript.setName("speeddialScript");
-    speeddialScript.setRunsOnSubFrames(true);
+    speeddialScript.setRunsOnSubFrames(false);
     speeddialScript.setSourceCode(Scripts::speeddialScript());
     speeddialScript.setWorldId(QWebEngineScript::ApplicationWorld);
     m_webEngineProfile->scripts()->insert(speeddialScript);
