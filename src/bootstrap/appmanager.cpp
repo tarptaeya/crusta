@@ -24,6 +24,7 @@
 #include "scripts.h"
 #include "tab.h"
 #include "tabwidget.h"
+#include "crustascheme.h"
 
 AppManager::AppManager(QObject *parent)
     : QObject(parent)
@@ -193,4 +194,7 @@ void AppManager::setUpWebEngineProfile()
     speeddialScript.setSourceCode(Scripts::speeddialScript());
     speeddialScript.setWorldId(QWebEngineScript::ApplicationWorld);
     m_webEngineProfile->scripts()->insert(speeddialScript);
+
+    CrustaScheme *crustaScheme = new CrustaScheme(this);
+    m_webEngineProfile->installUrlSchemeHandler("crusta", crustaScheme);
 }

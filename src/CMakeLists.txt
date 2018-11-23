@@ -48,6 +48,7 @@ set(
     utils/tools.cpp
     webview/webpage.cpp
     webview/webview.cpp
+    webview/crustascheme.cpp
     window/centralwidget.cpp
     window/menubar.cpp
     window/statusbar.cpp
