@@ -20,6 +20,6 @@ Crusta is a feature rich web-browser, based on Qt5 and is licenced under GNU GPL
 ## Try Crusta
 - Clone the repository `git clone https://github.com/crusta/crustabrowser/`.
 - Make build dir and change current dir to build `mkdir build && cd build`.
-- Run CMake `cmake ..`.
-- Build using make `make`.
-- Run using `./Crusta`.
+- Run CMake `cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..`.
+- Build using `make` if unix else `msbuild ALL_BUILD.vcxproj`.
+- Run using `./Crusta` if unix else `Debug\Crusta.exe`.
