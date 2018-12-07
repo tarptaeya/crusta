@@ -4,6 +4,7 @@
 #include "appmanager.h"
 #include "database.h"
 #include "bookmarksitem.h"
+#include "toolbar.h"
 #include <QTimer>
 
 #define QSL QStringLiteral
@@ -13,6 +14,8 @@ OmniBar::OmniBar(QWidget *parent)
 {
     setObjectName("omni-bar");
     setAttribute(Qt::WA_MacShowFocusRect, false);
+
+    m_parent = qobject_cast<ToolBar *>(parent);
 
     m_siteInfoAction = new QAction(this);
     m_siteInfoAction->setIcon(QIcon(QSL(":/icons/globe.svg")));
@@ -34,6 +37,8 @@ OmniBar::OmniBar(QWidget *parent)
         bookmarkPopup->setParentAction(m_bookmarkPageAction);
         bookmarkPopup->show();
     });
+
+    connect(this, &OmniBar::returnPressed, this, &OmniBar::navigate);
 }
 
 void OmniBar::setAddress(const QUrl &address)
@@ -85,4 +90,11 @@ void OmniBar::updateBookmarksIcon(bool isBookmarked)
     } else {
         m_bookmarkPageAction->setIcon(QIcon(QSL(":/icons/favourite.svg")));
     }
+}
+
+void OmniBar::navigate()
+{
+    QString input = text();
+    emit m_parent->navigationRequested(input);
+    clearFocus();
 }

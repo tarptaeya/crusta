@@ -24,6 +24,7 @@
 #include "tabwidget.h"
 #include "webview.h"
 #include "appmanager.h"
+#include "searchenginemanager.h"
 
 #include <QWebEngineHistory>
 
@@ -59,6 +60,16 @@ Tab::Tab(QWidget *parent)
         } else {
             m_webView->reload();
         }
+    });
+    connect(m_toolBar, &ToolBar::navigationRequested, this, [this](const QString &text) {
+        if (!m_webView) {
+            return;
+        }
+        QUrl url = QUrl::fromUserInput(text);
+        if (!url.isValid() || text.count('.') == 0) {
+            url = SearchEngineManager::getSearchUrl(text);
+        }
+        m_webView->load(url);
     });
 }
 

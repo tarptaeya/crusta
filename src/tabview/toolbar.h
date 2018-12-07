@@ -35,10 +35,12 @@ public:
     void setIsLoading(bool isLoading);
     void setAddress(const QUrl &url);
     void setProgress(int progress);
+
 Q_SIGNALS:
     void backRequested();
     void forwardRequested();
     void stopReloadRequested();
+    void navigationRequested(const QString &text);
 private:
     ToolBarButton *m_backButton = nullptr;
     ToolBarButton *m_forwardButton = nullptr;

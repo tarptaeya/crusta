@@ -4,6 +4,8 @@
 #include <QAction>
 #include <QUrl>
 
+class ToolBar;
+
 class OmniBar : public QLineEdit
 {
 public:
@@ -12,8 +14,11 @@ public:
     void focusInEvent(QFocusEvent *event);
     void focusOutEvent(QFocusEvent *event);
     void updateBookmarksIcon(bool isBookmarked);
+
+    void navigate();
 private:
     QUrl m_address;
     QAction *m_siteInfoAction = nullptr;
     QAction *m_bookmarkPageAction = nullptr;
+    ToolBar *m_parent = nullptr;
 };

@@ -2,6 +2,7 @@ include_directories(
     bootstrap
     data
     extra
+    managers
     pages
     pages/speeddial
     sidebar
@@ -23,6 +24,7 @@ set(
     data/bookmarksitem.cpp
     extra/lineedit.cpp
     extra/qclickablelabel.cpp
+    managers/searchenginemanager.cpp
     pages/speeddial/speeddial.cpp
     pages/externaljsobject.cpp
     pages/scripts.cpp
