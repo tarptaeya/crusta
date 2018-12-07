@@ -25,5 +25,8 @@
         <file>icons/widgets.svg</file>
         <file>icons/shield.svg</file>
         <file>icons/active_shield.svg</file>
+        <file>html/about.html</file>
+        <file>html/feedback.html</file>
+        <file>html/home.html</file>
     </qresource>
 </RCC>

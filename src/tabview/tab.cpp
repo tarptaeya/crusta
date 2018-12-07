@@ -66,7 +66,7 @@ Tab::Tab(QWidget *parent)
             return;
         }
         QUrl url = QUrl::fromUserInput(text);
-        if (!url.isValid() || text.count('.') == 0) {
+        if (!url.isValid() || text.count(':') == 0) {
             url = SearchEngineManager::getSearchUrl(text);
         }
         m_webView->load(url);
