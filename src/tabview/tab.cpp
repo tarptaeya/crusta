@@ -121,6 +121,7 @@ void Tab::setWebView(WebView *webView)
     });
 
     connect(m_webView, &WebView::loadStarted, this, [this]{
+        m_toolBar->setAddress(m_webView->url());
         m_toolBar->setIsLoading(true);
     });
 

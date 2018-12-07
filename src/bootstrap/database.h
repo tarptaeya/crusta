@@ -39,9 +39,12 @@ public:
     bool addBookmarksEntry(BookmarksItem item);
     BookmarksItem isBookmarked(const QString &urlString);
     bool removeBookmarksEntry(const QString &url);
+    bool addCompleterEntry(const QString &entry);
+    QStringList loadCompleterEntries();
 private:
     QSqlDatabase m_db;
     void createHistoryDatabase();
     void createSpeeddialDatabase();
     void createBookmarksDatabase();
+    void createCompleterDatabase();
 };

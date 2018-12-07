@@ -41,6 +41,7 @@ void Database::createDatabases()
     createHistoryDatabase();
     createSpeeddialDatabase();
     createBookmarksDatabase();
+    createCompleterDatabase();
 }
 
 bool Database::addHistoryEntry(HistoryItem item)
@@ -159,6 +160,26 @@ bool Database::removeBookmarksEntry(const QString &url)
     return query.exec();
 }
 
+bool Database::addCompleterEntry(const QString &entry)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO completer VALUES (?)");
+    query.addBindValue(entry);
+    return query.exec();
+}
+
+QStringList Database::loadCompleterEntries()
+{
+    QStringList entries;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM completer");
+    query.exec();
+    while (query.next()) {
+        entries.append(query.value(0).toString());
+    }
+    return entries;
+}
+
 void Database::createHistoryDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS history (timestamp INTEGER, favicon BLOB, title TEXT, url TEXT PRIMARY KEY, visitCount INTEGER, loadingTime INTEGER)");
@@ -174,5 +195,11 @@ void Database::createSpeeddialDatabase()
 void Database::createBookmarksDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT PRIMARY KEY, folder TEXT)");
+    query.exec();
+}
+
+void Database::createCompleterDatabase()
+{
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS completer (entry TEXT UNIQUE)");
     query.exec();
 }

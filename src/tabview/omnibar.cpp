@@ -6,6 +6,8 @@
 #include "bookmarksitem.h"
 #include "toolbar.h"
 #include <QTimer>
+#include <QCompleter>
+#include <QStringListModel>
 
 #define QSL QStringLiteral
 
@@ -16,6 +18,12 @@ OmniBar::OmniBar(QWidget *parent)
     setAttribute(Qt::WA_MacShowFocusRect, false);
 
     m_parent = qobject_cast<ToolBar *>(parent);
+
+    QStringListModel* model = new QStringListModel(appManager->database()->loadCompleterEntries());
+    QCompleter *completer = new QCompleter(model, this);
+    completer->setCompletionMode(QCompleter::PopupCompletion);
+    completer->setFilterMode(Qt::MatchContains);
+    setCompleter(completer);
 
     m_siteInfoAction = new QAction(this);
     m_siteInfoAction->setIcon(QIcon(QSL(":/icons/globe.svg")));
@@ -47,7 +55,7 @@ void OmniBar::setAddress(const QUrl &address)
     if (hasFocus()) {
         return;
     }
-    setText(address.host());
+    setText(address.toString());
     setCursorPosition(0);
     if (address.scheme() == QSL("https")) {
         m_siteInfoAction->setIcon(QIcon(QSL(":/icons/secure_globe.svg")));
@@ -63,26 +71,6 @@ void OmniBar::setAddress(const QUrl &address)
     }
 }
 
-void OmniBar::focusInEvent(QFocusEvent *event)
-{
-    QLineEdit::focusInEvent(event);
-
-    setAlignment(Qt::AlignLeft);
-    setText(QString::fromUtf8(m_address.toEncoded()));
-    QTimer::singleShot(0, this, [this]{
-        setCursorPosition(text().length());
-        cursorBackward(true, text().length());
-    });
-}
-
-void OmniBar::focusOutEvent(QFocusEvent *event)
-{
-    QLineEdit::focusOutEvent(event);
-
-    setAlignment(Qt::AlignCenter);
-    setAddress(m_address);
-}
-
 void OmniBar::updateBookmarksIcon(bool isBookmarked)
 {
     if (isBookmarked) {
@@ -95,6 +83,7 @@ void OmniBar::updateBookmarksIcon(bool isBookmarked)
 void OmniBar::navigate()
 {
     QString input = text();
+    appManager->database()->addCompleterEntry(input);
     emit m_parent->navigationRequested(input);
     clearFocus();
 }
