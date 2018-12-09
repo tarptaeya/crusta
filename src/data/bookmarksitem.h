@@ -28,9 +28,9 @@ public:
     explicit BookmarksItem();
     QByteArray favicon() const;
     void setFavicon(const QByteArray &favicon);
-    QString folder() const;
-    void setFolder(const QString &folder);
+    QString category() const;
+    void setCategory(const QString &category);
 private:
     QByteArray m_favicon;
-    QString m_folder;
+    QString m_category;
 };

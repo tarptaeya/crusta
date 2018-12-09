@@ -44,10 +44,14 @@ public:
     QList<BookmarksItem> loadBookmarks();
     bool addCompleterEntry(const QString &entry);
     QStringList loadCompleterEntries();
+    bool addCategory(const QString &category);
+    QStringList loadCategories();
+
 private:
     QSqlDatabase m_db;
     void createHistoryDatabase();
     void createSpeeddialDatabase();
     void createBookmarksDatabase();
     void createCompleterDatabase();
+    void createCategoryDatabase();
 };

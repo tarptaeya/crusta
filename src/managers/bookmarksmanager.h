@@ -8,9 +8,14 @@
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QMenu>
+#include <QAction>
+#include <QClipboard>
+#include <QApplication>
 
-class BookmarksManager
+class BookmarksManager : public QObject
 {
+    Q_OBJECT
 public:
     static void showBookmarksManager(QWidget *baseWidget);
 };

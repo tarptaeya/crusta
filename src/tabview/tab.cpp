@@ -49,7 +49,7 @@ Tab::Tab(QWidget *parent)
     m_vBoxLayout->addWidget(m_stackedWidget, 1);
 
     // TODO: Remove this
-    showHistoryManager();
+    showBookmarksManager();
 
     connect(m_toolBar, &ToolBar::backRequested, this, [this]{
         if (!m_webView) {

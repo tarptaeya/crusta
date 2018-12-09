@@ -41,10 +41,10 @@ void HistoryManager::showHistoryManager(QWidget *baseWidget)
     treeWidget->setAlternatingRowColors(true);
 
     int row = 0;
-    const QList<HistoryItem> bookmarksItems = appManager->database()->loadHistory();
-    for (const HistoryItem &bookmarksItem : bookmarksItems) {
+    const QList<HistoryItem> historyItems = appManager->database()->loadHistory();
+    for (const HistoryItem &historyItem : historyItems) {
         QTreeWidgetItem *item;
-        QDate date = QDateTime::fromTime_t(bookmarksItem.timestamp()).date();
+        QDate date = QDateTime::fromTime_t(historyItem.timestamp()).date();
         if (date == QDate::currentDate()) {
             item = new QTreeWidgetItem(todayItem);
         } else if (date > QDate::currentDate().addDays(-7)) {
@@ -53,13 +53,13 @@ void HistoryManager::showHistoryManager(QWidget *baseWidget)
             item = new QTreeWidgetItem(olderItem);
         }
         QPixmap pixmap;
-        pixmap.loadFromData(bookmarksItem.favicon());
+        pixmap.loadFromData(historyItem.favicon());
         if (pixmap.isNull()) {
             pixmap.load(":/icons/small_globe.svg");
         }
         item->setIcon(0, QIcon(pixmap));
-        item->setText(0, bookmarksItem.title());
-        item->setText(1, bookmarksItem.url());
+        item->setText(0, historyItem.title());
+        item->setText(1, historyItem.url());
         treeWidget->insertTopLevelItem(0, item);
         row++;
     }

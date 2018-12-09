@@ -42,6 +42,7 @@ void Database::createDatabases()
     createSpeeddialDatabase();
     createBookmarksDatabase();
     createCompleterDatabase();
+    createCategoryDatabase();
 }
 
 bool Database::addHistoryEntry(HistoryItem item)
@@ -148,7 +149,7 @@ bool Database::addBookmarksEntry(BookmarksItem item)
     if (query.exec() && query.next()) {
         query.prepare("UPDATE bookmarks SET title = ?, folder = ?, favicon = ? WHERE url = ?");
         query.addBindValue(item.title());
-        query.addBindValue(item.folder());
+        query.addBindValue(item.category());
         query.addBindValue(item.favicon());
         query.addBindValue(item.url());
     } else {
@@ -156,7 +157,7 @@ bool Database::addBookmarksEntry(BookmarksItem item)
         query.addBindValue(item.favicon());
         query.addBindValue(item.title());
         query.addBindValue(item.url());
-        query.addBindValue(item.folder());
+        query.addBindValue(item.category());
     }
     return query.exec();
 
@@ -196,12 +197,12 @@ QList<BookmarksItem> Database::loadBookmarks()
         QByteArray image = query.value(0).toByteArray();
         QString title = query.value(1).toString();
         QString url = query.value(2).toString();
-        QString folder = query.value(3).toString();
+        QString category = query.value(3).toString();
         BookmarksItem item;
         item.setFavicon(image);
         item.setTitle(title);
         item.setUrl(url);
-        item.setFolder(folder);
+        item.setCategory(category);
         bookmarksItems.append(item);
     }
     return bookmarksItems;
@@ -227,6 +228,26 @@ QStringList Database::loadCompleterEntries()
     return entries;
 }
 
+bool Database::addCategory(const QString &category)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO category VALUES (?)");
+    query.addBindValue(category);
+    return query.exec();
+}
+
+QStringList Database::loadCategories()
+{
+    QStringList categories;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM category");
+    query.exec();
+    while (query.next()) {
+        categories.append(query.value(0).toString());
+    }
+    return categories;
+}
+
 void Database::createHistoryDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS history (timestamp INTEGER, favicon BLOB, title TEXT, url TEXT PRIMARY KEY, visitCount INTEGER, loadingTime INTEGER)");
@@ -241,12 +262,18 @@ void Database::createSpeeddialDatabase()
 
 void Database::createBookmarksDatabase()
 {
-    QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT PRIMARY KEY, folder TEXT)");
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS bookmarks (favicon BLOB, title TEXT, url TEXT PRIMARY KEY, category TEXT)");
     query.exec();
 }
 
 void Database::createCompleterDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS completer (entry TEXT UNIQUE)");
+    query.exec();
+}
+
+void Database::createCategoryDatabase()
+{
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS category (name TEXT UNIQUE)");
     query.exec();
 }

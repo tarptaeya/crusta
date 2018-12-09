@@ -11,7 +11,7 @@ public:
     explicit BookmarkPopup(QWidget *parent = nullptr);
 private:
     QLineEdit *m_titleEntry = nullptr;
-    QComboBox *m_folder = nullptr;
+    QComboBox *m_category = nullptr;
     QPushButton *m_saveBtn = nullptr;
     QPushButton *m_otherBtn = nullptr;
     QPushButton *m_cancelBtn = nullptr;

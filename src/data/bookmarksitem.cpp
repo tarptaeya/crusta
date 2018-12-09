@@ -34,12 +34,12 @@ void BookmarksItem::setFavicon(const QByteArray &favicon)
     m_favicon = favicon;
 }
 
-QString BookmarksItem::folder() const
+QString BookmarksItem::category() const
 {
-    return m_folder;
+    return m_category;
 }
 
-void BookmarksItem::setFolder(const QString &folder)
+void BookmarksItem::setCategory(const QString &category)
 {
-    m_folder = folder;
+    m_category = category;
 }
