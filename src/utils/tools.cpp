@@ -1,4 +1,5 @@
 #include "tools.h"
+#include <QDebug>
 
 QString readFile(const QString &fileName)
 {

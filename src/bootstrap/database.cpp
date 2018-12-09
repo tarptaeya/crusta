@@ -50,19 +50,45 @@ bool Database::addHistoryEntry(HistoryItem item)
     query.prepare("SELECT * FROM history WHERE url = ?");
     query.addBindValue(item.url());
     if (query.exec() && query.next()) {
-        query.prepare("UPDATE history SET timestamp = ?, visitCount = visitCount + 1, loadingTime = loadingTime + ? WHERE url = ?");
-        query.addBindValue(item.timestamp());
-        query.addBindValue(item.loadingTime());
-        query.addBindValue(item.url());
+        query.prepare("UPDATE history SET timestamp = ?, favicon = ?, title = ?, visitCount = visitCount + 1, loadingTime = loadingTime + ? WHERE url = ?");
     } else {
-        query.prepare("INSERT INTO history (timestamp, favicon, title, url, visitCount, loadingTime) VALUES (?, ?, ?, ?, 1, ?)");
-        query.addBindValue(item.timestamp());
-        query.addBindValue(item.favicon());
-        query.addBindValue(item.title());
-        query.addBindValue(item.url());
-        query.addBindValue(item.loadingTime());
+        query.prepare("INSERT INTO history (timestamp, favicon, title, visitCount, loadingTime, url) VALUES (?, ?, ?, 1, ?, ?)");
     }
+    query.addBindValue(item.timestamp());
+    query.addBindValue(item.favicon());
+    query.addBindValue(item.title());
+    query.addBindValue(item.loadingTime());
+    query.addBindValue(item.url());
     return query.exec();
+}
+
+bool Database::removeHistoryEntry(const QString &urlString)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM history WHERE url = ?");
+    query.addBindValue(urlString);
+    return query.exec();
+}
+
+QList<HistoryItem> Database::loadHistory()
+{
+    QList<HistoryItem> historyItems;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM history ORDER BY timestamp DESC");
+    query.exec();
+    while (query.next()) {
+        long long timestamp = query.value(0).toLongLong();
+        QByteArray image = query.value(1).toByteArray();
+        QString title = query.value(2).toString();
+        QString url = query.value(3).toString();
+        HistoryItem item;
+        item.setTimestamp(timestamp);
+        item.setFavicon(image);
+        item.setTitle(title);
+        item.setUrl(url);
+        historyItems.append(item);
+    }
+    return historyItems;
 }
 
 bool Database::addSpeeddialEntry(SpeeddialItem item)
@@ -158,6 +184,27 @@ bool Database::removeBookmarksEntry(const QString &url)
     query.prepare("DELETE FROM bookmarks WHERE url = ?");
     query.addBindValue(url);
     return query.exec();
+}
+
+QList<BookmarksItem> Database::loadBookmarks()
+{
+    QList<BookmarksItem> bookmarksItems;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM bookmarks");
+    query.exec();
+    while (query.next()) {
+        QByteArray image = query.value(0).toByteArray();
+        QString title = query.value(1).toString();
+        QString url = query.value(2).toString();
+        QString folder = query.value(3).toString();
+        BookmarksItem item;
+        item.setFavicon(image);
+        item.setTitle(title);
+        item.setUrl(url);
+        item.setFolder(folder);
+        bookmarksItems.append(item);
+    }
+    return bookmarksItems;
 }
 
 bool Database::addCompleterEntry(const QString &entry)

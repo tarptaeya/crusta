@@ -23,12 +23,12 @@ HistoryItem::HistoryItem()
 {
 }
 
-int HistoryItem::timestamp() const
+long long HistoryItem::timestamp() const
 {
     return m_timestamp;
 }
 
-void HistoryItem::setTimestamp(int timestamp)
+void HistoryItem::setTimestamp(long long timestamp)
 {
     m_timestamp = timestamp;
 }

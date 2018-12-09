@@ -46,6 +46,7 @@ private:
     void handleLoadStarted();
     void handleLoadFinished();
     void handleLinkHovered(const QString &url);
+    void handleIconChanged(const QIcon &icon);
     void showContextMenu(const QPoint &pos);
     QByteArray grabAsByteArray();
     bool matchesCurrentUrl(const QUrl &otherUrl);

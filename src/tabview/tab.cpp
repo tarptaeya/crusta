@@ -25,6 +25,8 @@
 #include "webview.h"
 #include "appmanager.h"
 #include "searchenginemanager.h"
+#include "bookmarksmanager.h"
+#include "historymanager.h"
 
 #include <QWebEngineHistory>
 
@@ -38,6 +40,16 @@ Tab::Tab(QWidget *parent)
 
     m_toolBar = new ToolBar(this);
     m_vBoxLayout->addWidget(m_toolBar, 0);
+
+    m_baseWidget = new QWidget(this);
+    m_baseWidget->setObjectName("base-widget");
+    m_baseWidget->setStyleSheet("#base-widget{ background-color: white }");
+    m_stackedWidget = new QStackedWidget(this);
+    m_stackedWidget->addWidget(m_baseWidget);
+    m_vBoxLayout->addWidget(m_stackedWidget, 1);
+
+    // TODO: Remove this
+    showHistoryManager();
 
     connect(m_toolBar, &ToolBar::backRequested, this, [this]{
         if (!m_webView) {
@@ -70,6 +82,7 @@ Tab::Tab(QWidget *parent)
             url = SearchEngineManager::getSearchUrl(text);
         }
         m_webView->load(url);
+        m_stackedWidget->setCurrentIndex(1);
     });
 }
 
@@ -108,7 +121,8 @@ void Tab::setWebView(WebView *webView)
         return;
     }
     m_webView = webView;
-    m_vBoxLayout->addWidget(m_webView, 1);
+    m_stackedWidget->addWidget(m_webView);
+    m_stackedWidget->setCurrentIndex(0);
 
     connect(m_webView, &WebView::titleChanged, this, [this](const QString &title){
         TabWidget *tabWidget = appManager->getTabWidget(this);
@@ -134,6 +148,18 @@ void Tab::setWebView(WebView *webView)
     connect(m_webView, &WebView::urlChanged, m_toolBar, &ToolBar::setAddress);
 
     connect(m_webView, &WebView::loadProgress, m_toolBar, &ToolBar::setProgress);
+}
+
+void Tab::showBookmarksManager()
+{
+    BookmarksManager::showBookmarksManager(m_baseWidget);
+    m_stackedWidget->setCurrentIndex(0);
+}
+
+void Tab::showHistoryManager()
+{
+    HistoryManager::showHistoryManager(m_baseWidget);
+    m_stackedWidget->setCurrentIndex(0);
 }
 
 int Tab::index()

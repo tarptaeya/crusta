@@ -33,12 +33,15 @@ public:
     void createDatabases();
 
     bool addHistoryEntry(HistoryItem item);
+    bool removeHistoryEntry(const QString &urlString);
+    QList<HistoryItem> loadHistory();
     bool addSpeeddialEntry(SpeeddialItem item);
     bool removeSpeeddialEntry(const QString &url);
     QList<SpeeddialItem> loadSpeeddialEntries();
     bool addBookmarksEntry(BookmarksItem item);
     BookmarksItem isBookmarked(const QString &urlString);
     bool removeBookmarksEntry(const QString &url);
+    QList<BookmarksItem> loadBookmarks();
     bool addCompleterEntry(const QString &entry);
     QStringList loadCompleterEntries();
 private:

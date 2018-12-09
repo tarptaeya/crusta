@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QString>
+#include <QTableView>
 
 class DownloadManager : QObject {
     Q_OBJECT

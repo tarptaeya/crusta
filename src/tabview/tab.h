@@ -22,6 +22,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QIcon>
+#include <QStackedWidget>
 
 class ToolBar;
 class BookmarksBar;
@@ -43,6 +44,9 @@ public:
     WebView *webView();
     void setWebView(WebView *webView);
 
+    void showBookmarksManager();
+    void showHistoryManager();
+
     int index();
 private:
     ToolBar *m_toolBar = nullptr;
@@ -50,4 +54,6 @@ private:
     InfoBar *m_infoBar = nullptr;
     WebView *m_webView = nullptr;
     QVBoxLayout *m_vBoxLayout = nullptr;
+    QStackedWidget *m_stackedWidget = nullptr;
+    QWidget *m_baseWidget = nullptr;
 };

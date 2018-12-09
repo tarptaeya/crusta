@@ -52,6 +52,7 @@ WebView::WebView(QWidget *parent)
     connect(this, &WebView::loadStarted, this, &WebView::handleLoadStarted);
     connect(this, &WebView::loadFinished, this, &WebView::handleLoadFinished);
     connect(m_webPage, &WebPage::linkHovered, this, &WebView::handleLinkHovered);
+    connect(this, &WebView::iconChanged, this, &WebView::handleIconChanged);
 }
 
 WebView::~WebView()
@@ -119,16 +120,6 @@ void WebView::handleLoadStarted()
 void WebView::handleLoadFinished()
 {
     m_isLoading = false;
-    m_loadingTime = QTime::currentTime().msecsSinceStartOfDay() - m_loadingTime;
-
-    HistoryItem item;
-    item.setTimestamp(QDateTime::currentDateTime().toSecsSinceEpoch());
-    item.setFavicon(convertIconToByteArray(icon()));
-    item.setTitle(title());
-    item.setUrl(url().toString());
-    item.setLoadingTime(m_loadingTime);
-
-    appManager->database()->addHistoryEntry(item);
 
     const QList<SpeeddialItem> speeddialItems = Speeddial::speeddialItems();
     for (SpeeddialItem item : speeddialItems) {
@@ -145,6 +136,20 @@ void WebView::handleLoadFinished()
 void WebView::handleLinkHovered(const QString &url)
 {
     m_hoveredLink = url;
+}
+
+void WebView::handleIconChanged(const QIcon &icon)
+{
+    m_loadingTime = QTime::currentTime().msecsSinceStartOfDay() - m_loadingTime;
+
+    HistoryItem item;
+    item.setTimestamp(QDateTime::currentDateTime().toSecsSinceEpoch());
+    item.setFavicon(convertIconToByteArray(icon));
+    item.setTitle(title());
+    item.setUrl(url().toString());
+    item.setLoadingTime(m_loadingTime);
+
+    appManager->database()->addHistoryEntry(item);
 }
 
 void WebView::showContextMenu(const QPoint &pos)

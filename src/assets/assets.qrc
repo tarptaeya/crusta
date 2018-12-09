@@ -28,5 +28,6 @@
         <file>html/about.html</file>
         <file>html/feedback.html</file>
         <file>html/home.html</file>
+        <file>icons/small_globe.svg</file>
     </qresource>
 </RCC>
