@@ -47,6 +47,7 @@ void BookmarksManager::showBookmarksManager(QWidget *baseWidget)
             if (categoryItems.at(i)->text(0) == bookmarksItem.category()) {
                 delete item;
                 item = new QTreeWidgetItem(categoryItems.at(i));
+                break;
             }
         }
         QPixmap pixmap;
@@ -63,6 +64,9 @@ void BookmarksManager::showBookmarksManager(QWidget *baseWidget)
 
     connect(treeWidget, &QTreeWidget::customContextMenuRequested, treeWidget, [treeWidget](const QPoint &pos) {
         QTreeWidgetItem *item = treeWidget->currentItem();
+        if (item->childCount() == 0) {
+            return;
+        }
 
         QMenu *menu = new QMenu();
         QAction *copyAction = new QAction("Copy address");
