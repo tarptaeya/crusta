@@ -25,6 +25,7 @@
 #include "tab.h"
 #include "tabwidget.h"
 #include "crustascheme.h"
+#include "downloadmanager.h"
 
 AppManager::AppManager(QObject *parent)
     : QObject(parent)
@@ -197,4 +198,8 @@ void AppManager::setUpWebEngineProfile()
 
     CrustaScheme *crustaScheme = new CrustaScheme(this);
     m_webEngineProfile->installUrlSchemeHandler("crusta", crustaScheme);
+
+    connect(m_webEngineProfile, &QWebEngineProfile::downloadRequested, this, [](QWebEngineDownloadItem *download) {
+        DownloadManager::showPreDownloadDialog(download);
+    });
 }

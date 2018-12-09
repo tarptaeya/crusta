@@ -25,6 +25,7 @@ set(
     extra/lineedit.cpp
     extra/qclickablelabel.cpp
     managers/searchenginemanager.cpp
+    managers/downloadmanager.cpp
     pages/speeddial/speeddial.cpp
     pages/externaljsobject.cpp
     pages/scripts.cpp
