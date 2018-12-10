@@ -2,6 +2,7 @@
 #include "appmanager.h"
 #include "database.h"
 #include "bookmarksitem.h"
+#include <QDebug>
 
 void BookmarksManager::showBookmarksManager(QWidget *baseWidget)
 {
@@ -64,7 +65,7 @@ void BookmarksManager::showBookmarksManager(QWidget *baseWidget)
 
     connect(treeWidget, &QTreeWidget::customContextMenuRequested, treeWidget, [treeWidget](const QPoint &pos) {
         QTreeWidgetItem *item = treeWidget->currentItem();
-        if (item->childCount() == 0) {
+        if (item->childCount() != 0) {
             return;
         }
 

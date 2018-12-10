@@ -20,7 +20,10 @@
 #include "sidebar.h"
 #include "strings.h"
 #include "dimensions.h"
-#include <QDebug>
+#include "sidebarbutton.h"
+#include "appmanager.h"
+#include "tab.h"
+#include "webview.h"
 
 #define QSL QStringLiteral
 
@@ -28,7 +31,46 @@ SideBar::SideBar(QWidget *parent)
     : QWidget(parent)
 {
     setAttribute(Qt::WA_StyledBackground);
-    setObjectName(QSL("sideBar"));
+    setObjectName(QSL("sidebar"));
+
+    m_vbox = new QVBoxLayout();
+    m_vbox->setContentsMargins(0, 0, 0, 0);
+    m_vbox->setSpacing(0);
+    setLayout(m_vbox);
+
+    SideBarButton *bookmarksButton = new SideBarButton(this);
+    SideBarButton *downloadsButton = new SideBarButton(this);
+    SideBarButton *historyButton = new SideBarButton(this);
+    bookmarksButton->setIcon(QIcon(":/icons/red_favourite.svg"));
+    downloadsButton->setIcon(QIcon(":/icons/download.svg"));
+    historyButton->setIcon(QIcon(":/icons/.svg"));
+    m_vbox->addWidget(bookmarksButton);
+    m_vbox->addWidget(downloadsButton);
+    m_vbox->addWidget(historyButton);
+
+    SideBarButton *addPanelButton = new SideBarButton(this);
+    addPanelButton->setIcon(QIcon(":/icons/plus.svg"));
+    m_vbox->addWidget(addPanelButton);
+
+    m_vbox->addWidget(new QWidget(this));
+
+    connect(bookmarksButton, &SideBarButton::clicked, this, [] {
+        Tab *tab = new Tab;
+        WebView *webView = new WebView;
+        tab->setWebView(webView);
+        tab->showBookmarksManager();
+
+        appManager->addTab(tab, Tab::Active);
+    });
+
+    connect(historyButton, &SideBarButton::clicked, this, [] {
+        Tab *tab = new Tab;
+        WebView *webView = new WebView;
+        tab->setWebView(webView);
+        tab->showHistoryManager();
+
+        appManager->addTab(tab, Tab::Active);
+    });
 }
 
 SideBar::~SideBar()

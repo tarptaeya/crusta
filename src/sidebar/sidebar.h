@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QVBoxLayout>
 
 class SideBar : public QWidget
 {
@@ -31,4 +32,6 @@ public:
     };
     explicit SideBar(QWidget *parent = nullptr);
     ~SideBar();
+private:
+    QVBoxLayout *m_vbox = nullptr;
 };

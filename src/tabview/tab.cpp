@@ -48,9 +48,6 @@ Tab::Tab(QWidget *parent)
     m_stackedWidget->addWidget(m_baseWidget);
     m_vBoxLayout->addWidget(m_stackedWidget, 1);
 
-    // TODO: Remove this
-    showBookmarksManager();
-
     connect(m_toolBar, &ToolBar::backRequested, this, [this]{
         if (!m_webView) {
             return;
@@ -122,7 +119,7 @@ void Tab::setWebView(WebView *webView)
     }
     m_webView = webView;
     m_stackedWidget->addWidget(m_webView);
-    m_stackedWidget->setCurrentIndex(0);
+    m_stackedWidget->setCurrentIndex(1);
 
     connect(m_webView, &WebView::titleChanged, this, [this](const QString &title){
         TabWidget *tabWidget = appManager->getTabWidget(this);

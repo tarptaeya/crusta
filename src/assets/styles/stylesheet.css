@@ -65,7 +65,7 @@ QTabBar::tab:hover:!selected {
 }
 
 #tool-bar-button:hover {
-    background-color: #f9f9f9;
+    background-color: #ddd;
 }
 
 #omni-bar {
@@ -89,8 +89,18 @@ QTabBar::tab:hover:!selected {
     background-color: #6464ff;
 }
 
-#sideBar {
-    max-width: 32px;
-    min-width: 32px;
+#sidebar {
+    max-width: 40px;
+    min-width: 40px;
     background-color: #fff;
+}
+
+#sidebar-button {
+    width: 40px;
+    height: 40px;
+    border: none;
+}
+
+#sidebar-button:hover {
+    background-color: #ddd;
 }
