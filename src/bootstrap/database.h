@@ -25,6 +25,7 @@
 class HistoryItem;
 class SpeeddialItem;
 class BookmarksItem;
+class PanelItem;
 
 class Database : public QObject
 {
@@ -46,6 +47,9 @@ public:
     QStringList loadCompleterEntries();
     bool addCategory(const QString &category);
     QStringList loadCategories();
+    bool addPanel(PanelItem item);
+    bool removePanel(const QString &urlString);
+    QList<PanelItem> loadPanels();
 
 private:
     QSqlDatabase m_db;
@@ -54,4 +58,5 @@ private:
     void createBookmarksDatabase();
     void createCompleterDatabase();
     void createCategoryDatabase();
+    void createPanelsDatabase();
 };

@@ -22,6 +22,7 @@ set(
     data/historyitem.cpp
     data/speeddialitem.cpp
     data/bookmarksitem.cpp
+    data/panelitem.cpp
     extra/lineedit.cpp
     extra/qclickablelabel.cpp
     managers/searchenginemanager.cpp

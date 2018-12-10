@@ -21,6 +21,7 @@
 #include "historyitem.h"
 #include "speeddialitem.h"
 #include "bookmarksitem.h"
+#include "panelitem.h"
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
@@ -43,6 +44,7 @@ void Database::createDatabases()
     createBookmarksDatabase();
     createCompleterDatabase();
     createCategoryDatabase();
+    createPanelsDatabase();
 }
 
 bool Database::addHistoryEntry(HistoryItem item)
@@ -248,6 +250,38 @@ QStringList Database::loadCategories()
     return categories;
 }
 
+bool Database::addPanel(PanelItem item)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO panels VALUES (?, ?)");
+    query.addBindValue(item.url());
+    query.addBindValue(item.favicon());
+    return query.exec();
+}
+
+bool Database::removePanel(const QString &urlString)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM panels WHERE url = ?");
+    query.addBindValue(urlString);
+    return query.exec();
+}
+
+QList<PanelItem> Database::loadPanels()
+{
+    QList<PanelItem> panelItems;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM panels");
+    query.exec();
+    while (query.next()) {
+        PanelItem item;
+        item.setUrl(query.value(0).toString());
+        item.setFavicon(query.value(1).toByteArray());
+        panelItems.append(item);
+    }
+    return panelItems;
+}
+
 void Database::createHistoryDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS history (timestamp INTEGER, favicon BLOB, title TEXT, url TEXT PRIMARY KEY, visitCount INTEGER, loadingTime INTEGER)");
@@ -275,5 +309,11 @@ void Database::createCompleterDatabase()
 void Database::createCategoryDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS category (name TEXT UNIQUE)");
+    query.exec();
+}
+
+void Database::createPanelsDatabase()
+{
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS panels (url TEXT UNIQUE, favicon BLOB)");
     query.exec();
 }
