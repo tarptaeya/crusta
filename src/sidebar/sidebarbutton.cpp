@@ -24,6 +24,9 @@ SideBarButton::SideBarButton(QWidget *parent)
 {
     setObjectName("sidebar-button");
     m_webview = new QWebEngineView(this);
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, &SideBarButton::customContextMenuRequested, this, &SideBarButton::handleContextMenu);
 }
 
 QWebEngineView *SideBarButton::webView()
@@ -39,4 +42,31 @@ QString SideBarButton::baseUrl() const
 void SideBarButton::setBaseUrl(const QString &urlString)
 {
     m_baseUrlString = urlString;
+}
+
+void SideBarButton::handleContextMenu(const QPoint &pos)
+{
+    if (m_baseUrlString.isEmpty()) {
+        return;
+    }
+
+    QMenu *menu = new QMenu;
+    QAction *reloadAction = new QAction("Reload");
+    QAction *unloadAction = new QAction("Unload");
+    QAction *removeAction = new QAction("Remove");
+    connect(reloadAction, &QAction::triggered, this, [this] {
+        m_webview->load(m_baseUrlString);
+    });
+    connect(unloadAction, &QAction::triggered, this, [this] {
+        m_webview->load(QUrl(""));
+    });
+    connect(removeAction, &QAction::triggered, this, [this] {
+        emit removePanelRequested();
+    });
+    menu->addAction(reloadAction);
+    menu->addAction(unloadAction);
+    menu->addSeparator();
+    menu->addAction(removeAction);
+    menu->exec(mapToGlobal(pos));
+    menu->deleteLater();
 }

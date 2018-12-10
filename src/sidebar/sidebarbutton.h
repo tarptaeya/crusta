@@ -22,15 +22,22 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QWebEngineView>
+#include <QMenu>
+#include <QAction>
 
 class SideBarButton : public QPushButton
 {
+    Q_OBJECT
 public:
     explicit SideBarButton(QWidget *parent = nullptr);
     QWebEngineView *webView();
     QString baseUrl() const;
     void setBaseUrl(const QString &urlString);
+Q_SIGNALS:
+    void removePanelRequested();
 private:
     QWebEngineView *m_webview = nullptr;
     QString m_baseUrlString;
+
+    void handleContextMenu(const QPoint &pos);
 };

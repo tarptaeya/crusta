@@ -130,6 +130,18 @@ void SideBar::addPanel(const QString &urlString, const QIcon &icon)
         item.setFavicon(convertIconToByteArray(icon));
         appManager->database()->addPanel(item);
     });
+
+    connect(button, &SideBarButton::removePanelRequested, this, [this, button] {
+        removePanel(button->baseUrl());
+        QWidget *widget = m_hbox->itemAt(1)->widget();
+        if (button->webView() == widget) {
+            m_hbox->removeItem(m_hbox->itemAt(1));
+            widget->hide();
+            resize(40, height());
+            return;
+        }
+        button->deleteLater();
+    });
 }
 
 void SideBar::showPanel(SideBarButton *button)
@@ -150,4 +162,9 @@ void SideBar::showPanel(SideBarButton *button)
     if (button->webView()->url().isEmpty()) {
         button->webView()->load(button->baseUrl());
     }
+}
+
+void SideBar::removePanel(const QString &urlString)
+{
+    appManager->database()->removePanel(urlString);
 }

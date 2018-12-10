@@ -43,4 +43,5 @@ private:
     void handleAddPanel();
     void addPanel(const QString &urlString, const QIcon &icon);
     void showPanel(SideBarButton *button);
+    void removePanel(const QString &urlString);
 };
