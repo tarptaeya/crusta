@@ -41,6 +41,6 @@ private:
     SideBarButton *m_addPanelButton = nullptr;
 
     void handleAddPanel();
-    void addPanel(const QString &urlString);
+    void addPanel(const QString &urlString, const QIcon &icon);
     void showPanel(SideBarButton *button);
 };

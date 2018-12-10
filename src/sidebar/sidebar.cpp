@@ -22,9 +22,13 @@
 #include "dimensions.h"
 #include "sidebarbutton.h"
 #include "appmanager.h"
+#include "database.h"
 #include "tab.h"
 #include "webview.h"
 #include "sidebarpopup.h"
+#include "panelitem.h"
+#include "tools.h"
+#include <QPixmap>
 
 #define QSL QStringLiteral
 
@@ -60,6 +64,14 @@ SideBar::SideBar(QWidget *parent)
 
     m_vbox->addWidget(new QWidget(this));
 
+    const QList<PanelItem> panelItems = appManager->database()->loadPanels();
+    for (const PanelItem &item : panelItems) {
+        QPixmap pixmap;
+        pixmap.loadFromData(item.favicon());
+        QIcon icon = QIcon(pixmap);
+        addPanel(item.url(), icon);
+    }
+
     connect(bookmarksButton, &SideBarButton::clicked, this, [] {
         Tab *tab = new Tab;
         WebView *webView = new WebView;
@@ -93,19 +105,31 @@ void SideBar::handleAddPanel()
     popup->show();
     popup->move(m_addPanelButton->mapToGlobal(m_addPanelButton->rect().center()));
 
-    connect(popup, &SideBarPopup::addPanelRequested, this, &SideBar::addPanel);
+    connect(popup, &SideBarPopup::addPanelRequested, this, [this](const QString &urlString) {
+        addPanel(urlString, QIcon());
+        PanelItem item;
+        item.setUrl(urlString);
+        appManager->database()->addPanel(item);
+    });
 }
 
-void SideBar::addPanel(const QString &urlString)
+void SideBar::addPanel(const QString &urlString, const QIcon &icon)
 {
     SideBarButton *button = new SideBarButton;
     button->setBaseUrl(urlString);
+    button->setIcon(icon);
     m_vbox->insertWidget(m_vbox->count() - 2, button);
     connect(button, &QPushButton::clicked, this, [this, button] {
         showPanel(button);
     });
 
-    connect(button->webView(), &QWebEngineView::iconChanged, button, &QPushButton::setIcon);
+    connect(button->webView(), &QWebEngineView::iconChanged, button, [button](const QIcon &icon) {
+        button->setIcon(icon);
+        PanelItem item;
+        item.setUrl(button->baseUrl());
+        item.setFavicon(convertIconToByteArray(icon));
+        appManager->database()->addPanel(item);
+    });
 }
 
 void SideBar::showPanel(SideBarButton *button)

@@ -253,7 +253,7 @@ QStringList Database::loadCategories()
 bool Database::addPanel(PanelItem item)
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO panels VALUES (?, ?)");
+    query.prepare("INSERT OR REPLACE INTO panels VALUES (?, ?)");
     query.addBindValue(item.url());
     query.addBindValue(item.favicon());
     return query.exec();
