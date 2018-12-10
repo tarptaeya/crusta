@@ -90,8 +90,6 @@ QTabBar::tab:hover:!selected {
 }
 
 #sidebar {
-    max-width: 40px;
-    min-width: 40px;
     background-color: #fff;
 }
 

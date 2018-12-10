@@ -24,6 +24,7 @@
 #include "appmanager.h"
 #include "tab.h"
 #include "webview.h"
+#include "sidebarpopup.h"
 
 #define QSL QStringLiteral
 
@@ -36,21 +37,26 @@ SideBar::SideBar(QWidget *parent)
     m_vbox = new QVBoxLayout();
     m_vbox->setContentsMargins(0, 0, 0, 0);
     m_vbox->setSpacing(0);
-    setLayout(m_vbox);
+
+    m_hbox = new QHBoxLayout();
+    m_hbox->setContentsMargins(0, 0, 0, 0);
+    m_hbox->setSpacing(0);
+    m_hbox->addLayout(m_vbox);
+    setLayout(m_hbox);
 
     SideBarButton *bookmarksButton = new SideBarButton(this);
     SideBarButton *downloadsButton = new SideBarButton(this);
     SideBarButton *historyButton = new SideBarButton(this);
-    bookmarksButton->setIcon(QIcon(":/icons/red_favourite.svg"));
+    bookmarksButton->setIcon(QIcon(":/icons/favourite.svg"));
     downloadsButton->setIcon(QIcon(":/icons/download.svg"));
-    historyButton->setIcon(QIcon(":/icons/.svg"));
+    historyButton->setIcon(QIcon(":/icons/history.svg"));
     m_vbox->addWidget(bookmarksButton);
     m_vbox->addWidget(downloadsButton);
     m_vbox->addWidget(historyButton);
 
-    SideBarButton *addPanelButton = new SideBarButton(this);
-    addPanelButton->setIcon(QIcon(":/icons/plus.svg"));
-    m_vbox->addWidget(addPanelButton);
+    m_addPanelButton = new SideBarButton(this);
+    m_addPanelButton->setIcon(QIcon(":/icons/plus.svg"));
+    m_vbox->addWidget(m_addPanelButton);
 
     m_vbox->addWidget(new QWidget(this));
 
@@ -71,8 +77,53 @@ SideBar::SideBar(QWidget *parent)
 
         appManager->addTab(tab, Tab::Active);
     });
+
+    connect(m_addPanelButton, &SideBarButton::clicked, this, &SideBar::handleAddPanel);
 }
 
 SideBar::~SideBar()
 {
+}
+
+void SideBar::handleAddPanel()
+{
+    SideBarPopup *popup = new SideBarPopup;
+    popup->setAttribute(Qt::WA_DeleteOnClose);
+    popup->setWindowFlag(Qt::Popup);
+    popup->show();
+    popup->move(m_addPanelButton->mapToGlobal(m_addPanelButton->rect().center()));
+
+    connect(popup, &SideBarPopup::addPanelRequested, this, &SideBar::addPanel);
+}
+
+void SideBar::addPanel(const QString &urlString)
+{
+    SideBarButton *button = new SideBarButton;
+    button->setBaseUrl(urlString);
+    m_vbox->insertWidget(m_vbox->count() - 2, button);
+    connect(button, &QPushButton::clicked, this, [this, button] {
+        showPanel(button);
+    });
+
+    connect(button->webView(), &QWebEngineView::iconChanged, button, &QPushButton::setIcon);
+}
+
+void SideBar::showPanel(SideBarButton *button)
+{
+    if (m_hbox->count() == 2) {
+        QWidget *widget = m_hbox->itemAt(1)->widget();
+        widget->hide();
+        m_hbox->removeItem(m_hbox->itemAt(1));
+
+        if (button->webView() == widget) {
+            resize(40, height());
+            return;
+        }
+    }
+
+    button->webView()->show();
+    m_hbox->addWidget(button->webView(), 1);
+    if (button->webView()->url().isEmpty()) {
+        button->webView()->load(button->baseUrl());
+    }
 }

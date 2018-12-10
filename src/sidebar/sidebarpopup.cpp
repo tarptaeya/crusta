@@ -17,3 +17,33 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
+#include "sidebarpopup.h"
+
+SideBarPopup::SideBarPopup(QWidget *parent)
+    : QWidget(parent)
+{
+    QHBoxLayout *hbox = new  QHBoxLayout;
+    hbox->setContentsMargins(10, 10, 10, 10);
+    setLayout(hbox);
+
+    QLineEdit *addressLine = new QLineEdit;
+    addressLine->setPlaceholderText("https://");
+    addressLine->setMinimumWidth(200);
+    hbox->addWidget(addressLine, 1);
+
+    QPushButton *addButton = new QPushButton;
+    addButton->setIcon(QIcon(":/icons/plus.svg"));
+    addButton->setFlat(true);
+    hbox->addWidget(addButton);
+
+    connect(addressLine, &QLineEdit::returnPressed, addButton, &QPushButton::click);
+
+    connect(addButton, &QPushButton::clicked, this, [this, addressLine]{
+        const QString urlString = addressLine->text();
+        if (!QUrl::fromUserInput(urlString).isValid()) {
+            return;
+        }
+        emit addPanelRequested(urlString);
+        close();
+    });
+}

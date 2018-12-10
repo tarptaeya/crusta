@@ -23,4 +23,20 @@ SideBarButton::SideBarButton(QWidget *parent)
     : QPushButton(parent)
 {
     setObjectName("sidebar-button");
+    m_webview = new QWebEngineView(this);
+}
+
+QWebEngineView *SideBarButton::webView()
+{
+    return m_webview;
+}
+
+QString SideBarButton::baseUrl() const
+{
+    return m_baseUrlString;
+}
+
+void SideBarButton::setBaseUrl(const QString &urlString)
+{
+    m_baseUrlString = urlString;
 }

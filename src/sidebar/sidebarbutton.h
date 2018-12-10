@@ -21,9 +21,16 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QWebEngineView>
 
 class SideBarButton : public QPushButton
 {
 public:
     explicit SideBarButton(QWidget *parent = nullptr);
+    QWebEngineView *webView();
+    QString baseUrl() const;
+    void setBaseUrl(const QString &urlString);
+private:
+    QWebEngineView *m_webview = nullptr;
+    QString m_baseUrlString;
 };

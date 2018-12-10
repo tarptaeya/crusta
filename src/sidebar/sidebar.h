@@ -21,6 +21,9 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+
+class SideBarButton;
 
 class SideBar : public QWidget
 {
@@ -34,4 +37,10 @@ public:
     ~SideBar();
 private:
     QVBoxLayout *m_vbox = nullptr;
+    QHBoxLayout *m_hbox = nullptr;
+    SideBarButton *m_addPanelButton = nullptr;
+
+    void handleAddPanel();
+    void addPanel(const QString &urlString);
+    void showPanel(SideBarButton *button);
 };

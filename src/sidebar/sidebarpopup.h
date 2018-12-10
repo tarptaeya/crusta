@@ -17,3 +17,19 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
+#pragma once
+
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QUrl>
+
+class SideBarPopup : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit SideBarPopup(QWidget *parent = nullptr);
+Q_SIGNALS:
+    void addPanelRequested(const QString &urlString);
+};
