@@ -2,10 +2,6 @@ QTabWidget::tab-bar {
     height: 32px;
 }
 
-QTabBar {
-    background-color: #ddd;
-}
-
 QTabBar::tear {
     width: 0;
     border: none;
@@ -71,7 +67,7 @@ QTabBar::tab:hover:!selected {
 #omni-bar {
     margin: 2px;
     padding: 3px;
-    border: none;
+    border: 1px solid #bbb;
     border-radius: 4px;
     color: #000;
     background-color: #f8f8f8;

@@ -129,7 +129,7 @@ void TabBar::addTabCloseButton(int index)
 {
     QPushButton *tabCloseButton = new QPushButton;
     tabCloseButton->setObjectName("tab-close-button");
-    tabCloseButton->setText("\u2a09");
+    tabCloseButton->setText("✕");
     setTabButton(index, QTabBar::RightSide, tabCloseButton);
     Tab *tab = qobject_cast<Tab *>(m_tabWidget->widget(index));
 
