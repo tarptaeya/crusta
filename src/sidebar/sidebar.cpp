@@ -91,6 +91,8 @@ SideBar::SideBar(QWidget *parent)
     });
 
     connect(m_addPanelButton, &SideBarButton::clicked, this, &SideBar::handleAddPanel);
+
+    setFixedWidth(40);
 }
 
 SideBar::~SideBar()
@@ -137,9 +139,10 @@ void SideBar::addPanel(const QString &urlString, const QIcon &icon)
         if (button->webView() == widget) {
             m_hbox->removeItem(m_hbox->itemAt(1));
             widget->hide();
-            resize(40, height());
-            return;
+            setFixedWidth(40);
         }
+        m_vbox->removeWidget(button);
+        button->hide();
         button->deleteLater();
     });
 }
@@ -152,12 +155,14 @@ void SideBar::showPanel(SideBarButton *button)
         m_hbox->removeItem(m_hbox->itemAt(1));
 
         if (button->webView() == widget) {
-            resize(40, height());
+            setFixedWidth(40);
             return;
         }
     }
 
     button->webView()->show();
+    setMinimumWidth(200);
+    setMaximumWidth(1000);
     m_hbox->addWidget(button->webView(), 1);
     if (button->webView()->url().isEmpty()) {
         button->webView()->load(button->baseUrl());

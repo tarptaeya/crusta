@@ -30,12 +30,15 @@ CentralWidget::CentralWidget(QWidget *parent)
     m_sideBar = new SideBar(this);
     if (Layouts::sideBarPosition() == Layouts::Left) {
         insertWidget(0, m_sideBar);
+        setStretchFactor(0, 0);
+        setStretchFactor(1, 1);
     } else {
         addWidget(m_sideBar);
+        setStretchFactor(0, 1);
+        setStretchFactor(1, 0);
     }
 
     setHandleWidth(0);
-    setStretchFactor(0, 0);
     setContentsMargins(0, 0, 0, 0);
 }
 
