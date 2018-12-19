@@ -48,8 +48,9 @@ ToolBar::ToolBar(QWidget *parent)
     m_omniBar = new OmniBar(this);
     m_shieldButton = new ToolBarButton(this);
     m_shieldButton->setIconFromFileName(QSL(":/icons/shield.svg"));
-    m_downloadsButton = new ToolBarButton(this);
-    m_downloadsButton->setIconFromFileName(QSL(":/icons/download.svg"));
+    m_optionsButton = new ToolBarButton(this);
+    m_optionsButton->setIconFromFileName(QSL(":/icons/options.svg"));
+    m_optionsButton->setMenu(createOptionsMenu());
 
     hBoxLayout->addWidget(m_backButton);
     hBoxLayout->addWidget(m_forwardButton);
@@ -59,7 +60,7 @@ ToolBar::ToolBar(QWidget *parent)
     hBoxLayout->addWidget(m_omniBar);
     hBoxLayout->addWidget(spacerWidget(SPACER_WIDGET_WIDTH));
     hBoxLayout->addWidget(m_shieldButton);
-    hBoxLayout->addWidget(m_downloadsButton);
+    hBoxLayout->addWidget(m_optionsButton);
 
     QVBoxLayout *vBoxLayout = new QVBoxLayout;
     vBoxLayout->setContentsMargins(0, 0, 0, 0);
@@ -73,6 +74,7 @@ ToolBar::ToolBar(QWidget *parent)
     connect(m_backButton, &ToolBarButton::clicked, this, [this]{ emit backRequested(); });
     connect(m_forwardButton, &ToolBarButton::clicked, this, [this]{ emit forwardRequested(); });
     connect(m_stopReloadButton, &ToolBarButton::clicked, this, [this]{ emit stopReloadRequested(); });
+    connect(m_optionsButton, &QToolButton::clicked, m_optionsButton, &ToolBarButton::showMenu);
 }
 
 void ToolBar::setIsCanGoBack(bool canGoBack)
@@ -109,4 +111,76 @@ QWidget *ToolBar::spacerWidget(int width)
     QWidget *widget = new QWidget(this);
     widget->setMinimumWidth(width);
     return widget;
+}
+
+QMenu *ToolBar::createOptionsMenu()
+{
+    QMenu *menu = new QMenu;
+
+    QMenu *file = new QMenu(tr("File"));
+    QAction *newTab = new QAction(tr("New tab"));
+    QAction *newWindow = new QAction(tr("New window"));
+    QAction *newPrivateWindow = new QAction(tr("New incognito window"));
+    QAction *open = new QAction(tr("Open file"));
+    QAction *save = new QAction(tr("Save page"));
+    QAction *savePdf = new QAction(tr("Print as PDF"));
+    QAction *exit = new QAction(tr("Exit"));
+    file->addAction(newTab);
+    file->addAction(newWindow);
+    file->addAction(newPrivateWindow);
+    file->addSeparator();
+    file->addAction(open);
+    file->addAction(save);
+    file->addAction(savePdf);
+    file->addSeparator();
+    file->addAction(exit);
+
+    QMenu *edit = new QMenu(tr("Edit"));
+    QAction *cut = new QAction(tr("Cut"));
+    QAction *copy = new QAction(tr("Copy"));
+    QAction *paste = new QAction(tr("Paste"));
+    QAction *undo = new QAction(tr("Undo"));
+    QAction *redo = new QAction(tr("Redo"));
+    QAction *find = new QAction(tr("Find"));
+    edit->addAction(cut);
+    edit->addAction(copy);
+    edit->addAction(paste);
+    edit->addSeparator();
+    edit->addAction(undo);
+    edit->addAction(redo);
+    edit->addSeparator();
+    edit->addAction(find);
+
+    QMenu *view = new QMenu(tr("View"));
+    QAction *bookmarks = new QAction(tr("Show bookmarks"));
+    QAction *downloads = new QAction(tr("Show downloads"));
+    QAction *history = new QAction(tr("Show history"));
+    QAction *sidebar = new QAction(tr("Show sidebar"));
+    QAction *zoomIn = new QAction(tr("Zoom in"));
+    QAction *zoomOut = new QAction(tr("Zoom out"));
+    QAction *resetZoom = new QAction(tr("Reset zoom"));
+    QAction *pageSource = new QAction(tr("Page source"));
+    QAction *fullScreen = new QAction(tr("Full screen"));
+    view->addAction(bookmarks);
+    view->addAction(downloads);
+    view->addAction(history);
+    view->addAction(sidebar);
+    view->addSeparator();
+    view->addAction(zoomIn);
+    view->addAction(zoomOut);
+    view->addAction(resetZoom);
+    view->addSeparator();
+    view->addAction(pageSource);
+    view->addAction(fullScreen);
+
+    QMenu *tools = new QMenu(tr("Tools"));
+    QMenu *help = new QMenu(tr("Help"));
+
+    menu->addMenu(file);
+    menu->addMenu(edit);
+    menu->addMenu(view);
+    menu->addMenu(tools);
+    menu->addMenu(help);
+
+    return menu;
 }

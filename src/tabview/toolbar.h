@@ -20,6 +20,8 @@
 #pragma once
 
 #include <QWidget>
+#include <QMenu>
+#include <QAction>
 
 class OmniBar;
 class ToolBarButton;
@@ -48,8 +50,9 @@ private:
     ToolBarButton *m_favouritesButton = nullptr;
     OmniBar *m_omniBar = nullptr;
     ToolBarButton *m_shieldButton = nullptr;
-    ToolBarButton *m_downloadsButton = nullptr;
+    ToolBarButton *m_optionsButton = nullptr;
     ProgressBar *m_progressBar = nullptr;
 
     QWidget *spacerWidget(int width);
+    QMenu *createOptionsMenu();
 };
