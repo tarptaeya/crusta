@@ -18,7 +18,7 @@ QTabBar::tab {
 QTabBar::tab:selected {
     background: #fff;
     color: #000;
-    border-color: #6464ff;
+    border-color: #ca8d42;
 }
 
 QTabBar::tab:hover:!selected {
@@ -73,7 +73,7 @@ QTabBar::tab:hover:!selected {
     color: #000;
     background-color: #f8f8f8;
     selection-color: #fff;
-    selection-background-color: #6464ff;
+    selection-background-color: #ca8d42;
 }
 
 #progress-bar {
@@ -83,7 +83,7 @@ QTabBar::tab:hover:!selected {
 }
 
 #progress-bar::chunk {
-    background-color: #6464ff;
+    background-color: #ca8d42;
 }
 
 #sidebar {
