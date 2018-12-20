@@ -22,9 +22,11 @@
 #include "speeddialitem.h"
 #include "bookmarksitem.h"
 #include "panelitem.h"
+#include "searchenginemanager.h"
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
+#include <QPixmap>
 
 Database::Database(QObject *parent)
     : QObject(parent)
@@ -45,6 +47,7 @@ void Database::createDatabases()
     createCompleterDatabase();
     createCategoryDatabase();
     createPanelsDatabase();
+    createSearchEnginesDatabase();
 }
 
 bool Database::addHistoryEntry(HistoryItem item)
@@ -282,6 +285,44 @@ QList<PanelItem> Database::loadPanels()
     return panelItems;
 }
 
+bool Database::addSearchEngine(SearchEngine engine)
+{
+    QSqlQuery query;
+    query.prepare("INSERT OR REPLACE INTO searchengines VALUES (?, ?, ?, ?)");
+    query.addBindValue(engine.url);
+    query.addBindValue(engine.icon);
+    query.addBindValue(engine.name);
+    query.addBindValue(engine.description);
+    return query.exec();
+}
+
+bool Database::removeSearchEngine(const QString &url)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM searchengines WHERE url = ?");
+    query.addBindValue(url);
+    return query.exec();
+}
+
+void Database::loadSearchEngines()
+{
+    QList<SearchEngine> engines;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM searchengines");
+    query.exec();
+    while (query.next()) {
+        SearchEngine engine;
+        engine.url = query.value(0).toString();
+        QPixmap pixmap;
+        pixmap.loadFromData(query.value(1).toByteArray());
+        engine.icon = QIcon(pixmap);
+        engine.name = query.value(2).toString();
+        engine.description = query.value(3).toString();
+        engines.append(engine);
+    }
+    SearchEngineManager::s_engines = engines;
+}
+
 void Database::createHistoryDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS history (timestamp INTEGER, favicon BLOB, title TEXT, url TEXT PRIMARY KEY, visitCount INTEGER, loadingTime INTEGER)");
@@ -315,5 +356,11 @@ void Database::createCategoryDatabase()
 void Database::createPanelsDatabase()
 {
     QSqlQuery query("CREATE TABLE IF NOT EXISTS panels (url TEXT UNIQUE, favicon BLOB)");
+    query.exec();
+}
+
+void Database::createSearchEnginesDatabase()
+{
+    QSqlQuery query("CREATE TABLE IF NOT EXISTS searchengines (url TEXT UNIQUE, favicon BLOB, name, TEXT, description TEXT)");
     query.exec();
 }

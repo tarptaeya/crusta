@@ -26,6 +26,7 @@ class HistoryItem;
 class SpeeddialItem;
 class BookmarksItem;
 class PanelItem;
+class SearchEngine;
 
 class Database : public QObject
 {
@@ -50,6 +51,9 @@ public:
     bool addPanel(PanelItem item);
     bool removePanel(const QString &urlString);
     QList<PanelItem> loadPanels();
+    bool addSearchEngine(SearchEngine engine);
+    bool removeSearchEngine(const QString &url);
+    void loadSearchEngines();
 
 private:
     QSqlDatabase m_db;
@@ -59,4 +63,5 @@ private:
     void createCompleterDatabase();
     void createCategoryDatabase();
     void createPanelsDatabase();
+    void createSearchEnginesDatabase();
 };

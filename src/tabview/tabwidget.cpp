@@ -33,7 +33,7 @@ TabWidget::TabWidget(QWidget *parent)
 
     Tab *tab = new Tab;
     WebView *webView = new WebView;
-    webView->load(QUrl("crusta:home"));
+    webView->loadStartupPage();
     tab->setWebView(webView);
     addTab(tab, Tab::Active);
 

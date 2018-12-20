@@ -43,6 +43,7 @@ AppManager::AppManager(QObject *parent)
 
     m_database = new Database(this);
     m_database->createDatabases();
+    m_database->loadSearchEngines();
 }
 
 AppManager::~AppManager()
