@@ -88,7 +88,15 @@ QString Tab::title() const
     if (!m_webView) {
         return QString();
     }
-    return m_webView->title();
+    QString title = m_webView->title();
+    if (title.isEmpty()) {
+        if (m_webView->isLoading()) {
+            title = tr("Connecting...");
+        } else {
+            title = tr("New tab");
+        }
+    }
+    return title;
 }
 
 QString Tab::urlString() const
