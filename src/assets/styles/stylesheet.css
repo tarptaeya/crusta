@@ -1,3 +1,8 @@
+TabBar {
+    background: %TABBAR-COLOR%;
+    border: none;
+}
+
 QTabWidget::tab-bar {
     height: 32px;
 }
@@ -9,33 +14,33 @@ QTabBar::tear {
 
 QTabBar::tab {
     height: 30px;
-    color: #666;
-    background-color: transparent;
+    color: %PASSIVE-TEXT-COLOR%;
+    background: transparent;
     border-top: 2px solid transparent;
     padding-left: 5px;
 }
 
 QTabBar::tab:selected {
-    background: #fff;
-    color: #000;
-    border-color: #ca8d42;
+    background: %TOOLBAR-COLOR%;
+    color: %ACTIVE-TEXT-COLOR%;
+    border-top-color: %ACTIVE-COLOR%;
 }
 
 QTabBar::tab:hover:!selected {
-    border-color: #777;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 #tab-close-button {
     width: 20px;
     height: 20px;
     border-radius: 2px;
-    color: #666;
-    background-color: transparent;
+    color: %ACTIVE-TEXT-COLOR%;
+    background: transparent;
 }
 
 #tab-close-button:hover {
     color: rgba(255, 0, 0, 1);
-    background-color: rgba(255, 0, 0, 0.5);
+    background: rgba(255, 0, 0, 0.5);
 }
 
 #add-tab-button {
@@ -43,11 +48,11 @@ QTabBar::tab:hover:!selected {
     height: 20px;
     border: none;
     border-radius: 2px;
-    background-color: #fff;
+    background: %TOOLBAR-COLOR%;
 }
 
 #tool-bar {
-    background-color: #fff;
+    background: %TOOLBAR-COLOR%;
 }
 
 #tool-bar-button {
@@ -62,32 +67,29 @@ QTabBar::tab:hover:!selected {
 }
 
 #tool-bar-button:hover {
-    background-color: #ddd;
+    background: #ddd;
 }
 
 #omni-bar {
     margin: 2px;
     padding: 3px;
-    border: 1px solid #bbb;
+    border: 1px solid #000;
     border-radius: 4px;
     color: #000;
-    background-color: #f8f8f8;
-    selection-color: #fff;
-    selection-background-color: #ca8d42;
 }
 
 #progress-bar {
     max-height: 2px;
-    background-color: #fff;
+    background: %TOOLBAR-COLOR%;
     border: none;
 }
 
 #progress-bar::chunk {
-    background-color: #ca8d42;
+    background: %TABBAR-COLOR%;
 }
 
 #sidebar {
-    background-color: #fff;
+    background: #fff;
 }
 
 #sidebar-button {
@@ -97,5 +99,5 @@ QTabBar::tab:hover:!selected {
 }
 
 #sidebar-button:hover {
-    background-color: #ddd;
+    background: #ddd;
 }

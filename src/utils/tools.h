@@ -6,3 +6,4 @@
 
 QString readFile(const QString &fileName);
 QByteArray convertIconToByteArray(const QIcon &icon);
+void applyTheme();

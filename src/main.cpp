@@ -28,13 +28,12 @@ int main(int argc, char **argv)
     application.setAttribute(Qt::AA_EnableHighDpiScaling, true);
     application.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-    application.setStyleSheet(readFile(":/styles/stylesheet.css"));
-
     QCoreApplication::setOrganizationName(appManager->organisationName());
     QCoreApplication::setOrganizationDomain(appManager->organisationDomain());
     QCoreApplication::setApplicationName(appManager->applicationName());
     QCoreApplication::setApplicationVersion(appManager->applicationVersionString());
 
+    applyTheme();
     appManager->bootstrap();
 
     return application.exec();
