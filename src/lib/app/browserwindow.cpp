@@ -2,15 +2,16 @@
 #include "common-defs.h"
 #include "mainapplication.h"
 #include "statusbar.h"
+#include "tab.h"
 #include "tabwidget.h"
 
-BrowserWindow::BrowserWindow(const QString &startPageUrl, QWidget *parent)
+BrowserWindow::BrowserWindow(Tab *tab, QWidget *parent)
     : QMainWindow (parent)
 {
     m_statusBar = new StatusBar(this);
     m_tabWidget = new TabWidget(this);
 
-    m_tabWidget->addTab(startPageUrl);
+    m_tabWidget->addTab(tab);
 
     setStatusBar(m_statusBar);
     setCentralWidget(m_tabWidget);

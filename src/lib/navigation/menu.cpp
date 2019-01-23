@@ -1,6 +1,7 @@
 #include "common-defs.h"
 #include "browserwindow.h"
 #include "mainapplication.h"
+#include "manager.h"
 #include "menu.h"
 #include "statusbar.h"
 #include "tab.h"
@@ -55,10 +56,16 @@ void Menu::setUpMenu()
     view->addAction(fullScreen);
 
     QMenu *history = new QMenu(QSL("History"));
+    QAction *showAllHistory = new QAction(QSL("Show All History"));
+    history->addAction(showAllHistory);
 
     QMenu *bookmarks = new QMenu(QSL("Bookmarks"));
+    QAction *showAllBookmarks = new QAction(QSL("Show All Bookmarks"));
+    bookmarks->addAction(showAllBookmarks);
 
     QMenu *downloads = new QMenu(QSL("Downloads"));
+    QAction *showAllDownloads = new QAction(QSL("Show All Downloads"));
+    downloads->addAction(showAllDownloads);
 
     QAction *preferences = new QAction(QSL("Preferences"));
     QAction *about = new QAction(QSL("About Crusta"));
@@ -92,6 +99,10 @@ void Menu::setUpMenu()
     connect(paste, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Paste); });
     connect(undo, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Undo); });
     connect(redo, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Redo); });
+
+    connect(showAllHistory, &QAction::triggered, this, [] { appManager->manager()->showHistoryManager(); });
+    connect(showAllBookmarks, &QAction::triggered, this, [] { appManager->manager()->showBookmarksManager(); });
+    connect(showAllDownloads, &QAction::triggered, this, [] { appManager->manager()->showDownloadsManager(); });
 
     connect(about, &QAction::triggered, this, [] { appManager->aboutCrusta(); });
 }

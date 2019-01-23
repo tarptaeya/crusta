@@ -13,9 +13,11 @@ public:
 
     int addTab();
     int addTab(const QString &address);
+    int addTab(Tab *tab);
     void closeTab(int index);
 
     Tab *currentTab();
+    Tab *tabAt(int index);
 
 private:
     TabBar *m_tabBar = nullptr;

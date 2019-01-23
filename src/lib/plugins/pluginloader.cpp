@@ -35,5 +35,6 @@ void PluginLoader::registerQmlTypes()
     const char *url = "io.crusta.extension";
     const int majorVersion = 1;
     const int minorVersion = 0;
+
     qmlRegisterType<PluginInterface>(url, majorVersion, minorVersion, "PluginInterface");
 }

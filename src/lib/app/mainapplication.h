@@ -10,22 +10,30 @@
 
 class BrowserWindow;
 class DataBase;
+class Manager;
 class Plugins;
+class Tab;
+class WebDialogWindow;
+class WebView;
 
 class MainApplication : public QObject
 {
 public:
     explicit MainApplication(QObject *parent = nullptr);
+    ~MainApplication();
     int exec();
     static MainApplication *instance();
 
     BrowserWindow *createWindow();
-    BrowserWindow *createWindow(const QString &startPageUrl);
+    BrowserWindow *createWindow(Tab *tab);
     void removeWindow();
     QList<BrowserWindow *> windows();
     BrowserWindow *currentWindow();
 
+    void createDialogWindow(WebView *webView);
+
     DataBase *dataBase();
+    Manager *manager();
     QSettings *settings();
 
     void initWebEngineProfile();
@@ -39,6 +47,7 @@ public:
 private:
     QList<BrowserWindow *> m_windows;
     DataBase *m_dataBase = nullptr;
+    Manager *m_manager = nullptr;
     QSettings *m_settings = nullptr;
 
     QWebEngineProfile *m_webEngineProfile = nullptr;

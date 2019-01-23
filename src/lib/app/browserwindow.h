@@ -4,12 +4,13 @@
 #include <QMainWindow>
 
 class StatusBar;
+class Tab;
 class TabWidget;
 
 class BrowserWindow : public QMainWindow
 {
 public:
-    explicit BrowserWindow(const QString &startPageUrl, QWidget *parent = nullptr);
+    explicit BrowserWindow(Tab *tab, QWidget *parent = nullptr);
 
     StatusBar *statusBar();
     TabWidget *tabWidget();

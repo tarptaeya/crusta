@@ -11,7 +11,11 @@ public:
     explicit WebView(QWidget *parent = nullptr);
     ~WebView();
 
+    QWebEngineView *createWindow(QWebEnginePage::WebWindowType type);
+
     bool isLoading();
+    QString title() const;
+
 private:
     bool m_isLoading = false;
     WebPage *m_webPage = nullptr;

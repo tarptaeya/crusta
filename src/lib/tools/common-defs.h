@@ -8,5 +8,7 @@
 #define QL1S QLatin1String
 
 QString readFile(const QString &path);
+QString getFileNameFromPath(const QString &path);
+void openLocalFile(const QString &path);
 
 #endif

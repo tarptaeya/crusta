@@ -1,6 +1,8 @@
 #ifndef CR_TAB_H
 #define CR_TAB_H
 
+#include "common-defs.h"
+
 #include <QVBoxLayout>
 #include <QIcon>
 #include <QWidget>
@@ -12,7 +14,7 @@ class WebView;
 class Tab : public QWidget
 {
 public:
-    explicit Tab(const QString &address, QWidget *parent = nullptr);
+    explicit Tab(const QString &address = QSL(""), QWidget *parent = nullptr);
 
     void setTabWidget(TabWidget *tabWidget);
     int index();

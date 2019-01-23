@@ -1,4 +1,8 @@
+#include "common-defs.h"
+
+#include <QDesktopServices>
 #include <QFile>
+#include <QUrl>
 
 QString readFile(const QString &path)
 {
@@ -10,4 +14,14 @@ QString readFile(const QString &path)
     fileContents = QString::fromUtf8(file.readAll());
     file.close();
     return fileContents;
+}
+
+QString getFileNameFromPath(const QString &path)
+{
+    return path.split(QSL("/")).last();
+}
+
+void openLocalFile(const QString &path)
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }

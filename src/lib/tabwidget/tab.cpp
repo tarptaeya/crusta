@@ -24,7 +24,9 @@ Tab::Tab(const QString &address, QWidget *parent)
     m_toolBar = new ToolBar(this);
 
     m_webView = new WebView(this);
-    m_webView->load(address);
+    if (!address.isEmpty()) {
+        m_webView->load(address);
+    }
     m_webView->setFocus();
 
     m_vboxLayout->addWidget(m_toolBar, 0);
@@ -59,6 +61,9 @@ Tab::Tab(const QString &address, QWidget *parent)
     });
 
     connect(m_webView->page(), &WebPage::linkHovered, this, [](const QUrl &url) {
+        if (!appManager->currentWindow()) {
+            return;
+        }
         appManager->currentWindow()->statusBar()->showMessage(url.toString());
     });
 

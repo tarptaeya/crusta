@@ -25,6 +25,11 @@ int TabWidget::addTab()
 int TabWidget::addTab(const QString &address)
 {
     Tab *tab = new Tab(address, this);
+    return addTab(tab);
+}
+
+int TabWidget::addTab(Tab *tab)
+{
     tab->setTabWidget(this);
     return QTabWidget::addTab(tab, tab->icon(), tab->title());
 }
@@ -39,4 +44,9 @@ void TabWidget::closeTab(int index)
 Tab *TabWidget::currentTab()
 {
     return static_cast<Tab *>(currentWidget());
+}
+
+Tab *TabWidget::tabAt(int index)
+{
+    return static_cast<Tab *>(widget(index));
 }

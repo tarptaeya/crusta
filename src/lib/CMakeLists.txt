@@ -4,6 +4,9 @@ set(CMAKE_AUTOMOC ON)
 
 include_directories(
     app
+    bookmarks
+    downloads
+    history
     navigation
     plugins
     tabwidget
@@ -18,6 +21,13 @@ set(
     app/mainapplication.cpp
     app/standardpaths.cpp
     app/statusbar.cpp
+    app/webdialogwindow.cpp
+    bookmarks/bookmarksmanager.cpp
+    downloads/downloaddialog.cpp
+    downloads/downloaditemwidget.cpp
+    downloads/downloadsmanager.cpp
+    history/historyitem.cpp
+    history/historymanager.cpp
     navigation/menu.cpp
     navigation/omnibar.cpp
     navigation/toolbar.cpp
@@ -30,6 +40,7 @@ set(
     tabwidget/tabwidget.cpp
     tools/about.cpp
     tools/common-defs.cpp
+    tools/manager.cpp
     webengine/jsobject.cpp
     webengine/scheme.cpp
     webengine/scripts.cpp
