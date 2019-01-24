@@ -22,6 +22,8 @@ set(
     app/standardpaths.cpp
     app/statusbar.cpp
     app/webdialogwindow.cpp
+    bookmarks/bookmarkdialog.cpp
+    bookmarks/bookmarkitem.cpp
     bookmarks/bookmarksmanager.cpp
     downloads/downloaddialog.cpp
     downloads/downloaditemwidget.cpp

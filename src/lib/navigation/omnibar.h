@@ -12,6 +12,9 @@ public:
 
     void update(const QString &address);
 
+    QAction *siteInfoAction();
+    QAction *bookmarksAction();
+
 Q_SIGNALS:
     void loadRequested(const QString &address);
 

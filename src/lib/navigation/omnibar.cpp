@@ -10,6 +10,9 @@ OmniBar::OmniBar(QWidget *parent)
     m_siteInfoAction->setIcon(QIcon::fromTheme(QSL("applications-internet")));
     m_bookMarksAction->setIcon(QIcon::fromTheme(QSL("")));
 
+    m_siteInfoAction->setToolTip(QSL("Site Info"));
+    m_bookMarksAction->setToolTip(QSL("Bookmark Page"));
+
     addAction(m_siteInfoAction, OmniBar::LeadingPosition);
     addAction(m_bookMarksAction, OmniBar::TrailingPosition);
 
@@ -26,6 +29,16 @@ void OmniBar::update(const QString &address)
     } else {
         m_siteInfoAction->setIcon(QIcon::fromTheme(QSL("applications-internet")));
     }
+}
+
+QAction *OmniBar::siteInfoAction()
+{
+    return m_siteInfoAction;
+}
+
+QAction *OmniBar::bookmarksAction()
+{
+    return m_bookMarksAction;
 }
 
 void OmniBar::returnPressed()

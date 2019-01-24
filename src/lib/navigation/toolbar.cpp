@@ -34,6 +34,12 @@ ToolBar::ToolBar(QWidget *parent)
     m_homeButton->setIcon(QIcon::fromTheme(QSL("go-home")));
     m_menuButton->setIcon(QIcon::fromTheme(QSL("preferences-other")));
 
+    m_backButton->setToolTip(QSL("Go Back"));
+    m_forwardButton->setToolTip(QSL("Go Forward"));
+    m_reloadButton->setToolTip(QSL("Reload Page"));
+    m_homeButton->setToolTip(QSL("Visit Home"));
+    m_menuButton->setToolTip(QSL("Menu"));
+
     m_menuButton->setMenu(new Menu(this));
     m_menuButton->setPopupMode(ToolBarButton::InstantPopup);
 

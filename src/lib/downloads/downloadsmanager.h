@@ -1,5 +1,5 @@
 #ifndef CR_DOWNLOADS_MANAGER_H
-#define CR_DOWNLOADSS_MANAGER_H
+#define CR_DOWNLOADS_MANAGER_H
 
 #include <QListWidget>
 #include <QWebEngineDownloadItem>

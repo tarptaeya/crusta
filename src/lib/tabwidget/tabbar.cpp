@@ -16,6 +16,7 @@ TabBar::TabBar(QWidget *parent)
     m_newTabButton->setAutoRaise(true);
     m_newTabButton->setIcon(QIcon::fromTheme(QSL("list-add")));
     m_newTabButton->setFixedWidth(NEW_TAB_BUTTON_WIDTH);
+    m_newTabButton->setToolTip(QSL("Add New Tab"));
     m_newTabButton->setShortcut(QKeySequence::AddTab);
 
     // Settings which cannot be changed

@@ -1,4 +1,5 @@
 #include "common-defs.h"
+#include "bookmarkdialog.h"
 #include "browserwindow.h"
 #include "mainapplication.h"
 #include "omnibar.h"
@@ -40,6 +41,14 @@ Tab::Tab(const QString &address, QWidget *parent)
 
         m_tabWidget->setTabText(index(), title);
         m_tabWidget->setTabToolTip(index(), title);
+
+        if (m_tabWidget->currentTab() == this) {
+            for (BrowserWindow *window : appManager->windows()) {
+                if (window->tabWidget() == m_tabWidget) {
+                    window->setWindowTitle(title);
+                }
+            }
+        }
     });
 
     connect(m_webView, &WebView::iconChanged, this, [this](const QIcon &icon) {
@@ -60,11 +69,12 @@ Tab::Tab(const QString &address, QWidget *parent)
         m_toolBar->reloadButton()->setIcon(QIcon::fromTheme(QSL("view-refresh")));
     });
 
-    connect(m_webView->page(), &WebPage::linkHovered, this, [](const QUrl &url) {
-        if (!appManager->currentWindow()) {
-            return;
+    connect(m_webView->page(), &WebPage::linkHovered, this, [this](const QUrl &url) {
+        for (BrowserWindow *window : appManager->windows()) {
+            if (window->tabWidget() == m_tabWidget) {
+                window->statusBar()->showMessage(url.toDisplayString());
+            }
         }
-        appManager->currentWindow()->statusBar()->showMessage(url.toString());
     });
 
     connect(m_webView, &WebView::urlChanged, this, [this](const QUrl &url) {
@@ -87,6 +97,13 @@ Tab::Tab(const QString &address, QWidget *parent)
     connect(m_toolBar->omniBar(), &OmniBar::loadRequested, m_webView, [this](const QString &address){
         m_webView->load(address);
         m_webView->setFocus();
+    });
+
+    connect(m_toolBar->omniBar()->bookmarksAction(), &QAction::triggered, this, [this] {
+        BookmarkDialog dialog;
+        dialog.setAddress(m_webView->url().toDisplayString(QUrl::RemoveQuery));
+        dialog.setTitle(m_webView->title());
+        dialog.exec();
     });
 }
 
