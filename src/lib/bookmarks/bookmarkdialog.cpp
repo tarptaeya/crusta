@@ -59,6 +59,9 @@ void BookmarkDialog::accept()
     item.title = m_titleLine->text();
     item.folder = m_folderCombo->currentText();
     item.address = m_address;
+    if (item.title.isEmpty() || item.folder.isEmpty()) {
+        return;
+    }
     appManager->dataBase()->addBookmark(item);
     QDialog::accept();
 }

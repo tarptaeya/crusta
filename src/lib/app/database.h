@@ -21,7 +21,9 @@ public:
     void addBookmark(const BookmarkItem &item);
     void removeBookmark(const QString &address);
     void updateBookmark(const BookmarkItem &item);
+    QList<BookmarkItem> bookmarks(const QString &folderName) const;
     QStringList bookmarkFolders() const;
+    BookmarkItem isBookmarked(const QString &address) const;
 };
 
 #endif

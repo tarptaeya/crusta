@@ -43,6 +43,7 @@ QList<HistoryItem> DataBase::history() const
 {
     QList<HistoryItem> entries;
     QSqlQuery query(QSL("SELECT * FROM history"));
+    query.exec();
     while (query.next()) {
         HistoryItem item;
         item.dateTime = QDateTime::fromTime_t(query.value(0).toUInt());
@@ -79,12 +80,43 @@ void DataBase::updateBookmark(const BookmarkItem &item)
     query.exec();
 }
 
+QList<BookmarkItem> DataBase::bookmarks(const QString &folderName) const
+{
+    QList<BookmarkItem> entries;
+    QSqlQuery query(QSL("SELECT * FROM bookmarks WHERE folder = ?"));
+    query.addBindValue(folderName);
+    query.exec();
+    while (query.next()) {
+        BookmarkItem item;
+        item.title = query.value(0).toString();
+        item.address = query.value(1).toString();
+        entries.append(item);
+    }
+
+    return entries;
+}
+
 QStringList DataBase::bookmarkFolders() const
 {
     QStringList folders;
     QSqlQuery query(QSL("SELECT DISTINCT folder FROM bookmarks"));
+    query.exec();
     while (query.next()) {
         folders << query.value(0).toString();
     }
     return folders;
+}
+
+BookmarkItem DataBase::isBookmarked(const QString &address) const
+{
+    BookmarkItem item;
+    QSqlQuery query(QSL("SELECT * FROM bookmarks WHERE url = ?"));
+    query.addBindValue(address);
+    query.exec();
+    while (query.next()) {
+        item.title = query.value(0).toString();
+        item.address = query.value(1).toString();
+        item.folder = query.value(2).toString();
+    }
+    return item;
 }

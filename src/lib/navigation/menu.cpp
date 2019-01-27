@@ -14,11 +14,13 @@
 Menu::Menu(QWidget *parent)
     : QMenu (parent)
 {
-    setUpMenu();
+    connect(this, &QMenu::aboutToShow, this, &Menu::setUpMenu);
 }
 
 void Menu::setUpMenu()
 {
+    clear();
+
     QAction *newTab = new QAction(QSL("New Tab"));
     QAction *newWindow = new QAction(QSL("New Window"));
     QAction *newPrivateWindow = new QAction(QSL("New Private Window"));
@@ -46,6 +48,14 @@ void Menu::setUpMenu()
     QAction *resetZoom = new QAction(QSL("Reset Zoom"));
     QAction *pageSource = new QAction(QSL("Page Source"));
     QAction *fullScreen = new QAction(QSL("Show Full Screen"));
+
+    statusBar->setCheckable(true);
+    if (appManager->currentWindow()->statusBar()->isVisible()) {
+        statusBar->setChecked(true);
+    } else {
+        statusBar->setChecked(false);
+    }
+
     view->addAction(statusBar);
     view->addSeparator();
     view->addAction(zoomIn);
@@ -70,8 +80,6 @@ void Menu::setUpMenu()
     QAction *preferences = new QAction(QSL("Preferences"));
     QAction *about = new QAction(QSL("About Crusta"));
     QAction *help = new QAction(QSL("Help"));
-
-    statusBar->setCheckable(true);
 
     addAction(newTab);
     addAction(newWindow);
@@ -99,6 +107,18 @@ void Menu::setUpMenu()
     connect(paste, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Paste); });
     connect(undo, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Undo); });
     connect(redo, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Redo); });
+
+    connect(statusBar, &QAction::triggered, this, [](bool checked) {
+        if (checked) {
+            appManager->settings()->setValue(QSL("browserWindow/showStatusBar"), true);
+        } else {
+            appManager->settings()->setValue(QSL("browserWindow/showStatusBar"), false);
+        }
+
+        for (BrowserWindow *window : appManager->windows()) {
+            window->statusBar()->setVisible(checked);
+        }
+    });
 
     connect(showAllHistory, &QAction::triggered, this, [] { appManager->manager()->showHistoryManager(); });
     connect(showAllBookmarks, &QAction::triggered, this, [] { appManager->manager()->showBookmarksManager(); });

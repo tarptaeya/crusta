@@ -11,12 +11,14 @@
 #include <QMenu>
 #include <QVBoxLayout>
 
+#include <QPointer>
+
 HistoryManager::HistoryManager(QWidget *parent)
     : QWidget (parent)
 {
     m_treeWidget = new QTreeWidget(this);
     QStringList headerLabels;
-    headerLabels << QSL("Time") << QSL("Title") << QSL("Address");
+    headerLabels << QSL("Title") << QSL("Address");
     m_treeWidget->setHeaderLabels(headerLabels);
     m_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -34,13 +36,26 @@ void HistoryManager::updateEntries()
 {
     m_treeWidget->clear();
 
+    QMap<QDate, QTreeWidgetItem *> map;
+
     QList<HistoryItem> entries = appManager->dataBase()->history();
     for (const HistoryItem &entry : qAsConst(entries)) {
-        QTreeWidgetItem *item = new QTreeWidgetItem(m_treeWidget);
-        item->setText(0, entry.dateTime.toString());
-        item->setText(1, entry.title);
-        item->setText(2, entry.url);
-        m_treeWidget->addTopLevelItem(item);
+        QDateTime dateTime(entry.dateTime);
+
+        QTreeWidgetItem *topItem = nullptr;
+        if (map.contains(dateTime.date())) {
+            topItem = map.value(dateTime.date());
+        } else {
+            topItem = new QTreeWidgetItem;
+            map.insert(dateTime.date(), topItem);
+            topItem->setText(0, dateTime.date().toString());
+            m_treeWidget->addTopLevelItem(topItem);
+        }
+
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+        item->setText(0, entry.title);
+        item->setText(1, entry.url);
+        topItem->addChild(item);
     }
 }
 

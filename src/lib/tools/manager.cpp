@@ -32,7 +32,7 @@ Manager::Manager(QWidget *parent)
     vboxLayout->addLayout(hboxLayout);
     setLayout(vboxLayout);
 
-    setMinimumSize(400, 300);
+    setMinimumSize(600, 400);
     setWindowTitle(QSL("%1 Manager").arg(m_tabWidget->tabText(m_tabWidget->currentIndex())));
 
     connect(m_tabWidget, &QTabWidget::currentChanged, this, [this](int index) { setWindowTitle(QSL("%1 Manager").arg(m_tabWidget->tabText(index))); });

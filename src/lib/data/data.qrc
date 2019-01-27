@@ -15,5 +15,6 @@
         <file>plugins/usrskript/metadata.desktop</file>
         <file>plugins/usrskript/icon.svg</file>
         <file>scripts/webchannel.js</file>
+        <file>scripts/pageinfo.js</file>
     </qresource>
 </RCC>
