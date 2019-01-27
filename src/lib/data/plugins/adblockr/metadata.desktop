@@ -1,0 +1,6 @@
+name=AdBlockr
+description=Ad-blocking extension for Crusta
+entryFile=entry.qml
+iconFile=abp.png
+author=Anmol Gautam
+email=taptaeya@gmail.com

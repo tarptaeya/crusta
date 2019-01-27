@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>plugins/adblockr/entry.qml</file>
+        <file>plugins/adblockr/metadata.desktop</file>
+        <file>plugins/pdfewr/metadata.desktop</file>
+        <file>plugins/pdfewr/entry.qml</file>
+        <file>plugins/pdfewr/icon.svg</file>
+        <file>plugins/adblockr/abp.png</file>
+        <file>html/about.html</file>
+        <file>html/extensions.html</file>
+        <file>html/feedback.html</file>
+        <file>html/help.html</file>
+        <file>html/speeddial.html</file>
+        <file>plugins/usrskript/entry.qml</file>
+        <file>plugins/usrskript/metadata.desktop</file>
+        <file>plugins/usrskript/icon.svg</file>
+        <file>scripts/webchannel.js</file>
+        <file>scripts/pageinfo.js</file>
+    </qresource>
+</RCC>
