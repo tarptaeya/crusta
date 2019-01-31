@@ -4,6 +4,9 @@
 #include "statusbar.h"
 #include "tab.h"
 #include "tabwidget.h"
+#include "webview.h"
+
+#include <QFileDialog>
 
 BrowserWindow::BrowserWindow(Tab *tab, QWidget *parent)
     : QMainWindow (parent)
@@ -56,4 +59,11 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
     appManager->settings()->setValue(QSL("browserWindow/state"), saveState());
 
     QMainWindow::closeEvent(event);
+}
+
+void BrowserWindow::openFile()
+{
+    QFileDialog fileDialog;
+    const QUrl filePath = fileDialog.getOpenFileUrl();
+    m_tabWidget->currentTab()->webView()->load(filePath);
 }

@@ -19,6 +19,8 @@
 Menu::Menu(QWidget *parent)
     : QMenu (parent)
 {
+    setUpMenu();
+
     connect(this, &QMenu::aboutToShow, this, &Menu::setUpMenu);
 }
 
@@ -55,7 +57,7 @@ void Menu::setUpMenu()
     QAction *fullScreen = new QAction(QSL("Show Full Screen"));
 
     statusBar->setCheckable(true);
-    if (appManager->currentWindow()->statusBar()->isVisible()) {
+    if (appManager->windows().length() > 0 && appManager->currentWindow()->statusBar()->isVisible()) {
         statusBar->setChecked(true);
     } else {
         statusBar->setChecked(false);
@@ -104,9 +106,12 @@ void Menu::setUpMenu()
     addAction(about);
     addAction(help);
 
+    openFile->setShortcut(QKeySequence::Open);
+
     connect(newTab, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->addTab(); });
     connect(newWindow, &QAction::triggered, this, [] { appManager->createWindow(); });
     connect(newPrivateWindow, &QAction::triggered, this, [] { QProcess::startDetached(QSL("crusta -p")); });
+    connect(openFile, &QAction::triggered, this, [] { appManager->currentWindow()->openFile(); });
     connect(savePage, &QAction::triggered, this, [] {
         QPrinter printer;
         QPageSetupDialog dialog(&printer);

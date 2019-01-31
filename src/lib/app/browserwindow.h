@@ -19,6 +19,8 @@ public:
 
     void closeEvent(QCloseEvent *event);
 
+    void openFile();
+
 private:
     StatusBar *m_statusBar = nullptr;
     TabWidget *m_tabWidget = nullptr;
