@@ -47,6 +47,7 @@ set(
     tools/common-defs.cpp
     tools/manager.cpp
     webengine/jsobject.cpp
+    webengine/notifier.cpp
     webengine/scheme.cpp
     webengine/scripts.cpp
     webengine/webpage.cpp
