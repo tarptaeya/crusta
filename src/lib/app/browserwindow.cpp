@@ -22,7 +22,13 @@ BrowserWindow::BrowserWindow(Tab *tab, QWidget *parent)
 
     setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(m_tabWidget, &TabWidget::currentChanged, this, [this](int index) { setWindowTitle(m_tabWidget->tabText(index)); });
+    connect(m_tabWidget, &TabWidget::currentChanged, this, [this](int index) {
+        if (appManager->isPrivate()) {
+            setWindowTitle(QSL("%1 - Crusta Private").arg(m_tabWidget->tabText(index)));
+        } else {
+            setWindowTitle(QSL("%1 - Crusta").arg(m_tabWidget->tabText(index)));
+        }
+    });
 }
 
 StatusBar *BrowserWindow::statusBar()

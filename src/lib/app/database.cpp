@@ -1,5 +1,6 @@
 #include "common-defs.h"
 #include "database.h"
+#include "mainapplication.h"
 
 #include <QDebug>
 #include <QSqlError>
@@ -25,6 +26,10 @@ void DataBase::createTables()
 
 void DataBase::addHistory(const HistoryItem &item)
 {
+    if (appManager->isPrivate()) {
+        return;
+    }
+
     QSqlQuery query(QSL("INSERT OR REPLACE INTO history VALUES (?, ?, ?)"));
     query.addBindValue(item.dateTime.toTime_t());
     query.addBindValue(item.title);

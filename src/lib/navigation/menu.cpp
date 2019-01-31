@@ -10,6 +10,11 @@
 #include "webview.h"
 
 #include <QAction>
+#include <QDir>
+#include <QPageSetupDialog>
+#include <QPrinter>
+#include <QProcess>
+#include <QStandardPaths>
 
 Menu::Menu(QWidget *parent)
     : QMenu (parent)
@@ -25,7 +30,7 @@ void Menu::setUpMenu()
     QAction *newWindow = new QAction(QSL("New Window"));
     QAction *newPrivateWindow = new QAction(QSL("New Private Window"));
     QAction *openFile = new QAction(QSL("Open File"));
-    QAction *savePage = new QAction(QSL("Save Page"));
+    QAction *savePage = new QAction(QSL("Save Page as PDF"));
     QAction *pringPage = new QAction(QSL("Print"));
 
     QMenu *edit = new QMenu(QSL("Edit"));
@@ -101,6 +106,19 @@ void Menu::setUpMenu()
 
     connect(newTab, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->addTab(); });
     connect(newWindow, &QAction::triggered, this, [] { appManager->createWindow(); });
+    connect(newPrivateWindow, &QAction::triggered, this, [] { QProcess::startDetached(QSL("crusta -p")); });
+    connect(savePage, &QAction::triggered, this, [] {
+        QPrinter printer;
+        QPageSetupDialog dialog(&printer);
+        if (dialog.exec() != QPageSetupDialog::Accepted) {
+            return ;
+        }
+
+        QWebEnginePage *page = appManager->currentWindow()->tabWidget()->currentTab()->webView()->page();
+        QString downloadPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+        QDir downloadDir(downloadPath);
+        page->printToPdf(downloadDir.filePath(page->title()), printer.pageLayout());
+    });
 
     connect(cut, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Cut); });
     connect(copy, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Copy); });

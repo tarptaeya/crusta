@@ -19,10 +19,11 @@ class WebView;
 class MainApplication : public QObject
 {
 public:
-    explicit MainApplication(QObject *parent = nullptr);
+    explicit MainApplication(bool isPrivate = false, QObject *parent = nullptr);
     ~MainApplication();
     int exec();
-    static MainApplication *instance();
+    static MainApplication *instance(bool isPrivate = false);
+    bool isPrivate();
 
     BrowserWindow *createWindow();
     BrowserWindow *createWindow(Tab *tab);
@@ -45,6 +46,8 @@ public:
     void aboutCrusta();
 
 private:
+    bool m_isPrivate = false;
+
     QList<BrowserWindow *> m_windows;
     DataBase *m_dataBase = nullptr;
     Manager *m_manager = nullptr;

@@ -15,8 +15,9 @@
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
 
-MainApplication::MainApplication(QObject *parent)
+MainApplication::MainApplication(bool isPrivate, QObject *parent)
     : QObject (parent)
+    , m_isPrivate(isPrivate)
 {
     loadPlugins();
 }
@@ -31,10 +32,15 @@ MainApplication::~MainApplication()
     m_plugins->deleteLater();
 }
 
-MainApplication *MainApplication::instance()
+MainApplication *MainApplication::instance(bool isPrivate)
 {
-    static MainApplication *mainApplication = new MainApplication;
+    static MainApplication *mainApplication = new MainApplication(isPrivate);
     return static_cast<MainApplication *>(mainApplication);
+}
+
+bool MainApplication::isPrivate()
+{
+    return m_isPrivate;
 }
 
 BrowserWindow *MainApplication::createWindow()
@@ -108,7 +114,11 @@ QSettings *MainApplication::settings()
 
 void MainApplication::initWebEngineProfile()
 {
-    m_webEngineProfile = new QWebEngineProfile(this);
+    if (m_isPrivate) {
+        m_webEngineProfile = new QWebEngineProfile(this);
+    } else {
+        m_webEngineProfile = new QWebEngineProfile(QSL("default"), this);
+    }
 
     QWebEngineScript webChannelScript;
     webChannelScript.setName(QSL("webChannelScript"));

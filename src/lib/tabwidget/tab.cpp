@@ -45,7 +45,11 @@ Tab::Tab(const QString &address, QWidget *parent)
         if (m_tabWidget->currentTab() == this) {
             for (BrowserWindow *window : appManager->windows()) {
                 if (window->tabWidget() == m_tabWidget) {
-                    window->setWindowTitle(title);
+                    if (appManager->isPrivate()) {
+                        window->setWindowTitle(QSL("%1 - Crusta Private").arg(title));
+                    } else {
+                        window->setWindowTitle(QSL("%1 - Crusta").arg(title));
+                    }
                 }
             }
         }
