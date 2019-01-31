@@ -55,6 +55,7 @@ void Manager::showHistoryManager()
 void Manager::showBookmarksManager()
 {
     m_tabWidget->setCurrentIndex(1);
+    m_bookmarksManager->updateEntries();
     show();
     activateWindow();
 }

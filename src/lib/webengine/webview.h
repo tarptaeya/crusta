@@ -16,6 +16,10 @@ public:
     bool isLoading();
     QString title() const;
 
+    void zoomIn();
+    void zoomOut();
+    void resetZoom();
+
 private:
     bool m_isLoading = false;
     WebPage *m_webPage = nullptr;

@@ -35,19 +35,6 @@ void Menu::setUpMenu()
     QAction *savePage = new QAction(QSL("Save Page as PDF"));
     QAction *pringPage = new QAction(QSL("Print"));
 
-    QMenu *edit = new QMenu(QSL("Edit"));
-    QAction *cut = new QAction(QSL("Cut"));
-    QAction *copy = new QAction(QSL("Copy"));
-    QAction *paste = new QAction(QSL("Paste"));
-    QAction *undo = new QAction(QSL("Undo"));
-    QAction *redo = new QAction(QSL("Redo"));
-    edit->addAction(cut);
-    edit->addAction(copy);
-    edit->addAction(paste);
-    edit->addSeparator();
-    edit->addAction(undo);
-    edit->addAction(redo);
-
     QMenu *view = new QMenu(QSL("View"));
     QAction *statusBar = new QAction(QSL("Status Bar"));
     QAction *zoomIn = new QAction(QSL("Zoom In"));
@@ -61,6 +48,10 @@ void Menu::setUpMenu()
         statusBar->setChecked(true);
     } else {
         statusBar->setChecked(false);
+    }
+
+    if (appManager->windows().length() > 0 && appManager->currentWindow()->isFullScreen()) {
+        fullScreen->setText(QSL("Exit Full Screen"));
     }
 
     view->addAction(statusBar);
@@ -96,7 +87,6 @@ void Menu::setUpMenu()
     addAction(savePage);
     addAction(pringPage);
     addSeparator();
-    addMenu(edit);
     addMenu(view);
     addMenu(history);
     addMenu(bookmarks);
@@ -107,6 +97,10 @@ void Menu::setUpMenu()
     addAction(help);
 
     openFile->setShortcut(QKeySequence::Open);
+    zoomIn->setShortcut(QKeySequence::ZoomIn);
+    zoomOut->setShortcut(QKeySequence::ZoomOut);
+    resetZoom->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+    fullScreen->setShortcut(QKeySequence::FullScreen);
 
     connect(newTab, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->addTab(); });
     connect(newWindow, &QAction::triggered, this, [] { appManager->createWindow(); });
@@ -125,12 +119,6 @@ void Menu::setUpMenu()
         page->printToPdf(downloadDir.filePath(page->title()), printer.pageLayout());
     });
 
-    connect(cut, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Cut); });
-    connect(copy, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Copy); });
-    connect(paste, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Paste); });
-    connect(undo, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Undo); });
-    connect(redo, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(WebPage::Redo); });
-
     connect(statusBar, &QAction::triggered, this, [](bool checked) {
         if (checked) {
             appManager->settings()->setValue(QSL("browserWindow/showStatusBar"), true);
@@ -140,6 +128,17 @@ void Menu::setUpMenu()
 
         for (BrowserWindow *window : appManager->windows()) {
             window->statusBar()->setVisible(checked);
+        }
+    });
+    connect(zoomIn, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->zoomIn(); });
+    connect(zoomOut, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->zoomOut(); });
+    connect(resetZoom, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->resetZoom(); });
+    connect(pageSource, &QAction::triggered, this, [] { appManager->currentWindow()->tabWidget()->currentTab()->webView()->triggerPageAction(QWebEnginePage::ViewSource); });
+    connect(fullScreen, &QAction::triggered, this, [] {
+        if (appManager->currentWindow()->isFullScreen()) {
+            appManager->currentWindow()->showNormal();
+        } else {
+            appManager->currentWindow()->showFullScreen();
         }
     });
 

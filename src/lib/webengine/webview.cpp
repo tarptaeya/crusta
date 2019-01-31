@@ -67,3 +67,18 @@ QString WebView::title() const
 
     return titleString;
 }
+
+void WebView::zoomIn()
+{
+    setZoomFactor(zoomFactor() + 0.25);
+}
+
+void WebView::zoomOut()
+{
+    setZoomFactor(zoomFactor() - 0.25);
+}
+
+void WebView::resetZoom()
+{
+    setZoomFactor(1);
+}
