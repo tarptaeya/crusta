@@ -10,6 +10,9 @@ public:
     explicit WebPage(QWebEngineProfile *profile);
 
     bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+
+private:
+    void handleFeatureRequest(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
 };
 
 #endif

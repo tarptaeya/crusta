@@ -1,6 +1,7 @@
 #include "common-defs.h"
 #include "jsobject.h"
 #include "mainapplication.h"
+#include "notifier.h"
 #include "plugininterface.h"
 #include "plugins.h"
 #include "webpage.h"
@@ -46,6 +47,8 @@ WebPage::WebPage(QWebEngineProfile *profile)
     settings()->setAttribute(QWebEngineSettings::JavascriptCanPaste, appManager->settings()->value(QSL("webPage/javascriptCanPaste"), false).toBool());
     settings()->setAttribute(QWebEngineSettings::WebRTCPublicInterfacesOnly, appManager->settings()->value(QSL("webPage/webRTCPublicInterfacesOnly"), false).toBool());
     settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, appManager->settings()->value(QSL("webPage/dnsPrefetchEnabled"), false).toBool());
+
+    connect(this, &WebPage::featurePermissionRequested, this, &WebPage::handleFeatureRequest);
 }
 
 bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
@@ -61,4 +64,16 @@ bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::Navigatio
     }
 
     return true;
+}
+
+void WebPage::handleFeatureRequest(const QUrl &securityOrigin, QWebEnginePage::Feature feature)
+{
+    Notifier notifier;
+    notifier.setData(securityOrigin, feature);
+    if (notifier.exec() != Notifier::Accepted) {
+        setFeaturePermission(securityOrigin, feature, WebPage::PermissionDeniedByUser);
+        return;
+    }
+
+    setFeaturePermission(securityOrigin, feature, WebPage::PermissionGrantedByUser);
 }
