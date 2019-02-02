@@ -13,6 +13,7 @@ public:
 
 private:
     int getTabWidth(int index) const;
+    void showContextMenu(const QPoint &pos);
 
     QToolButton *m_newTabButton = nullptr;
 

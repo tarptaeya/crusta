@@ -1,9 +1,13 @@
 #include "common-defs.h"
 #include "mainapplication.h"
+#include "tab.h"
 #include "tabbar.h"
 #include "tabwidget.h"
+#include "webview.h"
 
+#include <QAction>
 #include <QApplication>
+#include <QMenu>
 
 #define MAX_TAB_WIDTH 225
 #define NEW_TAB_BUTTON_WIDTH 24
@@ -27,6 +31,8 @@ TabBar::TabBar(QWidget *parent)
     setMouseTracking(true);
 
     loadSettings();
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(m_newTabButton, &QToolButton::clicked, [this] {
         TabWidget *tabWidget = static_cast<TabWidget *>(this->parent());
@@ -53,6 +59,8 @@ TabBar::TabBar(QWidget *parent)
 
         m_newTabButton->click();
     });
+
+    connect(this, &TabBar::customContextMenuRequested, this, &TabBar::showContextMenu);
 }
 
 void TabBar::loadSettings()
@@ -74,6 +82,57 @@ int TabBar::getTabWidth(int index) const
     baseWidth = qMin(baseWidth, MAX_TAB_WIDTH);
 
     return baseWidth;
+}
+
+void TabBar::showContextMenu(const QPoint &pos)
+{
+    int index = tabAt(pos);
+    if (index == -1) {
+        return;
+    }
+
+    TabWidget *tabWidget = static_cast<TabWidget *>(this->parent());
+    if (!tabWidget) {
+        return;
+    }
+    Tab *tab = tabWidget->tabAt(index);
+
+    QMenu menu;
+    QAction *duplicate = menu.addAction(QSL("Duplicate Tab"));
+    QAction *mute = menu.addAction(QSL("Mute Tab"));
+    menu.addSeparator();
+    QAction *closeLeft = menu.addAction(QSL("Close All Tabs to Left"));
+    QAction *closeRight = menu.addAction(QSL("Close All Tabs to Right"));
+    QAction *closeOther = menu.addAction(QSL("Close Other Tabs"));
+
+    if (tab->webView()->page()->isAudioMuted()) {
+        mute->setText(QSL("Unmute Tab"));
+    }
+
+    connect(duplicate, &QAction::triggered, this, [tab, tabWidget] {
+        Tab *newTab = new Tab(tab->webView()->url().toString());
+        tabWidget->addTab(newTab);
+    });
+    connect(mute, &QAction::triggered, this, [tab] {
+        tab->webView()->page()->setAudioMuted(!tab->webView()->page()->isAudioMuted());
+    });
+    connect(closeLeft, &QAction::triggered, this, [index, tabWidget] {
+        for (int i = 0; i < index; i++) {
+            tabWidget->closeTab(0);
+        }
+    });
+    connect(closeRight, &QAction::triggered, this, [index, tabWidget] {
+        int count = tabWidget->count();
+        for (int i = index + 1; i < count; i++) {
+            tabWidget->closeTab(index + 1);
+        }
+    });
+    connect(closeOther, &QAction::triggered, this, [closeLeft, closeRight] {
+        closeRight->trigger();
+        closeLeft->trigger();
+    });
+
+    menu.exec(mapToGlobal(pos));
 }
 
 QSize TabBar::tabSizeHint(int index) const
