@@ -1,5 +1,9 @@
 #include "common-defs.h"
+#include "database.h"
+#include "mainapplication.h"
 #include "omnibar.h"
+
+#include <QSet>
 
 OmniBar::OmniBar(QWidget *parent)
     : QLineEdit (parent)
@@ -7,14 +11,22 @@ OmniBar::OmniBar(QWidget *parent)
     m_siteInfoAction = new QAction(this);
     m_bookMarksAction = new QAction(this);
 
+    m_completer = new QCompleter(this);
+    m_model = new QStringListModel(this);
+    m_completer->setModel(m_model);
+    m_completer->setFilterMode(Qt::MatchContains);
+
     m_siteInfoAction->setIcon(QIcon::fromTheme(QSL("applications-internet")));
     m_bookMarksAction->setIcon(QIcon::fromTheme(QSL("")));
-
     m_siteInfoAction->setToolTip(QSL("Site Info"));
     m_bookMarksAction->setToolTip(QSL("Bookmark Page"));
 
+    setCompleter(m_completer);
+
     addAction(m_siteInfoAction, OmniBar::LeadingPosition);
     addAction(m_bookMarksAction, OmniBar::TrailingPosition);
+
+    loadCompleter();
 
     connect(this, &QLineEdit::returnPressed, this, &OmniBar::returnPressed);
 }
@@ -29,6 +41,8 @@ void OmniBar::update(const QString &address)
     } else {
         m_siteInfoAction->setIcon(QIcon::fromTheme(QSL("applications-internet")));
     }
+
+    m_model->setStringList((m_model->stringList() << address).toSet().toList());
 }
 
 QAction *OmniBar::siteInfoAction()
@@ -45,4 +59,15 @@ void OmniBar::returnPressed()
 {
     QString address = text();
     emit loadRequested(address);
+}
+
+void OmniBar::loadCompleter()
+{
+    QStringList list;
+    const QList<HistoryItem> items = appManager->dataBase()->history();
+    for (const HistoryItem &item : items) {
+        list << item.url;
+    }
+
+    m_model->setStringList(list.toSet().toList());
 }

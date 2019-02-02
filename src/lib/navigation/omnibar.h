@@ -2,7 +2,9 @@
 #define CR_OMNI_BAR_H
 
 #include <QAction>
+#include <QCompleter>
 #include <QLineEdit>
+#include <QStringListModel>
 
 class OmniBar : public QLineEdit
 {
@@ -20,9 +22,13 @@ Q_SIGNALS:
 
 private:
     void returnPressed();
+    void loadCompleter();
 
     QAction *m_siteInfoAction = nullptr;
     QAction *m_bookMarksAction = nullptr;
+
+    QCompleter *m_completer = nullptr;
+    QStringListModel *m_model = nullptr;
 };
 
 #endif

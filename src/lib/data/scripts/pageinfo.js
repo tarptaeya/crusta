@@ -1,6 +1,5 @@
 let openSearchData = document.querySelector('link[type="application/opensearchdescription+xml"]')
 
-
 function init() {
 }
 
