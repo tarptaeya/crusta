@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/videos/loader.gif</file>
+        <file>res/drawables/icon_3.ico</file>
+        <file>res/drawables/back.svg</file>
+        <file>res/drawables/forward.svg</file>
+        <file>res/drawables/reload.svg</file>
+        <file>res/drawables/icon.svg</file>
+        <file>res/drawables/home.svg</file>
+        <file>res/drawables/bookmark.svg</file>
+        <file>res/drawables/close.svg</file>
+        <file>res/drawables/star.svg</file>
+        <file>res/videos/passive_loader.gif</file>
+        <file>res/drawables/menu.svg</file>
+        <file>res/drawables/music_download.png</file>
+        <file>res/drawables/pdf_download.png</file>
+        <file>res/drawables/image_download.png</file>
+        <file>res/drawables/zip_download.png</file>
+        <file>res/drawables/exe_download.png</file>
+        <file>res/drawables/file_download.png</file>
+        <file>res/drawables/video_download.png</file>
+        <file>res/drawables/pane_bookmark.svg</file>
+        <file>res/drawables/pane_download.svg</file>
+        <file>res/drawables/pane_history.svg</file>
+        <file>res/drawables/pane_add.svg</file>
+        <file>res/videos/sidepanel_loader.gif</file>
+        <file>res/drawables/crusta_banner.png</file>
+        <file>res/drawables/normal_site.svg</file>
+        <file>res/drawables/secure_site.svg</file>
+        <file>res/audio/shutter.wav</file>
+        <file>res/drawables/togglepane.png</file>
+        <file>res/fav/ecosia.png</file>
+        <file>res/fav/yandex.png</file>
+        <file>res/fav/web.png</file>
+        <file>res/drawables/up.svg</file>
+        <file>res/drawables/incognito.svg</file>
+        <file>res/drawables/noback.svg</file>
+        <file>res/drawables/noforward.svg</file>
+    </qresource>
+</RCC>
