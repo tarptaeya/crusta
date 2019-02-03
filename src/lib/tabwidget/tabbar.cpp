@@ -72,7 +72,7 @@ void TabBar::loadSettings()
 int TabBar::getTabWidth(int index) const
 {
     int tabBarWidth = width() - NEW_TAB_BUTTON_WIDTH - 2 * NEW_TAB_BUTTON_MARGIN;
-    int numOfTabs = count();
+    int numOfTabs = qMax(count(), 1);
     if (m_isInClosingState) {
         numOfTabs = m_tabCountForClosingState;
     }
