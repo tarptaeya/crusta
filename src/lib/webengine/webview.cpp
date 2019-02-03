@@ -7,26 +7,33 @@
 #include "webpage.h"
 #include "webview.h"
 
+#include <QWebEngineFullScreenRequest>
+
 WebView::WebView(QWidget *parent)
     : QWebEngineView (parent)
 {
     m_webPage = new WebPage(appManager->webEngineProfile());
     setPage(m_webPage);
-    connect(this, &WebView::loadStarted, this, [this] { m_isLoading = true; });
-    connect(this, &WebView::loadFinished, this, [this] {
-        m_isLoading = false;
-        appManager->dataBase()->addHistory(HistoryItem::fromWebEngineHistoryItem(history()->currentItem()));
-    });
+
+    m_emptyWidget = new QWidget;
 
     int defaultZoom = appManager->settings()->value(QSL("webView/defaultZoom"), QSL("100")).toString().toInt();
     if (defaultZoom != 0) {
         setZoomFactor(defaultZoom / 100.0);
     }
+
+    connect(this, &WebView::loadStarted, this, [this] { m_isLoading = true; });
+    connect(this, &WebView::loadFinished, this, [this] {
+        m_isLoading = false;
+        appManager->dataBase()->addHistory(HistoryItem::fromWebEngineHistoryItem(history()->currentItem()));
+    });
+    connect(m_webPage, &WebPage::fullScreenRequested, this, &WebView::handleFullScreen);
 }
 
 WebView::~WebView()
 {
     m_webPage->deleteLater();
+    m_emptyWidget->deleteLater();
 }
 
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
@@ -90,4 +97,24 @@ void WebView::zoomOut()
 void WebView::resetZoom()
 {
     setZoomFactor(1);
+}
+
+void WebView::handleFullScreen(QWebEngineFullScreenRequest request)
+{
+    if (request.toggleOn()) {
+        m_parent = static_cast<QWidget *>(parent());
+        if (!m_parent) {
+            request.reject();
+            return;
+        }
+
+        m_parent->layout()->replaceWidget(this, m_emptyWidget);
+        setParent(nullptr);
+        showFullScreen();
+    } else {
+        m_parent->layout()->replaceWidget(m_emptyWidget, this);
+        m_emptyWidget->setParent(nullptr);
+    }
+
+    request.accept();
 }

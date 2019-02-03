@@ -23,8 +23,12 @@ public:
     void resetZoom();
 
 private:
+    void handleFullScreen(QWebEngineFullScreenRequest request);
+
     bool m_isLoading = false;
     WebPage *m_webPage = nullptr;
+    QWidget *m_parent = nullptr;
+    QWidget *m_emptyWidget = nullptr;
 };
 
 #endif
