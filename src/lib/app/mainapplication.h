@@ -46,6 +46,7 @@ public:
     Plugins *plugins();
 
     void aboutCrusta();
+    QString defaultUserAgent() const;
 
 private:
     bool m_isPrivate = false;

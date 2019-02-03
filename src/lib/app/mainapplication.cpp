@@ -131,6 +131,8 @@ void MainApplication::initWebEngineProfile()
         m_webEngineProfile = new QWebEngineProfile(name, this);
     }
 
+    m_webEngineProfile->setHttpUserAgent(settings()->value(QSL("profile/userAgent"), defaultUserAgent()).toString());
+
     QWebEngineScript webChannelScript;
     webChannelScript.setName(QSL("webChannelScript"));
     webChannelScript.setInjectionPoint(QWebEngineScript::DocumentCreation);
@@ -179,4 +181,13 @@ void MainApplication::aboutCrusta()
 {
     About about;
     about.exec();
+}
+
+QString MainApplication::defaultUserAgent() const
+{
+    QWebEngineProfile profile;
+    QString userAgent = profile.httpUserAgent();
+    QRegularExpression regexp(QSL("QtWebEngine/[\\d\\.]+"));
+    userAgent = userAgent.replace(regexp, QSL("Crusta/2.0.0"));
+    return userAgent;
 }

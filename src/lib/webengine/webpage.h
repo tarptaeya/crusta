@@ -9,6 +9,8 @@ class WebPage : public QWebEnginePage
 public:
     explicit WebPage(QWebEngineProfile *profile);
 
+    void loadSettings();
+
     bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
 
 private:

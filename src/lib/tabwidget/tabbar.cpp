@@ -3,6 +3,7 @@
 #include "tab.h"
 #include "tabbar.h"
 #include "tabwidget.h"
+#include "webpage.h"
 #include "webview.h"
 
 #include <QAction>

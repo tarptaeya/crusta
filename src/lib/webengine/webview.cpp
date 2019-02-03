@@ -17,6 +17,11 @@ WebView::WebView(QWidget *parent)
         m_isLoading = false;
         appManager->dataBase()->addHistory(HistoryItem::fromWebEngineHistoryItem(history()->currentItem()));
     });
+
+    int defaultZoom = appManager->settings()->value(QSL("webView/defaultZoom"), QSL("100")).toString().toInt();
+    if (defaultZoom != 0) {
+        setZoomFactor(defaultZoom / 100.0);
+    }
 }
 
 WebView::~WebView()
@@ -65,6 +70,11 @@ QString WebView::title() const
     }
 
     return titleString;
+}
+
+WebPage *WebView::page()
+{
+    return m_webPage;
 }
 
 void WebView::zoomIn()

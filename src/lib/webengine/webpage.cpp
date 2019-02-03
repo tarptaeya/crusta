@@ -18,6 +18,13 @@ WebPage::WebPage(QWebEngineProfile *profile)
     webChannel->registerObject(QSL("crusta"), jsObject);
     setWebChannel(webChannel, QWebEngineScript::ApplicationWorld);
 
+    loadSettings();
+
+    connect(this, &WebPage::featurePermissionRequested, this, &WebPage::handleFeatureRequest);
+}
+
+void WebPage::loadSettings()
+{
     settings()->setAttribute(QWebEngineSettings::AutoLoadImages, appManager->settings()->value(QSL("webPage/autoLoadImages"), true).toBool());
     settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, appManager->settings()->value(QSL("webPage/javascriptEnabled"), true).toBool());
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, appManager->settings()->value(QSL("webPage/javascriptCanOpenWindows"), true).toBool());
@@ -47,8 +54,6 @@ WebPage::WebPage(QWebEngineProfile *profile)
     settings()->setAttribute(QWebEngineSettings::JavascriptCanPaste, appManager->settings()->value(QSL("webPage/javascriptCanPaste"), false).toBool());
     settings()->setAttribute(QWebEngineSettings::WebRTCPublicInterfacesOnly, appManager->settings()->value(QSL("webPage/webRTCPublicInterfacesOnly"), false).toBool());
     settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, appManager->settings()->value(QSL("webPage/dnsPrefetchEnabled"), true).toBool());
-
-    connect(this, &WebPage::featurePermissionRequested, this, &WebPage::handleFeatureRequest);
 }
 
 bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)

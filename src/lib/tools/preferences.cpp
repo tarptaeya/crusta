@@ -1,6 +1,11 @@
+#include "browserwindow.h"
 #include "common-defs.h"
 #include "mainapplication.h"
 #include "preferences.h"
+#include "tab.h"
+#include "tabwidget.h"
+#include "webpage.h"
+#include "webview.h"
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -249,28 +254,21 @@ void Preferences::createBrowsingTab()
 
     QGridLayout *gridLayout = new QGridLayout;
 
-    QLabel *defaultZoom = new QLabel(QSL("Default Zoom On Pages"));
+    QLabel *defaultZoom = new QLabel(QSL("Default Zoom On Pages (%)"));
     QComboBox *defaultZoomCombo = new QComboBox();
     defaultZoomCombo->setEditable(true);
     defaultZoomCombo->addItems(QStringList()
-                               << QSL("25%") << QSL("50%") << QSL("75%") << QSL("100%")
-                               << QSL("125%") << QSL("150%") << QSL("175%") << QSL("200%")
-                               << QSL("225%") << QSL("250%") << QSL("275%") << QSL("300%"));
+                               << QSL("25") << QSL("50") << QSL("75") << QSL("100")
+                               << QSL("125") << QSL("150") << QSL("175") << QSL("200")
+                               << QSL("225") << QSL("250") << QSL("275") << QSL("300"));
     gridLayout->addWidget(defaultZoom, 0, 0);
     gridLayout->addWidget(defaultZoomCombo, 0, 1);
 
     QLabel *userAgentLabel = new QLabel(QSL("User Agent"));
-    QComboBox *userAgent = new QComboBox;
-    userAgent->addItems(QStringList()
-                        << QSL("Crusta") << QSL("Chrome Desktop") << QSL("Chrome Mobile")
-                        << QSL("Firefox") << QSL("Firefox Mobile") << QSL("Other"));
-    QLineEdit *otherUserAgent = new QLineEdit;
-    otherUserAgent->setVisible(false);
-    otherUserAgent->setPlaceholderText(QSL("Enter New User Agent"));
+    QLineEdit *userAgent = new QLineEdit;
 
     gridLayout->addWidget(userAgentLabel, 1, 0);
     gridLayout->addWidget(userAgent, 1, 1);
-    gridLayout->addWidget(otherUserAgent, 2, 1);
 
     vboxLayout->addLayout(gridLayout);
 
@@ -291,8 +289,134 @@ void Preferences::createBrowsingTab()
     root->setLayout(vboxLayout);
     addTab(root, QSL("Browsing"));
 
-    connect(userAgent, &QComboBox::currentTextChanged, this, [otherUserAgent](const QString &text) {
-        otherUserAgent->setVisible(text == QSL("Other"));
+    autoLoadImages->setChecked(appManager->settings()->value(QSL("webPage/autoLoadImages"), true).toBool());
+    javaScriptEnabled->setChecked(appManager->settings()->value(QSL("webPage/javascriptEnabled"), true).toBool());
+    javaScriptCanOpenWindows->setChecked(appManager->settings()->value(QSL("webPage/javascriptCanOpenWindows"), true).toBool());
+    javaScriptCanAccessClipboard->setChecked(appManager->settings()->value(QSL("webPage/javascriptCanAccessClipboard"), false).toBool());
+    linkIncludedInFocusChain->setChecked(appManager->settings()->value(QSL("webPage/linksIncludedInFocusChain"), true).toBool());
+    localStorageEnabled->setChecked(appManager->settings()->value(QSL("webPage/localStorageEnabled"), true).toBool());
+    localContentCanAccessRemoteUrls->setChecked(appManager->settings()->value(QSL("webPage/localContentCanAccessRemoteUrls"), false).toBool());
+    xssAuditingEnabled->setChecked(appManager->settings()->value(QSL("webPage/xssAuditingEnabled"), true).toBool());
+    spatialNavigationEnabled->setChecked(appManager->settings()->value(QSL("webPage/spatialNavigationEnabled"), false).toBool());
+    localContentCanAccessFileUrls->setChecked(appManager->settings()->value(QSL("webPage/localContentCanAccessFileUrls"), true).toBool());
+    hyperLinkAuditingEnabled->setChecked(appManager->settings()->value(QSL("webPage/hyperLinkAuditingEnabled"), false).toBool());
+    scrollAnimatorEnabled->setChecked(appManager->settings()->value(QSL("webPage/scrollAnimatorEnabled"), false).toBool());
+    errorPageEnabled->setChecked(appManager->settings()->value(QSL("webPage/errorPageEnabled"), true).toBool());
+    pluginsEnabled->setChecked(appManager->settings()->value(QSL("webPage/pluginsEnabled"), true).toBool());
+    fullScreenSupportEnabled->setChecked(appManager->settings()->value(QSL("webPage/fullScreenSupportEnabled"), true).toBool());
+    screenCaptureEnabled->setChecked(appManager->settings()->value(QSL("webPage/screenCaptureEnabled"), true).toBool());
+    webGLEnabled->setChecked(appManager->settings()->value(QSL("webPage/webGLEnabled"), true).toBool());
+    accelerated2dCanvasEnabled->setChecked(appManager->settings()->value(QSL("webPage/accelerated2dCanvasEnabled"), true).toBool());
+    autoLoadIconsForPage->setChecked(appManager->settings()->value(QSL("webPage/autoLoadIconsForPage"), true).toBool());
+    touchIconsEnabled->setChecked(appManager->settings()->value(QSL("webPage/touchIconsEnabled"), true).toBool());
+    focusOnNavigationEnabled->setChecked(appManager->settings()->value(QSL("webPage/focusOnNavigationEnabled"), true).toBool());
+    printElementBackgrounds->setChecked(appManager->settings()->value(QSL("webPage/printElementBackground"), true).toBool());
+    allowGeolocationOnInsecureOrigins->setChecked(appManager->settings()->value(QSL("webPage/allowGeoLocationOnInsecureOrigins"), false).toBool());
+    allowWindowActivationFromJavaScript->setChecked(appManager->settings()->value(QSL("allowWindowActivationFromJavaScript"), false).toBool());
+    showScrollBars->setChecked(appManager->settings()->value(QSL("webPage/showScrollBars"), true).toBool());
+    playbackRequiresUserGesture->setChecked(appManager->settings()->value(QSL("webPage/playbackRequiresUserGesture"), true).toBool());
+    javaScriptCanPaste->setChecked(appManager->settings()->value(QSL("webPage/javascriptCanPaste"), false).toBool());
+    webRTCPublicInterfacesOnly->setChecked(appManager->settings()->value(QSL("webPage/webRTCPublicInterfacesOnly"), false).toBool());
+    dnsPrefetchEnabled->setChecked(appManager->settings()->value(QSL("webPage/dnsPrefetchEnabled"), true).toBool());
+
+    defaultZoomCombo->setCurrentText(appManager->settings()->value(QSL("webView/defaultZoom"), QSL("100")).toString());
+    userAgent->setText(appManager->settings()->value(QSL("profile/userAgent"), appManager->webEngineProfile()->httpUserAgent()).toString());
+
+    connect(defaults, &QPushButton::clicked, this, [autoLoadImages, javaScriptEnabled, javaScriptCanOpenWindows,
+            javaScriptCanAccessClipboard, linkIncludedInFocusChain, localStorageEnabled, localContentCanAccessRemoteUrls,
+            xssAuditingEnabled, spatialNavigationEnabled, localContentCanAccessFileUrls, hyperLinkAuditingEnabled,
+            scrollAnimatorEnabled, errorPageEnabled, pluginsEnabled, fullScreenSupportEnabled, screenCaptureEnabled,
+            webGLEnabled, accelerated2dCanvasEnabled, autoLoadIconsForPage, touchIconsEnabled, focusOnNavigationEnabled,
+            printElementBackgrounds, allowGeolocationOnInsecureOrigins, allowWindowActivationFromJavaScript, showScrollBars,
+            playbackRequiresUserGesture, javaScriptCanPaste, webRTCPublicInterfacesOnly, dnsPrefetchEnabled,
+            defaultZoomCombo, userAgent] {
+        autoLoadImages->setChecked(true);
+        javaScriptEnabled->setChecked(true);
+        javaScriptCanOpenWindows->setChecked(true);
+        javaScriptCanAccessClipboard->setChecked(false);
+        linkIncludedInFocusChain->setChecked(true);
+        localStorageEnabled->setChecked(true);
+        localContentCanAccessRemoteUrls->setChecked(false);
+        xssAuditingEnabled->setChecked(true);
+        spatialNavigationEnabled->setChecked(false);
+        localContentCanAccessFileUrls->setChecked(true);
+        hyperLinkAuditingEnabled->setChecked(false);
+        scrollAnimatorEnabled->setChecked(false);
+        errorPageEnabled->setChecked(true);
+        pluginsEnabled->setChecked(true);
+        fullScreenSupportEnabled->setChecked(true);
+        screenCaptureEnabled->setChecked(true);
+        webGLEnabled->setChecked(true);
+        accelerated2dCanvasEnabled->setChecked(true);
+        autoLoadIconsForPage->setChecked(true);
+        touchIconsEnabled->setChecked(true);
+        focusOnNavigationEnabled->setChecked(true);
+        printElementBackgrounds->setChecked(true);
+        allowGeolocationOnInsecureOrigins->setChecked(false);
+        allowWindowActivationFromJavaScript->setChecked(false);
+        showScrollBars->setChecked(true);
+        playbackRequiresUserGesture->setChecked(true);
+        javaScriptCanPaste->setChecked(false);
+        webRTCPublicInterfacesOnly->setChecked(false);
+        dnsPrefetchEnabled->setChecked(true);
+
+        defaultZoomCombo->setCurrentText(QSL("100"));
+        userAgent->setText(appManager->defaultUserAgent());
+    });
+
+    connect(apply, &QPushButton::clicked, this, [autoLoadImages, javaScriptEnabled, javaScriptCanOpenWindows,
+            javaScriptCanAccessClipboard, linkIncludedInFocusChain, localStorageEnabled, localContentCanAccessRemoteUrls,
+            xssAuditingEnabled, spatialNavigationEnabled, localContentCanAccessFileUrls, hyperLinkAuditingEnabled,
+            scrollAnimatorEnabled, errorPageEnabled, pluginsEnabled, fullScreenSupportEnabled, screenCaptureEnabled,
+            webGLEnabled, accelerated2dCanvasEnabled, autoLoadIconsForPage, touchIconsEnabled, focusOnNavigationEnabled,
+            printElementBackgrounds, allowGeolocationOnInsecureOrigins, allowWindowActivationFromJavaScript, showScrollBars,
+            playbackRequiresUserGesture, javaScriptCanPaste, webRTCPublicInterfacesOnly, dnsPrefetchEnabled,
+            defaultZoomCombo, userAgent] {
+        appManager->settings()->setValue(QSL("webPage/autoLoadImages"), autoLoadImages->isChecked());
+        appManager->settings()->setValue(QSL("webPage/javascriptEnabled"), javaScriptEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/javascriptCanOpenWindows"), javaScriptCanOpenWindows->isChecked());
+        appManager->settings()->setValue(QSL("webPage/javascriptCanAccessClipboard"), javaScriptCanAccessClipboard->isChecked());
+        appManager->settings()->setValue(QSL("webPage/linksIncludedInFocusChain"), linkIncludedInFocusChain->isChecked());
+        appManager->settings()->setValue(QSL("webPage/localStorageEnabled"), localStorageEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/localContentCanAccessRemoteUrls"), localContentCanAccessRemoteUrls->isChecked());
+        appManager->settings()->setValue(QSL("webPage/xssAuditingEnabled"), xssAuditingEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/spatialNavigationEnabled"), spatialNavigationEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/localContentCanAccessFileUrls"), localContentCanAccessFileUrls->isChecked());
+        appManager->settings()->setValue(QSL("webPage/hyperLinkAuditingEnabled"), hyperLinkAuditingEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/scrollAnimatorEnabled"), scrollAnimatorEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/errorPageEnabled"), errorPageEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/pluginsEnabled"), pluginsEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/fullScreenSupportEnabled"), fullScreenSupportEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/screenCaptureEnabled"), screenCaptureEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/webGLEnabled"), webGLEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/accelerated2dCanvasEnabled"), accelerated2dCanvasEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/autoLoadIconsForPage"), autoLoadIconsForPage->isChecked());
+        appManager->settings()->setValue(QSL("webPage/touchIconsEnabled"), touchIconsEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/focusOnNavigationEnabled"), focusOnNavigationEnabled->isChecked());
+        appManager->settings()->setValue(QSL("webPage/printElementBackground"), printElementBackgrounds->isChecked());
+        appManager->settings()->setValue(QSL("webPage/allowGeoLocationOnInsecureOrigins"), allowGeolocationOnInsecureOrigins->isChecked());
+        appManager->settings()->setValue(QSL("allowWindowActivationFromJavaScript"), allowWindowActivationFromJavaScript->isChecked());
+        appManager->settings()->setValue(QSL("webPage/showScrollBars"), showScrollBars->isChecked());
+        appManager->settings()->setValue(QSL("webPage/playbackRequiresUserGesture"), playbackRequiresUserGesture->isChecked());
+        appManager->settings()->setValue(QSL("webPage/javascriptCanPaste"), javaScriptCanPaste->isChecked());
+        appManager->settings()->setValue(QSL("webPage/webRTCPublicInterfacesOnly"), webRTCPublicInterfacesOnly->isChecked());
+        appManager->settings()->setValue(QSL("webPage/dnsPrefetchEnabled"), dnsPrefetchEnabled->isChecked());
+
+        appManager->settings()->setValue(QSL("webView/defaultZoom"), defaultZoomCombo->currentText());
+        appManager->settings()->setValue(QSL("profile/userAgent"), userAgent->text());
+
+        QList<BrowserWindow *> windows = appManager->windows();
+        for (BrowserWindow *window : windows) {
+            int count = window->tabWidget()->count();
+            for (int i = 0; i < count; i++) {
+                window->tabWidget()->tabAt(i)->webView()->page()->loadSettings();
+            }
+        }
+    });
+
+    connect(ok, &QPushButton::clicked, this, [apply, this] {
+        apply->click();
+        setVisible(false);
     });
 }
 
