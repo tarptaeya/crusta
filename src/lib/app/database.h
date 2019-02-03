@@ -17,6 +17,7 @@ public:
     void createTables();
     void addHistory(const HistoryItem &item);
     void removeHistory(const QString &address);
+    void removeAllHistory();
     QList<HistoryItem> history() const;
 
     void addBookmark(const BookmarkItem &item);

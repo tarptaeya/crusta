@@ -53,6 +53,13 @@ void DataBase::removeHistory(const QString &address)
     query.exec();
 }
 
+void DataBase::removeAllHistory()
+{
+    QSqlQuery query(QSL("DELETE FROM history WHERE profile = ?"));
+    query.addBindValue(appManager->webEngineProfile()->storageName());
+    query.exec();
+}
+
 QList<HistoryItem> DataBase::history() const
 {
     QList<HistoryItem> entries;

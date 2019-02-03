@@ -1,5 +1,6 @@
 #include "common-defs.h"
 #include "browserwindow.h"
+#include "database.h"
 #include "mainapplication.h"
 #include "manager.h"
 #include "menu.h"
@@ -12,10 +13,12 @@
 
 #include <QAction>
 #include <QDir>
+#include <QMessageBox>
 #include <QPageSetupDialog>
 #include <QPrinter>
 #include <QProcess>
 #include <QStandardPaths>
+#include <QWebEngineCookieStore>
 
 QList<HistoryItem> Menu::s_historyItems;
 
@@ -68,11 +71,13 @@ void Menu::setUpMenu()
 
     QMenu *history = new QMenu(QSL("History"));
     QAction *showAllHistory = new QAction(QSL("Show All History"));
+    QAction *clearAllCookies = new QAction(QSL("Clear All Cookies"));
     QAction *clearAllHistory = new QAction(QSL("Clear All History"));
     QMenu *recentlyClosed = new QMenu(QSL("Recently Closed"));
 
     history->addAction(showAllHistory);
     history->addSeparator();
+    history->addAction(clearAllCookies);
     history->addAction(clearAllHistory);
     history->addSeparator();
     history->addMenu(recentlyClosed);
@@ -160,6 +165,23 @@ void Menu::setUpMenu()
     });
 
     connect(showAllHistory, &QAction::triggered, this, [] { appManager->manager()->showHistoryManager(); });
+    connect(clearAllCookies, &QAction::triggered, this, [] {
+        QMessageBox::StandardButton answer = QMessageBox::question(appManager->currentWindow(), QSL("Confirm?"), QSL("Delete All Cookies?"));
+        if (answer != QMessageBox::Yes) {
+            return ;
+        }
+
+        appManager->webEngineProfile()->cookieStore()->deleteAllCookies();
+    });
+    connect(clearAllHistory, &QAction::triggered, this, [] {
+        QMessageBox::StandardButton answer = QMessageBox::question(appManager->currentWindow(), QSL("Confirm?"), QSL("Delete All History?"));
+        if (answer != QMessageBox::Yes) {
+            return ;
+        }
+
+        appManager->dataBase()->removeAllHistory();
+    });
+
     connect(showAllBookmarks, &QAction::triggered, this, [] { appManager->manager()->showBookmarksManager(); });
     connect(showAllDownloads, &QAction::triggered, this, [] { appManager->manager()->showDownloadsManager(); });
 
