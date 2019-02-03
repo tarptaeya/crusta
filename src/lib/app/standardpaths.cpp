@@ -5,5 +5,5 @@
 
 QString StandardPaths::settingsPath()
 {
-    return QDir::homePath() + QDir::separator() + QSL("./crusta/settings.ini");
+    return QDir::homePath() + QDir::separator() + QSL(".crusta/settings.ini");
 }

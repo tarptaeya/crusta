@@ -3,6 +3,7 @@
 #include "mainapplication.h"
 #include "manager.h"
 #include "menu.h"
+#include "preferences.h"
 #include "statusbar.h"
 #include "tab.h"
 #include "tabwidget.h"
@@ -146,5 +147,6 @@ void Menu::setUpMenu()
     connect(showAllBookmarks, &QAction::triggered, this, [] { appManager->manager()->showBookmarksManager(); });
     connect(showAllDownloads, &QAction::triggered, this, [] { appManager->manager()->showDownloadsManager(); });
 
+    connect(preferences, &QAction::triggered, this, [] { appManager->preferences()->show(); });
     connect(about, &QAction::triggered, this, [] { appManager->aboutCrusta(); });
 }

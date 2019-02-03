@@ -12,6 +12,7 @@ class BrowserWindow;
 class DataBase;
 class Manager;
 class Plugins;
+class Preferences;
 class Tab;
 class WebDialogWindow;
 class WebView;
@@ -35,6 +36,7 @@ public:
 
     DataBase *dataBase();
     Manager *manager();
+    Preferences *preferences();
     QSettings *settings();
 
     void initWebEngineProfile();
@@ -51,6 +53,7 @@ private:
     QList<BrowserWindow *> m_windows;
     DataBase *m_dataBase = nullptr;
     Manager *m_manager = nullptr;
+    Preferences *m_preferences = nullptr;
     QSettings *m_settings = nullptr;
 
     QWebEngineProfile *m_webEngineProfile = nullptr;

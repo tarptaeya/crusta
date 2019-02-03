@@ -6,6 +6,7 @@
 #include "mainapplication.h"
 #include "manager.h"
 #include "plugins.h"
+#include "preferences.h"
 #include "scheme.h"
 #include "scripts.h"
 #include "standardpaths.h"
@@ -102,6 +103,15 @@ Manager *MainApplication::manager()
         m_manager = new Manager;
     }
     return m_manager;
+}
+
+Preferences *MainApplication::preferences()
+{
+    if (!m_preferences) {
+        m_preferences = new Preferences;
+    }
+
+    return m_preferences;
 }
 
 QSettings *MainApplication::settings()
