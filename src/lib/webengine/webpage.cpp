@@ -46,7 +46,7 @@ WebPage::WebPage(QWebEngineProfile *profile)
     settings()->setAttribute(QWebEngineSettings::PlaybackRequiresUserGesture, appManager->settings()->value(QSL("webPage/playbackRequiresUserGesture"), true).toBool());
     settings()->setAttribute(QWebEngineSettings::JavascriptCanPaste, appManager->settings()->value(QSL("webPage/javascriptCanPaste"), false).toBool());
     settings()->setAttribute(QWebEngineSettings::WebRTCPublicInterfacesOnly, appManager->settings()->value(QSL("webPage/webRTCPublicInterfacesOnly"), false).toBool());
-    settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, appManager->settings()->value(QSL("webPage/dnsPrefetchEnabled"), false).toBool());
+    settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, appManager->settings()->value(QSL("webPage/dnsPrefetchEnabled"), true).toBool());
 
     connect(this, &WebPage::featurePermissionRequested, this, &WebPage::handleFeatureRequest);
 }
