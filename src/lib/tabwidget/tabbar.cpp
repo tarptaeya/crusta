@@ -24,6 +24,8 @@ TabBar::TabBar(QWidget *parent)
     m_newTabButton->setToolTip(QSL("Add New Tab"));
     m_newTabButton->setShortcut(QKeySequence::AddTab);
 
+    m_tabWidget = static_cast<TabWidget *>(this->parent());
+
     // Settings which cannot be changed
     setTabsClosable(true);
     setMovable(true);
@@ -36,13 +38,12 @@ TabBar::TabBar(QWidget *parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(m_newTabButton, &QToolButton::clicked, [this] {
-        TabWidget *tabWidget = static_cast<TabWidget *>(this->parent());
-        if (!tabWidget) {
+        if (!m_tabWidget) {
             return;
         }
 
-        tabWidget->addTab();
-        tabWidget->setCurrentIndex(tabWidget->count() - 1);
+        m_tabWidget->addTab();
+        m_tabWidget->setCurrentIndex(m_tabWidget->count() - 1);
     });
 
     connect(this, &TabBar::tabCloseRequested, this, [this] {
@@ -167,7 +168,7 @@ void TabBar::mouseMoveEvent(QMouseEvent *event)
     if (m_isInClosingState) {
         // workaround for resizing tabs
         m_tabCountForClosingState = count();
-        m_newTabButton->click();
+        m_tabWidget->addTab(QSL(""));
         tabCloseRequested(count() - 1);
     }
     m_isInClosingState = false;

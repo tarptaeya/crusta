@@ -17,6 +17,8 @@
 #include <QProcess>
 #include <QStandardPaths>
 
+QList<HistoryItem> Menu::s_historyItems;
+
 Menu::Menu(QWidget *parent)
     : QMenu (parent)
 {
@@ -66,7 +68,21 @@ void Menu::setUpMenu()
 
     QMenu *history = new QMenu(QSL("History"));
     QAction *showAllHistory = new QAction(QSL("Show All History"));
+    QAction *clearAllHistory = new QAction(QSL("Clear All History"));
+    QMenu *recentlyClosed = new QMenu(QSL("Recently Closed"));
+
     history->addAction(showAllHistory);
+    history->addSeparator();
+    history->addAction(clearAllHistory);
+    history->addSeparator();
+    history->addMenu(recentlyClosed);
+
+    for (const HistoryItem &item : s_historyItems) {
+        QAction *action = new QAction(item.icon, item.title);
+        recentlyClosed->addAction(action);
+
+        connect(action, &QAction::triggered, this, [item] { appManager->currentWindow()->tabWidget()->addTab(item.url); });
+    }
 
     QMenu *bookmarks = new QMenu(QSL("Bookmarks"));
     QAction *showAllBookmarks = new QAction(QSL("Show All Bookmarks"));

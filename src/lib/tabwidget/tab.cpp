@@ -2,6 +2,7 @@
 #include "bookmarkdialog.h"
 #include "browserwindow.h"
 #include "mainapplication.h"
+#include "menu.h"
 #include "omnibar.h"
 #include "statusbar.h"
 #include "tab.h"
@@ -11,7 +12,6 @@
 #include "webpage.h"
 #include "webview.h"
 
-#include <QMenu>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
 

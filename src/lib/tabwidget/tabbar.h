@@ -4,6 +4,8 @@
 #include <QToolButton>
 #include <QTabBar>
 
+class TabWidget;
+
 class TabBar : public QTabBar
 {
 public:
@@ -19,6 +21,8 @@ private:
 
     bool m_isInClosingState = false;
     int m_tabCountForClosingState = 0;
+
+    TabWidget *m_tabWidget = nullptr;
 
 protected:
     QSize tabSizeHint(int index) const;

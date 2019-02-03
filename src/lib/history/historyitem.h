@@ -11,6 +11,7 @@ public:
     QDateTime dateTime;
     QString title;
     QString url;
+    QIcon icon;
 
     static HistoryItem fromWebEngineHistoryItem(const QWebEngineHistoryItem &webEngineHistoryItem);
 };

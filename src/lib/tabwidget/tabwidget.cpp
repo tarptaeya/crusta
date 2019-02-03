@@ -1,8 +1,10 @@
 #include "common-defs.h"
 #include "mainapplication.h"
+#include "menu.h"
 #include "tab.h"
 #include "tabbar.h"
 #include "tabwidget.h"
+#include "webview.h"
 
 #include <QPushButton>
 
@@ -36,8 +38,21 @@ int TabWidget::addTab(Tab *tab)
 
 void TabWidget::closeTab(int index)
 {
-    QWidget *tab = widget(index);
+    Tab *tab = static_cast<Tab *>(widget(index));
+    if (!tab) {
+        return;
+    }
+
     removeTab(index);
+
+    HistoryItem item;
+    item.title = tab->webView()->title();
+    item.url = QString::fromUtf8(tab->webView()->url().toEncoded());
+    item.icon = tab->webView()->icon();
+    if (!item.title.isEmpty() && !item.url.isEmpty()) {
+        Menu::s_historyItems.append(item);
+    }
+
     tab->deleteLater();
 }
 
