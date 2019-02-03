@@ -4,27 +4,34 @@
 
 #include <QCheckBox>
 #include <QComboBox>
-#include <QHBoxLayout>
 #include <QGridLayout>
 #include <QGroupBox>
+#include <QHBoxLayout>
+#include <QInputDialog>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QSettings>
 #include <QSizePolicy>
 #include <QVBoxLayout>
 
 Preferences::Preferences(QWidget *parent)
     : QTabWidget (parent)
 {
-    createGeneralTab();
-    createBrowsingTab();
-    createSearchEngineTab();
-    createOthersTab();
+
 }
 
 void Preferences::show()
 {
+    clear();
+
+    createGeneralTab();
+    createBrowsingTab();
+    createSearchEngineTab();
+    createOthersTab();
+
     activateWindow();
     QTabWidget::show();
 }
@@ -39,19 +46,19 @@ void Preferences::createGeneralTab()
     QGroupBox *launch = new QGroupBox(QSL("On Launch"));
     QGridLayout *gridLayout1 = new QGridLayout;
 
+    QLabel *startPage = new QLabel(QSL("Start Page"));
+    QLineEdit *startPageUrl = new QLineEdit;
     QLabel *homePage = new QLabel(QSL("Home Page"));
     QLineEdit *homePageUrl = new QLineEdit;
-    QPushButton *homePageCurrent = new QPushButton(QSL("Use Current"));
     QLabel *newTab = new QLabel(QSL("New Tab"));
     QLineEdit *newTabUrl = new QLineEdit;
-    QPushButton *newTabCurrent = new QPushButton(QSL("Use Current"));
 
-    gridLayout1->addWidget(homePage, 0, 0);
-    gridLayout1->addWidget(homePageUrl, 0, 1);
-    gridLayout1->addWidget(homePageCurrent, 0, 2);
-    gridLayout1->addWidget(newTab, 1, 0);
-    gridLayout1->addWidget(newTabUrl, 1, 1);
-    gridLayout1->addWidget(newTabCurrent, 1, 2);
+    gridLayout1->addWidget(startPage, 0, 0);
+    gridLayout1->addWidget(startPageUrl, 0, 1);
+    gridLayout1->addWidget(homePage, 1, 0);
+    gridLayout1->addWidget(homePageUrl, 1, 1);
+    gridLayout1->addWidget(newTab, 2, 0);
+    gridLayout1->addWidget(newTabUrl, 2, 1);
 
     launch->setLayout(gridLayout1);
 
@@ -95,8 +102,64 @@ void Preferences::createGeneralTab()
     vboxLayout->addLayout(hboxLayout);
 
     widget->setLayout(vboxLayout);
-
     widget->setMinimumSize(widget->sizeHint());
+
+    startPageUrl->setText(appManager->settings()->value(QSL("webView/startPageUrl"), QSL("crusta:speeddial")).toString());
+    homePageUrl->setText(appManager->settings()->value(QSL("webView/homePageUrl"), QSL("crusta:speeddial")).toString());
+    newTabUrl->setText(appManager->settings()->value(QSL("webView/newTabUrl"), QSL("crusta:speeddial")).toString());
+
+    QStringList profiles = appManager->settings()->value(QSL("profile/profiles"), QStringList() << QSL("default")).toStringList();
+    profileCombo->addItems(profiles);
+    profileCombo->setCurrentText(appManager->settings()->value(QSL("profile/default"), QSL("default")).toString());
+
+    connect(newProfile, &QPushButton::clicked, this, [profileCombo] {
+        const QString text = QInputDialog::getText(profileCombo, QSL("New Profile"), QSL("New Profile Name"));
+
+        QStringList profiles = appManager->settings()->value(QSL("profile/profiles"), QStringList() << QSL("default")).toStringList();
+        if (profiles.contains(text)) {
+            return ;
+        }
+
+        profileCombo->addItem(text);
+
+        profiles << text;
+        appManager->settings()->setValue(QSL("profile/profiles"), profiles);
+    });
+
+    connect(delProfile, &QPushButton::clicked, this, [profileCombo] {
+        const QString text = profileCombo->currentText();
+        if (text == appManager->webEngineProfile()->storageName()) {
+            QMessageBox::critical(profileCombo, QSL("Info"), QSL("Active profile cannot be removed"));
+            return;
+        }
+
+        profileCombo->removeItem(profileCombo->findText(text, Qt::MatchExactly));
+        profileCombo->setCurrentText(appManager->settings()->value(QSL("profile/default"), QSL("default")).toString());
+
+        QStringList profiles = appManager->settings()->value(QSL("profile/profiles"), QStringList() << QSL("default")).toStringList();
+        profiles.removeOne(text);
+        appManager->settings()->setValue(QSL("profile/profiles"), profiles);
+    });
+
+    connect(defaults, &QPushButton::clicked, this, [startPageUrl, homePageUrl, newTabUrl, profileCombo] {
+        startPageUrl->setText(QSL("crusta:speeddial"));
+        homePageUrl->setText(QSL("crusta:speeddial"));
+        newTabUrl->setText(QSL("crusta:speeddial"));
+        profileCombo->setCurrentText(QSL("default"));
+    });
+
+    connect(apply, &QPushButton::clicked, this, [startPageUrl, homePageUrl, newTabUrl, profileCombo] {
+        appManager->settings()->setValue(QSL("webView/startPageUrl"), startPageUrl->text());
+        appManager->settings()->setValue(QSL("webView/homePageUrl"), homePageUrl->text());
+        appManager->settings()->setValue(QSL("webView/newTabUrl"), newTabUrl->text());
+
+        appManager->settings()->setValue(QSL("profile/default"), profileCombo->currentText());
+    });
+
+    connect(ok, &QPushButton::clicked, this, [apply, this] {
+        apply->click();
+        setVisible(false);
+    });
 }
 
 void Preferences::createBrowsingTab()

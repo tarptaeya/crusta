@@ -12,6 +12,7 @@ class DataBase : public QObject
 {
 public:
     explicit DataBase(QObject *parent = nullptr);
+    ~DataBase();
 
     void createTables();
     void addHistory(const HistoryItem &item);
@@ -24,6 +25,10 @@ public:
     QList<BookmarkItem> bookmarks(const QString &folderName) const;
     QStringList bookmarkFolders() const;
     BookmarkItem isBookmarked(const QString &address) const;
+
+private:
+    QSqlDatabase m_db;
+    QString m_name;
 };
 
 #endif

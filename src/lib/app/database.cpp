@@ -8,20 +8,27 @@
 DataBase::DataBase(QObject *parent)
     : QObject (parent)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase(QSL("QSQLITE"));
-    db.setDatabaseName(QSL("data"));
-    if (!db.open()) {
-        qWarning() << db.lastError();
+    m_db = QSqlDatabase::addDatabase(QSL("QSQLITE"));
+    m_name = QSL("data");
+    m_db.setDatabaseName(m_name);
+    if (!m_db.open()) {
+        qWarning() << m_db.lastError();
         return;
     }
     createTables();
 }
 
+DataBase::~DataBase()
+{
+    m_db.close();
+    QSqlDatabase::removeDatabase(m_name);
+}
+
 void DataBase::createTables()
 {
     QSqlQuery query;
-    query.exec(QSL("CREATE TABLE IF NOT EXISTS history (lastVisited DATETIME, title TEXT, url TEXT PRIMARY KEY)"));
-    query.exec(QSL("CREATE TABLE IF NOT EXISTS bookmarks (title TEXT, url TEXT PRIMARY KEY, folder TEXT)"));
+    query.exec(QSL("CREATE TABLE IF NOT EXISTS history (lastVisited DATETIME, title TEXT, url TEXT, profile TEXT, PRIMARY KEY (url, profile))"));
+    query.exec(QSL("CREATE TABLE IF NOT EXISTS bookmarks (title TEXT, url TEXT, folder TEXT, profile TEXT, PRIMARY KEY (url, profile))"));
 }
 
 void DataBase::addHistory(const HistoryItem &item)
@@ -30,24 +37,27 @@ void DataBase::addHistory(const HistoryItem &item)
         return;
     }
 
-    QSqlQuery query(QSL("INSERT OR REPLACE INTO history VALUES (?, ?, ?)"));
+    QSqlQuery query(QSL("INSERT OR REPLACE INTO history VALUES (?, ?, ?, ?)"));
     query.addBindValue(item.dateTime.toTime_t());
     query.addBindValue(item.title);
     query.addBindValue(item.url);
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
 }
 
 void DataBase::removeHistory(const QString &address)
 {
-    QSqlQuery query(QSL("DELETE FROM history WHERE url = ?"));
+    QSqlQuery query(QSL("DELETE FROM history WHERE url = ? AND profile = ?"));
     query.addBindValue(address);
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
 }
 
 QList<HistoryItem> DataBase::history() const
 {
     QList<HistoryItem> entries;
-    QSqlQuery query(QSL("SELECT * FROM history"));
+    QSqlQuery query(QSL("SELECT * FROM history WHERE profile = ?"));
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
     while (query.next()) {
         HistoryItem item;
@@ -62,34 +72,38 @@ QList<HistoryItem> DataBase::history() const
 
 void DataBase::addBookmark(const BookmarkItem &item)
 {
-    QSqlQuery query(QSL("INSERT INTO bookmarks VALUES (?, ?, ?)"));
+    QSqlQuery query(QSL("INSERT INTO bookmarks VALUES (?, ?, ?, ?)"));
     query.addBindValue(item.title);
     query.addBindValue(item.address);
     query.addBindValue(item.folder);
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
 }
 
 void DataBase::removeBookmark(const QString &address)
 {
-    QSqlQuery query(QSL("DELETE FROM bookmarks WHERE url = ?"));
+    QSqlQuery query(QSL("DELETE FROM bookmarks WHERE url = ? AND profile = ?"));
     query.addBindValue(address);
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
 }
 
 void DataBase::updateBookmark(const BookmarkItem &item)
 {
-    QSqlQuery query(QSL("UPDATE bookmarks SET title = ?, folder = ? WHERE url = ?"));
+    QSqlQuery query(QSL("UPDATE bookmarks SET title = ?, folder = ? WHERE url = ? AND profile = ?"));
     query.addBindValue(item.title);
     query.addBindValue(item.folder);
     query.addBindValue(item.address);
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
 }
 
 QList<BookmarkItem> DataBase::bookmarks(const QString &folderName) const
 {
     QList<BookmarkItem> entries;
-    QSqlQuery query(QSL("SELECT * FROM bookmarks WHERE folder = ?"));
+    QSqlQuery query(QSL("SELECT * FROM bookmarks WHERE folder = ? AND profile = ?"));
     query.addBindValue(folderName);
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
     while (query.next()) {
         BookmarkItem item;
@@ -104,7 +118,8 @@ QList<BookmarkItem> DataBase::bookmarks(const QString &folderName) const
 QStringList DataBase::bookmarkFolders() const
 {
     QStringList folders;
-    QSqlQuery query(QSL("SELECT DISTINCT folder FROM bookmarks"));
+    QSqlQuery query(QSL("SELECT DISTINCT folder FROM bookmarks WHERE profile = ?"));
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
     while (query.next()) {
         folders << query.value(0).toString();
@@ -115,8 +130,9 @@ QStringList DataBase::bookmarkFolders() const
 BookmarkItem DataBase::isBookmarked(const QString &address) const
 {
     BookmarkItem item;
-    QSqlQuery query(QSL("SELECT * FROM bookmarks WHERE url = ?"));
+    QSqlQuery query(QSL("SELECT * FROM bookmarks WHERE url = ? AND profile = ?"));
     query.addBindValue(address);
+    query.addBindValue(appManager->webEngineProfile()->storageName());
     query.exec();
     while (query.next()) {
         item.title = query.value(0).toString();

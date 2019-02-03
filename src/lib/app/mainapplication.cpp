@@ -127,7 +127,8 @@ void MainApplication::initWebEngineProfile()
     if (m_isPrivate) {
         m_webEngineProfile = new QWebEngineProfile(this);
     } else {
-        m_webEngineProfile = new QWebEngineProfile(QSL("default"), this);
+        const QString name = settings()->value(QSL("profile/default"), QSL("default")).toString();
+        m_webEngineProfile = new QWebEngineProfile(name, this);
     }
 
     QWebEngineScript webChannelScript;
