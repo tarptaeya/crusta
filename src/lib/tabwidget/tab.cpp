@@ -30,6 +30,8 @@ Tab::Tab(const QString &address, QWidget *parent)
     }
     m_webView->setFocus();
 
+    m_loaderMovie = new QMovie(":/icons/loader.gif");
+
     m_vboxLayout->addWidget(m_toolBar, 0);
     m_vboxLayout->addWidget(m_webView, 1);
     setLayout(m_vboxLayout);
@@ -60,17 +62,30 @@ Tab::Tab(const QString &address, QWidget *parent)
             return;
         }
 
+        m_loaderMovie->stop();
+        disconnect(m_loaderConnection);
         m_tabWidget->setTabIcon(index(), icon);
     });
 
     connect(m_webView, &WebView::loadStarted, this, [this] {
         m_toolBar->reloadButton()->setIcon(QIcon::fromTheme(QSL("process-stop")));
+        m_loaderMovie->start();
+
+        m_loaderConnection = connect(m_loaderMovie, &QMovie::frameChanged, this, [this] {
+            m_tabWidget->setTabIcon(this->index(), m_loaderMovie->currentPixmap());
+        });
     });
 
     connect(m_webView, &WebView::loadFinished, this, [this] {
         m_toolBar->backButton()->setEnabled(m_webView->history()->canGoBack());
         m_toolBar->forwardButton()->setEnabled(m_webView->history()->canGoForward());
         m_toolBar->reloadButton()->setIcon(QIcon::fromTheme(QSL("view-refresh")));
+
+        m_loaderMovie->stop();
+        disconnect(m_loaderConnection);
+    });
+
+    connect(m_webView, &WebView::loadProgress, this, [this](int progress) {
     });
 
     connect(m_webView->page(), &WebPage::linkHovered, this, [this](const QUrl &url) {

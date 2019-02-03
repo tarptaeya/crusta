@@ -16,5 +16,6 @@
         <file>plugins/usrskript/icon.svg</file>
         <file>scripts/webchannel.js</file>
         <file>scripts/pageinfo.js</file>
+        <file>icons/loader.gif</file>
     </qresource>
 </RCC>

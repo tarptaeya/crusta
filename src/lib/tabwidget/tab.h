@@ -5,6 +5,7 @@
 
 #include <QVBoxLayout>
 #include <QIcon>
+#include <QMovie>
 #include <QWidget>
 
 class TabWidget;
@@ -29,6 +30,9 @@ private:
     TabWidget *m_tabWidget = nullptr;
     ToolBar *m_toolBar = nullptr;
     WebView *m_webView = nullptr;
+
+    QMovie *m_loaderMovie = nullptr;
+    QMetaObject::Connection m_loaderConnection;
 };
 
 #endif
