@@ -4,4 +4,8 @@ PluginInterface {
     load: function () {
         console.log('PDFewr plugin loaded')
     }
+
+    unload: function() {
+        console.log('PDFewr plugin unloaded')
+    }
 }

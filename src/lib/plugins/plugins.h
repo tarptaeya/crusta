@@ -26,9 +26,15 @@ class Plugins : public QObject
 {
 public:
     explicit Plugins(QObject *parent = nullptr);
+    ~Plugins();
+
     void loadPlugins();
 
     QList<Plugin *> plugins();
+
+    void enablePlugin(Plugin *plugin);
+    void disablePlugin(Plugin *plugin);
+
 private:
     void loadInternalPlugins();
     void loadExternalPlugins();

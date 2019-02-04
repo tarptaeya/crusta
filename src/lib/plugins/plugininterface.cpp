@@ -10,6 +10,11 @@ void PluginInterface::callLoad()
     load.call();
 }
 
+void PluginInterface::callUnload()
+{
+    unload.call();
+}
+
 bool PluginInterface::callAcceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
 {
     if (!acceptNavigationRequest.isCallable()) {

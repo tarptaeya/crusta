@@ -14,6 +14,18 @@ Plugins::Plugins(QObject *parent)
 
 }
 
+Plugins::~Plugins()
+{
+    for (Plugin *plugin : m_plugins) {
+        if (plugin->enabled) {
+            plugin->enabled = false;
+            plugin->interface->callUnload();
+        }
+
+        delete plugin;
+    }
+}
+
 void Plugins::loadPlugins()
 {
     loadInternalPlugins();
@@ -23,6 +35,26 @@ void Plugins::loadPlugins()
 QList<Plugin *> Plugins::plugins()
 {
     return m_plugins;
+}
+
+void Plugins::enablePlugin(Plugin *plugin)
+{
+    if (plugin->enabled) {
+        return;
+    }
+
+    plugin->enabled = true;
+    plugin->interface->callLoad();
+}
+
+void Plugins::disablePlugin(Plugin *plugin)
+{
+    if (!plugin->enabled) {
+        return;
+    }
+
+    plugin->enabled = false;
+    plugin->interface->callUnload();
 }
 
 void Plugins::loadInternalPlugins()
@@ -59,7 +91,8 @@ void Plugins::loadPlugin(Plugin *plugin)
         return;
     }
 
-    plugin->enabled = true;
+    enablePlugin(plugin);
+
     m_plugins.append(plugin);
 }
 

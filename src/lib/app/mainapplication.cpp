@@ -16,6 +16,8 @@
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
 
+#include <QDebug>
+
 MainApplication::MainApplication(bool isPrivate, QObject *parent)
     : QObject (parent)
     , m_isPrivate(isPrivate)

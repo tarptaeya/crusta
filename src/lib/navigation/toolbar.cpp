@@ -89,4 +89,16 @@ void ToolBar::addPluginButton(Plugin *plugin)
     pluginButton->setIcon(QIcon(QDir(plugin->path).filePath(plugin->iconFile)));
     pluginButton->setToolTip(plugin->description);
     m_hboxLayout->addWidget(pluginButton);
+
+    QMenu *menu = new QMenu;
+    pluginButton->setMenu(menu);
+    pluginButton->setPopupMode(ToolBarButton::InstantPopup);
+
+    connect(menu, &QMenu::aboutToShow, this, [menu, plugin] {
+        menu->clear();
+        QAction *enable = menu->addAction(QSL("Enable"));
+        if (plugin->enabled) {
+            enable->setText(QSL("Disable"));
+        }
+    });
 }

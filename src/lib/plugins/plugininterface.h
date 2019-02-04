@@ -16,6 +16,7 @@ public:
     virtual ~PluginInterface() { }
 
     void callLoad();
+    void callUnload();
     bool callAcceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame);
 
 private:

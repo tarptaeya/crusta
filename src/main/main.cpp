@@ -18,6 +18,9 @@ int main(int argc, char **argv)
     parser.process(app);
 
     MainApplication::instance(parser.isSet(privateModeOption))->createWindow();
+    int retCode = app.exec();
 
-    return app.exec();
+    delete MainApplication::instance();
+
+    return retCode;
 }
