@@ -40,6 +40,8 @@ set(
     plugins/plugins.cpp
     plugins/plugininterface.cpp
     plugins/pluginloader.cpp
+    plugins/api/qmldownloaditem.cpp
+    plugins/api/qmlwebpage.cpp
     tabwidget/tab.cpp
     tabwidget/tabbar.cpp
     tabwidget/tabwidget.cpp

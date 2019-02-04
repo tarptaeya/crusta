@@ -295,7 +295,7 @@ void Preferences::createBrowsingTab()
     javaScriptCanAccessClipboard->setChecked(appManager->settings()->value(QSL("webPage/javascriptCanAccessClipboard"), false).toBool());
     linkIncludedInFocusChain->setChecked(appManager->settings()->value(QSL("webPage/linksIncludedInFocusChain"), true).toBool());
     localStorageEnabled->setChecked(appManager->settings()->value(QSL("webPage/localStorageEnabled"), true).toBool());
-    localContentCanAccessRemoteUrls->setChecked(appManager->settings()->value(QSL("webPage/localContentCanAccessRemoteUrls"), false).toBool());
+    localContentCanAccessRemoteUrls->setChecked(appManager->settings()->value(QSL("webPage/localContentCanAccessRemoteUrls"), true).toBool());
     xssAuditingEnabled->setChecked(appManager->settings()->value(QSL("webPage/xssAuditingEnabled"), true).toBool());
     spatialNavigationEnabled->setChecked(appManager->settings()->value(QSL("webPage/spatialNavigationEnabled"), false).toBool());
     localContentCanAccessFileUrls->setChecked(appManager->settings()->value(QSL("webPage/localContentCanAccessFileUrls"), true).toBool());
@@ -336,7 +336,7 @@ void Preferences::createBrowsingTab()
         javaScriptCanAccessClipboard->setChecked(false);
         linkIncludedInFocusChain->setChecked(true);
         localStorageEnabled->setChecked(true);
-        localContentCanAccessRemoteUrls->setChecked(false);
+        localContentCanAccessRemoteUrls->setChecked(true);
         xssAuditingEnabled->setChecked(true);
         spatialNavigationEnabled->setChecked(false);
         localContentCanAccessFileUrls->setChecked(true);

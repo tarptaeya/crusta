@@ -31,7 +31,7 @@ void WebPage::loadSettings()
     settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, appManager->settings()->value(QSL("webPage/javascriptCanAccessClipboard"), false).toBool());
     settings()->setAttribute(QWebEngineSettings::LinksIncludedInFocusChain, appManager->settings()->value(QSL("webPage/linksIncludedInFocusChain"), true).toBool());
     settings()->setAttribute(QWebEngineSettings::LocalStorageEnabled, appManager->settings()->value(QSL("webPage/localStorageEnabled"), true).toBool());
-    settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, appManager->settings()->value(QSL("webPage/localContentCanAccessRemoteUrls"), false).toBool());
+    settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, appManager->settings()->value(QSL("webPage/localContentCanAccessRemoteUrls"), true).toBool());
     settings()->setAttribute(QWebEngineSettings::XSSAuditingEnabled, appManager->settings()->value(QSL("webPage/xssAuditingEnabled"), true).toBool());
     settings()->setAttribute(QWebEngineSettings::SpatialNavigationEnabled, appManager->settings()->value(QSL("webPage/spatialNavigationEnabled"), false).toBool());
     settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls, appManager->settings()->value(QSL("webPage/localContentCanAccessFileUrls"), true).toBool());

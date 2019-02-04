@@ -1,4 +1,8 @@
+#include "api/qmldownloaditem.h"
+
 #include "plugininterface.h"
+
+#include <QQmlEngine>
 
 PluginInterface::PluginInterface(QObject *parent)
     : QObject (parent)
@@ -29,6 +33,16 @@ bool PluginInterface::callAcceptNavigationRequest(const QUrl &url, QWebEnginePag
     return acceptNavigationRequest.call(args).toBool();
 }
 
+void PluginInterface::callAcceptDownloadRequest(QWebEngineDownloadItem *download)
+{
+    QmlDownloadItem *item = new QmlDownloadItem(download);
+\
+    QJSValueList args;
+    args << qmlEngine(this)->newQObject(item);
+
+    acceptDownloadRequest.call(args);
+}
+
 QJSValue PluginInterface::readLoad() const
 {
     return load;
@@ -57,4 +71,19 @@ QJSValue PluginInterface::readAcceptNavigationRequest() const
 void PluginInterface::writeAcceptNavigationRequest(const QJSValue &jsValue)
 {
     acceptNavigationRequest = jsValue;
+}
+
+QJSValue PluginInterface::readAcceptDownloadRequest() const
+{
+    return acceptDownloadRequest;
+}
+
+void PluginInterface::writeAcceptDownloadRequest(const QJSValue &jsValue)
+{
+    acceptDownloadRequest = jsValue;
+}
+
+QQmlListProperty<QObject> PluginInterface::readChildItems()
+{
+    return QQmlListProperty<QObject>(this, childItems);
 }

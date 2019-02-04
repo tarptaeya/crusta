@@ -1,3 +1,7 @@
+#include "api/qmldownloaditem.h"
+#include "api/qmlwebpage.h"
+
+#include "common-defs.h"
 #include "plugininterface.h"
 #include "pluginloader.h"
 #include "plugins.h"
@@ -37,4 +41,6 @@ void PluginLoader::registerQmlTypes()
     const int minorVersion = 0;
 
     qmlRegisterType<PluginInterface>(url, majorVersion, minorVersion, "PluginInterface");
+    qmlRegisterUncreatableType<QmlDownloadItem>(url, majorVersion, minorVersion, "DownloadItem", QSL("Unable to register DownloadItem"));
+    qmlRegisterUncreatableType<QmlWebPage>(url, majorVersion, minorVersion, "WebPage", QSL("Unable to register QmlWebPage"));
 }

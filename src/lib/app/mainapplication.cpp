@@ -5,6 +5,7 @@
 #include "downloadsmanager.h"
 #include "mainapplication.h"
 #include "manager.h"
+#include "plugininterface.h"
 #include "plugins.h"
 #include "preferences.h"
 #include "scheme.h"
@@ -156,7 +157,16 @@ void MainApplication::initWebEngineProfile()
     Scheme *scheme = new Scheme(this);
     m_webEngineProfile->installUrlSchemeHandler("crusta", scheme);
 
-    connect(m_webEngineProfile, &QWebEngineProfile::downloadRequested, manager()->downloadsManager(), &DownloadsManager::downloadRequested);
+    connect(m_webEngineProfile, &QWebEngineProfile::downloadRequested, this, [this](QWebEngineDownloadItem *download) {
+        for (Plugin *plugin : m_plugins->plugins()) {
+            plugin->interface->callAcceptDownloadRequest(download);
+            if (download->state() != QWebEngineDownloadItem::DownloadRequested) {
+                return;
+            }
+        }
+
+        m_manager->downloadsManager()->downloadRequested(download);
+    });
 }
 
 QWebEngineProfile *MainApplication::webEngineProfile()
