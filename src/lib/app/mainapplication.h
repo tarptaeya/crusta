@@ -28,8 +28,8 @@ public:
 
     BrowserWindow *createWindow();
     BrowserWindow *createWindow(Tab *tab);
-    void removeWindow();
-    QList<BrowserWindow *> windows();
+    void removeWindow(BrowserWindow *window);
+    QList<BrowserWindow *> windows() const;
     BrowserWindow *currentWindow();
 
     void createDialogWindow(WebView *webView);

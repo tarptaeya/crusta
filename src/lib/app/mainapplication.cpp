@@ -64,12 +64,12 @@ BrowserWindow *MainApplication::createWindow(Tab *tab)
     return window;
 }
 
-void MainApplication::removeWindow()
+void MainApplication::removeWindow(BrowserWindow *window)
 {
-
+    m_windows.removeOne(window);
 }
 
-QList<BrowserWindow *> MainApplication::windows()
+QList<BrowserWindow *> MainApplication::windows() const
 {
     return m_windows;
 }

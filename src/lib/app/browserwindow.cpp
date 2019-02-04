@@ -58,6 +58,8 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
     appManager->settings()->setValue(QSL("browserWindow/geometry"), saveGeometry());
     appManager->settings()->setValue(QSL("browserWindow/state"), saveState());
 
+    appManager->removeWindow(this);
+
     QMainWindow::closeEvent(event);
 }
 
