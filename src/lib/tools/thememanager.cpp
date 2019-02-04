@@ -11,7 +11,7 @@ ThemeManager::ThemeManager()
 
 QString ThemeManager::defaultTheme()
 {
-    return QSL("MuddyMountain");
+    return QSL("I Prefer Native UI");
 }
 
 void ThemeManager::clearCurrentTheme()

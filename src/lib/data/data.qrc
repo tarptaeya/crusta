@@ -17,7 +17,5 @@
         <file>scripts/webchannel.js</file>
         <file>scripts/pageinfo.js</file>
         <file>icons/loader.gif</file>
-        <file>themes/MuddyMountain.css</file>
-        <file>themes/RosyRed.css</file>
     </qresource>
 </RCC>
