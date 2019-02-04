@@ -46,8 +46,11 @@ TabWidget *BrowserWindow::tabWidget()
 
 void BrowserWindow::loadSettings()
 {
-    restoreGeometry(appManager->settings()->value(QSL("browserWindow/geometry")).toByteArray());
-    restoreState(appManager->settings()->value(QSL("browserWindow/geometry")).toByteArray());
+    if (appManager->settings()->value(QSL("browserWindow/restoreWindowGeometry"), true).toBool()) {
+        restoreGeometry(appManager->settings()->value(QSL("browserWindow/geometry")).toByteArray());
+        restoreState(appManager->settings()->value(QSL("browserWindow/geometry")).toByteArray());
+    }
+
     if (!appManager->settings()->value(QSL("browserWindow/showStatusBar"), true).toBool()) {
         m_statusBar->hide();
     }

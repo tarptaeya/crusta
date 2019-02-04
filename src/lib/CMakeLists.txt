@@ -49,6 +49,7 @@ set(
     tools/common-defs.cpp
     tools/manager.cpp
     tools/preferences.cpp
+    tools/thememanager.cpp
     webengine/jsobject.cpp
     webengine/notifier.cpp
     webengine/scheme.cpp

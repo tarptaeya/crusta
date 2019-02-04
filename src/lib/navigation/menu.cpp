@@ -142,12 +142,6 @@ void Menu::setUpMenu()
     });
 
     connect(statusBar, &QAction::triggered, this, [](bool checked) {
-        if (checked) {
-            appManager->settings()->setValue(QSL("browserWindow/showStatusBar"), true);
-        } else {
-            appManager->settings()->setValue(QSL("browserWindow/showStatusBar"), false);
-        }
-
         for (BrowserWindow *window : appManager->windows()) {
             window->statusBar()->setVisible(checked);
         }

@@ -11,6 +11,7 @@ public:
     void show();
 private:
     void createGeneralTab();
+    void createAppearanceTab();
     void createBrowsingTab();
     void createSearchEngineTab();
     void createOthersTab();

@@ -4,11 +4,13 @@
 #include "preferences.h"
 #include "tab.h"
 #include "tabwidget.h"
+#include "thememanager.h"
 #include "webpage.h"
 #include "webview.h"
 
 #include <QCheckBox>
 #include <QComboBox>
+#include <QTextEdit>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -33,12 +35,14 @@ void Preferences::show()
     clear();
 
     createGeneralTab();
+    createAppearanceTab();
     createBrowsingTab();
     createSearchEngineTab();
     createOthersTab();
 
     activateWindow();
     QTabWidget::show();
+    resize(tabBar()->sizeHint().width(), height());
 }
 
 void Preferences::createGeneralTab()
@@ -159,6 +163,85 @@ void Preferences::createGeneralTab()
         appManager->settings()->setValue(QSL("webView/newTabUrl"), newTabUrl->text());
 
         appManager->settings()->setValue(QSL("profile/default"), profileCombo->currentText());
+    });
+
+    connect(ok, &QPushButton::clicked, this, [apply, this] {
+        apply->click();
+        setVisible(false);
+    });
+}
+
+void Preferences::createAppearanceTab()
+{
+    QWidget *widget = new QWidget(this);
+    addTab(widget, QSL("Appearance"));
+
+    QVBoxLayout *vboxLayout = new QVBoxLayout;
+    widget->setLayout(vboxLayout);
+
+    QGridLayout *gridLayout = new QGridLayout;
+    vboxLayout->addLayout(gridLayout);
+
+    QLabel *themeLabel = new QLabel(QSL("Theme"));
+    QComboBox *themeCombo = new QComboBox;
+    themeCombo->addItems(ThemeManager::getThemeNames());
+    themeCombo->insertSeparator(themeCombo->count());
+    themeCombo->addItems(QStringList() << QSL("I Prefer Native UI") << QSL("Use Custom CSS"));
+    QTextEdit *customCss = new QTextEdit;
+    customCss->setPlaceholderText(QSL("Write Custom CSS Rules Here..."));
+    customCss->setVisible(themeCombo->currentText() == QSL("Use Custom CSS"));
+
+    gridLayout->addWidget(themeLabel, 0, 0);
+    gridLayout->addWidget(themeCombo, 0, 1);
+    gridLayout->addWidget(customCss, 1, 1);
+
+    QCheckBox *statusBar = new QCheckBox(QSL("Show Status Bar on Start"));
+    QCheckBox *windowGeometry = new QCheckBox(QSL("Restore Window Geometry on Start"));
+    vboxLayout->addWidget(statusBar);
+    vboxLayout->addWidget(windowGeometry);
+
+    QHBoxLayout *hboxLayout = new QHBoxLayout;
+
+    QPushButton *defaults = new QPushButton(QSL("Defaults"));
+    QPushButton *apply = new QPushButton(QSL("Apply"));
+    QPushButton *ok = new QPushButton(QSL("Ok"));
+
+    hboxLayout->addWidget(defaults);
+    hboxLayout->addWidget(new QWidget);
+    hboxLayout->addWidget(apply);
+    hboxLayout->addWidget(ok);
+
+    vboxLayout->addWidget(new QWidget);
+    vboxLayout->addLayout(hboxLayout);
+
+    statusBar->setChecked(appManager->settings()->value(QSL("browserWindow/showStatusBar"), true).toBool());
+    windowGeometry->setChecked(appManager->settings()->value(QSL("browserWindow/restoreWindowGeometry"), true).toBool());
+
+    connect(themeCombo, &QComboBox::currentTextChanged, this, [customCss](const QString &text) {
+        customCss->setVisible(text == QSL("Use Custom CSS"));
+    });
+
+    connect(defaults, &QPushButton::clicked, this, [themeCombo, statusBar, windowGeometry] {
+        themeCombo->setCurrentText(ThemeManager::defaultTheme());
+        statusBar->setChecked(true);
+        windowGeometry->setChecked(true);
+    });
+
+    connect(apply, &QPushButton::clicked, this, [themeCombo, customCss, statusBar, windowGeometry] {
+        const QString text = themeCombo->currentText();
+        if (text == QSL("I Prefer Native UI")) {
+            ThemeManager::clearCurrentTheme();
+            appManager->settings()->setValue(QSL("theme/defaultTheme"), QSL("I Prefer Native UI"));
+        } else if (text == QSL("Use Custom CSS")) {
+            appManager->settings()->setValue(QSL("theme/defaultTheme"), QSL("Use Custom Css"));
+            appManager->settings()->setValue(QSL("theme/customTheme"), customCss->toPlainText());
+        } else {
+            ThemeManager::loadThemeFromPath(QSL(":/themes/%1.css").arg(text));
+            appManager->settings()->setValue(QSL("theme/defaultTheme"), text);
+        }
+
+        appManager->settings()->setValue(QSL("browserWindow/showStatusBar"), statusBar->isChecked());
+        appManager->settings()->setValue(QSL("browserWindow/restoreWindowGeometry"), windowGeometry->isChecked());
     });
 
     connect(ok, &QPushButton::clicked, this, [apply, this] {

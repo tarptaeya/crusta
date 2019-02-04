@@ -1,5 +1,6 @@
 #include "common-defs.h"
 #include "mainapplication.h"
+#include "thememanager.h"
 
 #include <QApplication>
 #include <QCommandLineOption>
@@ -18,6 +19,16 @@ int main(int argc, char **argv)
     parser.process(app);
 
     MainApplication::instance(parser.isSet(privateModeOption))->createWindow();
+    const QString defaultTheme = appManager->settings()->value(QSL("theme/defaultTheme"), ThemeManager::defaultTheme()).toString();
+    if (defaultTheme == QSL("I Prefer Native UI")) {
+        // Do nothing
+    } else if (defaultTheme == QSL("Use Custom CSS")) {
+        const QString customTheme = appManager->settings()->value(QSL("theme/customTheme")).toString();
+        app.setStyleSheet(customTheme);
+    } else {
+        ThemeManager::loadThemeFromPath(QSL(":/themes/%1.css").arg(defaultTheme));
+    }
+
     int retCode = app.exec();
 
     delete MainApplication::instance();
