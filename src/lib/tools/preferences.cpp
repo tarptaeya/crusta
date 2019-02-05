@@ -30,7 +30,7 @@
 Preferences::Preferences(QWidget *parent)
     : QTabWidget (parent)
 {
-
+    setWindowTitle(QSL("Preferences"));
 }
 
 void Preferences::show()
@@ -630,5 +630,5 @@ void Preferences::createSearchEngineTab()
 void Preferences::createOthersTab()
 {
     QWidget *widget = new QWidget;
-    addTab(widget, QSL("Others"));
+    addTab(widget, QSL("Privacy"));
 }

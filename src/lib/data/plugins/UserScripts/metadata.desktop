@@ -1,4 +1,4 @@
-name=UsrSkript
+name=User Scripts
 description=User Script extension for Crusta
 entryFile=entry.qml
 iconFile=icon.svg
