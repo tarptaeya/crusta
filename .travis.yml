@@ -3,9 +3,9 @@ compiler: gcc
 dist: xenial
 
 install:
-    - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.11.0-xenial
+    - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.12.0-xenial
     - sudo apt-get update -qq
-    - sudo apt-get install -qq qt511tools qt511script qt511webengine qt511webchannel qt511declarative qt511x11extras
+    - sudo apt-get install -qq qt512tools qt512script qt512webengine qt512webchannel qt512declarative qt512x11extras
     - sudo apt-get install -qq mesa-common-dev
 
 script:
