@@ -7,7 +7,7 @@
 SearchEngineManager::SearchEngineManager(QWidget *parent)
     : QWidget (parent)
 {
-    if (appManager->settings()->value(QSL("searchEngine/engines")).toString().isEmpty()) {
+    if (appManager->settings()->value(QSL("searchEngine/engines")).toStringList().isEmpty()) {
         QStringList engines;
         const QStringList ecosia(QStringList() << QSL("Ecosia")
                                  << QSL("https://www.ecosia.org/search?tt=crusta&q={searchTerms}")
@@ -15,8 +15,11 @@ SearchEngineManager::SearchEngineManager(QWidget *parent)
         const QStringList yandex(QStringList() << QSL("Yandex")
                                  << QSL("http://www.yandex.ru/?clid=2308389&text={searchTerms}")
                                  << QSL(""));
+        const QStringList google(QStringList() << QSL("Google")
+                                 << QSL("https://google.com/search?q={searchTerms}")
+                                 << QSL(""));
 
-        engines << ecosia << yandex;
+        engines << ecosia << yandex << google;
         appManager->settings()->setValue(QSL("searchEngine/engines"), engines);
 
         if (QLocale::system().language() == QLocale::Russian) {
@@ -25,19 +28,23 @@ SearchEngineManager::SearchEngineManager(QWidget *parent)
             appManager->settings()->setValue(QSL("searchEngine/defaultEngine"), ecosia);
         }
     }
-
-    m_engines = appManager->settings()->value(QSL("searchEngine/engines")).toStringList();
 }
 
 QStringList SearchEngineManager::engines() const
 {
-    return m_engines;
+    return appManager->settings()->value(QSL("searchEngine/engines")).toStringList();
+}
+
+QStringList SearchEngineManager::defaultEngine() const
+{
+    return appManager->settings()->value(QSL("searchEngine/defaultEngine")).toStringList();
 }
 
 void SearchEngineManager::addSearchEngine(const QStringList &engine)
 {
-    m_engines.append(engine);
-    appManager->settings()->setValue(QSL("searchEngine/engines"), m_engines);
+    QStringList engines = this->engines();
+    engines.append(engine);
+    appManager->settings()->setValue(QSL("searchEngine/engines"), engines);
 }
 
 QString SearchEngineManager::getQuery(const QString &query) const

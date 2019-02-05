@@ -2,6 +2,7 @@
 #include "common-defs.h"
 #include "mainapplication.h"
 #include "preferences.h"
+#include "searchenginemanager.h"
 #include "tab.h"
 #include "tabwidget.h"
 #include "thememanager.h"
@@ -23,6 +24,7 @@
 #include <QScrollArea>
 #include <QSettings>
 #include <QSizePolicy>
+#include <QTreeWidget>
 #include <QVBoxLayout>
 
 Preferences::Preferences(QWidget *parent)
@@ -514,6 +516,115 @@ void Preferences::createSearchEngineTab()
 {
     QWidget *widget = new QWidget;
     addTab(widget, QSL("Search Engine"));
+
+    QVBoxLayout *vboxLayout = new QVBoxLayout;
+
+    QHBoxLayout *hboxLayout1 = new QHBoxLayout;
+
+    QTreeWidget *treeWidget = new QTreeWidget;
+    treeWidget->setHeaderLabels(QStringList() << QSL("Name"));
+
+    QStringList engines = appManager->searchEngineManager()->engines();
+    const QStringList defaultEngine = appManager->searchEngineManager()->defaultEngine();
+    int count = engines.length();
+    for (int i = 0; i < count; i += 3) {
+        QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << engines[i]);
+        if (engines[i] == defaultEngine[0]) {
+            QFont f;
+            f.setBold(true);
+            item->setFont(0, f);
+        }
+
+        treeWidget->addTopLevelItem(item);
+    }
+
+    QVBoxLayout *vboxLayout1 = new QVBoxLayout;
+
+    QPushButton *addEngine = new QPushButton(QSL("Add"));
+    QPushButton *makeDefault = new QPushButton(QSL("Set As Default"));
+
+    vboxLayout1->addWidget(addEngine);
+    vboxLayout1->addWidget(makeDefault);
+    vboxLayout1->addWidget(new QWidget);
+
+    hboxLayout1->addWidget(treeWidget);
+    hboxLayout1->addLayout(vboxLayout1);
+    vboxLayout->addLayout(hboxLayout1);
+
+    widget->setLayout(vboxLayout);
+
+    connect(addEngine, &QPushButton::clicked, this, [treeWidget] () mutable {
+        QDialog d;
+        d.setWindowTitle(QSL("Add Search Engine"));
+
+        QLineEdit name;
+        QLineEdit queryUrl;
+        QLineEdit suggestionUrl;
+
+        name.setPlaceholderText(QSL("Engine Name"));
+        queryUrl.setPlaceholderText(QSL("OpenSearch XML like Query URL"));
+        suggestionUrl.setPlaceholderText(QSL("OpenSearch XML like Suggestions URL"));
+
+        QPushButton cancel(QSL("Cancel"));
+        QPushButton ok(QSL("Ok"));
+
+        QVBoxLayout vboxLayout;
+        vboxLayout.addWidget(&name);
+        vboxLayout.addWidget(&queryUrl);
+        vboxLayout.addWidget(&suggestionUrl);
+
+        QHBoxLayout hboxLayout;
+        hboxLayout.addWidget(&cancel);
+        hboxLayout.addWidget(&ok);
+
+        vboxLayout.addLayout(&hboxLayout);
+
+        d.setLayout(&vboxLayout);
+
+        connect(&cancel, &QPushButton::clicked, &d, &QDialog::reject);
+        connect(&ok, &QPushButton::clicked, &d, &QDialog::accept);
+        if (d.exec() != QDialog::Accepted) {
+            return ;
+        }
+
+        if (name.text().isEmpty() || queryUrl.text().isEmpty()) {
+            return;
+        }
+
+        QStringList engine;
+        engine << name.text() << queryUrl.text() << suggestionUrl.text();
+
+        QTreeWidgetItem *item = new QTreeWidgetItem(engine);
+        treeWidget->addTopLevelItem(item);
+
+        QStringList engines = appManager->searchEngineManager()->engines();
+        engines << engine;
+
+        appManager->settings()->setValue(QSL("searchEngine/engines"), engines);
+    });
+
+    connect(makeDefault, &QPushButton::clicked, this, [treeWidget] {
+        int count = treeWidget->topLevelItemCount();
+        int index = -1;
+        for (int i = 0; i < count; i++) {
+            QFont f;
+            f.setBold(false);
+
+            if (treeWidget->topLevelItem(i) == treeWidget->currentItem()) {
+                index = i;
+                f.setBold(true);
+            }
+
+            treeWidget->topLevelItem(i)->setFont(0, f);
+        }
+
+        QStringList engines = appManager->searchEngineManager()->engines();
+        appManager->settings()->setValue(QSL("searchEngine/defaultEngine")
+                                         , QStringList()
+                                         << engines[3 * index]
+                                         << engines[3 * index + 1]
+                                         << engines[3 * index + 2]);
+    });
 }
 
 void Preferences::createOthersTab()

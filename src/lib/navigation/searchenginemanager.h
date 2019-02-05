@@ -9,11 +9,9 @@ public:
     explicit SearchEngineManager(QWidget *parent = nullptr);
 
     QStringList engines() const;
+    QStringList defaultEngine() const;
     void addSearchEngine(const QStringList &engine);
     QString getQuery(const QString &query) const;
-
-private:
-    QStringList m_engines;
 };
 
 #endif
