@@ -10,6 +10,7 @@
 #include "preferences.h"
 #include "scheme.h"
 #include "scripts.h"
+#include "searchenginemanager.h"
 #include "standardpaths.h"
 #include "tab.h"
 #include "webdialogwindow.h"
@@ -30,6 +31,8 @@ MainApplication::~MainApplication()
 {
     m_dataBase->deleteLater();
     m_manager->deleteLater();
+    m_preferences->deleteLater();
+    m_searchEngineManager->deleteLater();
     m_settings->deleteLater();
 
     m_webEngineProfile->deleteLater();
@@ -115,6 +118,15 @@ Preferences *MainApplication::preferences()
     }
 
     return m_preferences;
+}
+
+SearchEngineManager *MainApplication::searchEngineManager()
+{
+    if (!m_searchEngineManager) {
+        m_searchEngineManager = new SearchEngineManager;
+    }
+
+    return m_searchEngineManager;
 }
 
 QSettings *MainApplication::settings()

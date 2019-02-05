@@ -19,6 +19,7 @@ public:
     ToolBarButton *reloadButton();
     ToolBarButton *homeButton();
     OmniBar *omniBar();
+    ToolBarButton *addEngineButton();
 
 private:
     void addPluginButton(Plugin *plugin);
@@ -31,6 +32,7 @@ private:
     ToolBarButton *m_forwardButton = nullptr;
     ToolBarButton *m_reloadButton = nullptr;
     ToolBarButton *m_homeButton = nullptr;
+    ToolBarButton *m_addEngineButton = nullptr;
     ToolBarButton *m_menuButton = nullptr;
 };
 

@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "omnibar.h"
 #include "plugins.h"
+#include "searchenginemanager.h"
 #include "toolbar.h"
 #include "toolbarbutton.h"
 
@@ -21,6 +22,7 @@ ToolBar::ToolBar(QWidget *parent)
     m_forwardButton = new ToolBarButton(this);
     m_reloadButton = new ToolBarButton(this);
     m_homeButton = new ToolBarButton(this);
+    m_addEngineButton = new ToolBarButton(this);
     m_menuButton = new ToolBarButton(this);
 
     m_backButton->setMenu(new QMenu);
@@ -32,6 +34,7 @@ ToolBar::ToolBar(QWidget *parent)
     m_forwardButton->setIcon(QIcon::fromTheme(QSL("go-next")));
     m_reloadButton->setIcon(QIcon::fromTheme(QSL("view-refresh")));
     m_homeButton->setIcon(QIcon::fromTheme(QSL("go-home")));
+    m_addEngineButton->setIcon(QIcon::fromTheme(QSL("list-add")));
     m_menuButton->setIcon(QIcon::fromTheme(QSL("preferences-other")));
 
     m_backButton->setToolTip(QSL("Go Back"));
@@ -48,6 +51,7 @@ ToolBar::ToolBar(QWidget *parent)
     m_hboxLayout->addWidget(m_reloadButton);
     m_hboxLayout->addWidget(m_homeButton);
     m_hboxLayout->addWidget(m_omniBar, 1);
+    m_hboxLayout->addWidget(m_addEngineButton);
 
     for (Plugin *plugin : appManager->plugins()->plugins()) {
         addPluginButton(plugin);
@@ -56,6 +60,14 @@ ToolBar::ToolBar(QWidget *parent)
     m_hboxLayout->addWidget(m_menuButton);
 
     setLayout(m_hboxLayout);
+
+    m_addEngineButton->setVisible(false);
+
+    connect(m_addEngineButton, &ToolBarButton::clicked, this, [this] {
+        const QStringList data = m_addEngineButton->data().toStringList();
+        appManager->searchEngineManager()->addSearchEngine(data);
+        m_addEngineButton->setVisible(false);
+    });
 }
 
 ToolBarButton *ToolBar::backButton()
@@ -81,6 +93,11 @@ ToolBarButton *ToolBar::homeButton()
 OmniBar *ToolBar::omniBar()
 {
     return m_omniBar;
+}
+
+ToolBarButton *ToolBar::addEngineButton()
+{
+    return m_addEngineButton;
 }
 
 void ToolBar::addPluginButton(Plugin *plugin)

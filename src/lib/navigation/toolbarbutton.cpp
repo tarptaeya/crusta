@@ -37,3 +37,13 @@ void ToolBarButton::setBadgeCount(int count)
         m_badgeLabel->move(width() - QFontMetrics(m_badgeLabel->font()).width(text), 0);
     }
 }
+
+QVariant ToolBarButton::data() const
+{
+    return m_data;
+}
+
+void ToolBarButton::setData(const QVariant &data)
+{
+    m_data = data;
+}

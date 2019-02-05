@@ -14,7 +14,7 @@ WebPage::WebPage(QWebEngineProfile *profile)
     : QWebEnginePage (profile)
 {
     QWebChannel *webChannel = new QWebChannel(this);
-    JsObject *jsObject = new JsObject(this);
+    JsObject *jsObject = new JsObject(this, this);
     webChannel->registerObject(QSL("crusta"), jsObject);
     setWebChannel(webChannel, QWebEngineScript::ApplicationWorld);
 

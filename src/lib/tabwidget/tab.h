@@ -24,6 +24,8 @@ public:
     QIcon icon() const;
     WebView *webView();
 
+    ToolBar *toolBar();
+
 private:
     QVBoxLayout *m_vboxLayout = nullptr;
 

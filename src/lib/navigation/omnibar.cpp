@@ -2,6 +2,7 @@
 #include "database.h"
 #include "mainapplication.h"
 #include "omnibar.h"
+#include "searchenginemanager.h"
 
 #include <QSet>
 
@@ -57,8 +58,18 @@ QAction *OmniBar::bookmarksAction()
 
 void OmniBar::returnPressed()
 {
-    QString address = text();
-    emit loadRequested(address);
+    QString text = this->text();
+    if (text.contains(QL1C('.')) && !text.contains(QL1C(' '))) {
+        if (!text.startsWith(QSL("http://"))
+                && !text.startsWith(QSL("https://"))
+                && !text.startsWith(QSL("crusta:"))) {
+            text = text.prepend(QSL("http://"));
+        }
+    } else {
+        text = appManager->searchEngineManager()->getQuery(text);
+    }
+
+    emit loadRequested(text);
 }
 
 void OmniBar::loadCompleter()

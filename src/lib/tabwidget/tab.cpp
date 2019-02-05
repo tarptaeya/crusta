@@ -70,6 +70,7 @@ Tab::Tab(const QString &address, QWidget *parent)
 
     connect(m_webView, &WebView::loadStarted, this, [this] {
         m_toolBar->reloadButton()->setIcon(QIcon::fromTheme(QSL("process-stop")));
+        m_toolBar->addEngineButton()->setVisible(false);
         m_loaderMovie->start();
 
         m_loaderConnection = connect(m_loaderMovie, &QMovie::frameChanged, this, [this] {
@@ -160,4 +161,9 @@ QIcon Tab::icon() const
 WebView *Tab::webView()
 {
     return m_webView;
+}
+
+ToolBar *Tab::toolBar()
+{
+    return m_toolBar;
 }
