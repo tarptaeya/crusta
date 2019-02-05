@@ -8,6 +8,7 @@
 #include "webpage.h"
 #include "webview.h"
 
+#include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QTextEdit>
@@ -184,16 +185,15 @@ void Preferences::createAppearanceTab()
 
     QLabel *themeLabel = new QLabel(QSL("Theme"));
     QComboBox *themeCombo = new QComboBox;
-    themeCombo->addItems(ThemeManager::getThemeNames());
-    themeCombo->insertSeparator(themeCombo->count());
+//    themeCombo->addItems(ThemeManager::getThemeNames());
+//    themeCombo->insertSeparator(themeCombo->count());
     themeCombo->addItems(QStringList() << QSL("I Prefer Native UI") << QSL("Use Custom CSS"));
-    QTextEdit *customCss = new QTextEdit;
-    customCss->setPlaceholderText(QSL("Write Custom CSS Rules Here..."));
-    customCss->setVisible(themeCombo->currentText() == QSL("Use Custom CSS"));
+    QTextEdit *customCSS = new QTextEdit;
+    customCSS->setPlaceholderText(QSL("Write Custom CSS Rules Here..."));
 
     gridLayout->addWidget(themeLabel, 0, 0);
     gridLayout->addWidget(themeCombo, 0, 1);
-    gridLayout->addWidget(customCss, 1, 1);
+    gridLayout->addWidget(customCSS, 1, 1);
 
     QCheckBox *statusBar = new QCheckBox(QSL("Show Status Bar on Start"));
     QCheckBox *windowGeometry = new QCheckBox(QSL("Restore Window Geometry on Start"));
@@ -214,27 +214,34 @@ void Preferences::createAppearanceTab()
     vboxLayout->addWidget(new QWidget);
     vboxLayout->addLayout(hboxLayout);
 
+    themeCombo->setCurrentText(appManager->settings()->value(QSL("theme/defaultTheme"), ThemeManager::defaultTheme()).toString());
+    customCSS->setText(appManager->settings()->value(QSL("theme/customTheme")).toString());
+
+    customCSS->setVisible(themeCombo->currentText() == QSL("Use Custom CSS"));
+
     statusBar->setChecked(appManager->settings()->value(QSL("browserWindow/showStatusBar"), true).toBool());
     windowGeometry->setChecked(appManager->settings()->value(QSL("browserWindow/restoreWindowGeometry"), true).toBool());
 
-    connect(themeCombo, &QComboBox::currentTextChanged, this, [customCss](const QString &text) {
-        customCss->setVisible(text == QSL("Use Custom CSS"));
+    connect(themeCombo, &QComboBox::currentTextChanged, this, [customCSS](const QString &text) {
+        customCSS->setVisible(text == QSL("Use Custom CSS"));
     });
 
-    connect(defaults, &QPushButton::clicked, this, [themeCombo, statusBar, windowGeometry] {
+    connect(defaults, &QPushButton::clicked, this, [themeCombo, customCSS, statusBar, windowGeometry] {
         themeCombo->setCurrentText(ThemeManager::defaultTheme());
+        customCSS->setText(QSL(""));
         statusBar->setChecked(true);
         windowGeometry->setChecked(true);
     });
 
-    connect(apply, &QPushButton::clicked, this, [themeCombo, customCss, statusBar, windowGeometry] {
+    connect(apply, &QPushButton::clicked, this, [themeCombo, customCSS, statusBar, windowGeometry] {
         const QString text = themeCombo->currentText();
         if (text == QSL("I Prefer Native UI")) {
             ThemeManager::clearCurrentTheme();
             appManager->settings()->setValue(QSL("theme/defaultTheme"), QSL("I Prefer Native UI"));
         } else if (text == QSL("Use Custom CSS")) {
-            appManager->settings()->setValue(QSL("theme/defaultTheme"), QSL("Use Custom Css"));
-            appManager->settings()->setValue(QSL("theme/customTheme"), customCss->toPlainText());
+            appManager->settings()->setValue(QSL("theme/defaultTheme"), QSL("Use Custom CSS"));
+            appManager->settings()->setValue(QSL("theme/customTheme"), customCSS->toPlainText());
+            qApp->setStyleSheet(customCSS->toPlainText());
         } else {
             ThemeManager::loadThemeFromPath(QSL(":/themes/%1.css").arg(text));
             appManager->settings()->setValue(QSL("theme/defaultTheme"), text);
