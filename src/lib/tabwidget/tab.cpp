@@ -31,6 +31,7 @@ Tab::Tab(const QString &address, QWidget *parent)
     m_webView->setFocus();
 
     m_loaderMovie = new QMovie(":/icons/loader.gif");
+    m_loaderMovie->setBackgroundColor(Qt::transparent);
 
     m_vboxLayout->addWidget(m_toolBar, 0);
     m_vboxLayout->addWidget(m_webView, 1);
