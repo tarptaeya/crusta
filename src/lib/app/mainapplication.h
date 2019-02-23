@@ -48,6 +48,8 @@ public:
     Plugins *plugins();
 
     void aboutCrusta();
+    void help();
+
     QString defaultUserAgent() const;
 
 private:

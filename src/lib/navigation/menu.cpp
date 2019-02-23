@@ -39,7 +39,7 @@ void Menu::setUpMenu()
     QAction *newPrivateWindow = new QAction(QSL("New Private Window"));
     QAction *openFile = new QAction(QSL("Open File"));
     QAction *savePage = new QAction(QSL("Save Page as PDF"));
-    QAction *pringPage = new QAction(QSL("Print"));
+    // QAction *pringPage = new QAction(QSL("Print"));
 
     QMenu *view = new QMenu(QSL("View"));
     QAction *statusBar = new QAction(QSL("Status Bar"));
@@ -107,7 +107,7 @@ void Menu::setUpMenu()
     addSeparator();
     addAction(openFile);
     addAction(savePage);
-    addAction(pringPage);
+    // addAction(pringPage);
     addSeparator();
     addMenu(view);
     addMenu(history);
@@ -181,4 +181,5 @@ void Menu::setUpMenu()
 
     connect(preferences, &QAction::triggered, this, [] { appManager->preferences()->show(); });
     connect(about, &QAction::triggered, this, [] { appManager->aboutCrusta(); });
+    connect(help, &QAction::triggered, this, [] { appManager->help(); });
 }

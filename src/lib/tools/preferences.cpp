@@ -41,7 +41,7 @@ void Preferences::show()
     createAppearanceTab();
     createBrowsingTab();
     createSearchEngineTab();
-    createOthersTab();
+    // createOthersTab();
 
     activateWindow();
     QTabWidget::show();
@@ -116,9 +116,9 @@ void Preferences::createGeneralTab()
     widget->setLayout(vboxLayout);
     widget->setMinimumSize(widget->sizeHint());
 
-    startPageUrl->setText(appManager->settings()->value(QSL("webView/startPageUrl"), QSL("crusta:speeddial")).toString());
-    homePageUrl->setText(appManager->settings()->value(QSL("webView/homePageUrl"), QSL("crusta:speeddial")).toString());
-    newTabUrl->setText(appManager->settings()->value(QSL("webView/newTabUrl"), QSL("crusta:speeddial")).toString());
+    startPageUrl->setText(appManager->settings()->value(QSL("webView/startPageUrl"), QSL("http://crustabrowser.com/startpage")).toString());
+    homePageUrl->setText(appManager->settings()->value(QSL("webView/homePageUrl"), QSL("http://crustabrowser.com/startpage")).toString());
+    newTabUrl->setText(appManager->settings()->value(QSL("webView/newTabUrl"), QSL("http://crustabrowser.com/startpage")).toString());
 
     QStringList profiles = appManager->settings()->value(QSL("profile/profiles"), QStringList() << QSL("default")).toStringList();
     profileCombo->addItems(profiles);
@@ -154,9 +154,9 @@ void Preferences::createGeneralTab()
     });
 
     connect(defaults, &QPushButton::clicked, this, [startPageUrl, homePageUrl, newTabUrl, profileCombo] {
-        startPageUrl->setText(QSL("crusta:speeddial"));
-        homePageUrl->setText(QSL("crusta:speeddial"));
-        newTabUrl->setText(QSL("crusta:speeddial"));
+        startPageUrl->setText(QSL("http://crustabrowser.com/startpage"));
+        homePageUrl->setText(QSL("http://crustabrowser.com/startpage"));
+        newTabUrl->setText(QSL("http://crustabrowser.com/startpage"));
         profileCombo->setCurrentText(QSL("default"));
     });
 

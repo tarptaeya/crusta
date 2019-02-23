@@ -13,7 +13,9 @@
 #include "searchenginemanager.h"
 #include "standardpaths.h"
 #include "tab.h"
+#include "tabwidget.h"
 #include "webdialogwindow.h"
+#include "webview.h"
 
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
@@ -203,8 +205,14 @@ Plugins *MainApplication::plugins()
 
 void MainApplication::aboutCrusta()
 {
-    About about;
-    about.exec();
+//    About about;
+//    about.exec();
+    currentWindow()->tabWidget()->currentTab()->webView()->load(QSL("http://crustabrowser.com/about"));
+}
+
+void MainApplication::help()
+{
+    currentWindow()->tabWidget()->currentTab()->webView()->load(QSL("http://crustabrowser.com/help"));
 }
 
 QString MainApplication::defaultUserAgent() const

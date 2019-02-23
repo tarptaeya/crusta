@@ -28,8 +28,8 @@ Plugins::~Plugins()
 
 void Plugins::loadPlugins()
 {
-    loadInternalPlugins();
-    loadExternalPlugins();
+    // loadInternalPlugins();
+    // loadExternalPlugins();
 }
 
 QList<Plugin *> Plugins::plugins()
