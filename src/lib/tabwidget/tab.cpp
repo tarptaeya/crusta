@@ -69,7 +69,7 @@ Tab::Tab(const QString &address, QWidget *parent)
     });
 
     connect(m_webView, &WebView::loadStarted, this, [this] {
-        m_toolBar->reloadButton()->setIcon(QIcon::fromTheme(QSL("process-stop")));
+        m_toolBar->reloadButton()->setIcon(QIcon(QSL(":/icons/arrows_remove.svg")));
         m_toolBar->addEngineButton()->setVisible(false);
         m_loaderMovie->start();
 
@@ -81,7 +81,7 @@ Tab::Tab(const QString &address, QWidget *parent)
     connect(m_webView, &WebView::loadFinished, this, [this] {
         m_toolBar->backButton()->setEnabled(m_webView->history()->canGoBack());
         m_toolBar->forwardButton()->setEnabled(m_webView->history()->canGoForward());
-        m_toolBar->reloadButton()->setIcon(QIcon::fromTheme(QSL("view-refresh")));
+        m_toolBar->reloadButton()->setIcon(QIcon(QSL(":/icons/arrows_rotate.svg")));
 
         m_loaderMovie->stop();
         disconnect(m_loaderConnection);

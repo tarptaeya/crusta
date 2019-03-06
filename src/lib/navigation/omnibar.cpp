@@ -17,8 +17,8 @@ OmniBar::OmniBar(QWidget *parent)
     m_completer->setModel(m_model);
     m_completer->setFilterMode(Qt::MatchContains);
 
-    m_siteInfoAction->setIcon(QIcon::fromTheme(QSL("applications-internet")));
-    m_bookMarksAction->setIcon(QIcon::fromTheme(QSL("")));
+    m_siteInfoAction->setIcon(QIcon(QSL(":/icons/basic_sheet.svg")));
+    m_bookMarksAction->setIcon(QIcon(QSL(":/icons/basic_heart.svg")));
     m_siteInfoAction->setToolTip(QSL("Site Info"));
     m_bookMarksAction->setToolTip(QSL("Bookmark Page"));
 
@@ -38,9 +38,9 @@ void OmniBar::update(const QString &address)
     setCursorPosition(0);
 
     if (address.startsWith(QSL("https://")) || address.startsWith(QSL("crusta://"))) {
-        m_siteInfoAction->setIcon(QIcon::fromTheme(QSL("system-lock-screen")));
+        m_siteInfoAction->setIcon(QIcon(QSL("system-lock-screen")));
     } else {
-        m_siteInfoAction->setIcon(QIcon::fromTheme(QSL("applications-internet")));
+        m_siteInfoAction->setIcon(QIcon(QSL(":/icons/basic_sheet.svg")));
     }
 
     m_model->setStringList((m_model->stringList() << address).toSet().toList());

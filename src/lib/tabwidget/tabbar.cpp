@@ -19,7 +19,7 @@ TabBar::TabBar(QWidget *parent)
 {
     m_newTabButton = new QToolButton(this);
     m_newTabButton->setAutoRaise(true);
-    m_newTabButton->setIcon(QIcon::fromTheme(QSL("list-add")));
+    m_newTabButton->setIcon(QIcon(QSL(":/icons/arrows_plus.svg")));
     m_newTabButton->setFixedWidth(NEW_TAB_BUTTON_WIDTH);
     m_newTabButton->setToolTip(QSL("Add New Tab"));
     m_newTabButton->setShortcut(QKeySequence::AddTab);

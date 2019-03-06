@@ -30,12 +30,12 @@ ToolBar::ToolBar(QWidget *parent)
     m_backButton->setPopupMode(ToolBarButton::DelayedPopup);
     m_forwardButton->setPopupMode(ToolBarButton::DelayedPopup);
 
-    m_backButton->setIcon(QIcon::fromTheme(QSL("go-previous")));
-    m_forwardButton->setIcon(QIcon::fromTheme(QSL("go-next")));
-    m_reloadButton->setIcon(QIcon::fromTheme(QSL("view-refresh")));
-    m_homeButton->setIcon(QIcon::fromTheme(QSL("go-home")));
-    m_addEngineButton->setIcon(QIcon::fromTheme(QSL("list-add")));
-    m_menuButton->setIcon(QIcon::fromTheme(QSL("preferences-other")));
+    m_backButton->setIcon(QIcon(QSL(":/icons/arrows_left.svg")));
+    m_forwardButton->setIcon(QIcon(QSL(":/icons/arrows_right.svg")));
+    m_reloadButton->setIcon(QIcon(QSL(":/icons/arrows_rotate.svg")));
+    m_homeButton->setIcon(QIcon(QSL(":/icons/basic_home.svg")));
+    m_addEngineButton->setIcon(QIcon(QSL(":/icons/arrows_plus.svg")));
+    m_menuButton->setIcon(QIcon(QSL(":/icons/arrows_hamburger 2.svg")));
 
     m_backButton->setToolTip(QSL("Go Back"));
     m_forwardButton->setToolTip(QSL("Go Forward"));

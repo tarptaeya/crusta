@@ -13,5 +13,14 @@
         <file>plugins/UserScripts/entry.qml</file>
         <file>plugins/UserScripts/icon.svg</file>
         <file>plugins/UserScripts/metadata.desktop</file>
+        <file>icons/arrows_left.svg</file>
+        <file>icons/arrows_plus.svg</file>
+        <file>icons/arrows_remove.svg</file>
+        <file>icons/arrows_right.svg</file>
+        <file>icons/arrows_rotate.svg</file>
+        <file>icons/basic_heart.svg</file>
+        <file>icons/basic_sheet.svg</file>
+        <file>icons/basic_home.svg</file>
+        <file>icons/arrows_hamburger 2.svg</file>
     </qresource>
 </RCC>
