@@ -22,5 +22,8 @@
         <file>icons/basic_sheet.svg</file>
         <file>icons/basic_home.svg</file>
         <file>icons/arrows_hamburger 2.svg</file>
+        <file>styles/styles.linux.css</file>
+        <file>styles/styles.mac.css</file>
+        <file>styles/styles.win.css</file>
     </qresource>
 </RCC>

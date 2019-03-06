@@ -21,7 +21,10 @@ int main(int argc, char **argv)
     MainApplication::instance(parser.isSet(privateModeOption))->createWindow();
     const QString defaultTheme = appManager->settings()->value(QSL("theme/defaultTheme"), ThemeManager::defaultTheme()).toString();
     if (defaultTheme == QSL("I Prefer Native UI")) {
-        // Do nothing
+#ifdef Q_OS_MAC
+        const QString defaultTheme = readFile(QSL(":/styles/styles.mac.css"));
+        app.setStyleSheet(defaultTheme);
+#endif
     } else if (defaultTheme == QSL("Use Custom CSS")) {
         const QString customTheme = appManager->settings()->value(QSL("theme/customTheme")).toString();
         app.setStyleSheet(customTheme);

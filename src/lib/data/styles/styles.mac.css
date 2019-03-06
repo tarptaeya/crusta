@@ -1,0 +1,16 @@
+QLineEdit {
+    padding: 4px 0px;
+}
+
+QStatusBar {
+    background-color: #f0f0f0;
+}
+
+QToolButton {
+    border: none;
+}
+
+QToolButton:hover {
+    border: 1px solid #777;
+    border-radius: 4px;
+}
