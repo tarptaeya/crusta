@@ -4,6 +4,8 @@
 [![Download Crusta Browser](https://img.shields.io/sourceforge/dm/crustabrowser.svg)](https://sourceforge.net/projects/crustabrowser/files/latest/download)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+Chat: `#crusta` on freenode
+
 ## About
 
 Crusta is a feature rich web-browser, based on Qt5 and is licenced under GNU GPLv3. Crusta is available for all major desktop platforms (Linux, Mac and Windows) and will soon be available for mobile platforms.
