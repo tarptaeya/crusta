@@ -17,7 +17,7 @@ Crusta is a feature rich web-browser, based on Qt5 and is licenced under GNU GPL
 - Split tabs
 - Text to speech
 - Side panel
-- Web PDF viewer (using pdf.js)
+- ~~Web PDF viewer (using pdf.js)~~ (QWebEngine 5.12.3 supports chromium's pdf viewer)
 
 ## Try Crusta
 - Clone the repository `git clone https://github.com/crusta/crustabrowser/`.
