@@ -22,7 +22,7 @@ TabWidget::TabWidget(QWidget *parent)
     addTab(new Tab, QStringLiteral("New Tab"));
 
     connect(m_newTabButton, &QToolButton::clicked, this, [this] { addTab(new Tab, QStringLiteral("New Tab")); });
-    connect(this, &TabWidget::tabCloseRequested, this, [this] (int index) {
+    connect(tabBar, &QTabBar::tabCloseRequested, this, [this] (int index) {
         Tab *tab = dynamic_cast<Tab *>(widget(index));
         removeTab(index);
         tab->deleteLater();
