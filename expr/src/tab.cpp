@@ -11,3 +11,8 @@ Tab::Tab(QWidget *parent)
     m_layout->addWidget(m_webView);
     setLayout(m_layout);
 }
+
+WebView *Tab::webView() const
+{
+    return m_webView;
+}

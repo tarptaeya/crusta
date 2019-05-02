@@ -1,5 +1,6 @@
 #include "tab.h"
 #include "tabwidget.h"
+#include "webview.h"
 
 #include <QTabBar>
 
@@ -7,6 +8,9 @@ TabWidget::TabWidget(QWidget *parent)
     : QTabWidget (parent)
 {
     m_newTabButton = new QToolButton;
+
+    m_newTabButton->setAutoRaise(true);
+    m_newTabButton->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
 
     QTabBar *tabBar = this->tabBar();
     tabBar->setDocumentMode(true);
@@ -24,6 +28,10 @@ TabWidget::TabWidget(QWidget *parent)
     connect(m_newTabButton, &QToolButton::clicked, this, [this] { addTab(new Tab, QStringLiteral("New Tab")); });
     connect(tabBar, &QTabBar::tabCloseRequested, this, [this] (int index) {
         Tab *tab = dynamic_cast<Tab *>(widget(index));
+        if (!tab) {
+            return;
+        }
+
         removeTab(index);
         tab->deleteLater();
 
