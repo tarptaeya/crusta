@@ -8,11 +8,12 @@ TabWidget::TabWidget(QWidget *parent)
 {
     m_newTabButton = new QToolButton;
 
-    setDocumentMode(true);
-    setMovable(true);
-    setTabsClosable(true);
-
-    tabBar()->setExpanding(true);
+    QTabBar *tabBar = this->tabBar();
+    tabBar->setDocumentMode(true);
+    tabBar->setExpanding(true);
+    tabBar->setMovable(true);
+    tabBar->setTabsClosable(true);
+    tabBar->setUsesScrollButtons(true);
 
     setContentsMargins(0, 0, 0, 0);
 

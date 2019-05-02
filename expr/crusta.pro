@@ -1,4 +1,6 @@
-QT += widgets core webengine webenginewidgets sql
+TEMPLATE = app
+TARGET = crusta
+QT += webenginewidgets
 
 HEADERS += \
     src/browser.h \
@@ -6,6 +8,7 @@ HEADERS += \
     src/tab.h \
     src/tabwidget.h \
     src/toolbar.h \
+    src/webpage.h \
     src/webview.h \
     src/window.h
 
@@ -16,7 +19,6 @@ SOURCES += \
     src/tab.cpp \
     src/tabwidget.cpp \
     src/toolbar.cpp \
+    src/webpage.cpp \
     src/webview.cpp \
     src/window.cpp
-
-TARGET = crusta

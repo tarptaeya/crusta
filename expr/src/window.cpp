@@ -23,6 +23,8 @@ Window::Window(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
 
     createTabWidget();
+
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void Window::createTabWidget()
@@ -36,4 +38,11 @@ void Window::createTabWidget()
         // TODO handle case for split tabs
         close();
     });
+}
+
+void Window::closeEvent(QCloseEvent *event)
+{
+    emit windowWillClose();
+
+    QMainWindow::closeEvent(event);
 }

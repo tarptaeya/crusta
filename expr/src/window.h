@@ -9,10 +9,16 @@ class ToolBar;
 
 class Window : public QMainWindow
 {
+    Q_OBJECT
 public:
     explicit Window(QWidget *parent = nullptr);
 
     void createTabWidget();
+
+    void closeEvent(QCloseEvent *event) override;
+
+Q_SIGNALS:
+    void windowWillClose();
 
 private:
     SideBar *m_sideBar = nullptr;

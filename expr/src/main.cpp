@@ -4,9 +4,8 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-
-    Browser browser;
-    browser.run();
-
-    return app.exec();
+    Browser::instance()->run();
+    int retCode = app.exec();
+    Browser::instance()->deleteLater();
+    return retCode;
 }
