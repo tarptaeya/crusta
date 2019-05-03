@@ -1,5 +1,5 @@
 #include "browser.h"
-#include "window.h"
+#include "mainwindow.h"
 
 Browser::Browser(QObject *parent)
     : QObject (parent)
@@ -9,15 +9,15 @@ Browser::Browser(QObject *parent)
 
 void Browser::run()
 {
-    createWindow();
+    createMainWindow();
 }
 
-void Browser::createWindow()
+void Browser::createMainWindow()
 {
-    Window *window = new Window;
-    m_windows.append(window);
-    connect(window, &Window::windowWillClose, this, [this, window] { m_windows.removeOne(window); });
-    window->show();
+    MainWindow *mainWindow = new MainWindow;
+    m_mainWindows.append(mainWindow);
+    connect(mainWindow, &MainWindow::mainWindowWillClose, this, [this, mainWindow] { m_mainWindows.removeOne(mainWindow); });
+    mainWindow->show();
 }
 
 QWebEngineProfile *Browser::profile()

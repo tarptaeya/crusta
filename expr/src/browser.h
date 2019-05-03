@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QWebEngineProfile>
 
-class Window;
+class MainWindow;
 
 class Browser : public QObject
 {
@@ -11,12 +11,12 @@ public:
     explicit Browser(QObject *parent = nullptr);
     void run();
 
-    void createWindow();
+    void createMainWindow();
     QWebEngineProfile *profile();
 
     static Browser *instance();
 
 private:
-    QList<Window *> m_windows;
+    QList<MainWindow *> m_mainWindows;
     QWebEngineProfile *m_profile = nullptr;
 };

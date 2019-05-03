@@ -8,36 +8,26 @@ Window::Window(QWidget *parent)
 {
     m_sideBar = new SideBar;
     m_toolBar = new ToolBar;
+    m_tabWidget = new TabWidget;
 
-    m_centralWidget = new QWidget;
-    m_centralWidgetLayout = new QHBoxLayout;
+    QWidget *centralWidget = new QWidget;
+    QHBoxLayout *centralWidgetLayout = new QHBoxLayout;
 
     addToolBar(m_toolBar);
     setUnifiedTitleAndToolBarOnMac(true);
 
-    m_centralWidgetLayout->setSpacing(0);
-    m_centralWidgetLayout->setContentsMargins(0, 0, 0, 0);
-    m_centralWidgetLayout->addWidget(m_sideBar);
-    m_centralWidget->setLayout(m_centralWidgetLayout);
-    setCentralWidget(m_centralWidget);
+    centralWidgetLayout->setSpacing(0);
+    centralWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    centralWidgetLayout->addWidget(m_sideBar);
+    centralWidget->setLayout(centralWidgetLayout);
+    setCentralWidget(centralWidget);
     setContentsMargins(0, 0, 0, 0);
 
-    createTabWidget();
+    centralWidgetLayout->addWidget(m_tabWidget);
 
     setAttribute(Qt::WA_DeleteOnClose);
-}
 
-void Window::createTabWidget()
-{
-    TabWidget *tabWidget = new TabWidget;
-    m_centralWidgetLayout->addWidget(tabWidget);
-
-    m_tabWidgets.append(tabWidget);
-
-    connect(tabWidget, &TabWidget::windowCloseRequested, this, [this] {
-        // TODO handle case for split tabs
-        close();
-    });
+    connect(m_tabWidget, &TabWidget::windowCloseRequested, this, &Window::close);
 }
 
 void Window::closeEvent(QCloseEvent *event)

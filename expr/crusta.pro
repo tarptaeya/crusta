@@ -4,6 +4,7 @@ QT += webenginewidgets
 
 HEADERS += \
     src/browser.h \
+    src/mainwindow.h \
     src/sidebar.h \
     src/tab.h \
     src/tabwidget.h \
@@ -15,6 +16,7 @@ HEADERS += \
 SOURCES += \
     src/main.cpp \
     src/browser.cpp \
+    src/mainwindow.cpp \
     src/sidebar.cpp \
     src/tab.cpp \
     src/tabwidget.cpp \

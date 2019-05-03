@@ -13,19 +13,14 @@ class Window : public QMainWindow
 public:
     explicit Window(QWidget *parent = nullptr);
 
-    void createTabWidget();
-
     void closeEvent(QCloseEvent *event) override;
 
 Q_SIGNALS:
+    void newWindowRequested();
     void windowWillClose();
 
 private:
     SideBar *m_sideBar = nullptr;
     ToolBar *m_toolBar = nullptr;
-
-    QWidget *m_centralWidget = nullptr;
-    QHBoxLayout *m_centralWidgetLayout = nullptr;
-
-    QList<TabWidget *> m_tabWidgets;
+    TabWidget *m_tabWidget = nullptr;
 };
