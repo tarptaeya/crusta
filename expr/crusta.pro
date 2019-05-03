@@ -26,3 +26,6 @@ SOURCES += \
     src/webpage.cpp \
     src/webview.cpp \
     src/window.cpp
+
+RESOURCES += \
+    html/html.qrc

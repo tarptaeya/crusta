@@ -1,5 +1,7 @@
 #include "toolbar.h"
 
+#include <QUrl>
+
 ToolBar::ToolBar(QWidget *parent)
     : QToolBar (parent)
 {
@@ -13,7 +15,7 @@ ToolBar::ToolBar(QWidget *parent)
 
     m_backButton->setIcon(QIcon::fromTheme(QStringLiteral("go-previous")));
     m_forwardButton->setIcon(QIcon::fromTheme(QStringLiteral("go-next")));
-    m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("")));
+    m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
     m_homeButton->setIcon(QIcon::fromTheme(QStringLiteral("go-home")));
 
     addWidget(m_backButton);
@@ -26,4 +28,23 @@ ToolBar::ToolBar(QWidget *parent)
     addWidget(m_menuButton);
 
     setMovable(false);
+
+    connect(m_backButton, &QToolButton::clicked, this, [this] { emit backRequested(); });
+    connect(m_forwardButton, &QToolButton::clicked, this, [this] { emit forwardRequested(); });
+}
+
+void ToolBar::setUrl(const QUrl &url)
+{
+    m_addressBar->setText(url.toDisplayString());
+    m_addressBar->setCursorPosition(0);
+}
+
+void ToolBar::loadStarted()
+{
+    m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("process-stop")));
+}
+
+void ToolBar::loadFinished()
+{
+    m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
 }

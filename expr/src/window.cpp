@@ -28,6 +28,9 @@ Window::Window(QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
 
     connect(m_tabWidget, &TabWidget::windowCloseRequested, this, &Window::close);
+    connect(m_toolBar, &ToolBar::backRequested, m_tabWidget, &TabWidget::back);
+    connect(m_toolBar, &ToolBar::forwardRequested, m_tabWidget, &TabWidget::forward);
+    connect(m_tabWidget, &TabWidget::urlChanged, m_toolBar, &ToolBar::setUrl);
 }
 
 void Window::closeEvent(QCloseEvent *event)

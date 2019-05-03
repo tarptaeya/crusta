@@ -6,8 +6,17 @@
 
 class ToolBar : public QToolBar
 {
+    Q_OBJECT
 public:
     explicit ToolBar(QWidget *parent = nullptr);
+
+    void setUrl(const QUrl &url);
+    void loadStarted();
+    void loadFinished();
+
+Q_SIGNALS:
+    void backRequested();
+    void forwardRequested();
 
 private:
     QToolButton *m_backButton = nullptr;
