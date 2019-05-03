@@ -9,6 +9,7 @@ HEADERS += \
     src/tab.h \
     src/tabwidget.h \
     src/toolbar.h \
+    src/utils.h \
     src/webpage.h \
     src/webview.h \
     src/window.h
@@ -21,6 +22,7 @@ SOURCES += \
     src/tab.cpp \
     src/tabwidget.cpp \
     src/toolbar.cpp \
+    src/utils.cpp \
     src/webpage.cpp \
     src/webview.cpp \
     src/window.cpp
