@@ -10,4 +10,12 @@ WebView::WebView(QWidget *parent)
     setPage(m_webPage);
 
     load(QUrl("https://google.com"));
+
+    connect(this, &WebView::loadFinished, this, [this] (bool ok) {
+        if (!ok) {
+            return ;
+        }
+
+        emit historyChanged(history());
+    });
 }

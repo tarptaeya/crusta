@@ -2,6 +2,7 @@
 
 #include <QToolButton>
 #include <QTabWidget>
+#include <QWebEngineHistory>
 
 class Tab;
 
@@ -14,9 +15,11 @@ public:
     int addTab(Tab *tab, const QString &label);
     void back();
     void forward();
+    void navigateToItem(const QWebEngineHistoryItem &item);
 
 Q_SIGNALS:
     void urlChanged(const QUrl &url);
+    void historyChanged(QWebEngineHistory *history);
     void windowCloseRequested();
 
 private:

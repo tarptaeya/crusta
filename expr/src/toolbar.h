@@ -3,6 +3,7 @@
 #include <QLineEdit>
 #include <QToolBar>
 #include <QToolButton>
+#include <QWebEngineHistory>
 
 class ToolBar : public QToolBar
 {
@@ -14,9 +15,12 @@ public:
     void loadStarted();
     void loadFinished();
 
+    void setHistory(QWebEngineHistory *history);
+
 Q_SIGNALS:
     void backRequested();
     void forwardRequested();
+    void navigationToItemRequest(const QWebEngineHistoryItem &item);
 
 private:
     QToolButton *m_backButton = nullptr;
@@ -27,4 +31,7 @@ private:
     QToolButton *m_menuButton = nullptr;
 
     QLineEdit *m_addressBar = nullptr;
+
+    QMenu *m_backMenu = nullptr;
+    QMenu *m_forwardMenu = nullptr;
 };

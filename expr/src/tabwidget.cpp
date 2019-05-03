@@ -33,6 +33,7 @@ TabWidget::TabWidget(QWidget *parent)
         }
 
         emit urlChanged(tab->webView()->url());
+        emit historyChanged(tab->webView()->history());
     });
     connect(tabBar, &QTabBar::tabCloseRequested, this, [this] (int index) {
         Tab *tab = dynamic_cast<Tab *>(widget(index));
@@ -74,6 +75,14 @@ int TabWidget::addTab(Tab *tab, const QString &label)
         emit urlChanged(url);
     });
 
+    connect(webView, &WebView::historyChanged, this, [this, tab] (QWebEngineHistory *history) {
+        int index = indexOf(tab);
+        if (index != currentIndex()) {
+            return ;
+        }
+        emit historyChanged(history);
+    });
+
     return QTabWidget::addTab(tab, label);
 }
 
@@ -95,4 +104,14 @@ void TabWidget::forward()
     }
 
     tab->webView()->forward();
+}
+
+void TabWidget::navigateToItem(const QWebEngineHistoryItem &item)
+{
+    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    if (!tab) {
+        return;
+    }
+
+    tab->webView()->history()->goToItem(item);
 }

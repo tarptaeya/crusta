@@ -31,6 +31,8 @@ Window::Window(QWidget *parent)
     connect(m_toolBar, &ToolBar::backRequested, m_tabWidget, &TabWidget::back);
     connect(m_toolBar, &ToolBar::forwardRequested, m_tabWidget, &TabWidget::forward);
     connect(m_tabWidget, &TabWidget::urlChanged, m_toolBar, &ToolBar::setUrl);
+    connect(m_tabWidget, &TabWidget::historyChanged, m_toolBar, &ToolBar::setHistory);
+    connect(m_toolBar, &ToolBar::navigationToItemRequest, m_tabWidget, &TabWidget::navigateToItem);
 }
 
 void Window::closeEvent(QCloseEvent *event)
