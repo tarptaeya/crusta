@@ -34,6 +34,12 @@ TabWidget::TabWidget(QWidget *parent)
 
         emit urlChanged(tab->webView()->url());
         emit historyChanged(tab->webView()->history());
+
+        if (tab->webView()->isLoading()) {
+            emit loadStarted();
+        } else {
+            emit loadFinished();
+        }
     });
     connect(tabBar, &QTabBar::tabCloseRequested, this, [this] (int index) {
         Tab *tab = dynamic_cast<Tab *>(widget(index));
@@ -83,6 +89,24 @@ int TabWidget::addTab(Tab *tab, const QString &label)
         emit historyChanged(history);
     });
 
+    connect(webView, &WebView::loadStarted, this, [this, tab] {
+        int index = indexOf(tab);
+        if (index != currentIndex()) {
+            return ;
+        }
+
+        emit loadStarted();
+    });
+
+    connect(webView, &WebView::loadFinished, this, [this, tab] {
+        int index = indexOf(tab);
+        if (index != currentIndex()) {
+            return ;
+        }
+
+        emit loadFinished();
+    });
+
     return QTabWidget::addTab(tab, label);
 }
 
@@ -114,4 +138,18 @@ void TabWidget::navigateToItem(const QWebEngineHistoryItem &item)
     }
 
     tab->webView()->history()->goToItem(item);
+}
+
+void TabWidget::changeLoadingState()
+{
+    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    if (!tab) {
+        return;
+    }
+
+    if (tab->webView()->isLoading()) {
+        tab->webView()->stop();
+    } else {
+        tab->webView()->reload();
+    }
 }

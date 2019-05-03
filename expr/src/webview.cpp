@@ -11,11 +11,16 @@ WebView::WebView(QWidget *parent)
 
     load(QUrl("https://google.com"));
 
-    connect(this, &WebView::loadFinished, this, [this] (bool ok) {
-        if (!ok) {
-            return ;
-        }
-
+    connect(this, &WebView::loadStarted, this, [this] {
+        m_isLoading = true;
+    });
+    connect(this, &WebView::loadFinished, this, [this] {
+        m_isLoading = false;
         emit historyChanged(history());
     });
+}
+
+bool WebView::isLoading() const
+{
+    return m_isLoading;
 }

@@ -16,10 +16,13 @@ public:
     void back();
     void forward();
     void navigateToItem(const QWebEngineHistoryItem &item);
+    void changeLoadingState();
 
 Q_SIGNALS:
     void urlChanged(const QUrl &url);
     void historyChanged(QWebEngineHistory *history);
+    void loadStarted();
+    void loadFinished();
     void windowCloseRequested();
 
 private:

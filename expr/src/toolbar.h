@@ -21,6 +21,7 @@ Q_SIGNALS:
     void backRequested();
     void forwardRequested();
     void navigationToItemRequest(const QWebEngineHistoryItem &item);
+    void loadingStateChangeRequest();
 
 private:
     QToolButton *m_backButton = nullptr;

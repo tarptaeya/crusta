@@ -11,9 +11,12 @@ class WebView : public QWebEngineView
 public:
     explicit WebView(QWidget *parent = nullptr);
 
+    bool isLoading() const;
+
 Q_SIGNALS:
     void historyChanged(QWebEngineHistory *history);
 
 private:
     WebPage *m_webPage = nullptr;
+    bool m_isLoading = false;
 };

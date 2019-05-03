@@ -40,6 +40,7 @@ ToolBar::ToolBar(QWidget *parent)
 
     connect(m_backButton, &QToolButton::clicked, this, [this] { emit backRequested(); });
     connect(m_forwardButton, &QToolButton::clicked, this, [this] { emit forwardRequested(); });
+    connect(m_refreshButton, &QToolButton::clicked, this, [this] { emit loadingStateChangeRequest(); });
 }
 
 void ToolBar::setUrl(const QUrl &url)

@@ -33,6 +33,9 @@ Window::Window(QWidget *parent)
     connect(m_tabWidget, &TabWidget::urlChanged, m_toolBar, &ToolBar::setUrl);
     connect(m_tabWidget, &TabWidget::historyChanged, m_toolBar, &ToolBar::setHistory);
     connect(m_toolBar, &ToolBar::navigationToItemRequest, m_tabWidget, &TabWidget::navigateToItem);
+    connect(m_tabWidget, &TabWidget::loadStarted, m_toolBar, &ToolBar::loadStarted);
+    connect(m_tabWidget, &TabWidget::loadFinished, m_toolBar, &ToolBar::loadFinished);
+    connect(m_toolBar, &ToolBar::loadingStateChangeRequest, m_tabWidget, &TabWidget::changeLoadingState);
 }
 
 void Window::closeEvent(QCloseEvent *event)
