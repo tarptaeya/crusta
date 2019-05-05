@@ -28,4 +28,4 @@ SOURCES += \
     src/window.cpp
 
 RESOURCES += \
-    html/html.qrc
+    resources.qrc \

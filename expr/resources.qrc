@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/fallback/index.theme</file>
+        <file>icons/fallback/24/go-home.svg</file>
+    </qresource>
+</RCC>
