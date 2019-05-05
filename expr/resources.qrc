@@ -2,5 +2,10 @@
     <qresource prefix="/">
         <file>icons/fallback/index.theme</file>
         <file>icons/fallback/24/go-home.svg</file>
+        <file>icons/fallback/24/go-next.svg</file>
+        <file>icons/fallback/24/go-previous.svg</file>
+        <file>icons/fallback/24/list-add.svg</file>
+        <file>icons/fallback/24/process-stop.svg</file>
+        <file>icons/fallback/24/view-refresh.svg</file>
     </qresource>
 </RCC>

@@ -11,6 +11,9 @@ int main(int argc, char **argv)
     // don't use native style on macos by default
     app.setStyle(QStyleFactory::create(QStringLiteral("fusion")));
 
+    app.setAttribute(Qt::AA_EnableHighDpiScaling);
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
+
     QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << QStringLiteral(":/icons/"));
 
     if (QIcon::fromTheme(QStringLiteral("go-home")).isNull()) {
