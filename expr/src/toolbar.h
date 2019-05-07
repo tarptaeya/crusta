@@ -16,6 +16,7 @@ public:
     void loadFinished();
 
     void setHistory(QWebEngineHistory *history);
+    void setMenu(QMenu *menu);
 
 Q_SIGNALS:
     void backRequested();

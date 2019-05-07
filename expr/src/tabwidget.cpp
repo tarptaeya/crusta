@@ -10,6 +10,7 @@ TabWidget::TabWidget(QWidget *parent)
     m_newTabButton = new QToolButton;
 
     m_newTabButton->setAutoRaise(true);
+    m_newTabButton->setToolTip(QStringLiteral("Click to add tab"));
     m_newTabButton->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
 
     QTabBar *tabBar = this->tabBar();
@@ -23,7 +24,7 @@ TabWidget::TabWidget(QWidget *parent)
 
     setCornerWidget(m_newTabButton);
 
-    addTab(new Tab, QStringLiteral("New Tab"));
+    addTab(new Tab, QStringLiteral("New tab"));
 
     connect(m_newTabButton, &QToolButton::clicked, this, [this] { addTab(new Tab, QStringLiteral("New Tab")); });
     connect(this, &TabWidget::currentChanged, this, [this] (int index) {

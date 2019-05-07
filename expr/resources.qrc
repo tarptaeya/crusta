@@ -7,5 +7,6 @@
         <file>icons/fallback/24/list-add.svg</file>
         <file>icons/fallback/24/process-stop.svg</file>
         <file>icons/fallback/24/view-refresh.svg</file>
+        <file>icons/fallback/24/application-menu.svg</file>
     </qresource>
 </RCC>

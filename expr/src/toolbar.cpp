@@ -20,9 +20,11 @@ ToolBar::ToolBar(QWidget *parent)
     m_forwardButton->setIcon(QIcon::fromTheme(QStringLiteral("go-next")));
     m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
     m_homeButton->setIcon(QIcon::fromTheme(QStringLiteral("go-home")));
+    m_menuButton->setIcon(QIcon::fromTheme(QStringLiteral("application-menu")));
 
     m_backButton->setPopupMode(QToolButton::DelayedPopup);
     m_forwardButton->setPopupMode(QToolButton::DelayedPopup);
+    m_menuButton->setPopupMode(QToolButton::InstantPopup);
 
     m_backButton->setMenu(m_backMenu);
     m_forwardButton->setMenu(m_forwardMenu);
@@ -79,4 +81,9 @@ void ToolBar::setHistory(QWebEngineHistory *history)
 
     m_backButton->setDisabled(!history->canGoBack());
     m_forwardButton->setDisabled(!history->canGoForward());
+}
+
+void ToolBar::setMenu(QMenu *menu)
+{
+    m_menuButton->setMenu(menu);
 }

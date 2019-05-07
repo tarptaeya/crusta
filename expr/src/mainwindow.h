@@ -13,6 +13,7 @@ public:
     void closeEvent(QCloseEvent *event) override;
 
 Q_SIGNALS:
+    void newMainWindowRequested();
     void mainWindowWillClose();
 
 private:

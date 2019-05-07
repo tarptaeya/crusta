@@ -22,6 +22,7 @@ void MainWindow::createWindow()
     m_centralWidget->addWidget(window);
 
     connect(window, &Window::newWindowRequested, this, &MainWindow::createWindow);
+    connect(window, &Window::newMainWindowRequested, this, [this] { emit newMainWindowRequested(); });
 
     connect(window, &Window::windowWillClose, this, [this, window] {
         window->setParent(nullptr);
