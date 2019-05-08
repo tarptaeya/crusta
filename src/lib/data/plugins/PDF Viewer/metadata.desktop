@@ -1,6 +1,0 @@
-name=PDF Viewer
-description=PDF reader extension for Crusta
-entryFile=entry.qml
-iconFile=icon.svg
-author=Anmol Gautam
-email=taptaeya@gmail.com
