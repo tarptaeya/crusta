@@ -1,11 +1,18 @@
 #include "browser.h"
+#include "database.h"
 #include "mainwindow.h"
 
 Browser::Browser(bool isPrivate, QObject *parent)
     : QObject (parent)
 {
     m_isPrivate = isPrivate;
+    m_database = new Database;
     setupProfile();
+}
+
+Browser::~Browser()
+{
+    delete m_database;
 }
 
 void Browser::run()

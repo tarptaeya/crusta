@@ -1,9 +1,10 @@
 TEMPLATE = app
 TARGET = crusta
-QT += webenginewidgets
+QT += webenginewidgets sql
 
 HEADERS += \
     src/browser.h \
+    src/database.h \
     src/history.h \
     src/mainwindow.h \
     src/sidebar.h \
@@ -19,6 +20,7 @@ HEADERS += \
 SOURCES += \
     src/main.cpp \
     src/browser.cpp \
+    src/database.cpp \
     src/history.cpp \
     src/mainwindow.cpp \
     src/sidebar.cpp \
