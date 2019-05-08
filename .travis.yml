@@ -9,7 +9,5 @@ install:
     - sudo apt-get install -qq mesa-common-dev
 
 script:
-    - cd expr
-    - mkdir build && cd build
-    - qmake ..
-    - make -j 4
+    - qmake
+    - make
