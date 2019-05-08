@@ -27,4 +27,6 @@ Q_SIGNALS:
 
 private:
     QToolButton *m_newTabButton = nullptr;
+
+    void createContextMenu(const QPoint &pos);
 };

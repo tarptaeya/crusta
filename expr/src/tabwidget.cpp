@@ -2,6 +2,9 @@
 #include "tabwidget.h"
 #include "webview.h"
 
+#include <QApplication>
+#include <QClipboard>
+#include <QMenu>
 #include <QTabBar>
 
 TabWidget::TabWidget(QWidget *parent)
@@ -19,6 +22,7 @@ TabWidget::TabWidget(QWidget *parent)
     tabBar->setMovable(true);
     tabBar->setTabsClosable(true);
     tabBar->setUsesScrollButtons(true);
+    tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
 
     setContentsMargins(0, 0, 0, 0);
 
@@ -42,6 +46,7 @@ TabWidget::TabWidget(QWidget *parent)
             emit loadFinished();
         }
     });
+    connect(tabBar, &QTabBar::customContextMenuRequested, this, &TabWidget::createContextMenu);
     connect(tabBar, &QTabBar::tabCloseRequested, this, [this] (int index) {
         Tab *tab = dynamic_cast<Tab *>(widget(index));
         if (!tab) {
@@ -153,4 +158,24 @@ void TabWidget::changeLoadingState()
     } else {
         tab->webView()->reload();
     }
+}
+
+void TabWidget::createContextMenu(const QPoint &pos)
+{
+    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    if (!tab) {
+        return;
+    }
+
+    QMenu menu;
+    QAction *duplicate = menu.addAction(QStringLiteral("Duplicate tab"));
+    QAction *mute = menu.addAction(QStringLiteral("Mute tab"));
+    menu.addSeparator();
+    QAction *copy = menu.addAction(QStringLiteral("Copy page title"));
+    menu.addSeparator();
+    QAction *configure = menu.addAction(QStringLiteral("Configure"));
+
+    connect(copy, &QAction::triggered, this, [tab] { qApp->clipboard()->setText(tab->webView()->title()); });
+
+    menu.exec(mapToGlobal(pos));
 }
