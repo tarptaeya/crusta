@@ -1,14 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/fallback/index.theme</file>
-        <file>icons/fallback/24/go-home.svg</file>
-        <file>icons/fallback/24/go-next.svg</file>
-        <file>icons/fallback/24/go-previous.svg</file>
-        <file>icons/fallback/24/list-add.svg</file>
-        <file>icons/fallback/24/process-stop.svg</file>
-        <file>icons/fallback/24/view-refresh.svg</file>
-        <file>icons/fallback/24/application-menu.svg</file>
-        <file>icons/fallback/22/audio-volume-full.svg</file>
-        <file>icons/fallback/22/audio-volume-muted.svg</file>
+        <file>themes/base.qss</file>
+        <file>themes/default.qss</file>
+        <file>icons/default/index.theme</file>
+        <file>icons/default/22/audio-volume-full.svg</file>
+        <file>icons/default/22/audio-volume-muted.svg</file>
+        <file>icons/default/24/application-menu.svg</file>
+        <file>icons/default/24/go-home.svg</file>
+        <file>icons/default/24/go-next.svg</file>
+        <file>icons/default/24/go-previous.svg</file>
+        <file>icons/default/24/list-add.svg</file>
+        <file>icons/default/24/process-stop.svg</file>
+        <file>icons/default/24/view-refresh.svg</file>
+        <file>icons/default/24/window-close.svg</file>
+        <file>icons/default/24/window-close-dull.svg</file>
     </qresource>
 </RCC>

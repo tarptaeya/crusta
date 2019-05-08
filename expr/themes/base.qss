@@ -1,0 +1,11 @@
+QTabBar::close-button {
+    image: url(:icons/default/24/window-close-dull.svg);
+}
+
+QTabBar::close-button:hover {
+    image: url(:icons/default/24/window-close.svg);
+}
+
+QToolButton::menu-indicator {
+    image: none;
+}
