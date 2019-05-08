@@ -8,5 +8,7 @@
         <file>icons/fallback/24/process-stop.svg</file>
         <file>icons/fallback/24/view-refresh.svg</file>
         <file>icons/fallback/24/application-menu.svg</file>
+        <file>icons/fallback/22/audio-volume-full.svg</file>
+        <file>icons/fallback/22/audio-volume-muted.svg</file>
     </qresource>
 </RCC>

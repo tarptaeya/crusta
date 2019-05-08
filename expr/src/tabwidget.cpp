@@ -1,5 +1,6 @@
 #include "tab.h"
 #include "tabwidget.h"
+#include "webpage.h"
 #include "webview.h"
 
 #include <QApplication>
@@ -113,6 +114,13 @@ int TabWidget::addTab(Tab *tab, const QString &label)
         emit loadFinished();
     });
 
+    connect(webView->page(), &WebPage::recentlyAudibleChanged, this, [this, tab] (bool recentlyAudible) {
+        int index = indexOf(tab);
+        setTabIcon(index, tab->webView()->page()->isAudioMuted() ? QIcon::fromTheme(QStringLiteral("audio-volume-muted")) :
+                                                                   recentlyAudible ? QIcon::fromTheme(QStringLiteral("audio-volume-full")) :
+                                                                                     tab->webView()->icon());
+    });
+
     return QTabWidget::addTab(tab, label);
 }
 
@@ -162,19 +170,21 @@ void TabWidget::changeLoadingState()
 
 void TabWidget::createContextMenu(const QPoint &pos)
 {
-    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    int index = tabBar()->tabAt(pos);
+    Tab *tab = dynamic_cast<Tab *>(widget(index));
     if (!tab) {
         return;
     }
 
     QMenu menu;
     QAction *duplicate = menu.addAction(QStringLiteral("Duplicate tab"));
-    QAction *mute = menu.addAction(QStringLiteral("Mute tab"));
+    QAction *mute = menu.addAction(tab->webView()->page()->isAudioMuted() ? QStringLiteral("Unmute tab") : QStringLiteral("Mute tab"));
     menu.addSeparator();
     QAction *copy = menu.addAction(QStringLiteral("Copy page title"));
     menu.addSeparator();
     QAction *configure = menu.addAction(QStringLiteral("Configure"));
 
+    connect(mute, &QAction::triggered, this, [tab] { tab->webView()->page()->setAudioMuted(!tab->webView()->page()->isAudioMuted()); });
     connect(copy, &QAction::triggered, this, [tab] { qApp->clipboard()->setText(tab->webView()->title()); });
 
     menu.exec(mapToGlobal(pos));
