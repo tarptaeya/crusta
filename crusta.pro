@@ -26,7 +26,7 @@ SOURCES += \
     src/tabwidget.cpp \
     src/theme.cpp \
     src/toolbar.cpp \
-    src/utils.mm \
+    src/utils.cpp \
     src/webpage.cpp \
     src/webview.cpp \
     src/window.cpp
@@ -35,5 +35,13 @@ RESOURCES += \
     resources.qrc \
 
 macx {
-    LIBS += -framework Foundation -framework Cocoa
+LIBS += -framework Foundation -framework Cocoa
+
+HEADERS += \
+    mac/mac_utils.h
+
+SOURCES += \
+    mac/mac_utils.mm
+
+ICON = mac/logos.icns
 }

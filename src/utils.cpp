@@ -1,11 +1,11 @@
 #include "utils.h"
 
+#ifdef __APPLE__
+#include "mac/mac_utils.h"
+#endif
+
 #include <QFile>
 #include <QApplication>
-
-#ifdef __APPLE__
-#include <Cocoa/Cocoa.h>
-#endif
 
 QString Utils::readFile(const QString &filePath)
 {
@@ -20,8 +20,8 @@ QString Utils::readFile(const QString &filePath)
 void Utils::removeTitleBar(WId windowId)
 {
 #ifdef __APPLE__
-    NSView *nativeView = reinterpret_cast<NSView *>(windowId);
-    NSWindow *nativeWindow = [nativeView window];
-    [nativeWindow setTitlebarAppearsTransparent:YES];
+    MacUtils::removeTitleBar(windowId);
+#else
+    Q_UNUSED(windowId);
 #endif
 }

@@ -1,5 +1,4 @@
-#ifndef CRUSTA_UTILS_H
-#define CRUSTA_UTILS_H
+#pragma once
 
 #include <QString>
 #include <QWidget>
@@ -10,5 +9,3 @@ public:
     static QString readFile(const QString &filePath);
     static void removeTitleBar(WId windowId);
 };
-
-#endif
