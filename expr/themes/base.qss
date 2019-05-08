@@ -1,3 +1,7 @@
+QTabBar {
+    height: 40px;
+}
+
 QTabBar::close-button {
     image: url(:icons/default/24/window-close-dull.svg);
 }
@@ -8,4 +12,9 @@ QTabBar::close-button:hover {
 
 QToolButton::menu-indicator {
     image: none;
+}
+
+#NewTabButton {
+    width: 20px;
+    height: 40px;
 }

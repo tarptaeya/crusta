@@ -24,10 +24,14 @@ SOURCES += \
     src/tabwidget.cpp \
     src/theme.cpp \
     src/toolbar.cpp \
-    src/utils.cpp \
+    src/utils.mm \
     src/webpage.cpp \
     src/webview.cpp \
     src/window.cpp
 
 RESOURCES += \
     resources.qrc \
+
+macx {
+    LIBS += -framework Foundation -framework Cocoa
+}

@@ -1,7 +1,9 @@
 #include "mainwindow.h"
+#include "utils.h"
 #include "window.h"
 
 #include <QDebug>
+#include <QEvent>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -34,9 +36,30 @@ void MainWindow::createWindow()
     });
 }
 
+void MainWindow::show()
+{
+    QMainWindow::show();
+
+    Utils::removeTitleBar(winId());
+}
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     emit mainWindowWillClose();
 
     QMainWindow::closeEvent(event);
+}
+
+bool MainWindow::event(QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::WinIdChange:
+    case QEvent::Resize:
+        Utils::removeTitleBar(winId());
+        break;
+    default:
+        break;
+    }
+
+    return QMainWindow::event(event);
 }

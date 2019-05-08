@@ -14,6 +14,7 @@ TabWidget::TabWidget(QWidget *parent)
     m_newTabButton = new QToolButton;
 
     m_newTabButton->setAutoRaise(true);
+    m_newTabButton->setObjectName(QStringLiteral("NewTabButton"));
     m_newTabButton->setToolTip(QStringLiteral("Click to add tab"));
     m_newTabButton->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
 

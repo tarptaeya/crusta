@@ -19,6 +19,7 @@ void Browser::createMainWindow()
     m_mainWindows.append(mainWindow);
     connect(mainWindow, &MainWindow::newMainWindowRequested, this, &Browser::createMainWindow);
     connect(mainWindow, &MainWindow::mainWindowWillClose, this, [this, mainWindow] { m_mainWindows.removeOne(mainWindow); });
+
     mainWindow->show();
 }
 

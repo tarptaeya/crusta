@@ -10,7 +10,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
 
     void createWindow();
+    void show();
     void closeEvent(QCloseEvent *event) override;
+    bool event(QEvent *event) override;
 
 Q_SIGNALS:
     void newMainWindowRequested();
