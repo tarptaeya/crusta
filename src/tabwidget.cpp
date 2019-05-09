@@ -78,6 +78,11 @@ int TabWidget::addTab(Tab *tab, const QString &label)
 
     connect(webView, &WebView::iconChanged, this, [this, tab] (const QIcon &icon) {
         int index = indexOf(tab);
+
+        if (tab->webView()->page()->recentlyAudible()) {
+            return ;
+        }
+
         setTabIcon(index, icon);
     });
 

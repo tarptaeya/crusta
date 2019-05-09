@@ -4,8 +4,10 @@
 #include "mac/mac_utils.h"
 #endif
 
+#include <QBuffer>
 #include <QFile>
-#include <QApplication>
+#include <QIcon>
+#include <QPixmap>
 
 QString Utils::readFile(const QString &filePath)
 {
@@ -24,4 +26,23 @@ void Utils::removeTitleBar(WId windowId)
 #else
     Q_UNUSED(windowId);
 #endif
+}
+
+QByteArray Utils::iconToByteArray(const QIcon &icon)
+{
+    QPixmap pixmap = icon.pixmap(16, 16);
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap.save(&buffer, "PNG");
+    buffer.close();
+
+    return byteArray;
+}
+
+QIcon Utils::iconFromByteArray(const QByteArray &byteArray)
+{
+    QPixmap pixmap = QPixmap();
+    pixmap.loadFromData(byteArray);
+    return QIcon(pixmap);
 }

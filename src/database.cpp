@@ -14,7 +14,7 @@ Database::Database(bool isPrivate)
     }
 
     m_db = QSqlDatabase::addDatabase(driver);
-    m_db.setDatabaseName(isPrivate ? QStringLiteral(":memory:") : QStringLiteral("temp-database"));
+    m_db.setDatabaseName(isPrivate ? QStringLiteral(":memory:") : QStringLiteral("crdatabase"));
     if (!m_db.open()) {
         std::cerr << "unable to open database: " << m_db.lastError().text().toStdString() << std::endl;
         return;
@@ -34,19 +34,21 @@ Database::~Database()
 void Database::limitDatabase()
 {
     const int limit = 1000;
-    const QString limitQuery(QStringLiteral("delete from %1 where id not in (select id from %1 order by timestamp desc limit %2)"));
+    const QString limitHistoryQuery(QStringLiteral("delete from history where url not in ("
+                                                   "select url from history order by timestamp desc limit %2)"));
 
     QSqlQuery query;
-    if (!query.exec(limitQuery.arg(QStringLiteral("history")).arg(limit))) {
-        std::cerr << "unable to limit database: " << query.lastError().text().toStdString() << std::endl;
+    if (!query.exec(limitHistoryQuery.arg(limit))) {
+        std::cerr << "unable to limit history table: " << query.lastError().text().toStdString() << std::endl;
     }
 }
 
 void Database::createTables()
 {
-    const QString historyTableQuery(QStringLiteral("create table if not exists history (id integer primary key autoincrement,"
-                                                   "title text not null,"
-                                                   "url text not null,"
+    const QString historyTableQuery(QStringLiteral("create table if not exists history ("
+                                                   "icon BLOB,"
+                                                   "title text,"
+                                                   "url text primary key,"
                                                    "timestamp datetime default current_timestamp)"));
 
     QSqlQuery qsql;

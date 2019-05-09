@@ -19,4 +19,6 @@ Q_SIGNALS:
 private:
     WebPage *m_webPage = nullptr;
     bool m_isLoading = false;
+
+    void insertHistoryItem() const;
 };

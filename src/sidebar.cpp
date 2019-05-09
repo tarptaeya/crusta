@@ -1,3 +1,4 @@
+#include "browser.h"
 #include "history.h"
 #include "sidebar.h"
 
@@ -40,7 +41,7 @@ void SideBar::addItem(const QString &title, QWidget *widget)
 
 void SideBar::addHistoryItem()
 {
-    addItem(QStringLiteral("History"), History::historyWidget());
+    addItem(QStringLiteral("History"), Browser::instance()->history()->historyWidget());
 }
 
 void SideBar::addBookmarksItem()

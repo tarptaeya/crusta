@@ -20,15 +20,28 @@ WebView::WebView(QWidget *parent)
         emit historyChanged(history());
 
         if (ok) {
-            HistoryItem item;
-            item.title = title();
-            item.url = url().toString(QUrl::RemoveFragment);
-            History::insertItem(item);
+            insertHistoryItem();
         }
+    });
+
+    connect(this, &WebView::iconChanged, this, [this] (const QIcon &icon) {
+        Q_UNUSED(icon)
+
+        insertHistoryItem();
     });
 }
 
 bool WebView::isLoading() const
 {
     return m_isLoading;
+}
+
+void WebView::insertHistoryItem() const
+{
+    HistoryItem item;
+    item.icon = icon();
+    item.title = title();
+    item.url = url().toString(QUrl::RemoveFragment);
+
+    Browser::instance()->history()->insertItem(item);
 }
