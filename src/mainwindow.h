@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include <QSplitter>
 
+class SideBar;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,4 +22,5 @@ Q_SIGNALS:
 
 private:
     QSplitter *m_centralWidget = nullptr;
+    SideBar *m_sideBar = nullptr;
 };

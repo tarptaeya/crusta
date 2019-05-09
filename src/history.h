@@ -1,8 +1,7 @@
 #pragma once
 
-#include <QObject>
 #include <QDateTime>
-#include <QTreeWidget>
+#include <QObject>
 
 struct HistoryItem
 {
@@ -16,5 +15,5 @@ class History
 public:
     static void insertItem(const HistoryItem &item);
 
-    static QTreeWidget *historyWidget();
+    static QWidget *historyWidget();
 };

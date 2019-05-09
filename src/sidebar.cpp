@@ -1,6 +1,8 @@
 #include "history.h"
 #include "sidebar.h"
 
+#include <QHBoxLayout>
+#include <QToolButton>
 #include <QVBoxLayout>
 
 SideBar::SideBar(QWidget *parent)
@@ -9,13 +11,25 @@ SideBar::SideBar(QWidget *parent)
     m_comboBox = new QComboBox;
     m_widget = new QStackedWidget;
 
+    QToolButton *closeButton = new QToolButton;
+    closeButton->setAutoRaise(true);
+    closeButton->setIcon(QIcon::fromTheme(QStringLiteral("window-close")));
+    QHBoxLayout *hboxLayout = new QHBoxLayout;
+    hboxLayout->setContentsMargins(0, 0, 0, 0);
+    hboxLayout->addWidget(m_comboBox);
+    hboxLayout->addWidget(closeButton);
+
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     vboxLayout->setContentsMargins(5, 5, 0, 5);
-    vboxLayout->addWidget(m_comboBox);
+    vboxLayout->addLayout(hboxLayout);
     vboxLayout->addWidget(m_widget);
     setLayout(vboxLayout);
 
     addHistoryItem();
+
+    connect(closeButton, &QToolButton::clicked, this, [this] {
+        hide();
+    });
 }
 
 void SideBar::addItem(const QString &title, QWidget *widget)

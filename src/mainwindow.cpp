@@ -13,8 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
     setCentralWidget(m_centralWidget);
 
-    SideBar *sideBar = new SideBar;
-    m_centralWidget->addWidget(sideBar);
+    m_sideBar = new SideBar;
+    m_centralWidget->addWidget(m_sideBar);
 
     createWindow();
 
@@ -33,7 +33,7 @@ void MainWindow::createWindow()
         window->setParent(nullptr);
         window->deleteLater();
 
-        if (m_centralWidget->count() == 0) {
+        if (m_centralWidget->count() == 1) {
             close();
         }
     });
