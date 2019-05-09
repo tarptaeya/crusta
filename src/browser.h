@@ -29,4 +29,5 @@ private:
     History *m_history = nullptr;
 
     void setupProfile();
+    void setupWebExtensionPolyfill();
 };

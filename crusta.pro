@@ -4,6 +4,8 @@ QT += webenginewidgets sql webchannel
 
 HEADERS += \
     api/eobject.h \
+    api/ewebpage.h \
+    api/ewindows.h \
     src/browser.h \
     src/database.h \
     src/history.h \
@@ -20,6 +22,8 @@ HEADERS += \
 
 SOURCES += \
     api/eobject.cpp \
+    api/ewebpage.cpp \
+    api/ewindows.cpp \
     src/main.cpp \
     src/browser.cpp \
     src/database.cpp \

@@ -4,6 +4,8 @@
 #include "mainwindow.h"
 #include "utils.h"
 
+#include <QWebChannel>
+#include <QWebEnginePage>
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
 
@@ -61,21 +63,5 @@ Browser *Browser::instance()
 
 void Browser::setupProfile()
 {
-    m_profile = m_isPrivate ? new QWebEngineProfile(this) : QWebEngineProfile::defaultProfile();
-
-    QWebEngineScript webChannelScript;
-    webChannelScript.setName(QStringLiteral("webchannel"));
-    webChannelScript.setSourceCode(Utils::readFile(QStringLiteral(":/qtwebchannel/qwebchannel.js")));
-    webChannelScript.setInjectionPoint(QWebEngineScript::DocumentCreation);
-    webChannelScript.setWorldId(QWebEngineScript::ApplicationWorld);
-    webChannelScript.setRunsOnSubFrames(false);
-    m_profile->scripts()->insert(webChannelScript);
-
-    QWebEngineScript eobjectScript;
-    eobjectScript.setName(QStringLiteral("eobject"));
-    eobjectScript.setSourceCode(Utils::readFile(QStringLiteral(":/api/eobject.js")));
-    eobjectScript.setInjectionPoint(QWebEngineScript::DocumentReady);
-    eobjectScript.setWorldId(QWebEngineScript::ApplicationWorld);
-    eobjectScript.setRunsOnSubFrames(false);
-    m_profile->scripts()->insert(eobjectScript);
+    m_profile = m_isPrivate ? new QWebEngineProfile : QWebEngineProfile::defaultProfile();
 }

@@ -1,3 +1,4 @@
+#include "api/ewebpage.h"
 #include "browser.h"
 #include <QApplication>
 #include <QStyleFactory>
@@ -18,6 +19,8 @@ int main(int argc, char **argv)
     QIcon::setThemeName(QStringLiteral("default"));
 
     Theme::setThemeName(QStringLiteral("default"));
+
+    EWebPage webPage;
 
     Browser::instance()->run();
     int retCode = app.exec();
