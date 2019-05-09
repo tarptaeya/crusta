@@ -21,6 +21,7 @@ public:
     explicit History();
 
     static void insertItem(const HistoryItem &item);
+    static void removeItem(const QString &title);
     QWidget *historyWidget();
 
     QList<HistoryItem> getAllHistory() const;
@@ -28,6 +29,7 @@ public:
 
 Q_SIGNALS:
     void historyChanged();
+    void newTabRequested(const QUrl &url);
 
 private:
     QWidget *m_historyWidget = nullptr;

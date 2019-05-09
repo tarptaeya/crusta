@@ -31,6 +31,7 @@ EWebPage::EWebPage(QObject *parent)
     channel->registerObject(QStringLiteral("browser"), eobject);
     setWebChannel(channel, QWebEngineScript::ApplicationWorld);
 
+    // TODO: set it to dummy local url
     load(QUrl("http://example.com/"));
 
     profile()->setParent(this);

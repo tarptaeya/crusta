@@ -1,12 +1,16 @@
 #include "history.h"
 #include "utils.h"
 
+#include <QHeaderView>
 #include <QLineEdit>
+#include <QMenu>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QUrl>
 #include <QVariant>
 #include <QVBoxLayout>
+
 #include <iostream>
 
 History::History()
@@ -32,6 +36,16 @@ void History::insertItem(const HistoryItem &item)
     query.addBindValue(item.url);
     if (!query.exec()) {
         std::cerr << "unable to insert history item: " << query.lastError().text().toStdString() << std::endl;
+    }
+}
+
+void History::removeItem(const QString &title)
+{
+    QSqlQuery query;
+    query.prepare(QStringLiteral("delete from history where title = ?"));
+    query.addBindValue(title);
+    if (!query.exec()) {
+        std::cerr << "unable to remove item: " << query.lastError().text().toStdString() << std::endl;
     }
 }
 
@@ -75,13 +89,31 @@ void History::createHistoryWidget()
 
     vboxLayout->addWidget(m_treeWidget);
 
-    m_treeWidget->setHeaderLabel(QStringLiteral("Title"));
+    m_treeWidget->header()->hide();
 
     updateHistoryWidget();
 
     m_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_treeWidget, &QTreeWidget::customContextMenuRequested, this, [this] (const QPoint &pos) {
+        QTreeWidgetItem *item = m_treeWidget->itemAt(pos);
+        if (!item || !item->parent()) {
+            return ;
+        }
 
+        QMenu menu;
+        QAction *openInNewTab = menu.addAction(QStringLiteral("Open in new tab"));
+        QAction *remove = menu.addAction(QStringLiteral("Remove"));
+
+        connect(openInNewTab, &QAction::triggered, this, [this, item] {
+            QString url = item->data(0, Qt::ToolTipRole).toString();
+            emit newTabRequested(QUrl::fromEncoded(url.toUtf8()));
+        });
+
+        connect(remove, &QAction::triggered, this, [this, item] {
+            removeItem(item->text(0));
+            updateHistoryWidget();
+        });
+        menu.exec(m_treeWidget->mapToGlobal(pos));
     });
 }
 
@@ -120,6 +152,7 @@ void History::updateHistoryWidget()
         QTreeWidgetItem *item = new QTreeWidgetItem;
         item->setIcon(0, historyItem.icon);
         item->setText(0, historyItem.title);
+        item->setData(0, Qt::ToolTipRole, historyItem.url);
         previous = item;
 
         qint64 days = historyItem.timestamp.daysTo(QDateTime::currentDateTime());
