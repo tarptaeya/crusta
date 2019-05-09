@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QMenu>
 
-class SideBar;
 class TabWidget;
 class ToolBar;
 
@@ -24,7 +23,6 @@ Q_SIGNALS:
     void windowWillClose();
 
 private:
-    SideBar *m_sideBar = nullptr;
     ToolBar *m_toolBar = nullptr;
     TabWidget *m_tabWidget = nullptr;
     QMenu *m_menu = nullptr;

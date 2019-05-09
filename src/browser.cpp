@@ -6,7 +6,7 @@ Browser::Browser(bool isPrivate, QObject *parent)
     : QObject (parent)
 {
     m_isPrivate = isPrivate;
-    m_database = new Database;
+    m_database = new Database(isPrivate);
     setupProfile();
 }
 
@@ -28,6 +28,11 @@ void Browser::createMainWindow()
     connect(mainWindow, &MainWindow::mainWindowWillClose, this, [this, mainWindow] { m_mainWindows.removeOne(mainWindow); });
 
     mainWindow->show();
+}
+
+Database *Browser::database()
+{
+    return m_database;
 }
 
 QWebEngineProfile *Browser::profile()

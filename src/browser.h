@@ -14,6 +14,7 @@ public:
     void run();
 
     void createMainWindow();
+    Database *database();
     QWebEngineProfile *profile();
 
     bool isPrivate() const;

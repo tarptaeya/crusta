@@ -5,8 +5,10 @@
 class Database
 {
 public:
-    explicit Database();
+    explicit Database(bool isPrivate);
     ~Database();
+
+    void limitDatabase();
 
 private:
     QSqlDatabase m_db;

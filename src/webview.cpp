@@ -1,4 +1,5 @@
 #include "browser.h"
+#include "history.h"
 #include "webview.h"
 #include "webpage.h"
 
@@ -14,9 +15,16 @@ WebView::WebView(QWidget *parent)
     connect(this, &WebView::loadStarted, this, [this] {
         m_isLoading = true;
     });
-    connect(this, &WebView::loadFinished, this, [this] {
+    connect(this, &WebView::loadFinished, this, [this] (bool ok) {
         m_isLoading = false;
         emit historyChanged(history());
+
+        if (ok) {
+            HistoryItem item;
+            item.title = title();
+            item.url = url().toString(QUrl::RemoveFragment);
+            History::insertItem(item);
+        }
     });
 }
 

@@ -1,10 +1,11 @@
+#include "browser.h"
 #include "database.h"
 
 #include <QSqlError>
 #include <QSqlQuery>
 #include <iostream>
 
-Database::Database()
+Database::Database(bool isPrivate)
 {
     const QString driver(QStringLiteral("QSQLITE"));
     if (!QSqlDatabase::isDriverAvailable(driver)) {
@@ -13,20 +14,31 @@ Database::Database()
     }
 
     m_db = QSqlDatabase::addDatabase(driver);
-    // TODO: change name when incognito
-    m_db.setDatabaseName(QStringLiteral("temp-database"));
+    m_db.setDatabaseName(isPrivate ? QStringLiteral(":memory:") : QStringLiteral("temp-database"));
     if (!m_db.open()) {
         std::cerr << "unable to open database: " << m_db.lastError().text().toStdString() << std::endl;
         return;
     }
 
     createTables();
+    limitDatabase();
 }
 
 Database::~Database()
 {
     if (m_db.isOpen()) {
         m_db.close();
+    }
+}
+
+void Database::limitDatabase()
+{
+    const int limit = 1000;
+    const QString limitQuery(QStringLiteral("delete from %1 where id not in (select id from %1 order by timestamp desc limit %2)"));
+
+    QSqlQuery query;
+    if (!query.exec(limitQuery.arg(QStringLiteral("history")).arg(limit))) {
+        std::cerr << "unable to limit database: " << query.lastError().text().toStdString() << std::endl;
     }
 }
 

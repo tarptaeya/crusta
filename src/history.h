@@ -1,15 +1,20 @@
 #pragma once
 
 #include <QObject>
-#include <QUrl>
+#include <QDateTime>
+#include <QTreeWidget>
 
 struct HistoryItem
 {
     QString title;
-    QUrl url;
-    int count;
+    QString url;
+    QDateTime timestamp;
 };
 
 class History
 {
+public:
+    static void insertItem(const HistoryItem &item);
+
+    static QTreeWidget *historyWidget();
 };

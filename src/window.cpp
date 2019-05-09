@@ -1,4 +1,3 @@
-#include "sidebar.h"
 #include "tabwidget.h"
 #include "toolbar.h"
 #include "window.h"
@@ -8,7 +7,6 @@
 Window::Window(QWidget *parent)
     : QMainWindow (parent)
 {
-    m_sideBar = new SideBar;
     m_toolBar = new ToolBar;
     m_tabWidget = new TabWidget;
     m_menu = new QMenu;
@@ -23,7 +21,6 @@ Window::Window(QWidget *parent)
 
     centralWidgetLayout->setSpacing(0);
     centralWidgetLayout->setContentsMargins(0, 0, 0, 0);
-    centralWidgetLayout->addWidget(m_sideBar);
     centralWidget->setLayout(centralWidgetLayout);
     setCentralWidget(centralWidget);
     setContentsMargins(0, 0, 0, 0);

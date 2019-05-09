@@ -1,10 +1,10 @@
 #include "mainwindow.h"
+#include "sidebar.h"
 #include "utils.h"
 #include "window.h"
 
 #include <QDebug>
 #include <QEvent>
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_centralWidget = new QSplitter;
     setContentsMargins(0, 0, 0, 0);
     setCentralWidget(m_centralWidget);
+
+    SideBar *sideBar = new SideBar;
+    m_centralWidget->addWidget(sideBar);
 
     createWindow();
 
