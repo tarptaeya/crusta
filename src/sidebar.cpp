@@ -26,8 +26,6 @@ SideBar::SideBar(QWidget *parent)
     vboxLayout->addWidget(m_widget);
     setLayout(vboxLayout);
 
-    addHistoryItem();
-
     connect(closeButton, &QToolButton::clicked, this, [this] {
         hide();
     });
@@ -37,14 +35,4 @@ void SideBar::addItem(const QString &title, QWidget *widget)
 {
     m_comboBox->addItem(title);
     m_widget->addWidget(widget);
-}
-
-void SideBar::addHistoryItem()
-{
-    addItem(QStringLiteral("History"), Browser::instance()->history()->historyWidget());
-}
-
-void SideBar::addBookmarksItem()
-{
-    addItem(QStringLiteral("Bookmarks"), new QWidget);
 }

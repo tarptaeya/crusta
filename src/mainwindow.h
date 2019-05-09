@@ -1,5 +1,7 @@
 #pragma once
 
+#include "history.h"
+
 #include <QMainWindow>
 #include <QSplitter>
 
@@ -23,4 +25,5 @@ Q_SIGNALS:
 private:
     QSplitter *m_centralWidget = nullptr;
     SideBar *m_sideBar = nullptr;
+    History *m_history = nullptr;
 };

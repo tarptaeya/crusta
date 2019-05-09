@@ -4,7 +4,6 @@
 #include <QWebEngineProfile>
 
 class Database;
-class History;
 class MainWindow;
 
 class Browser : public QObject
@@ -15,7 +14,6 @@ public:
     void run();
 
     void createMainWindow();
-    History *history();
     QWebEngineProfile *profile();
 
     bool isPrivate() const;
@@ -26,7 +24,6 @@ private:
     QList<MainWindow *> m_mainWindows;
     QWebEngineProfile *m_profile = nullptr;
     Database *m_database = nullptr;
-    History *m_history = nullptr;
 
     void setupProfile();
     void setupWebExtensionPolyfill();

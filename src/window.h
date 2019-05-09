@@ -20,6 +20,7 @@ public:
 Q_SIGNALS:
     void newWindowRequested();
     void newMainWindowRequested();
+    void historyItemInserted();
     void windowWillClose();
 
 private:

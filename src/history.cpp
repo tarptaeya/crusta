@@ -33,8 +33,6 @@ void History::insertItem(const HistoryItem &item)
     if (!query.exec()) {
         std::cerr << "unable to insert history item: " << query.lastError().text().toStdString() << std::endl;
     }
-
-    emit historyChanged();
 }
 
 QWidget *History::historyWidget()

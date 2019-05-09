@@ -23,6 +23,7 @@ Q_SIGNALS:
     void historyChanged(QWebEngineHistory *history);
     void loadStarted();
     void loadFinished();
+    void historyItemInserted();
     void windowCloseRequested();
 
 private:

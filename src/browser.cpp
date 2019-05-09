@@ -1,6 +1,5 @@
 #include "browser.h"
 #include "database.h"
-#include "history.h"
 #include "mainwindow.h"
 #include "utils.h"
 
@@ -14,7 +13,6 @@ Browser::Browser(bool isPrivate, QObject *parent)
 {
     m_isPrivate = isPrivate;
     m_database = new Database(isPrivate);
-    m_history = new History;
 
     setupProfile();
 }
@@ -22,7 +20,6 @@ Browser::Browser(bool isPrivate, QObject *parent)
 Browser::~Browser()
 {
     delete m_database;
-    delete m_history;
 }
 
 void Browser::run()
@@ -38,11 +35,6 @@ void Browser::createMainWindow()
     connect(mainWindow, &MainWindow::mainWindowWillClose, this, [this, mainWindow] { m_mainWindows.removeOne(mainWindow); });
 
     mainWindow->show();
-}
-
-History *Browser::history()
-{
-    return m_history;
 }
 
 QWebEngineProfile *Browser::profile()

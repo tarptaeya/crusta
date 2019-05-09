@@ -13,7 +13,4 @@ public:
 private:
     QComboBox *m_comboBox = nullptr;
     QStackedWidget *m_widget = nullptr;
-
-    void addHistoryItem();
-    void addBookmarksItem();
 };

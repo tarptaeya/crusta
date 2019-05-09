@@ -120,6 +120,10 @@ int TabWidget::addTab(Tab *tab, const QString &label)
         emit loadFinished();
     });
 
+    connect(webView, &WebView::historyItemInserted, this, [this] {
+        emit historyItemInserted();
+    });
+
     connect(webView->page(), &WebPage::recentlyAudibleChanged, this, [this, tab] (bool recentlyAudible) {
         int index = indexOf(tab);
         setTabIcon(index, tab->webView()->page()->isAudioMuted() ? QIcon::fromTheme(QStringLiteral("audio-volume-muted")) :

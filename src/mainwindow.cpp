@@ -13,7 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
     setCentralWidget(m_centralWidget);
 
+    m_history = new History;
     m_sideBar = new SideBar;
+    m_sideBar->addItem(QStringLiteral("History"), m_history->historyWidget());
     m_centralWidget->addWidget(m_sideBar);
 
     createWindow();
@@ -28,6 +30,7 @@ void MainWindow::createWindow()
 
     connect(window, &Window::newWindowRequested, this, &MainWindow::createWindow);
     connect(window, &Window::newMainWindowRequested, this, [this] { emit newMainWindowRequested(); });
+    connect(window, &Window::historyItemInserted, m_history, &History::updateHistoryWidget);
 
     connect(window, &Window::windowWillClose, this, [this, window] {
         window->setParent(nullptr);

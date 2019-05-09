@@ -20,10 +20,11 @@ class History : public QObject
 public:
     explicit History();
 
-    void insertItem(const HistoryItem &item);
+    static void insertItem(const HistoryItem &item);
     QWidget *historyWidget();
 
     QList<HistoryItem> getAllHistory() const;
+    void updateHistoryWidget();
 
 Q_SIGNALS:
     void historyChanged();
@@ -37,5 +38,4 @@ private:
     QTreeWidgetItem *m_olderItem = nullptr;
 
     void createHistoryWidget();
-    void updateHistoryWidget();
 };

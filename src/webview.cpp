@@ -36,12 +36,14 @@ bool WebView::isLoading() const
     return m_isLoading;
 }
 
-void WebView::insertHistoryItem() const
+void WebView::insertHistoryItem()
 {
     HistoryItem item;
     item.icon = icon();
     item.title = title();
     item.url = url().toString(QUrl::RemoveFragment);
 
-    Browser::instance()->history()->insertItem(item);
+    History::insertItem(item);
+
+    emit historyItemInserted();
 }

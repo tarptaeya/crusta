@@ -38,6 +38,7 @@ Window::Window(QWidget *parent)
     connect(m_tabWidget, &TabWidget::loadStarted, m_toolBar, &ToolBar::loadStarted);
     connect(m_tabWidget, &TabWidget::loadFinished, m_toolBar, &ToolBar::loadFinished);
     connect(m_toolBar, &ToolBar::loadingStateChangeRequest, m_tabWidget, &TabWidget::changeLoadingState);
+    connect(m_tabWidget, &TabWidget::historyItemInserted, this, [this] { emit historyItemInserted(); });
 }
 
 QMenu *Window::menu() const

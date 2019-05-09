@@ -15,10 +15,11 @@ public:
 
 Q_SIGNALS:
     void historyChanged(QWebEngineHistory *history);
+    void historyItemInserted();
 
 private:
     WebPage *m_webPage = nullptr;
     bool m_isLoading = false;
 
-    void insertHistoryItem() const;
+    void insertHistoryItem();
 };
