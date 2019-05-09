@@ -80,6 +80,11 @@ void History::createHistoryWidget()
     m_treeWidget->setHeaderLabel(QStringLiteral("Title"));
 
     updateHistoryWidget();
+
+    m_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_treeWidget, &QTreeWidget::customContextMenuRequested, this, [this] (const QPoint &pos) {
+
+    });
 }
 
 void History::updateHistoryWidget()

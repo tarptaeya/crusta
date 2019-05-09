@@ -1,8 +1,9 @@
 TEMPLATE = app
 TARGET = crusta
-QT += webenginewidgets sql
+QT += webenginewidgets sql webchannel
 
 HEADERS += \
+    api/eobject.h \
     src/browser.h \
     src/database.h \
     src/history.h \
@@ -18,6 +19,7 @@ HEADERS += \
     src/window.h
 
 SOURCES += \
+    api/eobject.cpp \
     src/main.cpp \
     src/browser.cpp \
     src/database.cpp \
