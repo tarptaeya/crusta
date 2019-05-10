@@ -188,10 +188,8 @@ void ToolBar::setupAddressBar()
         item.title = title;
         item.url = url;
 
-        bookmarkChanged(item, !isBookmarked);
-
-        if (isBookmarked) {
-            return ;
+        if (!isBookmarked) {
+            bookmarkChanged(item, true);
         }
 
         QWidget *widget = Bookmarks::popupWidget(title, url);
