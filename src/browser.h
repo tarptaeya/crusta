@@ -5,6 +5,7 @@
 
 class Database;
 class MainWindow;
+class Tab;
 
 class Browser : public QObject
 {
@@ -13,7 +14,7 @@ public:
     ~Browser();
     void run();
 
-    void createMainWindow();
+    Tab *createMainWindow();
     QWebEngineProfile *profile();
 
     bool isPrivate() const;

@@ -1,7 +1,9 @@
 #include "browser.h"
 #include "database.h"
 #include "mainwindow.h"
+#include "tab.h"
 #include "utils.h"
+#include "webview.h"
 
 #include <QWebChannel>
 #include <QWebEnginePage>
@@ -24,17 +26,23 @@ Browser::~Browser()
 
 void Browser::run()
 {
-    createMainWindow();
+    createMainWindow()->webView()->loadHome();
 }
 
-void Browser::createMainWindow()
+Tab *Browser::createMainWindow()
 {
     MainWindow *mainWindow = new MainWindow;
     m_mainWindows.append(mainWindow);
-    connect(mainWindow, &MainWindow::newMainWindowRequested, this, &Browser::createMainWindow);
+    connect(mainWindow, &MainWindow::newMainWindowRequested, this, [this] {
+        createMainWindow()->webView()->loadHome();
+    });
     connect(mainWindow, &MainWindow::mainWindowWillClose, this, [this, mainWindow] { m_mainWindows.removeOne(mainWindow); });
 
+    Tab *tab = mainWindow->createWindow();
+
     mainWindow->show();
+
+    return tab;
 }
 
 QWebEngineProfile *Browser::profile()

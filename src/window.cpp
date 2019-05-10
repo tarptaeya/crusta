@@ -1,3 +1,4 @@
+#include "tab.h"
 #include "tabwidget.h"
 #include "toolbar.h"
 #include "window.h"
@@ -44,6 +45,11 @@ Window::Window(QWidget *parent)
 QMenu *Window::menu() const
 {
     return m_menu;
+}
+
+Tab *Window::tabAt(int index)
+{
+    return dynamic_cast<Tab *>(m_tabWidget->widget(index));
 }
 
 void Window::closeEvent(QCloseEvent *event)

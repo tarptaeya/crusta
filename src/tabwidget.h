@@ -12,7 +12,7 @@ class TabWidget : public QTabWidget
 public:
     explicit TabWidget(QWidget *parent = nullptr);
 
-    int addTab(Tab *tab, const QString &label);
+    int addTab(Tab *tab, bool isBackground = false, const QString &label = QStringLiteral("New Tab"));
     void back();
     void forward();
     void navigateToItem(const QWebEngineHistoryItem &item);

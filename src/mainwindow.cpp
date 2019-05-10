@@ -18,12 +18,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_sideBar->addItem(QStringLiteral("History"), m_history->historyWidget());
     m_centralWidget->addWidget(m_sideBar);
 
-    createWindow();
-
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void MainWindow::createWindow()
+Tab *MainWindow::createWindow()
 {
     Window *window = new Window;
     m_centralWidget->addWidget(window);
@@ -40,6 +38,8 @@ void MainWindow::createWindow()
             close();
         }
     });
+
+    return window->tabAt(0);
 }
 
 void MainWindow::show()

@@ -30,9 +30,13 @@ TabWidget::TabWidget(QWidget *parent)
 
     setCornerWidget(m_newTabButton);
 
-    addTab(new Tab, QStringLiteral("New tab"));
+    addTab(new Tab);
 
-    connect(m_newTabButton, &QToolButton::clicked, this, [this] { addTab(new Tab, QStringLiteral("New Tab")); });
+    connect(m_newTabButton, &QToolButton::clicked, this, [this] {
+        Tab *tab = new Tab;
+        tab->webView()->loadNewTabPage();
+        addTab(tab);
+    });
     connect(this, &TabWidget::currentChanged, this, [this] (int index) {
         Tab *tab = dynamic_cast<Tab *>(widget(index));
         if (!tab) {
@@ -66,7 +70,7 @@ TabWidget::TabWidget(QWidget *parent)
     });
 }
 
-int TabWidget::addTab(Tab *tab, const QString &label)
+int TabWidget::addTab(Tab *tab, bool isBackground, const QString &label)
 {
     WebView *webView = tab->webView();
 
@@ -124,6 +128,10 @@ int TabWidget::addTab(Tab *tab, const QString &label)
         emit historyItemInserted();
     });
 
+    connect(webView, &WebView::addTabRequested, this, [this] (Tab *tab, bool isBackground) {
+        addTab(tab, isBackground);
+    });
+
     connect(webView->page(), &WebPage::recentlyAudibleChanged, this, [this, tab] (bool recentlyAudible) {
         int index = indexOf(tab);
         setTabIcon(index, tab->webView()->page()->isAudioMuted() ? QIcon::fromTheme(QStringLiteral("audio-volume-muted")) :
@@ -131,7 +139,12 @@ int TabWidget::addTab(Tab *tab, const QString &label)
                                                                                      tab->webView()->icon());
     });
 
-    return QTabWidget::addTab(tab, label);
+    int index = QTabWidget::addTab(tab, label);
+    if (!isBackground) {
+        setCurrentIndex(index);
+    }
+
+    return index;
 }
 
 void TabWidget::back()

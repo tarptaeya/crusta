@@ -6,6 +6,7 @@
 #include <QSplitter>
 
 class SideBar;
+class Tab;
 
 class MainWindow : public QMainWindow
 {
@@ -13,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
-    void createWindow();
+    Tab *createWindow();
     void show();
     void closeEvent(QCloseEvent *event) override;
     bool event(QEvent *event) override;
