@@ -67,7 +67,14 @@ ToolBar::ToolBar(QWidget *parent)
             return ;
         }
 
-        emit m_tabWidget->currentTab()->webView()->reload();
+        m_tabWidget->currentTab()->webView()->reload();
+    });
+    connect(m_homeButton, &QToolButton::clicked, this, [this] {
+        if (!m_tabWidget) {
+            return ;
+        }
+
+        m_tabWidget->currentTab()->webView()->loadHome();
     });
 }
 
