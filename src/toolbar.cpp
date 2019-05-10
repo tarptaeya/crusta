@@ -1,8 +1,12 @@
 #include "bookmarks.h"
+#include "tabwidget.h"
+#include "tab.h"
 #include "toolbar.h"
+#include "webview.h"
 
 #include <QMenu>
 #include <QUrl>
+#include <QWebEngineHistory>
 
 ToolBar::ToolBar(QWidget *parent)
     : QToolBar (parent)
@@ -44,9 +48,27 @@ ToolBar::ToolBar(QWidget *parent)
 
     setMovable(false);
 
-    connect(m_backButton, &QToolButton::clicked, this, [this] { emit backRequested(); });
-    connect(m_forwardButton, &QToolButton::clicked, this, [this] { emit forwardRequested(); });
-    connect(m_refreshButton, &QToolButton::clicked, this, [this] { emit loadingStateChangeRequest(); });
+    connect(m_backButton, &QToolButton::clicked, this, [this] {
+        if (!m_tabWidget) {
+            return ;
+        }
+
+        m_tabWidget->currentTab()->webView()->back();
+    });
+    connect(m_forwardButton, &QToolButton::clicked, this, [this] {
+        if (!m_tabWidget) {
+            return ;
+        }
+
+        m_tabWidget->currentTab()->webView()->forward();
+    });
+    connect(m_refreshButton, &QToolButton::clicked, this, [this] {
+        if (!m_tabWidget) {
+            return ;
+        }
+
+        emit m_tabWidget->currentTab()->webView()->reload();
+    });
 }
 
 void ToolBar::setUrl(const QUrl &url)
@@ -75,12 +97,24 @@ void ToolBar::setHistory(QWebEngineHistory *history)
 
     for (const QWebEngineHistoryItem &item : backItems) {
         QAction *action = m_backMenu->addAction(item.title());
-        connect(action, &QAction::triggered, this, [this, item] { emit navigationToItemRequest(item); });
+        connect(action, &QAction::triggered, this, [this, item] {
+            if (!m_tabWidget) {
+                return ;
+            }
+
+            m_tabWidget->currentTab()->webView()->history()->goToItem(item);
+        });
     }
 
     for (const QWebEngineHistoryItem &item : forwardItems) {
         QAction *action = m_forwardMenu->addAction(item.title());
-        connect(action, &QAction::triggered, this, [this, item] { emit navigationToItemRequest(item); });
+        connect(action, &QAction::triggered, this, [this, item] {
+            if (!m_tabWidget) {
+                return ;
+            }
+
+            m_tabWidget->currentTab()->webView()->history()->goToItem(item);
+        });
     }
 
     m_backButton->setDisabled(!history->canGoBack());
@@ -90,6 +124,16 @@ void ToolBar::setHistory(QWebEngineHistory *history)
 void ToolBar::setMenu(QMenu *menu)
 {
     m_menuButton->setMenu(menu);
+}
+
+void ToolBar::setTabWidget(TabWidget *tabWidget)
+{
+    m_tabWidget = tabWidget;
+
+    connect(m_tabWidget, &TabWidget::urlChanged, this, &ToolBar::setUrl);
+    connect(m_tabWidget, &TabWidget::historyChanged, this, &ToolBar::setHistory);
+    connect(m_tabWidget, &TabWidget::loadStarted, this, &ToolBar::loadStarted);
+    connect(m_tabWidget, &TabWidget::loadFinished, this, &ToolBar::loadFinished);
 }
 
 void ToolBar::setupAddressBar()

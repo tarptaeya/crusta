@@ -152,48 +152,9 @@ Tab *TabWidget::tabAt(int index)
     return dynamic_cast<Tab *>(widget(index));
 }
 
-void TabWidget::back()
+Tab *TabWidget::currentTab()
 {
-    Tab *tab = tabAt(currentIndex());
-    if (!tab) {
-        return;
-    }
-
-    tab->webView()->back();
-}
-
-void TabWidget::forward()
-{
-    Tab *tab = tabAt(currentIndex());
-    if (!tab) {
-        return;
-    }
-
-    tab->webView()->forward();
-}
-
-void TabWidget::navigateToItem(const QWebEngineHistoryItem &item)
-{
-    Tab *tab = tabAt(currentIndex());
-    if (!tab) {
-        return;
-    }
-
-    tab->webView()->history()->goToItem(item);
-}
-
-void TabWidget::changeLoadingState()
-{
-    Tab *tab = tabAt(currentIndex());
-    if (!tab) {
-        return;
-    }
-
-    if (tab->webView()->isLoading()) {
-        tab->webView()->stop();
-    } else {
-        tab->webView()->reload();
-    }
+    return tabAt(currentIndex());
 }
 
 void TabWidget::createContextMenu(const QPoint &pos)

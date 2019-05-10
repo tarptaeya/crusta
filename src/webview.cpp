@@ -30,6 +30,11 @@ WebView::WebView(QWidget *parent)
     });
 }
 
+WebPage *WebView::page()
+{
+    return m_webPage;
+}
+
 bool WebView::isLoading() const
 {
     return m_isLoading;

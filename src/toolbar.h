@@ -6,6 +6,8 @@
 #include <QToolButton>
 #include <QWebEngineHistory>
 
+class TabWidget;
+
 class ToolBar : public QToolBar
 {
     Q_OBJECT
@@ -18,6 +20,7 @@ public:
 
     void setHistory(QWebEngineHistory *history);
     void setMenu(QMenu *menu);
+    void setTabWidget(TabWidget *tabWidget);
 
 Q_SIGNALS:
     void backRequested();
@@ -26,6 +29,8 @@ Q_SIGNALS:
     void loadingStateChangeRequest();
 
 private:
+    TabWidget *m_tabWidget = nullptr;
+
     QToolButton *m_backButton = nullptr;
     QToolButton *m_forwardButton = nullptr;
     QToolButton *m_refreshButton = nullptr;

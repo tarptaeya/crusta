@@ -13,6 +13,8 @@ class WebView : public QWebEngineView
 public:
     explicit WebView(QWidget *parent = nullptr);
 
+    WebPage *page();
+
     bool isLoading() const;
     void loadHome();
     void loadNewTabPage();
