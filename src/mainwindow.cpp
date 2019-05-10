@@ -18,8 +18,10 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(m_centralWidget);
 
     m_history = new History;
+    m_cookies = new Cookies;
     m_sideBar = new SideBar;
     m_sideBar->addItem(QStringLiteral("History"), m_history->historyWidget());
+    m_sideBar->addItem(QStringLiteral("Cookies"), m_cookies->cookiesWidget());
     m_centralWidget->addWidget(m_sideBar);
 
     setAttribute(Qt::WA_DeleteOnClose);

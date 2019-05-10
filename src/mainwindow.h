@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cookies.h"
 #include "history.h"
 
 #include <QMainWindow>
@@ -27,4 +28,5 @@ private:
     QSplitter *m_centralWidget = nullptr;
     SideBar *m_sideBar = nullptr;
     History *m_history = nullptr;
+    Cookies *m_cookies = nullptr;
 };

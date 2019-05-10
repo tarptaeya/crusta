@@ -7,6 +7,7 @@ HEADERS += \
     api/ewebpage.h \
     api/ewindows.h \
     src/browser.h \
+    src/cookies.h \
     src/database.h \
     src/history.h \
     src/mainwindow.h \
@@ -26,6 +27,7 @@ SOURCES += \
     api/ewindows.cpp \
     src/main.cpp \
     src/browser.cpp \
+    src/cookies.cpp \
     src/database.cpp \
     src/history.cpp \
     src/mainwindow.cpp \

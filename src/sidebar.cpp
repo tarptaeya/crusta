@@ -26,9 +26,8 @@ SideBar::SideBar(QWidget *parent)
     vboxLayout->addWidget(m_widget);
     setLayout(vboxLayout);
 
-    connect(closeButton, &QToolButton::clicked, this, [this] {
-        hide();
-    });
+    connect(closeButton, &QToolButton::clicked, this, [this] { hide(); });
+    connect(m_comboBox, &QComboBox::currentTextChanged, this, [this] { m_widget->setCurrentIndex(m_comboBox->currentIndex()); });
 }
 
 void SideBar::addItem(const QString &title, QWidget *widget)
