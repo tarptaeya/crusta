@@ -35,7 +35,7 @@ void Database::limitDatabase()
 {
     const int limit = 1000;
     const QString limitHistoryQuery(QStringLiteral("delete from history where url not in ("
-                                                   "select url from history order by timestamp desc limit %2)"));
+                                                   "select url from history order by timestamp desc limit %1)"));
 
     QSqlQuery query;
     if (!query.exec(limitHistoryQuery.arg(limit))) {
@@ -51,9 +51,19 @@ void Database::createTables()
                                                    "url text primary key,"
                                                    "timestamp datetime default current_timestamp)"));
 
-    QSqlQuery qsql;
-    if (!qsql.exec(historyTableQuery)) {
-        std::cerr << "unable to execute: " << historyTableQuery.toStdString() << std::endl;
-        std::cerr << qsql.lastError().text().toStdString() << std::endl;
+    const QString bookmarksTableQuery(QStringLiteral("create table if not exists bookmarks ("
+                                                     "icon BLOB,"
+                                                     "title text,"
+                                                     "url text primary key,"
+                                                     "description text,"
+                                                     "folder text)"));
+
+    QSqlQuery sql;
+    if (!sql.exec(historyTableQuery)) {
+        std::cerr << "unable to create history table: "<< sql.lastError().text().toStdString() << std::endl;
+    }
+
+    if (!sql.exec(bookmarksTableQuery)) {
+        std::cerr << "unable to create bookmarks table: " << sql.lastError().text().toStdString() << std::endl;
     }
 }

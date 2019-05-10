@@ -1,5 +1,7 @@
 #pragma once
 
+#include "bookmarks.h"
+
 #include <QAction>
 #include <QLineEdit>
 #include <QToolBar>
@@ -21,6 +23,9 @@ public:
     void setHistory(QWebEngineHistory *history);
     void setMenu(QMenu *menu);
     void setTabWidget(TabWidget *tabWidget);
+
+    void bookmarkChanged(bool isBookmarked);
+    void bookmarkChanged(const BookmarkItem &item, bool isBookmarked);
 
 Q_SIGNALS:
     void backRequested();

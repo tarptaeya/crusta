@@ -82,6 +82,8 @@ void ToolBar::setUrl(const QUrl &url)
 {
     m_addressBar->setText(url.toDisplayString());
     m_addressBar->setCursorPosition(0);
+
+    bookmarkChanged(Bookmarks::isBookmarked(url.toString(QUrl::RemoveFragment)));
 }
 
 void ToolBar::loadStarted()
@@ -143,6 +145,26 @@ void ToolBar::setTabWidget(TabWidget *tabWidget)
     connect(m_tabWidget, &TabWidget::loadFinished, this, &ToolBar::loadFinished);
 }
 
+void ToolBar::bookmarkChanged(bool isBookmarked)
+{
+    if (isBookmarked) {
+        m_bookmarksAction->setIcon(QIcon::fromTheme(QStringLiteral("draw-star-red")));
+    } else {
+        m_bookmarksAction->setIcon(QIcon::fromTheme(QStringLiteral("draw-star")));
+    }
+}
+
+void ToolBar::bookmarkChanged(const BookmarkItem &item, bool isBookmarked)
+{
+    bookmarkChanged(isBookmarked);
+
+    if (isBookmarked) {
+        Bookmarks::insertBookmark(item);
+    } else {
+        Bookmarks::removeBookmark(item.url);
+    }
+}
+
 void ToolBar::setupAddressBar()
 {
     m_bookmarksAction = new QAction;
@@ -151,7 +173,29 @@ void ToolBar::setupAddressBar()
     m_addressBar->addAction(m_bookmarksAction, QLineEdit::TrailingPosition);
 
     connect(m_bookmarksAction, &QAction::triggered, this, [this] {
-        QWidget *widget = Bookmarks::popupWidget();
+        if (!m_tabWidget) {
+            return ;
+        }
+
+        const QIcon icon = m_tabWidget->currentTab()->webView()->icon();
+        const QString title = m_tabWidget->currentTab()->webView()->title();
+        const QString url = m_tabWidget->currentTab()->webView()->url().toString(QUrl::RemoveFragment);
+
+        const bool isBookmarked = Bookmarks::isBookmarked(url);
+
+        BookmarkItem item;
+        item.icon = icon;
+        item.title = title;
+        item.url = url;
+
+        bookmarkChanged(item, !isBookmarked);
+
+        if (isBookmarked) {
+            return ;
+        }
+
+        QWidget *widget = Bookmarks::popupWidget(title, url);
+        connect(widget, &QWidget::destroyed, this, [this, item] { bookmarkChanged(item, Bookmarks::isBookmarked(item.url)); });
         widget->show();
 
         int x = m_addressBar->x() + m_addressBar->width() - widget->width();
@@ -160,6 +204,5 @@ void ToolBar::setupAddressBar()
         QPoint point = mapToGlobal(QPoint(x, y));
 
         widget->move(point);
-
     });
 }
