@@ -1,3 +1,4 @@
+#include "bookmarks.h"
 #include "toolbar.h"
 
 #include <QMenu>
@@ -10,7 +11,6 @@ ToolBar::ToolBar(QWidget *parent)
     m_forwardButton = new QToolButton;
     m_refreshButton = new QToolButton;
     m_homeButton = new QToolButton;
-    m_bookmarkButton = new QToolButton;
     m_menuButton = new QToolButton;
     m_addressBar = new QLineEdit;
     m_backMenu = new QMenu;
@@ -34,9 +34,10 @@ ToolBar::ToolBar(QWidget *parent)
     addWidget(m_refreshButton);
     addWidget(m_homeButton);
     addWidget(m_addressBar);
-    addWidget(m_bookmarkButton);
     addSeparator();
     addWidget(m_menuButton);
+
+    setupAddressBar();
 
     setMovable(false);
 
@@ -86,4 +87,25 @@ void ToolBar::setHistory(QWebEngineHistory *history)
 void ToolBar::setMenu(QMenu *menu)
 {
     m_menuButton->setMenu(menu);
+}
+
+void ToolBar::setupAddressBar()
+{
+    m_bookmarksAction = new QAction;
+    m_bookmarksAction->setIcon(QIcon::fromTheme(QStringLiteral("draw-star")));
+
+    m_addressBar->addAction(m_bookmarksAction, QLineEdit::TrailingPosition);
+
+    connect(m_bookmarksAction, &QAction::triggered, this, [this] {
+        QWidget *widget = Bookmarks::popupWidget();
+        widget->show();
+
+        int x = m_addressBar->x() + m_addressBar->width() - widget->width();
+        int y = m_addressBar->y() + m_addressBar->height();
+
+        QPoint point = mapToGlobal(QPoint(x, y));
+
+        widget->move(point);
+
+    });
 }

@@ -15,5 +15,7 @@
         <file>icons/default/24/window-close.svg</file>
         <file>icons/default/24/window-close-dull.svg</file>
         <file>api/eobject.js</file>
+        <file>icons/default/22/draw-star-red.svg</file>
+        <file>icons/default/22/draw-star.svg</file>
     </qresource>
 </RCC>

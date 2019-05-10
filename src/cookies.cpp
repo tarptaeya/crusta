@@ -33,6 +33,8 @@ Cookies::Cookies(QObject *parent)
     vboxLayout->addWidget(m_treeWidget);
     vboxLayout->addWidget(m_infoWidget);
 
+    Browser::instance()->profile()->cookieStore()->loadAllCookies();
+
     connect(Browser::instance()->profile()->cookieStore(), &QWebEngineCookieStore::cookieAdded, this, [this] (const QNetworkCookie &cookie) {
         const QString &domain = cookie.domain();
 

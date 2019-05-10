@@ -6,6 +6,7 @@ HEADERS += \
     api/eobject.h \
     api/ewebpage.h \
     api/ewindows.h \
+    src/bookmarks.h \
     src/browser.h \
     src/cookies.h \
     src/database.h \
@@ -26,6 +27,7 @@ SOURCES += \
     api/ewebpage.cpp \
     api/ewindows.cpp \
     src/main.cpp \
+    src/bookmarks.cpp \
     src/browser.cpp \
     src/cookies.cpp \
     src/database.cpp \

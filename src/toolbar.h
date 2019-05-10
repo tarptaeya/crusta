@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QAction>
 #include <QLineEdit>
 #include <QToolBar>
 #include <QToolButton>
@@ -29,11 +30,14 @@ private:
     QToolButton *m_forwardButton = nullptr;
     QToolButton *m_refreshButton = nullptr;
     QToolButton *m_homeButton = nullptr;
-    QToolButton *m_bookmarkButton = nullptr;
     QToolButton *m_menuButton = nullptr;
 
     QLineEdit *m_addressBar = nullptr;
 
     QMenu *m_backMenu = nullptr;
     QMenu *m_forwardMenu = nullptr;
+
+    QAction *m_bookmarksAction = nullptr;
+
+    void setupAddressBar();
 };
