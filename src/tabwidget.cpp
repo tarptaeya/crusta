@@ -38,7 +38,7 @@ TabWidget::TabWidget(QWidget *parent)
         addTab(tab);
     });
     connect(this, &TabWidget::currentChanged, this, [this] (int index) {
-        Tab *tab = dynamic_cast<Tab *>(widget(index));
+        Tab *tab = tabAt(index);
         if (!tab) {
             return ;
         }
@@ -54,7 +54,7 @@ TabWidget::TabWidget(QWidget *parent)
     });
     connect(tabBar, &QTabBar::customContextMenuRequested, this, &TabWidget::createContextMenu);
     connect(tabBar, &QTabBar::tabCloseRequested, this, [this] (int index) {
-        Tab *tab = dynamic_cast<Tab *>(widget(index));
+        Tab *tab = tabAt(index);
         if (!tab) {
             return;
         }
@@ -147,9 +147,14 @@ int TabWidget::addTab(Tab *tab, bool isBackground, const QString &label)
     return index;
 }
 
+Tab *TabWidget::tabAt(int index)
+{
+    return dynamic_cast<Tab *>(widget(index));
+}
+
 void TabWidget::back()
 {
-    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    Tab *tab = tabAt(currentIndex());
     if (!tab) {
         return;
     }
@@ -159,7 +164,7 @@ void TabWidget::back()
 
 void TabWidget::forward()
 {
-    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    Tab *tab = tabAt(currentIndex());
     if (!tab) {
         return;
     }
@@ -169,7 +174,7 @@ void TabWidget::forward()
 
 void TabWidget::navigateToItem(const QWebEngineHistoryItem &item)
 {
-    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    Tab *tab = tabAt(currentIndex());
     if (!tab) {
         return;
     }
@@ -179,7 +184,7 @@ void TabWidget::navigateToItem(const QWebEngineHistoryItem &item)
 
 void TabWidget::changeLoadingState()
 {
-    Tab *tab = dynamic_cast<Tab *>(widget(currentIndex()));
+    Tab *tab = tabAt(currentIndex());
     if (!tab) {
         return;
     }
@@ -194,7 +199,7 @@ void TabWidget::changeLoadingState()
 void TabWidget::createContextMenu(const QPoint &pos)
 {
     int index = tabBar()->tabAt(pos);
-    Tab *tab = dynamic_cast<Tab *>(widget(index));
+    Tab *tab = tabAt(index);
     if (!tab) {
         return;
     }

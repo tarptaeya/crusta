@@ -1,4 +1,3 @@
-#include "tab.h"
 #include "tabwidget.h"
 #include "toolbar.h"
 #include "window.h"
@@ -42,14 +41,14 @@ Window::Window(QWidget *parent)
     connect(m_tabWidget, &TabWidget::historyItemInserted, this, [this] { emit historyItemInserted(); });
 }
 
-QMenu *Window::menu() const
+QMenu *Window::menu()
 {
     return m_menu;
 }
 
-Tab *Window::tabAt(int index)
+TabWidget *Window::tabWidget()
 {
-    return dynamic_cast<Tab *>(m_tabWidget->widget(index));
+    return m_tabWidget;
 }
 
 void Window::closeEvent(QCloseEvent *event)

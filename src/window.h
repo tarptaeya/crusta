@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QMenu>
 
-class Tab;
 class TabWidget;
 class ToolBar;
 
@@ -14,8 +13,8 @@ class Window : public QMainWindow
 public:
     explicit Window(QWidget *parent = nullptr);
 
-    QMenu *menu() const;
-    Tab *tabAt(int index);
+    QMenu *menu();
+    TabWidget *tabWidget();
 
     void closeEvent(QCloseEvent *event) override;
 

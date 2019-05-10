@@ -1,10 +1,14 @@
 #include "mainwindow.h"
 #include "sidebar.h"
+#include "tab.h"
+#include "tabwidget.h"
 #include "utils.h"
+#include "webview.h"
 #include "window.h"
 
-#include <QDebug>
 #include <QEvent>
+
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,6 +23,18 @@ MainWindow::MainWindow(QWidget *parent)
     m_centralWidget->addWidget(m_sideBar);
 
     setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(m_history, &History::newTabRequested, this, [this] (const QUrl &url) {
+        Window *window = dynamic_cast<Window *>(m_centralWidget->widget(1));
+        if (!window) {
+            std::cerr << "[!] unable to cast index 1 of central widget to Window, please report it!" << std::endl;
+            return ;
+        }
+
+        Tab *tab = new Tab;
+        tab->webView()->load(url);
+        window->tabWidget()->addTab(tab);
+    });
 }
 
 Tab *MainWindow::createWindow()
@@ -39,7 +55,7 @@ Tab *MainWindow::createWindow()
         }
     });
 
-    return window->tabAt(0);
+    return window->tabWidget()->tabAt(0);
 }
 
 void MainWindow::show()
