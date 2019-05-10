@@ -17,5 +17,6 @@
         <file>api/eobject.js</file>
         <file>icons/default/22/draw-star-red.svg</file>
         <file>icons/default/22/draw-star.svg</file>
+        <file>icons/default/22/edit-download.svg</file>
     </qresource>
 </RCC>

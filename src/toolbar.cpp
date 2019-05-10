@@ -11,6 +11,7 @@ ToolBar::ToolBar(QWidget *parent)
     m_forwardButton = new QToolButton;
     m_refreshButton = new QToolButton;
     m_homeButton = new QToolButton;
+    m_downloadButton = new QToolButton;
     m_menuButton = new QToolButton;
     m_addressBar = new QLineEdit;
     m_backMenu = new QMenu;
@@ -20,6 +21,7 @@ ToolBar::ToolBar(QWidget *parent)
     m_forwardButton->setIcon(QIcon::fromTheme(QStringLiteral("go-next")));
     m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
     m_homeButton->setIcon(QIcon::fromTheme(QStringLiteral("go-home")));
+    m_downloadButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-download")));
     m_menuButton->setIcon(QIcon::fromTheme(QStringLiteral("application-menu")));
 
     m_backButton->setPopupMode(QToolButton::DelayedPopup);
@@ -34,6 +36,7 @@ ToolBar::ToolBar(QWidget *parent)
     addWidget(m_refreshButton);
     addWidget(m_homeButton);
     addWidget(m_addressBar);
+    addWidget(m_downloadButton);
     addSeparator();
     addWidget(m_menuButton);
 

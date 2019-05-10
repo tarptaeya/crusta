@@ -30,6 +30,7 @@ private:
     QToolButton *m_forwardButton = nullptr;
     QToolButton *m_refreshButton = nullptr;
     QToolButton *m_homeButton = nullptr;
+    QToolButton *m_downloadButton = nullptr;
     QToolButton *m_menuButton = nullptr;
 
     QLineEdit *m_addressBar = nullptr;
