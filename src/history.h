@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QIcon>
+#include <QLineEdit>
 #include <QObject>
 #include <QTreeWidget>
 
@@ -26,6 +27,7 @@ public:
 
     QList<HistoryItem> getAllHistory() const;
     void updateHistoryWidget();
+    void updateTopLevelItems();
 
 Q_SIGNALS:
     void historyChanged();
@@ -38,6 +40,7 @@ private:
     QTreeWidgetItem *m_weekItem = nullptr;
     QTreeWidgetItem *m_monthItem = nullptr;
     QTreeWidgetItem *m_olderItem = nullptr;
+    QLineEdit *m_searchBox = nullptr;
 
     void createHistoryWidget();
 };

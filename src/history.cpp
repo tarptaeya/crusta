@@ -2,7 +2,6 @@
 #include "utils.h"
 
 #include <QHeaderView>
-#include <QLineEdit>
 #include <QMenu>
 #include <QSqlError>
 #include <QSqlQuery>
@@ -17,14 +16,29 @@ History::History()
 {
     m_historyWidget = new QWidget;
     m_treeWidget = new QTreeWidget;
-    m_todayItem = new QTreeWidgetItem;
-    m_weekItem = new QTreeWidgetItem;
-    m_monthItem = new QTreeWidgetItem;
-    m_olderItem = new QTreeWidgetItem;
+    m_searchBox = new QLineEdit;
 
+    updateTopLevelItems();
     createHistoryWidget();
 
     connect(this, &History::historyChanged, this, &History::updateHistoryWidget);
+    connect(m_searchBox, &QLineEdit::returnPressed, this, [this] {
+        const QString &text = m_searchBox->text();
+
+        QList<QTreeWidgetItem *> allItems = m_treeWidget->findItems(QStringLiteral(""), Qt::MatchContains | Qt::MatchRecursive);
+        for (QTreeWidgetItem *item : allItems) {
+            if (!item->parent()) {
+                item->setExpanded(true);
+                continue;
+            }
+            item->setHidden(true);
+        }
+
+        QList<QTreeWidgetItem *> items = m_treeWidget->findItems(text, Qt::MatchContains | Qt::MatchRecursive);
+        for (QTreeWidgetItem *item : items) {
+            item->setHidden(false);
+        }
+    });
 }
 
 void History::insertItem(const HistoryItem &item)
@@ -82,10 +96,9 @@ void History::createHistoryWidget()
     vboxLayout->setContentsMargins(0, 0, 0, 0);
     m_historyWidget->setLayout(vboxLayout);
 
-    QLineEdit *searchBox = new QLineEdit;
-    searchBox->setPlaceholderText(QStringLiteral("Search history..."));
-    searchBox->setClearButtonEnabled(true);
-    vboxLayout->addWidget(searchBox);
+    m_searchBox->setPlaceholderText(QStringLiteral("Search history..."));
+    m_searchBox->setClearButtonEnabled(true);
+    vboxLayout->addWidget(m_searchBox);
 
     vboxLayout->addWidget(m_treeWidget);
 
@@ -121,26 +134,7 @@ void History::updateHistoryWidget()
 {
     m_treeWidget->clear();
 
-    m_todayItem = new QTreeWidgetItem;
-    m_weekItem = new QTreeWidgetItem;
-    m_monthItem = new QTreeWidgetItem;
-    m_olderItem = new QTreeWidgetItem;
-
-    m_todayItem->setText(0, QStringLiteral("Today"));
-    m_todayItem->setFont(0, QFont("", -1, QFont::Bold));
-    m_treeWidget->addTopLevelItem(m_todayItem);
-
-    m_weekItem->setText(0, QStringLiteral("This week"));
-    m_weekItem->setFont(0, QFont("", -1, QFont::Bold));
-    m_treeWidget->addTopLevelItem(m_weekItem);
-
-    m_monthItem->setText(0, QStringLiteral("This month"));
-    m_monthItem->setFont(0, QFont("", -1, QFont::Bold));
-    m_treeWidget->addTopLevelItem(m_monthItem);
-
-    m_olderItem->setText(0, QStringLiteral("Older"));
-    m_olderItem->setFont(0, QFont("", -1, QFont::Bold));
-    m_treeWidget->addTopLevelItem(m_olderItem);
+    updateTopLevelItems();
 
     QTreeWidgetItem *previous = nullptr;
     const QList<HistoryItem> historyItems = getAllHistory();
@@ -168,4 +162,28 @@ void History::updateHistoryWidget()
     }
 
     m_todayItem->setExpanded(true);
+}
+
+void History::updateTopLevelItems()
+{
+    m_todayItem = new QTreeWidgetItem;
+    m_weekItem = new QTreeWidgetItem;
+    m_monthItem = new QTreeWidgetItem;
+    m_olderItem = new QTreeWidgetItem;
+
+    m_todayItem->setText(0, QStringLiteral("Today"));
+    m_todayItem->setFont(0, QFont("", -1, QFont::Bold));
+    m_treeWidget->addTopLevelItem(m_todayItem);
+
+    m_weekItem->setText(0, QStringLiteral("This week"));
+    m_weekItem->setFont(0, QFont("", -1, QFont::Bold));
+    m_treeWidget->addTopLevelItem(m_weekItem);
+
+    m_monthItem->setText(0, QStringLiteral("This month"));
+    m_monthItem->setFont(0, QFont("", -1, QFont::Bold));
+    m_treeWidget->addTopLevelItem(m_monthItem);
+
+    m_olderItem->setText(0, QStringLiteral("Older"));
+    m_olderItem->setFont(0, QFont("", -1, QFont::Bold));
+    m_treeWidget->addTopLevelItem(m_olderItem);
 }
