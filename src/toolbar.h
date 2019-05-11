@@ -49,7 +49,6 @@ private:
     QMenu *m_forwardMenu = nullptr;
 
     QAction *m_siteAction = nullptr;
-    QAction *m_permissionsAction = nullptr;
     QAction *m_bookmarksAction = nullptr;
 
     void setupAddressBar();

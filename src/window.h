@@ -22,6 +22,7 @@ Q_SIGNALS:
     void newWindowRequested();
     void newMainWindowRequested();
     void historyItemInserted();
+    void toggleSideBarRequested();
     void windowWillClose();
 
 private:

@@ -74,8 +74,12 @@ void Window::setupMenu()
     QAction *paste = edit->addAction(QStringLiteral("Paste"));
     edit->addSeparator();
 
+    QAction *toggleSideBar = view->addAction(QStringLiteral("Toggle sidebar"));
+
     newWindow->setShortcut(QKeySequence::New);
 
     connect(newWindow, &QAction::triggered, this, [this] { emit newMainWindowRequested(); });
     connect(newSplit, &QAction::triggered, this, [this] { emit newWindowRequested(); });
+
+    connect(toggleSideBar, &QAction::triggered, this, [this] { emit toggleSideBarRequested(); });
 }

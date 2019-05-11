@@ -89,7 +89,6 @@ void ToolBar::setUrl(const QUrl &url)
         m_siteAction->setIcon(QIcon::fromTheme(QStringLiteral("document-encrypted")));
     }
 
-    m_permissionsAction->setVisible(false);
     bookmarkChanged(!Bookmarks::isBookmarked(url.toString(QUrl::RemoveFragment)).url.isEmpty());
 }
 
@@ -186,17 +185,13 @@ void ToolBar::bookmarkChanged(const BookmarkItem &item, bool isBookmarked)
 void ToolBar::setupAddressBar()
 {
     m_siteAction = new QAction;
-    m_permissionsAction = new QAction;
     m_bookmarksAction = new QAction;
 
     m_siteAction->setIcon(QIcon::fromTheme(QStringLiteral("globe")));
     m_bookmarksAction->setIcon(QIcon::fromTheme(QStringLiteral("draw-star")));
 
     m_addressBar->addAction(m_siteAction, QLineEdit::LeadingPosition);
-    m_addressBar->addAction(m_permissionsAction, QLineEdit::LeadingPosition);
     m_addressBar->addAction(m_bookmarksAction, QLineEdit::TrailingPosition);
-
-    m_permissionsAction->setVisible(false);
 
     connect(m_bookmarksAction, &QAction::triggered, this, [this] {
         if (!m_tabWidget) {

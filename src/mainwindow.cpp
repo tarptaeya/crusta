@@ -59,6 +59,14 @@ Tab *MainWindow::createWindow()
         }
     });
 
+    connect(window, &Window::toggleSideBarRequested, this, [this] {
+        if (m_sideBar->isVisible()) {
+            m_sideBar->hide();
+        } else {
+            m_sideBar->show();
+        }
+    });
+
     return window->tabWidget()->tabAt(0);
 }
 
