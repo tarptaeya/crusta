@@ -18,9 +18,11 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(m_centralWidget);
 
     m_history = new History(this);
+    m_bookmarks = new Bookmarks(this);
     m_cookies = new Cookies(this);
     m_sideBar = new SideBar(this);
     m_sideBar->addItem(QStringLiteral("History"), m_history->historyWidget());
+    m_sideBar->addItem(QStringLiteral("Bookmarks"), m_bookmarks->bookmarksWidget());
     m_sideBar->addItem(QStringLiteral("Cookies"), m_cookies->cookiesWidget());
     m_centralWidget->addWidget(m_sideBar);
 

@@ -83,7 +83,7 @@ void ToolBar::setUrl(const QUrl &url)
     m_addressBar->setText(url.toDisplayString());
     m_addressBar->setCursorPosition(0);
 
-    bookmarkChanged(Bookmarks::isBookmarked(url.toString(QUrl::RemoveFragment)));
+    bookmarkChanged(!Bookmarks::isBookmarked(url.toString(QUrl::RemoveFragment)).url.isEmpty());
 }
 
 void ToolBar::loadStarted()
@@ -181,19 +181,26 @@ void ToolBar::setupAddressBar()
         const QString title = m_tabWidget->currentTab()->webView()->title();
         const QString url = m_tabWidget->currentTab()->webView()->url().toString(QUrl::RemoveFragment);
 
-        const bool isBookmarked = Bookmarks::isBookmarked(url);
+        BookmarkItem bookmarkItem = Bookmarks::isBookmarked(url);
 
         BookmarkItem item;
         item.icon = icon;
-        item.title = title;
         item.url = url;
+        item.title = bookmarkItem.title.isEmpty() ? title : bookmarkItem.title;
+        item.description = bookmarkItem.description;
+        item.folder = bookmarkItem.folder;
 
-        if (!isBookmarked) {
+        if (bookmarkItem.url.isEmpty()) {
             bookmarkChanged(item, true);
         }
 
-        QWidget *widget = Bookmarks::popupWidget(title, url);
-        connect(widget, &QWidget::destroyed, this, [this, item] { bookmarkChanged(item, Bookmarks::isBookmarked(item.url)); });
+        QWidget *widget = Bookmarks::popupWidget(item);
+        connect(widget, &QWidget::destroyed, this, [this, item] {
+            BookmarkItem bookmarkItem = Bookmarks::isBookmarked(item.url);
+            if (bookmarkItem.url.isEmpty()) {
+                bookmarkChanged(item, false);
+            }
+        });
         widget->show();
 
         int x = m_addressBar->x() + m_addressBar->width() - widget->width();

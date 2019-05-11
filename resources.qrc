@@ -34,5 +34,7 @@
         <file>icons/breeze/22/window-close-dull.svg</file>
         <file>themes/breeze-dark.qss</file>
         <file>themes/breeze.qss</file>
+        <file>icons/breeze/22/list-remove.svg</file>
+        <file>icons/breeze-dark/22/list-remove.svg</file>
     </qresource>
 </RCC>

@@ -1,3 +1,4 @@
+#include "bookmarks.h"
 #include "browser.h"
 #include "database.h"
 
