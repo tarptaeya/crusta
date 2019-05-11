@@ -22,6 +22,7 @@ Q_SIGNALS:
     void loadStarted();
     void loadFinished();
     void historyItemInserted();
+    void featurePermissionRequested(QWidget *widget);
     void windowCloseRequested();
 
 private:

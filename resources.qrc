@@ -36,5 +36,17 @@
         <file>themes/breeze.qss</file>
         <file>icons/breeze/22/list-remove.svg</file>
         <file>icons/breeze-dark/22/list-remove.svg</file>
+        <file>icons/breeze/22/document-encrypted.svg</file>
+        <file>icons/breeze/22/globe.svg</file>
+        <file>icons/breeze-dark/22/document-encrypted.svg</file>
+        <file>icons/breeze-dark/22/globe.svg</file>
+        <file>icons/breeze/22/audio-input-microphone.svg</file>
+        <file>icons/breeze/22/camera-off.svg</file>
+        <file>icons/breeze/22/camera-on.svg</file>
+        <file>icons/breeze/22/edit-paste-in-place.svg</file>
+        <file>icons/breeze-dark/22/audio-input-microphone.svg</file>
+        <file>icons/breeze-dark/22/camera-off.svg</file>
+        <file>icons/breeze-dark/22/camera-on.svg</file>
+        <file>icons/breeze-dark/22/edit-paste-in-place.svg</file>
     </qresource>
 </RCC>

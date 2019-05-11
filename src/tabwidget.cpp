@@ -139,6 +139,15 @@ int TabWidget::addTab(Tab *tab, bool isBackground, const QString &label)
                                                                                      tab->webView()->icon());
     });
 
+    connect(webView->page(), &WebPage::featurePermissionRequested, this, [this, tab] (const QUrl &securityOrigin, QWebEnginePage::Feature feature) {
+        int index = indexOf(tab);
+        if (index != currentIndex()) {
+            setCurrentIndex(index);
+        }
+
+        emit featurePermissionRequested(WebPage::featureWidget(tab->webView()->page(), securityOrigin, feature));
+    });
+
     int index = QTabWidget::addTab(tab, label);
     if (!isBackground) {
         setCurrentIndex(index);
