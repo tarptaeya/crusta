@@ -12,7 +12,8 @@
 
 #include <iostream>
 
-History::History()
+History::History(QObject *parent)
+    : QObject (parent)
 {
     m_historyWidget = new QWidget;
     m_treeWidget = new QTreeWidget;

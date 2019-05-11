@@ -12,6 +12,8 @@
 
 #include <iostream>
 
+QList<QNetworkCookie> Cookies::s_cookies = QList<QNetworkCookie>();
+
 Cookies::Cookies(QObject *parent)
     : QObject (parent)
 {
@@ -33,34 +35,14 @@ Cookies::Cookies(QObject *parent)
     vboxLayout->addWidget(m_treeWidget);
     vboxLayout->addWidget(m_infoWidget);
 
-    Browser::instance()->profile()->cookieStore()->loadAllCookies();
-
     connect(Browser::instance()->profile()->cookieStore(), &QWebEngineCookieStore::cookieAdded, this, [this] (const QNetworkCookie &cookie) {
-        const QString &domain = cookie.domain();
-
-        QTreeWidgetItem *parent = m_domains.value(domain, nullptr);
-        if (!parent) {
-            parent = new QTreeWidgetItem;
-            parent->setText(0, domain);
-            m_treeWidget->addTopLevelItem(parent);
-            m_domains.insert(domain, parent);
-        }
-
-        QTreeWidgetItem *item = new QTreeWidgetItem;
-        item->setText(0, cookie.name());
-        m_items.insert(item, cookie);
-        m_cookies.insert(cookie, item);
-        parent->addChild(item);
+        s_cookies.append(cookie);
+        addCookie(cookie);
     });
 
     connect(Browser::instance()->profile()->cookieStore(), &QWebEngineCookieStore::cookieRemoved, this, [this] (const QNetworkCookie &cookie) {
-        QTreeWidgetItem *item = m_cookies.value(cookie, nullptr);
-        m_cookies.remove(cookie);
-        if (!item) {
-            std::cerr << "[!] treeitem associated with cookie is null, please report it!" << std::endl;
-        }
-        m_items.remove(item);
-        delete item;
+        s_cookies.removeAll(cookie);
+        removeCookie(cookie);
     });
 
     connect(m_treeWidget, &QTreeWidget::itemClicked, this, [this] (QTreeWidgetItem *item, int column) {
@@ -71,7 +53,13 @@ Cookies::Cookies(QObject *parent)
             return ;
         }
 
-        const QNetworkCookie cookie = m_items.value(item);
+        CookieTreeItem *cookieItem = dynamic_cast<CookieTreeItem *>(item);
+        if (!cookieItem) {
+            std::cerr << "[!] " << __FUNCTION__ << " cannot cast QTreeWidgetItem * to CookieTreeItem *: please report it!" << std::endl;
+            return;
+        }
+
+        const QNetworkCookie cookie = QNetworkCookie(cookieItem->cookie);
         showInfo(cookie);
     });
 
@@ -93,6 +81,45 @@ Cookies::Cookies(QObject *parent)
 QWidget *Cookies::cookiesWidget()
 {
     return m_widget;
+}
+
+void Cookies::addCookie(const QNetworkCookie &cookie)
+{
+    const QString &domain = cookie.domain();
+
+    QTreeWidgetItem *parent = m_domains.value(domain, nullptr);
+    if (!parent) {
+        parent = new QTreeWidgetItem;
+        parent->setText(0, domain);
+        m_treeWidget->addTopLevelItem(parent);
+        m_domains.insert(domain, parent);
+    }
+
+    CookieTreeItem *item = new CookieTreeItem;
+    item->setText(0, cookie.name());
+    item->cookie = cookie;
+    parent->addChild(item);
+}
+
+void Cookies::removeCookie(const QNetworkCookie &cookie)
+{
+    QList<QTreeWidgetItem *> domainItems = m_treeWidget->findItems(cookie.domain(), Qt::MatchExactly);
+
+    for (QTreeWidgetItem *parent : domainItems) {
+        for (int i = 0; i < parent->childCount(); i++) {
+            CookieTreeItem *cookieItem = dynamic_cast<CookieTreeItem *>(parent->child(i));
+            if (!cookieItem) {
+                std::cerr << "[!] " << __FUNCTION__ << " cannot cast QTreeWidgetItem * to CookieTreeItem *: please report it!" << std::endl;
+                continue;
+            }
+
+            if (cookieItem->cookie.hasSameIdentifier(cookie)) {
+                parent->removeChild(cookieItem);
+                delete cookieItem;
+                return;
+            }
+        }
+    }
 }
 
 void Cookies::setupInfoWidget()
@@ -140,10 +167,20 @@ void Cookies::setupInfoWidget()
             return ;
         }
 
-        QNetworkCookie cookie = m_items.value(item);
+        CookieTreeItem *cookieItem = dynamic_cast<CookieTreeItem *>(item);
+        if (!cookieItem) {
+            std::cerr << "[!] " << __FUNCTION__ << " cannot cast QTreeWidgetItem * to CookieTreeItem *: please report it!" << std::endl;
+            return;
+        }
+
+        QNetworkCookie cookie = QNetworkCookie(cookieItem->cookie);
         Browser::instance()->profile()->cookieStore()->deleteCookie(cookie);
         clearInfo();
     });
+
+    for (const QNetworkCookie &cookie : s_cookies) {
+        addCookie(cookie);
+    }
 }
 
 void Cookies::showInfo(const QNetworkCookie &cookie)

@@ -19,7 +19,7 @@ class History : public QObject
     Q_OBJECT
 
 public:
-    explicit History();
+    explicit History(QObject *parent = nullptr);
 
     static void insertItem(const HistoryItem &item);
     static void removeItem(const QString &title);

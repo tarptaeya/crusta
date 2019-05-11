@@ -9,6 +9,12 @@
 #include <QTreeWidget>
 #include <QWidget>
 
+class CookieTreeItem : public QTreeWidgetItem
+{
+public:
+    QNetworkCookie cookie;
+};
+
 class Cookies : public QObject
 {
 public:
@@ -29,15 +35,13 @@ private:
     QPushButton *m_deleteButton = nullptr;
 
     QMap<QString, QTreeWidgetItem *> m_domains;
-    QMap<QTreeWidgetItem *, QNetworkCookie> m_items;
-    QMap<QNetworkCookie, QTreeWidgetItem *> m_cookies;
+
+    static QList<QNetworkCookie> s_cookies;
+
+    void addCookie(const QNetworkCookie &cookie);
+    void removeCookie(const QNetworkCookie &cookie);
 
     void setupInfoWidget();
     void showInfo(const QNetworkCookie &cookie);
     void clearInfo();
 };
-
-inline bool operator<(const QNetworkCookie &a, const QNetworkCookie b)
-{
-    return QString(a.domain() + a.name()) < QString(b.domain() + b.name());
-}
