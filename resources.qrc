@@ -1,22 +1,38 @@
 <RCC>
     <qresource prefix="/">
         <file>themes/base.qss</file>
-        <file>themes/default.qss</file>
-        <file>icons/default/index.theme</file>
-        <file>icons/default/22/audio-volume-full.svg</file>
-        <file>icons/default/22/audio-volume-muted.svg</file>
-        <file>icons/default/24/application-menu.svg</file>
-        <file>icons/default/24/go-home.svg</file>
-        <file>icons/default/24/go-next.svg</file>
-        <file>icons/default/24/go-previous.svg</file>
-        <file>icons/default/24/list-add.svg</file>
-        <file>icons/default/24/process-stop.svg</file>
-        <file>icons/default/24/view-refresh.svg</file>
-        <file>icons/default/24/window-close.svg</file>
-        <file>icons/default/24/window-close-dull.svg</file>
         <file>api/eobject.js</file>
-        <file>icons/default/22/draw-star-red.svg</file>
-        <file>icons/default/22/draw-star.svg</file>
-        <file>icons/default/22/edit-download.svg</file>
+        <file>icons/breeze/index.theme</file>
+        <file>icons/breeze/22/application-menu.svg</file>
+        <file>icons/breeze/22/audio-off.svg</file>
+        <file>icons/breeze/22/audio-on.svg</file>
+        <file>icons/breeze/22/draw-star-red.svg</file>
+        <file>icons/breeze/22/draw-star.svg</file>
+        <file>icons/breeze/22/edit-download.svg</file>
+        <file>icons/breeze/22/go-home.svg</file>
+        <file>icons/breeze/22/go-next.svg</file>
+        <file>icons/breeze/22/go-previous.svg</file>
+        <file>icons/breeze/22/list-add.svg</file>
+        <file>icons/breeze/22/process-stop.svg</file>
+        <file>icons/breeze/22/view-refresh.svg</file>
+        <file>icons/breeze/22/window-close.svg</file>
+        <file>icons/breeze-dark/index.theme</file>
+        <file>icons/breeze-dark/22/application-menu.svg</file>
+        <file>icons/breeze-dark/22/audio-off.svg</file>
+        <file>icons/breeze-dark/22/audio-on.svg</file>
+        <file>icons/breeze-dark/22/draw-star-red.svg</file>
+        <file>icons/breeze-dark/22/draw-star.svg</file>
+        <file>icons/breeze-dark/22/edit-download.svg</file>
+        <file>icons/breeze-dark/22/go-home.svg</file>
+        <file>icons/breeze-dark/22/go-next.svg</file>
+        <file>icons/breeze-dark/22/go-previous.svg</file>
+        <file>icons/breeze-dark/22/list-add.svg</file>
+        <file>icons/breeze-dark/22/process-stop.svg</file>
+        <file>icons/breeze-dark/22/view-refresh.svg</file>
+        <file>icons/breeze-dark/22/window-close.svg</file>
+        <file>icons/breeze-dark/22/window-close-dull.svg</file>
+        <file>icons/breeze/22/window-close-dull.svg</file>
+        <file>themes/breeze-dark.qss</file>
+        <file>themes/breeze.qss</file>
     </qresource>
 </RCC>

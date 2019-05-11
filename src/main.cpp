@@ -6,6 +6,8 @@
 
 #include "theme.h"
 
+#include <QDebug>
+
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
@@ -16,9 +18,15 @@ int main(int argc, char **argv)
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QStringLiteral(":/icons/"));
-    QIcon::setThemeName(QStringLiteral("default"));
 
-    Theme::setThemeName(QStringLiteral("default"));
+    QString themeName(QStringLiteral("breeze"));
+    // TODO: check for other good way to check dark mode
+    if (app.palette().window().color().red() < 200) {
+        themeName = QStringLiteral("breeze-dark");
+    }
+
+    QIcon::setThemeName(themeName);
+    Theme::setThemeName(themeName);
 
     EWebPage webPage;
 

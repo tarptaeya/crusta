@@ -134,8 +134,8 @@ int TabWidget::addTab(Tab *tab, bool isBackground, const QString &label)
 
     connect(webView->page(), &WebPage::recentlyAudibleChanged, this, [this, tab] (bool recentlyAudible) {
         int index = indexOf(tab);
-        setTabIcon(index, tab->webView()->page()->isAudioMuted() ? QIcon::fromTheme(QStringLiteral("audio-volume-muted")) :
-                                                                   recentlyAudible ? QIcon::fromTheme(QStringLiteral("audio-volume-full")) :
+        setTabIcon(index, tab->webView()->page()->isAudioMuted() ? QIcon::fromTheme(QStringLiteral("audio-off")) :
+                                                                   recentlyAudible ? QIcon::fromTheme(QStringLiteral("audio-on")) :
                                                                                      tab->webView()->icon());
     });
 

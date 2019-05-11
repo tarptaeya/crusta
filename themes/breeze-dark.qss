@@ -1,0 +1,11 @@
+QTabBar::close-button {
+    image: url(:icons/breeze-dark/22/window-close-dull.svg);
+}
+
+QTabBar::close-button:hover {
+    image: url(:icons/breeze-dark/22/window-close.svg);
+}
+
+QToolBar {
+    border-bottom: none;
+}
