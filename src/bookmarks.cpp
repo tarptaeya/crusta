@@ -2,6 +2,7 @@
 #include "utils.h"
 
 #include <QComboBox>
+#include <QCursor>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -22,6 +23,7 @@
 QStringList Bookmarks::s_folderNames = QStringList() << QStringLiteral("Blogs")
                                                      << QStringLiteral("Business")
                                                      << QStringLiteral("Entertainment")
+                                                     << QStringLiteral("General")
                                                      << QStringLiteral("News")
                                                      << QStringLiteral("Shopping")
                                                      << QStringLiteral("Social")
@@ -55,6 +57,7 @@ BookmarkItem Bookmarks::isBookmarked(const QString &url)
     }
 
     BookmarkItem item;
+    item.icon = Utils::iconFromByteArray(sql.value(sql.record().indexOf(QStringLiteral("icon"))).toByteArray());
     item.title = sql.value(sql.record().indexOf(QStringLiteral("title"))).toString();
     item.url = sql.value(sql.record().indexOf(QStringLiteral("url"))).toString();
     item.description = sql.value(sql.record().indexOf(QStringLiteral("description"))).toString();
@@ -136,7 +139,8 @@ QWidget *Bookmarks::popupWidget(const BookmarkItem &item)
 
     connect(save, &QPushButton::clicked, [title, description, folder, widget, item] {
         QSqlQuery sql;
-        sql.prepare(QStringLiteral("update bookmarks set title = ?, description = ?, folder = ? where url = ?"));
+        sql.prepare(QStringLiteral("update bookmarks set icon = ?, title = ?, description = ?, folder = ? where url = ?"));
+        sql.addBindValue(Utils::iconToByteArray(item.icon));
         sql.addBindValue(title->text());
         sql.addBindValue(description->text());
         sql.addBindValue(folder->currentText());
@@ -155,7 +159,6 @@ void Bookmarks::setupBookmarksWidget()
 {
     m_widget = new QWidget;
     m_treeWidget = new QTreeWidget;
-    m_searchBox = new QLineEdit;
     m_folderBox = new QComboBox;
     m_addFolderButton = new QToolButton;
     m_removeFolderButton = new QToolButton;
@@ -166,8 +169,6 @@ void Bookmarks::setupBookmarksWidget()
 
     vboxLayout->setContentsMargins(0, 0, 0, 0);
 
-    vboxLayout->addWidget(m_searchBox);
-
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->addWidget(m_folderBox);
     hboxLayout->addWidget(m_addFolderButton);
@@ -176,8 +177,6 @@ void Bookmarks::setupBookmarksWidget()
     vboxLayout->addLayout(hboxLayout);
     vboxLayout->addWidget(m_treeWidget);
 
-    m_searchBox->setPlaceholderText(QStringLiteral("Search bookmarks..."));
-    m_searchBox->setClearButtonEnabled(true);
     m_addFolderButton->setAutoRaise(true);
     m_removeFolderButton->setAutoRaise(true);
     m_refreshButton->setAutoRaise(true);
@@ -189,15 +188,54 @@ void Bookmarks::setupBookmarksWidget()
     m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
     m_treeWidget->header()->hide();
 
-    updateBookmarksWidget();
-
-    connect(m_refreshButton, &QToolButton::clicked, this, &Bookmarks::updateBookmarksWidget);
-}
-
-void Bookmarks::updateBookmarksWidget()
-{
-    s_folderNames.sort();
     for (const QString &folderName : s_folderNames) {
         m_folderBox->addItem(folderName);
+    }
+
+    connect(m_refreshButton, &QToolButton::clicked, this, &Bookmarks::showFolderItems);
+    connect(m_folderBox, &QComboBox::currentTextChanged, this, [this] { showFolderItems(); });
+    connect(m_treeWidget, &QTreeWidget::itemDoubleClicked, this, [this] {
+        BookmarkTreeItem *item = dynamic_cast<BookmarkTreeItem *>(m_treeWidget->currentItem());
+        if (!item) {
+            return ;
+        }
+
+        QWidget *widget = Bookmarks::popupWidget(item->bookmarkItem);
+        connect(widget, &QWidget::destroyed, this, &Bookmarks::showFolderItems);
+        widget->show();
+
+        widget->move(QCursor::pos());
+    });
+}
+
+void Bookmarks::showFolderItems()
+{
+    const QString folder = m_folderBox->currentText();
+    QSqlQuery sql;
+    sql.prepare(QStringLiteral("select * from bookmarks where folder = ? order by title"));
+    sql.addBindValue(folder);
+
+    m_treeWidget->clear();
+
+    if (!sql.exec()) {
+        std::cerr << "unable to select bookmarks based on folder: " << sql.lastError().text().toStdString() << std::endl;
+    }
+
+    while (sql.next()) {
+        BookmarkItem bookmarkItem;
+        bookmarkItem.icon = Utils::iconFromByteArray(sql.value(sql.record().indexOf(QStringLiteral("icon"))).toByteArray());
+        bookmarkItem.title = sql.value(sql.record().indexOf(QStringLiteral("title"))).toString();
+        bookmarkItem.url = sql.value(sql.record().indexOf(QStringLiteral("url"))).toString();
+        bookmarkItem.description = sql.value(sql.record().indexOf(QStringLiteral("description"))).toString();
+        bookmarkItem.folder = sql.value(sql.record().indexOf(QStringLiteral("folder"))).toString();
+
+        BookmarkTreeItem *item = new BookmarkTreeItem;
+        item->bookmarkItem = bookmarkItem;
+
+        item->setIcon(0, bookmarkItem.icon);
+        item->setText(0, bookmarkItem.title);
+        item->setToolTip(0, bookmarkItem.description);
+
+        m_treeWidget->addTopLevelItem(item);
     }
 }

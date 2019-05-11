@@ -14,7 +14,13 @@ struct BookmarkItem
     QString title;
     QString url;
     QString description;
-    QString folder;
+    QString folder = QStringLiteral("General");
+};
+
+class BookmarkTreeItem : public QTreeWidgetItem
+{
+public:
+    BookmarkItem bookmarkItem;
 };
 
 class Bookmarks : public QObject
@@ -34,12 +40,11 @@ public:
 private:
     QWidget *m_widget = nullptr;
     QTreeWidget *m_treeWidget = nullptr;
-    QLineEdit *m_searchBox = nullptr;
     QComboBox *m_folderBox = nullptr;
     QToolButton *m_addFolderButton = nullptr;
     QToolButton *m_removeFolderButton = nullptr;
     QToolButton *m_refreshButton = nullptr;
 
     void setupBookmarksWidget();
-    void updateBookmarksWidget();
+    void showFolderItems();
 };
