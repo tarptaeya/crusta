@@ -7,6 +7,7 @@
 #include "window.h"
 
 #include <QEvent>
+#include <QSettings>
 
 #include <iostream>
 
@@ -27,6 +28,11 @@ MainWindow::MainWindow(QWidget *parent)
     m_centralWidget->addWidget(m_sideBar);
 
     setAttribute(Qt::WA_DeleteOnClose);
+
+    QSettings settings;
+    if (!settings.value(QStringLiteral("appearance/sidebar"), false).toBool()) {
+        m_sideBar->hide();
+    }
 
     connect(m_history, &History::newTabRequested, this, [this] (const QUrl &url) {
         Window *window = dynamic_cast<Window *>(m_centralWidget->widget(1));

@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QStyleFactory>
 #include <QIcon>
+#include <QWebEngineUrlScheme>
 
 #include "theme.h"
 
@@ -15,6 +16,11 @@ int main(int argc, char **argv)
     app.setAttribute(Qt::AA_EnableHighDpiScaling);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
+    app.setOrganizationName(QStringLiteral("Crusta"));
+    app.setOrganizationDomain(QStringLiteral("crustabrowser.com"));
+    app.setApplicationName(QStringLiteral("Crusta"));
+    app.setApplicationVersion(QStringLiteral("2.0.0"));
+
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QStringLiteral(":/icons/"));
 
     QString themeName(QStringLiteral("breeze"));
@@ -25,6 +31,10 @@ int main(int argc, char **argv)
 
     QIcon::setThemeName(themeName);
     Theme::setThemeName(themeName);
+
+    QWebEngineUrlScheme scheme("crusta");
+    scheme.setFlags(QWebEngineUrlScheme::SecureScheme);
+    QWebEngineUrlScheme::registerScheme(scheme);
 
     EWebPage webPage;
 

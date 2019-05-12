@@ -3,6 +3,7 @@
 #include "window.h"
 
 #include <QAction>
+#include <QSettings>
 
 Window::Window(QWidget *parent)
     : QMainWindow (parent)
@@ -54,6 +55,8 @@ void Window::closeEvent(QCloseEvent *event)
 
 void Window::setupMenu()
 {
+    QSettings settings;
+
     QMenu *file = m_menu->addMenu(QStringLiteral("&File"));
     QMenu *edit = m_menu->addMenu(QStringLiteral("&Edit"));
     QMenu *view = m_menu->addMenu(QStringLiteral("&View"));
@@ -74,12 +77,21 @@ void Window::setupMenu()
     QAction *paste = edit->addAction(QStringLiteral("Paste"));
     edit->addSeparator();
 
-    QAction *toggleSideBar = view->addAction(QStringLiteral("Toggle sidebar"));
+    QAction *toggleSideBar = view->addAction(QStringLiteral("Side bar"));
+    toggleSideBar->setCheckable(true);
+    toggleSideBar->setChecked(true);
+    if (!settings.value(QStringLiteral("appearance/sidebar"), false).toBool()) {
+        toggleSideBar->setChecked(false);
+    }
 
     newWindow->setShortcut(QKeySequence::New);
 
     connect(newWindow, &QAction::triggered, this, [this] { emit newMainWindowRequested(); });
     connect(newSplit, &QAction::triggered, this, [this] { emit newWindowRequested(); });
 
-    connect(toggleSideBar, &QAction::triggered, this, [this] { emit toggleSideBarRequested(); });
+    connect(toggleSideBar, &QAction::triggered, this, [this] {
+        QSettings settings;
+        settings.setValue(QStringLiteral("appearance/sidebar"), !settings.value(QStringLiteral("appearance/sidebar"), false).toBool());
+        emit toggleSideBarRequested();
+    });
 }

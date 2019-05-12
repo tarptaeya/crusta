@@ -42,7 +42,7 @@ bool WebView::isLoading() const
 
 void WebView::loadHome()
 {
-    load(QUrl("https://google.com"));
+    load(QUrl("crusta://startpage"));
 }
 
 void WebView::loadNewTabPage()

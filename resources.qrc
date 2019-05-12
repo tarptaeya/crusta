@@ -48,5 +48,6 @@
         <file>icons/breeze-dark/22/camera-off.svg</file>
         <file>icons/breeze-dark/22/camera-on.svg</file>
         <file>icons/breeze-dark/22/edit-paste-in-place.svg</file>
+        <file>html/startpage.html</file>
     </qresource>
 </RCC>

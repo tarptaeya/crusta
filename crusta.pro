@@ -9,6 +9,7 @@ HEADERS += \
     src/bookmarks.h \
     src/browser.h \
     src/cookies.h \
+    src/crscheme.h \
     src/database.h \
     src/history.h \
     src/mainwindow.h \
@@ -30,6 +31,7 @@ SOURCES += \
     src/bookmarks.cpp \
     src/browser.cpp \
     src/cookies.cpp \
+    src/crscheme.cpp \
     src/database.cpp \
     src/history.cpp \
     src/mainwindow.cpp \

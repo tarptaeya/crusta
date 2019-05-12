@@ -10,6 +10,9 @@ public:
     explicit SideBar(QWidget *parent = nullptr);
     void addItem(const QString &title, QWidget *widget);
 
+    void show();
+    void hide();
+
 private:
     QComboBox *m_comboBox = nullptr;
     QStackedWidget *m_widget = nullptr;

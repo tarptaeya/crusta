@@ -1,4 +1,5 @@
 #include "browser.h"
+#include "crscheme.h"
 #include "database.h"
 #include "mainwindow.h"
 #include "tab.h"
@@ -64,4 +65,7 @@ Browser *Browser::instance()
 void Browser::setupProfile()
 {
     m_profile = m_isPrivate ? new QWebEngineProfile : QWebEngineProfile::defaultProfile();
+
+    CRScheme *handler = new CRScheme(this);
+    m_profile->installUrlSchemeHandler("crusta", handler);
 }

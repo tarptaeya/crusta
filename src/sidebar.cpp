@@ -3,6 +3,7 @@
 #include "sidebar.h"
 
 #include <QHBoxLayout>
+#include <QSettings>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -26,7 +27,12 @@ SideBar::SideBar(QWidget *parent)
     vboxLayout->addWidget(m_widget);
     setLayout(vboxLayout);
 
-    connect(closeButton, &QToolButton::clicked, this, [this] { hide(); });
+    connect(closeButton, &QToolButton::clicked, this, [this] {
+        QSettings settings;
+        settings.setValue(QStringLiteral("appearance/sidebar"), false);
+
+        hide();
+    });
     connect(m_comboBox, &QComboBox::currentTextChanged, this, [this] { m_widget->setCurrentIndex(m_comboBox->currentIndex()); });
 }
 
@@ -34,4 +40,14 @@ void SideBar::addItem(const QString &title, QWidget *widget)
 {
     m_comboBox->addItem(title);
     m_widget->addWidget(widget);
+}
+
+void SideBar::show()
+{
+    QWidget::show();
+}
+
+void SideBar::hide()
+{
+    QWidget::hide();
 }
