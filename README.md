@@ -6,11 +6,15 @@
 
 Crusta is a feature rich, modern web-browser, based on powerful Qt5 framework. Crusta aims to be fast, lightweight and powerful browser. Crusta is available for Mac, Linux and Windows.
 
-## Install
-### Prebuild binaries
-Prebuild binaries for Crusta (v2.0.0) will soon be available for Mac and Windows.
+![Screenshot](https://github.com/Crusta/CrustaBrowser/blob/readme-patch/ScreenShots/Screenshot%202019-05-13%20at%202.37.34%20PM.png)
 
-### From source
+## Features
+- Split Mode
+- Cookie manager
+- History and bookmarks manager
+- Extensible sidebar
+
+## Building
 **Prerequisite:** Please make sure that Qt5 (>= 5.11) is installed on your system.
 
 After checking that Qt5 is installed on your system, clone the repository using `git clone https://github.com/crusta/crustabrowser` and then from the project root directory execute the following commands  
@@ -22,8 +26,5 @@ make
 make install
 ```
 
-## Features
-- Split Mode
-- Cookie manager
-- History and bookmarks manager
-- Extensible sidebar
+## License
+Crusta is licensed under the GNU GPLv3 License - see the [LICENSE](https://github.com/Crusta/CrustaBrowser/blob/readme-patch/LICENSE) file for details
