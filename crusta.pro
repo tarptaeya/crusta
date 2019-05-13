@@ -13,6 +13,7 @@ HEADERS += \
     src/database.h \
     src/history.h \
     src/mainwindow.h \
+    src/preferences.h \
     src/sidebar.h \
     src/tab.h \
     src/tabwidget.h \
@@ -35,6 +36,7 @@ SOURCES += \
     src/database.cpp \
     src/history.cpp \
     src/mainwindow.cpp \
+    src/preferences.cpp \
     src/sidebar.cpp \
     src/tab.cpp \
     src/tabwidget.cpp \
@@ -51,10 +53,10 @@ RESOURCES += \
 macx {
 LIBS += -framework Foundation -framework Cocoa
 
-HEADERS += \
+OBJECTIVE_HEADERS += \
     mac/mac_utils.h
 
-SOURCES += \
+OBJECTIVE_SOURCES += \
     mac/mac_utils.mm
 
 ICON = mac/logos.icns

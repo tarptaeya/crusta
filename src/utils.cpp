@@ -28,6 +28,15 @@ void Utils::removeTitleBar(WId windowId)
 #endif
 }
 
+void Utils::setMovableByBackground(WId windowId)
+{
+#ifdef __APPLE__
+    MacUtils::setMovableByBackground(windowId);
+#else
+    Q_UNUSED(windowId);
+#endif
+}
+
 QByteArray Utils::iconToByteArray(const QIcon &icon)
 {
     QPixmap pixmap = icon.pixmap(16, 16);

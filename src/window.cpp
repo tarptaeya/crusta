@@ -1,3 +1,4 @@
+#include "preferences.h"
 #include "tabwidget.h"
 #include "toolbar.h"
 #include "window.h"
@@ -63,6 +64,8 @@ void Window::setupMenu()
     QMenu *history = m_menu->addMenu(QStringLiteral("&History"));
     QMenu *session = m_menu->addMenu(QStringLiteral("&Sessions"));
     QMenu *tools = m_menu->addMenu(QStringLiteral("&Tools"));
+    m_menu->addSeparator();
+    QAction *preferences = m_menu->addAction(QStringLiteral("Preferences"));
 
     QAction *newWindow = file->addAction(QStringLiteral("New Window"));
     QAction *newPrivateWindow = file->addAction(QStringLiteral("New Private Window"));
@@ -93,5 +96,10 @@ void Window::setupMenu()
         QSettings settings;
         settings.setValue(QStringLiteral("appearance/sidebar"), !settings.value(QStringLiteral("appearance/sidebar"), false).toBool());
         emit toggleSideBarRequested();
+    });
+
+    connect(preferences, &QAction::triggered, this, [this] {
+        Preferences *preferences = new Preferences;
+        preferences->show();
     });
 }
