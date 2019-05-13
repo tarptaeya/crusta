@@ -1,3 +1,8 @@
+QPushButton#default {
+    color: white;
+    background-color: #3374E0;
+}
+
 QTabBar::close-button {
     image: url(:icons/breeze/22/window-close-dull.svg);
 }

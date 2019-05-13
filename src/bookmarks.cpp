@@ -132,6 +132,8 @@ QWidget *Bookmarks::popupWidget(const BookmarkItem &item)
 
     folder->setCurrentText(item.folder);
 
+    save->setObjectName(QStringLiteral("default"));
+
     connect(remove, &QPushButton::clicked, [item, widget] {
         Bookmarks::removeBookmark(item.url);
         widget->close();
