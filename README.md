@@ -6,7 +6,7 @@
 
 Crusta is a feature rich, modern web-browser, based on powerful Qt5 framework. Crusta aims to be fast, lightweight and powerful browser. Crusta is available for Mac, Linux and Windows.
 
-![Screenshot](https://github.com/Crusta/CrustaBrowser/blob/readme-patch/ScreenShots/Screenshot%202019-05-13%20at%202.37.34%20PM.png)
+![Screenshot](https://github.com/Crusta/CrustaBrowser/blob/master/ScreenShots/Screenshot%202019-05-13%20at%202.37.34%20PM.png)
 
 ## Features
 - Split Mode
