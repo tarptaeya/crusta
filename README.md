@@ -9,9 +9,10 @@ Crusta is a feature rich, modern web-browser, based on powerful Qt5 framework. C
 ![Screenshot](https://github.com/Crusta/CrustaBrowser/blob/master/ScreenShots/Screenshot%202019-05-13%20at%202.37.34%20PM.png)
 
 ## Features
-- Split Mode
+- Split mode
 - Cookie manager
 - History and bookmarks manager
+- Private browsing
 - Extensible sidebar
 
 ## Building
