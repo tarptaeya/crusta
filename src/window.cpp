@@ -5,6 +5,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QMessageBox>
 #include <QProcess>
 #include <QSettings>
 
@@ -89,6 +90,8 @@ void Window::setupMenu()
         toggleSideBar->setChecked(false);
     }
 
+    QAction *resetCrusta = tools->addAction(QStringLiteral("Reset Crusta"));
+
     newWindow->setShortcut(QKeySequence::New);
 
     connect(newWindow, &QAction::triggered, this, [this] { emit newMainWindowRequested(); });
@@ -101,7 +104,17 @@ void Window::setupMenu()
         emit toggleSideBarRequested();
     });
 
-    connect(preferences, &QAction::triggered, this, [this] {
+    connect(resetCrusta, &QAction::triggered, this, [this] {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, QStringLiteral("Reset Crusta"), QStringLiteral("Are you sure you want to reset Crusta?\nThis operation cannot be undone"));
+        if (reply == QMessageBox::No) {
+            return ;
+        }
+
+        QSettings().clear();
+    });
+
+    connect(preferences, &QAction::triggered, [] {
         Preferences *preferences = new Preferences;
         preferences->show();
     });
