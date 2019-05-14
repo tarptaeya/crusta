@@ -14,12 +14,14 @@ HEADERS += \
     src/history.h \
     src/mainwindow.h \
     src/preferences.h \
+    src/searchengine.h \
     src/sidebar.h \
     src/tab.h \
     src/tabwidget.h \
     src/theme.h \
     src/toolbar.h \
     src/utils.h \
+    src/webobject.h \
     src/webpage.h \
     src/webview.h \
     src/window.h
@@ -37,12 +39,14 @@ SOURCES += \
     src/history.cpp \
     src/mainwindow.cpp \
     src/preferences.cpp \
+    src/searchengine.cpp \
     src/sidebar.cpp \
     src/tab.cpp \
     src/tabwidget.cpp \
     src/theme.cpp \
     src/toolbar.cpp \
     src/utils.cpp \
+    src/webobject.cpp \
     src/webpage.cpp \
     src/webview.cpp \
     src/window.cpp

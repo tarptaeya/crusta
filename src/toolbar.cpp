@@ -2,6 +2,7 @@
 #include "tabwidget.h"
 #include "tab.h"
 #include "toolbar.h"
+#include "utils.h"
 #include "webview.h"
 
 #include <QMenu>
@@ -160,6 +161,30 @@ void ToolBar::setTabWidget(TabWidget *tabWidget)
 
         widget->move(point);
     });
+
+    connect(m_tabWidget, &TabWidget::engineFound, this, [this] (QWidget *widget, Engine engine) {
+        m_engineButton->setIcon(m_tabWidget->currentTab()->webView()->icon());
+        m_engineButton->setToolTip(engine.name);
+        m_engineButton->setVisible(true);
+
+        QMetaObject::Connection connection = connect(m_tabWidget->currentTab()->webView(), &WebView::iconChanged, [this](const QIcon &icon) { m_engineButton->setIcon(icon); });
+
+        m_addressBar->update();
+
+        connect(widget, &QWidget::destroyed, [this, connection] {
+            disconnect(connection);
+            m_engineButton->setVisible(false);
+        });
+
+        widget->show();
+
+        int x = m_addressBar->x();
+        int y = m_addressBar->y() + m_addressBar->height();
+
+        QPoint point = mapToGlobal(QPoint(x, y));
+
+        widget->move(point);
+    });
 }
 
 void ToolBar::bookmarkChanged(bool isBookmarked)
@@ -185,13 +210,17 @@ void ToolBar::bookmarkChanged(const BookmarkItem &item, bool isBookmarked)
 void ToolBar::setupAddressBar()
 {
     m_siteAction = new QAction;
+    m_engineButton = new QAction;
     m_bookmarksAction = new QAction;
 
     m_siteAction->setIcon(QIcon::fromTheme(QStringLiteral("globe")));
     m_bookmarksAction->setIcon(QIcon::fromTheme(QStringLiteral("draw-star")));
 
     m_addressBar->addAction(m_siteAction, QLineEdit::LeadingPosition);
+    m_addressBar->addAction(m_engineButton, QLineEdit::LeadingPosition);
     m_addressBar->addAction(m_bookmarksAction, QLineEdit::TrailingPosition);
+
+    m_engineButton->setVisible(false);
 
     connect(m_bookmarksAction, &QAction::triggered, this, [this] {
         if (!m_tabWidget) {

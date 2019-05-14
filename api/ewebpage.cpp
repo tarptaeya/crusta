@@ -39,5 +39,4 @@ EWebPage::EWebPage(QObject *parent)
 
 EWebPage::~EWebPage()
 {
-    webChannel()->deleteLater();
 }

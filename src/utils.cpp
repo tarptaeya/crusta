@@ -5,6 +5,7 @@
 #endif
 
 #include <QBuffer>
+#include <QByteArray>
 #include <QFile>
 #include <QIcon>
 #include <QPixmap>

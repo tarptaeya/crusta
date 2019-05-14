@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "webview.h"
 
+#include <QDir>
 #include <QWebChannel>
 #include <QWebEnginePage>
 #include <QWebEngineScript>
@@ -68,4 +69,25 @@ void Browser::setupProfile()
 
     CRScheme *handler = new CRScheme(this);
     m_profile->installUrlSchemeHandler("crusta", handler);
+
+    QWebEngineScript webChannel;
+    webChannel.setName(QStringLiteral("web-channel"));
+    webChannel.setWorldId(QWebEngineScript::ApplicationWorld);
+    webChannel.setSourceCode(Utils::readFile(QStringLiteral(":/qtwebchannel/qwebchannel.js")));
+    webChannel.setInjectionPoint(QWebEngineScript::DocumentCreation);
+    webChannel.setRunsOnSubFrames(false);
+    m_profile->scripts()->insert(webChannel);
+
+    QDir scriptsDir(QStringLiteral(":/scripts"));
+    const QStringList scripts = scriptsDir.entryList();
+    for (const QString &scriptPath : scripts) {
+        QWebEngineScript script;
+        script.setName(QStringLiteral("%1").arg(scriptPath).remove(QStringLiteral(".js")));
+        script.setWorldId(QWebEngineScript::ApplicationWorld);
+        script.setSourceCode(Utils::readFile(QStringLiteral(":/scripts/%1").arg(scriptPath)));
+        script.setInjectionPoint(QWebEngineScript::DocumentReady);
+        script.setRunsOnSubFrames(false);
+
+        m_profile->scripts()->insert(script);
+    }
 }

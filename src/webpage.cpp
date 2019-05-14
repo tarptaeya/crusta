@@ -1,3 +1,4 @@
+#include "webobject.h"
 #include "webpage.h"
 
 #include <QCheckBox>
@@ -5,10 +6,19 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QWebChannel>
+#include <QWebEngineScript>
 
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage (profile, parent)
 {
+    QWebChannel *channel = new QWebChannel(this);
+    WebObject *webObject = new WebObject(this);
+    channel->registerObject(QStringLiteral("browser"), webObject);
+
+    setWebChannel(channel, QWebEngineScript::ApplicationWorld);
+
+    connect(webObject, &WebObject::engineFound, this, [this] (QWidget *widget, Engine engine) { emit engineFound(widget, engine); });
 }
 
 QWidget *WebPage::featureWidget(QWebEnginePage *page, const QUrl &securityOrigin, QWebEnginePage::Feature feature)

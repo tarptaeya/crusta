@@ -148,6 +148,15 @@ int TabWidget::addTab(Tab *tab, bool isBackground, const QString &label)
         emit featurePermissionRequested(WebPage::featureWidget(tab->webView()->page(), securityOrigin, feature));
     });
 
+    connect(webView->page(), &WebPage::engineFound, this, [this, tab] (QWidget *widget, Engine engine) {
+        int index = indexOf(tab);
+        if (index != currentIndex()) {
+            setCurrentIndex(index);
+        }
+
+        emit engineFound(widget, engine);
+    });
+
     int index = QTabWidget::addTab(tab, label);
     if (!isBackground) {
         setCurrentIndex(index);

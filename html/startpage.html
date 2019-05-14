@@ -1,12 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Welcome</title>
-    <style>
-    </style>
+
+<meta charset="utf-8">
+<title>Welcome</title>
+<style>
+
+html, body {
+width: 100%;
+height: 100%;
+margin: 0;
+}
+
+.container {
+display: flex;
+flex: 1;
+}
+
+.engine {
+width: 24px;
+height: 24px;
+margin-right: 5px;
+background-size: cover;
+}
+
+.fat {
+flex: 2;
+}
+
+.flex-center {
+justify-content: center;
+align-items: center;
+}
+
+.root {
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+}
+
+.search {
+display: flex;
+padding: 10px;
+border-radius: 4px;
+box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, 0.16), 0 1px 2px 0 rgba(0, 0, 0, 0.32);
+}
+
+.searchbox {
+font-size: 14px;
+border: none;
+outline: none;
+width: 480px;
+}
+
+</style>
+
 </head>
 <body>
-    <div></div>
+
+<div class="root">
+    <!-- main content -->
+    <div class="container flex-center">
+        <div class="search">
+            <div class="engine"></div>
+            <input class="searchbox">
+        </div>
+    </div>
+
+    <!-- message box -->
+    <div class="fat container"></div>
+</div>
+
 </body>
 </html>
