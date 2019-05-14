@@ -15,7 +15,7 @@ Database::Database(bool isPrivate)
     }
 
     m_db = QSqlDatabase::addDatabase(driver);
-    m_db.setDatabaseName(isPrivate ? QStringLiteral(":memory:") : QStringLiteral("crdatabase"));
+    m_db.setDatabaseName(isPrivate ? QStringLiteral("") : QStringLiteral("crdatabase"));
     if (!m_db.open()) {
         std::cerr << "unable to open database: " << m_db.lastError().text().toStdString() << std::endl;
         return;

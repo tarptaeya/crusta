@@ -18,7 +18,7 @@ public:
     QWebEngineProfile *profile();
 
     bool isPrivate() const;
-    static Browser *instance();
+    static Browser *instance(bool isPrivate = false);
 
 private:
     bool m_isPrivate = false;

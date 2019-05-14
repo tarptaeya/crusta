@@ -56,9 +56,9 @@ bool Browser::isPrivate() const
     return m_isPrivate;
 }
 
-Browser *Browser::instance()
+Browser *Browser::instance(bool isPrivate)
 {
-    static Browser *b = new Browser;
+    static Browser *b = new Browser(isPrivate);
     return b;
 }
 

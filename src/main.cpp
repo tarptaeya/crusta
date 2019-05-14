@@ -1,11 +1,15 @@
 #include "api/ewebpage.h"
 #include "browser.h"
+#include "theme.h"
+
 #include <QApplication>
+#include <QCommandLineOption>
+#include <QCommandLineParser>
 #include <QStyleFactory>
 #include <QIcon>
 #include <QWebEngineUrlScheme>
 
-#include "theme.h"
+#include <iostream>
 
 int main(int argc, char **argv)
 {
@@ -20,6 +24,12 @@ int main(int argc, char **argv)
     app.setOrganizationDomain(QStringLiteral("crustabrowser.com"));
     app.setApplicationName(QStringLiteral("Crusta"));
     app.setApplicationVersion(QStringLiteral("2.0.0"));
+
+    QCommandLineParser parser;
+    QCommandLineOption privateOption(QStringLiteral("private"), QCoreApplication::translate("main", "Open browser in private mode"));
+    parser.addOption(privateOption);
+
+    parser.process(app);
 
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QStringLiteral(":/icons/"));
 
@@ -38,7 +48,9 @@ int main(int argc, char **argv)
 
     EWebPage webPage;
 
-    Browser::instance()->run();
+    bool isPrivate = parser.isSet(privateOption);
+
+    Browser::instance(isPrivate)->run();
     int retCode = app.exec();
     Browser::instance()->deleteLater();
 

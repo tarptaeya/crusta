@@ -4,6 +4,8 @@
 #include "window.h"
 
 #include <QAction>
+#include <QApplication>
+#include <QProcess>
 #include <QSettings>
 
 Window::Window(QWidget *parent)
@@ -90,6 +92,7 @@ void Window::setupMenu()
     newWindow->setShortcut(QKeySequence::New);
 
     connect(newWindow, &QAction::triggered, this, [this] { emit newMainWindowRequested(); });
+    connect(newPrivateWindow, &QAction::triggered, this, [] { QProcess::startDetached(QStringLiteral("%1 --private").arg(qApp->applicationFilePath())); });
     connect(newSplit, &QAction::triggered, this, [this] { emit newWindowRequested(); });
 
     connect(toggleSideBar, &QAction::triggered, this, [this] {
