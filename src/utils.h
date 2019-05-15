@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QString>
-#include <QWidget>
+#include <QWebEngineView>
 
 class Utils
 {
@@ -13,4 +13,6 @@ public:
     static QByteArray iconToByteArray(const QIcon &icon);
     static QIcon iconFromByteArray(const QByteArray &byteArray);
     static QIcon iconFromBase64(const QString &base64);
+
+    static QWidget *webIconLabel(const QUrl &url);
 };

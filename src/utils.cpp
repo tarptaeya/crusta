@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QIcon>
 #include <QPixmap>
+#include <QWebEngineProfile>
 
 QString Utils::readFile(const QString &filePath)
 {
@@ -55,4 +56,42 @@ QIcon Utils::iconFromByteArray(const QByteArray &byteArray)
     QPixmap pixmap = QPixmap();
     pixmap.loadFromData(byteArray);
     return QIcon(pixmap);
+}
+
+QWidget *Utils::webIconLabel(const QUrl &url)
+{
+    QWebEngineView *view = new QWebEngineView;
+    QWebEngineProfile *profile = new QWebEngineProfile;
+    QWebEnginePage *page = new QWebEnginePage(profile);
+
+    view->setPage(page);
+
+    view->setHtml(QStringLiteral("<!DOCTYPE html>"
+                                 "<html>"
+                                 "<head>"
+                                 "<style>"
+                                 "html, body {"
+                                 "width: 100%;"
+                                 "height: 100%;"
+                                 "margin: 0;"
+                                 "}"
+                                 "body {"
+                                 "background-image: url(%1);"
+                                 "background-size: cover;"
+                                 "background-repeat: norepeat;"
+                                 "background-color: transparent;"
+                                 "}"
+                                 "</style>"
+                                 "</head>"
+                                 "<body>"
+                                 "</body>"
+                                 "</html>").arg(url.toString()));
+
+    view->setFixedSize(24, 24);
+    QObject::connect(view, &QWebEngineView::destroyed, [page, profile] {
+        page->deleteLater();
+        profile->deleteLater();
+    });
+
+    return view;
 }

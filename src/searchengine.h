@@ -16,6 +16,8 @@ class SearchEngine : public QObject
 public:
     explicit SearchEngine(QObject *parent = nullptr);
 
+    static QList<Engine> knownEngines();
+
     Q_INVOKABLE void openSearchFound(const QString &name, const QString &description, const QString &url, const QString &favicon);
     Q_INVOKABLE QString defaultSearchEngineFaviconUrl();
 

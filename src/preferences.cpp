@@ -1,4 +1,5 @@
 #include "preferences.h"
+#include "searchengine.h"
 #include "utils.h"
 
 #include <QCheckBox>
@@ -8,6 +9,8 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QTabWidget>
@@ -169,6 +172,33 @@ QWidget *Preferences::createSearchEngineTab()
     QWidget *widget = new QWidget;
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     widget->setLayout(vboxLayout);
+
+    QListWidget *list = new QListWidget;
+    QList<Engine> knownEngines = SearchEngine::knownEngines();
+    for (const Engine &engine : knownEngines) {
+        QWidget *widget = new QWidget;
+
+        QWidget *iconLabel = Utils::webIconLabel(QUrl(engine.url).resolved(engine.favicon));
+        QLabel *nameLabel = new QLabel(QStringLiteral("<b>%1</b>").arg(engine.name));
+        QLabel *descriptionLabel = new QLabel(engine.description);
+
+        descriptionLabel->setWordWrap(true);
+
+        QGridLayout *grid = new QGridLayout;
+        grid->addWidget(iconLabel, 1, 1);
+        grid->addWidget(nameLabel, 1, 2);
+        grid->addWidget(descriptionLabel, 2, 2);
+
+        widget->setLayout(grid);
+
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setSizeHint(widget->sizeHint());
+
+        list->addItem(item);
+        list->setItemWidget(item, widget);
+    }
+
+    vboxLayout->addWidget(list);
     return widget;
 }
 

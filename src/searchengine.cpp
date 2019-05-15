@@ -12,6 +12,20 @@ SearchEngine::SearchEngine(QObject *parent)
 {
 }
 
+QList<Engine> SearchEngine::knownEngines()
+{
+    QList<Engine> engines(originalKnownEngines());
+
+    QSettings settings;
+    QStringList enginesString = settings.value(QStringLiteral("searchengine/engines")).toStringList();
+    for (const QString &engineString : enginesString) {
+        Engine engine = convertStringToEngine(engineString);
+        engines.append(engine);
+    }
+
+    return engines;
+}
+
 void SearchEngine::openSearchFound(const QString &name, const QString &description, const QString &url, const QString &favicon)
 {
     if (name.isEmpty() || url.isEmpty() || isAlreadyPresent(name)) {
@@ -69,10 +83,8 @@ QString SearchEngine::defaultSearchEngineFaviconUrl()
 
 bool SearchEngine::isAlreadyPresent(const QString &name)
 {
-    QSettings settings;
-    QStringList engines = settings.value(QStringLiteral("searchengine/engines")).toStringList();
-    for (const QString &engineString : engines) {
-        Engine engine = convertStringToEngine(engineString);
+    QList<Engine> engines = knownEngines();
+    for (const Engine &engine : engines) {
         if (engine.name == name) {
             return true;
         }
