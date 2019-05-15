@@ -26,6 +26,19 @@ QList<Engine> SearchEngine::knownEngines()
     return engines;
 }
 
+void SearchEngine::makeDefault(const Engine &engine)
+{
+    QSettings settings;
+    settings.setValue(QStringLiteral("searchengine/default"), convertEngineToString(engine));
+}
+
+Engine SearchEngine::defaultEngine()
+{
+    QSettings settings;
+    QString engine = settings.value(QStringLiteral("searchengine/default"), convertEngineToString(originalDefaultEngine())).toString();
+    return convertStringToEngine(engine);
+}
+
 void SearchEngine::openSearchFound(const QString &name, const QString &description, const QString &url, const QString &favicon)
 {
     if (name.isEmpty() || url.isEmpty() || isAlreadyPresent(name)) {
@@ -74,9 +87,7 @@ void SearchEngine::openSearchFound(const QString &name, const QString &descripti
 
 QString SearchEngine::defaultSearchEngineFaviconUrl()
 {
-    QSettings settings;
-    QString engineString = settings.value(QStringLiteral("searchengine/default"), convertEngineToString(originalDefaultEngine())).toString();
-    Engine engine = convertStringToEngine(engineString);
+    Engine engine = defaultEngine();
     QUrl url(engine.url);
     return url.resolved(engine.favicon).toString();
 }

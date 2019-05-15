@@ -1,5 +1,8 @@
 #pragma once
 
+#include "searchengine.h"
+
+#include <QListWidgetItem>
 #include <QTabWidget>
 #include <QWidget>
 
@@ -16,4 +19,10 @@ private:
     QWidget *createBrowsingTab();
     QWidget *createSearchEngineTab();
     QWidget *createWebEngineTab();
+};
+
+class EngineListWidgetItem : public QListWidgetItem
+{
+public:
+    Engine engine;
 };

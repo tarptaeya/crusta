@@ -1,5 +1,4 @@
 #include "preferences.h"
-#include "searchengine.h"
 #include "utils.h"
 
 #include <QCheckBox>
@@ -10,7 +9,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
-#include <QListWidgetItem>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QTabWidget>
@@ -191,14 +189,47 @@ QWidget *Preferences::createSearchEngineTab()
 
         widget->setLayout(grid);
 
-        QListWidgetItem *item = new QListWidgetItem;
+        EngineListWidgetItem *item = new EngineListWidgetItem;
+        item->engine = engine;
         item->setSizeHint(widget->sizeHint());
+        item->setSelected(true);
 
         list->addItem(item);
         list->setItemWidget(item, widget);
     }
 
+    QLabel *currentDefault = new QLabel;
+    QPushButton *makeDefault = new QPushButton;
+
     vboxLayout->addWidget(list);
+    QHBoxLayout *hboxLayout = new QHBoxLayout;
+    hboxLayout->addWidget(currentDefault, 1);
+    hboxLayout->addWidget(makeDefault, 0);
+    vboxLayout->addLayout(hboxLayout);
+
+    currentDefault->setText(QStringLiteral("%1 is set as default").arg(SearchEngine::defaultEngine().name));
+    makeDefault->hide();
+
+    connect(list, &QListWidget::currentItemChanged, [makeDefault] (QListWidgetItem *item) {
+        EngineListWidgetItem *engineItem = dynamic_cast<EngineListWidgetItem *>(item);
+        if (!engineItem) {
+            return ;
+        }
+
+        makeDefault->show();
+        makeDefault->setText(QStringLiteral("Use %1 as default").arg(engineItem->engine.name));
+    });
+
+    connect(makeDefault, &QPushButton::clicked, [list, currentDefault] {
+        QListWidgetItem *item = list->currentItem();
+        EngineListWidgetItem *engineItem = dynamic_cast<EngineListWidgetItem *>(item);
+        if (!engineItem) {
+            return ;
+        }
+
+        SearchEngine::makeDefault(engineItem->engine);
+        currentDefault->setText(QStringLiteral("%1 is set as default").arg(engineItem->engine.name));
+    });
     return widget;
 }
 
