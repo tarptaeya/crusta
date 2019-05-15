@@ -41,6 +41,18 @@ Engine SearchEngine::defaultEngine()
 
 QString SearchEngine::searchUrlFromQuery(const QString &query)
 {
+    if (query.startsWith(QStringLiteral("https://")) ||
+        query.startsWith(QStringLiteral("http://")) ||
+        query.startsWith(QStringLiteral("crusta://"))) {
+        if (!query.contains(QLatin1Char(' '))) {
+            return query;
+        }
+    }
+
+    if (query.contains(QLatin1Char('.')) && !query.contains(QLatin1Char(' '))) {
+        return query;
+    }
+
     Engine engine = defaultEngine();
     QString url = engine.url;
     return url.replace(QStringLiteral("{searchTerms}"), query);
