@@ -10,3 +10,8 @@ QToolButton::menu-indicator {
     width: 20px;
     height: 40px;
 }
+
+#PrivateButton {
+    width: 20px;
+    height: 40px;
+}

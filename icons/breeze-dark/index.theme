@@ -1,11 +1,10 @@
 [Icon Theme]
 Name=breeze-dark
 Comment=breeze dark icon theme, modified for crusta
-Directories=22
+Directories=16,22
+
+[16]
+Size=16
 
 [22]
 Size=22
-
-[24]
-Size=24
-

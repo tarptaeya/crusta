@@ -1,3 +1,4 @@
+#include "browser.h"
 #include "tab.h"
 #include "tabwidget.h"
 #include "webpage.h"
@@ -29,6 +30,16 @@ TabWidget::TabWidget(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
 
     setCornerWidget(m_newTabButton);
+    if (Browser::instance()->isPrivate()) {
+        m_privateButton = new QToolButton;
+        m_privateButton->setAutoRaise(true);
+        m_privateButton->setObjectName(QStringLiteral("PrivateButton"));
+        m_privateButton->setIcon(QIcon::fromTheme(QStringLiteral("view-private")));
+
+        m_privateButton->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+        setCornerWidget(m_privateButton, Qt::TopLeftCorner);
+    }
 
     addTab(new Tab);
 

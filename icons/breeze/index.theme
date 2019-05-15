@@ -1,11 +1,10 @@
 [Icon Theme]
 Name=fallback
 Comment=fallback icon theme for crusta
-Directories=22,24
+Directories=16,22
+
+[16]
+Size=16
 
 [22]
 Size=22
-
-[24]
-Size=24
-
