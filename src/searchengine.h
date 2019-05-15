@@ -17,6 +17,7 @@ public:
     explicit SearchEngine(QObject *parent = nullptr);
 
     Q_INVOKABLE void openSearchFound(const QString &name, const QString &description, const QString &url, const QString &favicon);
+    Q_INVOKABLE QString defaultSearchEngineFaviconUrl();
 
 Q_SIGNALS:
     void engineFound(QWidget *widget, Engine engine);
@@ -26,4 +27,12 @@ private:
 
     static QString convertEngineToString(const Engine &engine);
     static Engine convertStringToEngine(const QString &string);
+
+    void modifyEngineUrl(const Engine &engine);
+
+    static Engine originalDefaultEngine();
+    static QList<Engine> originalKnownEngines();
+
+    static Engine ecosia();
+    static Engine google();
 };

@@ -16,6 +16,7 @@ HEADERS += \
     src/preferences.h \
     src/searchengine.h \
     src/sidebar.h \
+    src/startpage.h \
     src/tab.h \
     src/tabwidget.h \
     src/theme.h \
@@ -41,6 +42,7 @@ SOURCES += \
     src/preferences.cpp \
     src/searchengine.cpp \
     src/sidebar.cpp \
+    src/startpage.cpp \
     src/tab.cpp \
     src/tabwidget.cpp \
     src/theme.cpp \

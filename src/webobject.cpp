@@ -6,6 +6,7 @@ WebObject::WebObject(QObject *parent)
     : QObject (parent)
 {
     m_searchEngine = new SearchEngine(this);
+    m_startPage = new StartPage(this);
 
     connect(m_searchEngine, &SearchEngine::engineFound, [this] (QWidget *widget) { emit popupRequested(widget); });
 }
@@ -13,4 +14,9 @@ WebObject::WebObject(QObject *parent)
 QObject *WebObject::searchEngine()
 {
     return m_searchEngine;
+}
+
+QObject *WebObject::startPage()
+{
+    return m_startPage;
 }

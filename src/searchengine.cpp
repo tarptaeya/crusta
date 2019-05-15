@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QSettings>
+#include <QUrl>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -57,6 +58,15 @@ void SearchEngine::openSearchFound(const QString &name, const QString &descripti
     emit engineFound(widget, engine);
 }
 
+QString SearchEngine::defaultSearchEngineFaviconUrl()
+{
+    QSettings settings;
+    QString engineString = settings.value(QStringLiteral("searchengine/default"), convertEngineToString(originalDefaultEngine())).toString();
+    Engine engine = convertStringToEngine(engineString);
+    QUrl url(engine.url);
+    return url.resolved(engine.favicon).toString();
+}
+
 bool SearchEngine::isAlreadyPresent(const QString &name)
 {
     QSettings settings;
@@ -86,4 +96,34 @@ Engine SearchEngine::convertStringToEngine(const QString &string)
     engine.url = list[2];
     engine.favicon = list[3];
     return engine;
+}
+
+Engine SearchEngine::originalDefaultEngine()
+{
+    return ecosia();
+}
+
+QList<Engine> SearchEngine::originalKnownEngines()
+{
+    QList<Engine> engines;
+    engines.append(ecosia());
+    engines.append(google());
+
+    return engines;
+}
+
+Engine SearchEngine::ecosia()
+{
+    return { QStringLiteral("Ecosia"),
+             QStringLiteral("Search the web to plant trees"),
+             QStringLiteral("https://www.ecosia.org/search?tt=crusta&q={searchTerms}"),
+             QStringLiteral("https://cdn.ecosia.org/assets/images/ico/favicon.ico")};
+}
+
+Engine SearchEngine::google()
+{
+    return { QStringLiteral("Google"),
+             QStringLiteral(""),
+             QStringLiteral("https://google.com/search?client=crusta&q={searchTerms}"),
+             QStringLiteral("https://google.com/favicon.ico")};
 }

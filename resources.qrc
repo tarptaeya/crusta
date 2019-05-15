@@ -53,5 +53,6 @@
         <file>scripts/webobject.js</file>
         <file>icons/breeze/16/view-private.svg</file>
         <file>icons/breeze-dark/16/view-private.svg</file>
+        <file>scripts/startpage.js</file>
     </qresource>
 </RCC>
