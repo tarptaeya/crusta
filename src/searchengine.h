@@ -20,6 +20,8 @@ public:
     static void makeDefault(const Engine &engine);
     static Engine defaultEngine();
 
+    Q_INVOKABLE static QString searchUrlFromQuery(const QString &query);
+
     Q_INVOKABLE void openSearchFound(const QString &name, const QString &description, const QString &url, const QString &favicon);
     Q_INVOKABLE QString defaultSearchEngineFaviconUrl();
 

@@ -1,4 +1,5 @@
 #include "bookmarks.h"
+#include "searchengine.h"
 #include "tabwidget.h"
 #include "tab.h"
 #include "toolbar.h"
@@ -76,6 +77,15 @@ ToolBar::ToolBar(QWidget *parent)
         }
 
         m_tabWidget->currentTab()->webView()->loadHome();
+    });
+    connect(m_addressBar, &QLineEdit::returnPressed, [this] {
+        if (!m_tabWidget) {
+            return ;
+        }
+
+        QString query = m_addressBar->text();
+        QString url = SearchEngine::searchUrlFromQuery(query);
+        m_tabWidget->currentTab()->webView()->load(QUrl::fromUserInput(url));
     });
 }
 

@@ -39,6 +39,13 @@ Engine SearchEngine::defaultEngine()
     return convertStringToEngine(engine);
 }
 
+QString SearchEngine::searchUrlFromQuery(const QString &query)
+{
+    Engine engine = defaultEngine();
+    QString url = engine.url;
+    return url.replace(QStringLiteral("{searchTerms}"), query);
+}
+
 void SearchEngine::openSearchFound(const QString &name, const QString &description, const QString &url, const QString &favicon)
 {
     if (name.isEmpty() || url.isEmpty() || isAlreadyPresent(name)) {
