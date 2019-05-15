@@ -44,6 +44,13 @@ Tab *Browser::createMainWindow()
 
     mainWindow->show();
 
+    if (m_mainWindows.length() > 1) {
+        QPoint topLeft = m_mainWindows.at(m_mainWindows.length() - 2)->geometry().topLeft();
+        topLeft.setX(topLeft.x() + 20);
+        topLeft.setY(topLeft.y() + 10);
+        mainWindow->move(topLeft);
+    }
+
     return tab;
 }
 
