@@ -150,22 +150,13 @@ int TabWidget::addTab(Tab *tab, bool isBackground, const QString &label)
                                                                                      tab->webView()->icon());
     });
 
-    connect(webView->page(), &WebPage::featurePermissionRequested, this, [this, tab] (const QUrl &securityOrigin, QWebEnginePage::Feature feature) {
+    connect(webView->page(), &WebPage::popupRequested, [this, tab] (QWidget *widget) {
         int index = indexOf(tab);
         if (index != currentIndex()) {
             setCurrentIndex(index);
         }
 
-        emit featurePermissionRequested(WebPage::featureWidget(tab->webView()->page(), securityOrigin, feature));
-    });
-
-    connect(webView->page(), &WebPage::engineFound, this, [this, tab] (QWidget *widget, Engine engine) {
-        int index = indexOf(tab);
-        if (index != currentIndex()) {
-            setCurrentIndex(index);
-        }
-
-        emit engineFound(widget, engine);
+        emit popupRequested(widget);
     });
 
     int index = QTabWidget::addTab(tab, label);

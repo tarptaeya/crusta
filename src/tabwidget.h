@@ -1,7 +1,5 @@
 #pragma once
 
-#include "searchengine.h"
-
 #include <QToolButton>
 #include <QTabWidget>
 #include <QWebEngineHistory>
@@ -24,8 +22,7 @@ Q_SIGNALS:
     void loadStarted();
     void loadFinished();
     void historyItemInserted();
-    void featurePermissionRequested(QWidget *widget);
-    void engineFound(QWidget *widget, Engine engine);
+    void popupRequested(QWidget *widget);
     void windowCloseRequested();
 
 private:

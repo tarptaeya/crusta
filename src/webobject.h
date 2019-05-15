@@ -12,7 +12,7 @@ public:
     explicit WebObject(QObject *parent = nullptr);
 
 Q_SIGNALS:
-    void engineFound(QWidget *widget, Engine engine);
+    void popupRequested(QWidget *widget);
 
 private:
     SearchEngine *m_searchEngine = nullptr;

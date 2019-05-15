@@ -18,10 +18,15 @@ WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
 
     setWebChannel(channel, QWebEngineScript::ApplicationWorld);
 
-    connect(webObject, &WebObject::engineFound, this, [this] (QWidget *widget, Engine engine) { emit engineFound(widget, engine); });
+    connect(webObject, &WebObject::popupRequested, [this] (QWidget *widget) { emit popupRequested(widget); });
+
+    connect(this, &WebPage::featurePermissionRequested, [this] (const QUrl &securityOrigin, WebPage::Feature feature) {
+        QWidget *widget = featureWidget(this, securityOrigin, feature);
+        emit popupRequested(widget);
+    });
 }
 
-QWidget *WebPage::featureWidget(QWebEnginePage *page, const QUrl &securityOrigin, QWebEnginePage::Feature feature)
+QWidget *WebPage::featureWidget(QWebEnginePage *page, const QUrl &securityOrigin, WebPage::Feature feature)
 {
     QWidget *widget = new QWidget;
     widget->setAttribute(Qt::WA_DeleteOnClose);

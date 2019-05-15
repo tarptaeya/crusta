@@ -27,6 +27,8 @@ public:
     void bookmarkChanged(bool isBookmarked);
     void bookmarkChanged(const BookmarkItem &item, bool isBookmarked);
 
+    void showPopup(QWidget *widget);
+
 Q_SIGNALS:
     void backRequested();
     void forwardRequested();
@@ -49,7 +51,7 @@ private:
     QMenu *m_forwardMenu = nullptr;
 
     QAction *m_siteAction = nullptr;
-    QAction *m_engineButton = nullptr;
+    QAction *m_popupButton = nullptr;
     QAction *m_bookmarksAction = nullptr;
 
     void setupAddressBar();
