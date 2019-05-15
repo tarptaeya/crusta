@@ -34,6 +34,12 @@ MainWindow::MainWindow(QWidget *parent)
         m_sideBar->hide();
     }
 
+    restoreGeometry(settings.value(QStringLiteral("mainwindow/geometry")).toByteArray());
+    restoreState(settings.value(QStringLiteral("mainwindow/windowstate")).toByteArray());
+    if (settings.value(QStringLiteral("mainwindow/geometry")).toByteArray().isEmpty()) {
+        resize(800, 600);
+    }
+
     connect(m_history, &History::newTabRequested, this, [this] (const QUrl &url) {
         Window *window = dynamic_cast<Window *>(m_centralWidget->widget(1));
         if (!window) {
@@ -86,6 +92,10 @@ void MainWindow::show()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     emit mainWindowWillClose();
+
+    QSettings settings;
+    settings.setValue(QStringLiteral("mainwindow/geometry"), saveGeometry());
+    settings.setValue(QStringLiteral("mainwindow/windowstate"), saveState());
 
     QMainWindow::closeEvent(event);
 }
