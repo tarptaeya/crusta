@@ -4,13 +4,14 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSettings>
 
 StartPage::StartPage(QObject *parent)
     : QObject (parent)
 {
 }
 
-QJsonObject StartPage::newDialPopup()
+void StartPage::newDialPopup()
 {
     QDialog widget;
     widget.setWindowFlag(Qt::FramelessWindowHint);
@@ -39,11 +40,50 @@ QJsonObject StartPage::newDialPopup()
     connect(&cancel, &QPushButton::clicked, [&widget] { widget.reject(); });
     connect(&save, &QPushButton::clicked, [&widget] { widget.accept(); });
     if (widget.exec() == QDialog::Rejected) {
-        return QJsonObject();
+        return;
     }
 
     QJsonObject object;
     object.insert(QStringLiteral("title"), title.text());
     object.insert(QStringLiteral("address"), address.text());
-    return object;
+
+    saveDial(title.text(), address.text());
+
+    emit dialAdded(object);
+}
+
+void StartPage::loadAllDials()
+{
+    QSettings settings;
+    QStringList titles = settings.value(QStringLiteral("speeddial/titles")).toStringList();
+    QStringList addresses = settings.value(QStringLiteral("speeddial/addresses")).toStringList();
+
+    Q_ASSERT(titles.length() == addresses.length());
+
+    for (int i = 0; i < titles.length(); i++) {
+        QJsonObject dial;
+        dial.insert(QStringLiteral("title"), titles[i]);
+        dial.insert(QStringLiteral("address"), addresses[i]);
+
+        emit dialAdded(dial);
+    }
+}
+
+void StartPage::saveDial(const QString &title, const QString &url)
+{
+    QSettings settings;
+    QStringList titles = settings.value(QStringLiteral("speeddial/titles")).toStringList();
+    QStringList addresses = settings.value(QStringLiteral("speeddial/addresses")).toStringList();
+
+    Q_ASSERT(titles.length() == addresses.length());
+
+    if (addresses.contains(url)) {
+        return;
+    }
+
+    titles.append(title);
+    addresses.append(url);
+
+    settings.setValue(QStringLiteral("speeddial/titles"), titles);
+    settings.setValue(QStringLiteral("speeddial/addresses"), addresses);
 }

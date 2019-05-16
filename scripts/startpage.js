@@ -3,9 +3,8 @@
 // ==/UserScript==
 
 function setSearchEngineIcon() {
-    const el = document.querySelector('#engine-logo');
     window.external.browser.searchEngine.defaultSearchEngineFaviconUrl(function(url) {
-        el.style.backgroundImage = `url(${url})`;
+        document.querySelector('#engine-logo').style.backgroundImage = `url(${url})`;
     });
 }
 
@@ -24,34 +23,42 @@ function setupSearchBox() {
 function setupSpeedDial() {
     const el = document.querySelector('#new-dial');
     el.addEventListener('click', function () {
-        window.external.browser.startPage.newDialPopup(function(d) {
-            if (d.address === undefined || d.title === undefined) {
-                return;
-            }
-
-            if (d.address === '' || d.title === '') {
-                return;
-            }
-
-            const dial = document.createElement('div');
-            dial.className = 'dial';
-            const image = document.createElement('div');
-            image.className = 'image';
-            image.style.backgroundImage = `url(${d.address}/favicon.ico)`;
-            const text = document.createElement('div');
-            text.textContent = d.title;
-            dial.appendChild(image);
-            dial.appendChild(text);
-
-            document.querySelector('.dials').insertBefore(dial, el);
-        });
+        window.external.browser.startPage.newDialPopup();
     })
+}
+
+function createDial(d) {
+    const dial = document.createElement('div');
+    dial.className = 'dial';
+    const image = document.createElement('div');
+    image.className = 'image';
+    image.style.backgroundImage = `url(${d.address}/favicon.ico)`;
+    const text = document.createElement('div');
+    text.textContent = d.title;
+    dial.appendChild(image);
+    dial.appendChild(text);
+
+    dial.addEventListener('click', function() {
+        window.location.href = d.address;
+    })
+
+    document.querySelector('.dials').insertBefore(dial, document.querySelector('#new-dial'));
+}
+
+function loadDials() {
+    window.external.browser.startPage.dialAdded.connect(function(dial) {
+        createDial(dial);
+    });
+
+    window.external.browser.startPage.loadAllDials();
 }
 
 function init() {
     setSearchEngineIcon();
     setupSearchBox();
     setupSpeedDial();
+
+    loadDials();
 }
 
 if (window.external.browser === undefined) {
