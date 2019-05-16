@@ -43,7 +43,8 @@ int main(int argc, char **argv)
     Theme::setThemeName(themeName);
 
     QWebEngineUrlScheme scheme("crusta");
-    scheme.setFlags(QWebEngineUrlScheme::SecureScheme);
+    scheme.setFlags(QWebEngineUrlScheme::LocalScheme);
+    scheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
     QWebEngineUrlScheme::registerScheme(scheme);
 
     EWebPage webPage;

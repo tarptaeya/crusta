@@ -54,9 +54,6 @@ QWidget *WebPage::featureWidget(QWebEnginePage *page, const QUrl &securityOrigin
 
     vboxLayout->addWidget(label);
 
-    QCheckBox *rememberBox = new QCheckBox(QStringLiteral("Remember my choice"));
-    vboxLayout->addWidget(rememberBox);
-
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     vboxLayout->addLayout(hboxLayout);
 

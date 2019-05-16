@@ -42,12 +42,12 @@ bool WebView::isLoading() const
 
 void WebView::loadHome()
 {
-    load(QUrl("crusta://startpage"));
+    load(QUrl("crusta:startpage"));
 }
 
 void WebView::loadNewTabPage()
 {
-    load(QUrl("https://google.com"));
+    load(QUrl("crusta:startpage"));
 }
 
 WebView *WebView::createWindow(QWebEnginePage::WebWindowType type)

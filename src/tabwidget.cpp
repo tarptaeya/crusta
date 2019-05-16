@@ -57,6 +57,8 @@ TabWidget::TabWidget(QWidget *parent)
         emit urlChanged(tab->webView()->url());
         emit historyChanged(tab->webView()->history());
 
+        tab->webView()->setFocus();
+
         if (tab->webView()->isLoading()) {
             emit loadStarted();
         } else {

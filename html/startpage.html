@@ -12,9 +12,45 @@ height: 100%;
 margin: 0;
 }
 
+.center {
+justify-content: center;
+}
+
 .container {
 display: flex;
-flex: 1;
+}
+
+.dial {
+width: 100px;
+height: auto;
+margin: 7px;
+display: inline-block;
+border-radius: 4px;
+transition: 0.3s;
+overflow: hidden;
+padding-top: 10px;
+padding-bottom: 10px;
+cursor: pointer;
+}
+
+.dial:hover {
+background-color: rgb(245, 245, 245);
+}
+
+.dial > .image {
+width: 24px;
+height: 24px;
+margin: auto;
+background-position: center;
+background-size: cover;
+background-repeat: norepeat;
+}
+
+.dials {
+display: block;
+width: 640px;
+margin: auto;
+text-align: center;
 }
 
 .engine {
@@ -24,13 +60,18 @@ margin-right: 5px;
 background-size: cover;
 }
 
-.fat {
-flex: 2;
-}
-
 .flex-center {
 justify-content: center;
 align-items: center;
+}
+
+.main {
+padding-top: 75px;
+padding-bottom: 75px;
+}
+
+.one {
+flex: 1;
 }
 
 .root {
@@ -54,6 +95,18 @@ outline: none;
 width: 480px;
 }
 
+.two {
+flex: 2;
+}
+
+.vertical {
+flex-direction: row;
+}
+
+#new-dial > .image {
+background-image: url(qrc:/icons/breeze/22/list-add.svg);
+}
+
 </style>
 
 </head>
@@ -61,15 +114,22 @@ width: 480px;
 
 <div class="root">
     <!-- main content -->
-    <div class="container flex-center">
+    <div class="container main flex-center">
         <div class="search">
             <div class="engine" id="engine-logo"></div>
-            <input class="searchbox" id="search-box">
+            <input class="searchbox" id="search-box" autocomplete="off">
         </div>
     </div>
 
-    <!-- message box -->
-    <div class="fat container"></div>
+    <!-- dials container -->
+    <div class="fat vertical container">
+        <div class="dials">
+            <div class="new dial" id="new-dial">
+                <div class="image"></div>
+                Add Dial
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

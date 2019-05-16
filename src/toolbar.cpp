@@ -101,6 +101,7 @@ void ToolBar::setUrl(const QUrl &url)
     }
 
     bookmarkChanged(!Bookmarks::isBookmarked(url.toString(QUrl::RemoveFragment)).url.isEmpty());
+    m_tabWidget->currentTab()->webView()->setFocus();
 }
 
 void ToolBar::loadStarted()

@@ -19,6 +19,7 @@ private:
     QWidget *createBrowsingTab();
     QWidget *createSearchEngineTab();
     QWidget *createWebEngineTab();
+    QWidget *createPrivacyTab();
 };
 
 class EngineListWidgetItem : public QListWidgetItem

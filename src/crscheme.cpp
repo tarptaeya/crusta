@@ -11,7 +11,7 @@ void CRScheme::requestStarted(QWebEngineUrlRequestJob *request)
 {
     QString requestUrl = request->requestUrl().toDisplayString();
     QFile *file = nullptr;
-    if (requestUrl == QStringLiteral("crusta://startpage")) {
+    if (requestUrl == QStringLiteral("crusta:startpage")) {
         file = new QFile(":/html/startpage.html");
         request->reply("text/html", file);
     }

@@ -41,13 +41,14 @@ Preferences::Preferences(QWidget *parent)
     installWidget(QStringLiteral("Browsing"), createBrowsingTab());
     installWidget(QStringLiteral("Search Engine"), createSearchEngineTab());
     installWidget(QStringLiteral("Web Engine"), createWebEngineTab());
+    installWidget(QStringLiteral("Privacy"), createPrivacyTab());
 
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     Utils::setMovableByBackground(winId());
 
-    setMinimumWidth(200 + m_tabWidget->minimumSizeHint().width());
+    setMinimumWidth(100 * m_tabWidget->count());
     connect(doneButton, &QPushButton::clicked, this, &QWidget::close);
 }
 
@@ -234,6 +235,14 @@ QWidget *Preferences::createSearchEngineTab()
 }
 
 QWidget *Preferences::createWebEngineTab()
+{
+    QWidget *widget = new QWidget;
+    QVBoxLayout *vboxLayout = new QVBoxLayout;
+    widget->setLayout(vboxLayout);
+    return widget;
+}
+
+QWidget *Preferences::createPrivacyTab()
 {
     QWidget *widget = new QWidget;
     QVBoxLayout *vboxLayout = new QVBoxLayout;
