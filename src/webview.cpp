@@ -4,12 +4,16 @@
 #include "webview.h"
 #include "webpage.h"
 
+#include <QWebEngineSettings>
+
 WebView::WebView(QWidget *parent)
     : QWebEngineView (parent)
 {
     m_webPage = new WebPage(Browser::instance()->profile(), this);
 
     setPage(m_webPage);
+
+    loadSettings();
 
     connect(this, &WebView::loadStarted, this, [this] {
         m_isLoading = true;
@@ -76,6 +80,10 @@ WebView *WebView::createWindow(QWebEnginePage::WebWindowType type)
         return webView;
     }
     }
+}
+
+void WebView::loadSettings()
+{
 }
 
 void WebView::insertHistoryItem()

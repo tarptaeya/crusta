@@ -90,6 +90,9 @@ void Window::setupMenu()
         toggleSideBar->setChecked(false);
     }
 
+    QAction *showAllHistory = history->addAction(QStringLiteral("Show All History"));
+    QAction *clearAllHistory = history->addAction(QStringLiteral("Clear All History"));
+
     QAction *resetCrusta = tools->addAction(QStringLiteral("Reset Crusta"));
 
     newWindow->setShortcut(QKeySequence::New);

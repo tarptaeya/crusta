@@ -20,6 +20,8 @@ public:
     void loadNewTabPage();
     WebView *createWindow(QWebEnginePage::WebWindowType type);
 
+    void loadSettings();
+
 Q_SIGNALS:
     void historyChanged(QWebEngineHistory *history);
     void historyItemInserted();
