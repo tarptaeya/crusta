@@ -1,4 +1,6 @@
 #include "startpage.h"
+
+#include <QCursor>
 #include <QDialog>
 #include <QGridLayout>
 #include <QLabel>
@@ -67,6 +69,19 @@ void StartPage::loadAllDials()
 
         emit dialAdded(dial);
     }
+}
+
+void StartPage::dialSettingPopup()
+{
+    QDialog widget;
+    widget.setWindowFlag(Qt::FramelessWindowHint);
+
+    QGridLayout grid;
+    widget.setLayout(&grid);
+
+    QPoint pos = QCursor::pos();
+    widget.move(pos.x() - widget.width(), pos.y());
+    widget.exec();
 }
 
 void StartPage::saveDial(const QString &title, const QString &url)

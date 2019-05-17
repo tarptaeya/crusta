@@ -4,16 +4,18 @@
 #include "webview.h"
 #include "webpage.h"
 
+#include <QMenu>
 #include <QWebEngineSettings>
 
 WebView::WebView(QWidget *parent)
     : QWebEngineView (parent)
 {
     m_webPage = new WebPage(Browser::instance()->profile(), this);
-
     setPage(m_webPage);
 
     loadSettings();
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this, &WebView::loadStarted, this, [this] {
         m_isLoading = true;
@@ -32,6 +34,8 @@ WebView::WebView(QWidget *parent)
 
         insertHistoryItem();
     });
+
+    connect(this, &WebView::customContextMenuRequested, this, &WebView::showContextMenu);
 }
 
 WebPage *WebView::page()
@@ -96,4 +100,10 @@ void WebView::insertHistoryItem()
     History::insertItem(item);
 
     emit historyItemInserted();
+}
+
+void WebView::showContextMenu(const QPoint &pos)
+{
+    QMenu *menu = m_webPage->createStandardContextMenu();
+    menu->exec(mapToGlobal(pos));
 }

@@ -11,6 +11,7 @@ public:
 
     Q_INVOKABLE void newDialPopup();
     Q_INVOKABLE void loadAllDials();
+    Q_INVOKABLE void dialSettingPopup();
 
 Q_SIGNALS:
     void dialAdded(const QJsonObject &dial);

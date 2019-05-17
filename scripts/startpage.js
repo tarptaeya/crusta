@@ -27,6 +27,12 @@ function setupSpeedDial() {
     })
 }
 
+function setupMenuButton() {
+    document.querySelector('#menu-button').addEventListener('click', function() {
+        window.external.browser.startPage.dialSettingPopup();
+    })
+}
+
 function createDial(d) {
     const dial = document.createElement('div');
     dial.className = 'dial';
@@ -57,6 +63,7 @@ function init() {
     setSearchEngineIcon();
     setupSearchBox();
     setupSpeedDial();
+    setupMenuButton();
 
     loadDials();
 }

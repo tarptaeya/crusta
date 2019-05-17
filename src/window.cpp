@@ -1,5 +1,6 @@
 #include "preferences.h"
 #include "tabwidget.h"
+#include "tab.h"
 #include "toolbar.h"
 #include "window.h"
 
@@ -93,6 +94,10 @@ void Window::setupMenu()
     QAction *showAllHistory = history->addAction(QStringLiteral("Show All History"));
     QAction *clearAllHistory = history->addAction(QStringLiteral("Clear All History"));
 
+    QAction *responsiveMode = tools->addAction(QStringLiteral("Enter Responsive Design Mode"));
+    if (m_tabWidget->currentTab()->isInResponsiveMode()) {
+        responsiveMode->setText(QStringLiteral("Exit Responsive Design Mode"));
+    }
     QAction *resetCrusta = tools->addAction(QStringLiteral("Reset Crusta"));
 
     newWindow->setShortcut(QKeySequence::New);
@@ -107,6 +112,9 @@ void Window::setupMenu()
         emit toggleSideBarRequested();
     });
 
+    connect(responsiveMode, &QAction::triggered, [this] {
+        Tab::responsiveControllPane(m_tabWidget->currentTab());
+    });
     connect(resetCrusta, &QAction::triggered, this, [this] {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, QStringLiteral("Reset Crusta"), QStringLiteral("Are you sure you want to reset Crusta?\nThis operation cannot be undone"));

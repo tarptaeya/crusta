@@ -32,4 +32,5 @@ private:
     bool m_isLoading = false;
 
     void insertHistoryItem();
+    void showContextMenu(const QPoint &pos);
 };

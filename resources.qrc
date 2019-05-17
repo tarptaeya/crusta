@@ -55,5 +55,7 @@
         <file>icons/breeze-dark/16/view-private.svg</file>
         <file>scripts/startpage.js</file>
         <file>scripts/stylesheet.js</file>
+        <file>icons/breeze/22/configure.svg</file>
+        <file>icons/breeze-dark/22/configure.svg</file>
     </qresource>
 </RCC>
