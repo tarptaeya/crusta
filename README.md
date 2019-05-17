@@ -16,6 +16,7 @@ Crusta is a feature rich, modern web-browser, based on powerful Qt5 framework. C
 - Extensible sidebar
 - Opensearch support
 - Speed Dial
+- Responsive Design Mode
 
 ## Building
 **Prerequisite:** Please make sure that Qt5 (>= 5.11) is installed on your system.
