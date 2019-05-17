@@ -88,6 +88,8 @@ WebView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 
 void WebView::loadSettings()
 {
+    settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls, true);
+    settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
 }
 
 void WebView::insertHistoryItem()

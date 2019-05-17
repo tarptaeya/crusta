@@ -2,11 +2,14 @@
 
 #include <QCursor>
 #include <QDialog>
+#include <QFileDialog>
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSettings>
+
+#include <QDebug>
 
 StartPage::StartPage(QObject *parent)
     : QObject (parent)
@@ -73,15 +76,44 @@ void StartPage::loadAllDials()
 
 void StartPage::dialSettingPopup()
 {
-    QDialog widget;
-    widget.setWindowFlag(Qt::FramelessWindowHint);
+    QWidget *widget = new QWidget;
+    widget->setAttribute(Qt::WA_DeleteOnClose);
+    widget->setWindowFlag(Qt::Popup);
 
-    QGridLayout grid;
-    widget.setLayout(&grid);
+    QVBoxLayout *vboxLayout = new QVBoxLayout;
+    widget->setLayout(vboxLayout);
+
+    QPushButton *bgChooser = new QPushButton(QStringLiteral("Change Background"));
+    QPushButton *bgRemove = new QPushButton(QStringLiteral("Remove Background"));
+
+    vboxLayout->addWidget(bgChooser);
+    vboxLayout->addWidget(bgRemove);
 
     QPoint pos = QCursor::pos();
-    widget.move(pos.x() - widget.width(), pos.y());
-    widget.exec();
+    widget->move(pos.x() - widget->sizeHint().width(), pos.y());
+    widget->show();
+
+    connect(bgChooser, &QPushButton::clicked, [this] {
+        QUrl url = QFileDialog::getOpenFileUrl(nullptr, QString(), QDir::homePath());
+
+        QSettings settings;
+        settings.setValue(QStringLiteral("speeddial/background"), url.toString());
+
+        emit reloadRequested();
+    });
+
+    connect(bgRemove, &QPushButton::clicked, [this] {
+        QSettings settings;
+        settings.setValue(QStringLiteral("speeddial/background"), QStringLiteral(""));
+
+        emit reloadRequested();
+    });
+}
+
+QString StartPage::background()
+{
+    QSettings settings;
+    return settings.value(QStringLiteral("speeddial/background")).toString();
 }
 
 void StartPage::saveDial(const QString &title, const QString &url)

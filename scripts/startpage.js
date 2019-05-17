@@ -8,6 +8,12 @@ function setSearchEngineIcon() {
     });
 }
 
+function setBackground() {
+    window.external.browser.startPage.background(function(url) {
+        document.body.style.backgroundImage = `url(${url})`;
+    })
+}
+
 function setupSearchBox() {
     const el = document.querySelector('#search-box')
     el.addEventListener('keyup', function(event) {
@@ -20,7 +26,7 @@ function setupSearchBox() {
     });
 }
 
-function setupSpeedDial() {
+function setupNewDialButton() {
     const el = document.querySelector('#new-dial');
     el.addEventListener('click', function () {
         window.external.browser.startPage.newDialPopup();
@@ -46,6 +52,10 @@ function createDial(d) {
 
     dial.addEventListener('click', function() {
         window.location.href = d.address;
+    });
+
+    dial.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
     })
 
     document.querySelector('.dials').insertBefore(dial, document.querySelector('#new-dial'));
@@ -61,11 +71,15 @@ function loadDials() {
 
 function init() {
     setSearchEngineIcon();
+    setBackground();
+
     setupSearchBox();
-    setupSpeedDial();
+    setupNewDialButton();
     setupMenuButton();
 
     loadDials();
+
+    window.external.browser.startPage.reloadRequested.connect(function() { window.location.reload(); })
 }
 
 if (window.external.browser === undefined) {
