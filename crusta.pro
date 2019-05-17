@@ -3,9 +3,6 @@ TARGET = crusta
 QT += webenginewidgets sql webchannel
 
 HEADERS += \
-    api/eobject.h \
-    api/ewebpage.h \
-    api/ewindows.h \
     src/bookmarks.h \
     src/browser.h \
     src/cookies.h \
@@ -13,6 +10,8 @@ HEADERS += \
     src/database.h \
     src/history.h \
     src/mainwindow.h \
+    src/plugin.h \
+    src/plugins.h \
     src/preferences.h \
     src/searchengine.h \
     src/sidebar.h \
@@ -28,9 +27,6 @@ HEADERS += \
     src/window.h
 
 SOURCES += \
-    api/eobject.cpp \
-    api/ewebpage.cpp \
-    api/ewindows.cpp \
     src/main.cpp \
     src/bookmarks.cpp \
     src/browser.cpp \
@@ -39,6 +35,8 @@ SOURCES += \
     src/database.cpp \
     src/history.cpp \
     src/mainwindow.cpp \
+    src/plugin.cpp \
+    src/plugins.cpp \
     src/preferences.cpp \
     src/searchengine.cpp \
     src/sidebar.cpp \

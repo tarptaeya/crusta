@@ -1,10 +1,10 @@
-#include "api/ewebpage.h"
 #include "browser.h"
 #include "theme.h"
 
 #include <QApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
+#include <QPalette>
 #include <QStyleFactory>
 #include <QIcon>
 #include <QWebEngineUrlScheme>
@@ -47,13 +47,12 @@ int main(int argc, char **argv)
     scheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
     QWebEngineUrlScheme::registerScheme(scheme);
 
-    EWebPage webPage;
-
     bool isPrivate = parser.isSet(privateOption);
 
-    Browser::instance(isPrivate)->run();
+    Browser *browser = Browser::instance(isPrivate);
+    browser->run();
     int retCode = app.exec();
-    Browser::instance()->deleteLater();
+    delete browser;
 
     return retCode;
 }

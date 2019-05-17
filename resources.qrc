@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>themes/base.qss</file>
-        <file>api/eobject.js</file>
         <file>icons/breeze/index.theme</file>
         <file>icons/breeze/22/application-menu.svg</file>
         <file>icons/breeze/22/audio-off.svg</file>

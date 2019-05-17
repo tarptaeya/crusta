@@ -5,6 +5,7 @@
 
 class Database;
 class MainWindow;
+class Plugins;
 class Tab;
 
 class Browser : public QObject
@@ -25,6 +26,7 @@ private:
     QList<MainWindow *> m_mainWindows;
     QWebEngineProfile *m_profile = nullptr;
     Database *m_database = nullptr;
+    Plugins *m_plugins = nullptr;
 
     void setupProfile();
     void setupWebExtensionPolyfill();

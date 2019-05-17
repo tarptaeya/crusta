@@ -2,6 +2,7 @@
 #include "crscheme.h"
 #include "database.h"
 #include "mainwindow.h"
+#include "plugins.h"
 #include "tab.h"
 #include "utils.h"
 #include "webview.h"
@@ -17,6 +18,7 @@ Browser::Browser(bool isPrivate, QObject *parent)
 {
     m_isPrivate = isPrivate;
     m_database = new Database(isPrivate);
+    m_plugins = new Plugins(this);
 
     setupProfile();
 }
