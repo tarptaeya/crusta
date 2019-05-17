@@ -8,19 +8,12 @@ Plugins::Plugins(QObject *parent)
     : QObject (parent)
 {
     installTypes();
-
     loadAllPlugins();
 }
 
 Plugins::~Plugins()
 {
     unloadAllPlugins();
-}
-
-void Plugins::installTypes()
-{
-    const char *uri = "Crusta";
-    qmlRegisterType<Plugin>(uri, 1, 0, "Plugin");
 }
 
 void Plugins::loadPlugin(const QString &path)
@@ -34,6 +27,12 @@ void Plugins::loadPlugin(const QString &path)
     plugin->setParent(this);
     plugin->createFn();
     m_plugins.append(plugin);
+}
+
+void Plugins::installTypes()
+{
+    const char *uri = "Crusta";
+    qmlRegisterType<Plugin>(uri, 1, 0, "Plugin");
 }
 
 void Plugins::loadAllPlugins()

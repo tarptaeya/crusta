@@ -10,11 +10,12 @@ public:
     explicit Plugins(QObject *parent = nullptr);
     ~Plugins();
 
+    void loadPlugin(const QString &path);
+
 private:
     QList<Plugin *> m_plugins;
 
     void installTypes();
-    void loadPlugin(const QString &path);
     void loadAllPlugins();
     void unloadAllPlugins();
 };

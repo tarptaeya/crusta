@@ -56,6 +56,11 @@ Tab *Browser::createMainWindow()
     return tab;
 }
 
+Plugins *Browser::plugins()
+{
+    return m_plugins;
+}
+
 QWebEngineProfile *Browser::profile()
 {
     return m_profile;

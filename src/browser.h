@@ -16,6 +16,7 @@ public:
     void run();
 
     Tab *createMainWindow();
+    Plugins *plugins();
     QWebEngineProfile *profile();
 
     bool isPrivate() const;

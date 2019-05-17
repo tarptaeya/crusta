@@ -1,3 +1,5 @@
+#include "browser.h"
+#include "plugins.h"
 #include "preferences.h"
 #include "tabwidget.h"
 #include "tab.h"
@@ -6,6 +8,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QProcess>
 #include <QSettings>
@@ -62,12 +65,13 @@ void Window::setupMenu()
 {
     QSettings settings;
 
-    QMenu *file = m_menu->addMenu(QStringLiteral("&File"));
-    QMenu *edit = m_menu->addMenu(QStringLiteral("&Edit"));
-    QMenu *view = m_menu->addMenu(QStringLiteral("&View"));
-    QMenu *history = m_menu->addMenu(QStringLiteral("&History"));
-    QMenu *session = m_menu->addMenu(QStringLiteral("&Sessions"));
-    QMenu *tools = m_menu->addMenu(QStringLiteral("&Tools"));
+    QMenu *file = m_menu->addMenu(QStringLiteral("File"));
+    QMenu *edit = m_menu->addMenu(QStringLiteral("Edit"));
+    QMenu *view = m_menu->addMenu(QStringLiteral("View"));
+    QMenu *history = m_menu->addMenu(QStringLiteral("History"));
+    QMenu *session = m_menu->addMenu(QStringLiteral("Sessions"));
+    QMenu *tools = m_menu->addMenu(QStringLiteral("Tools"));
+    QMenu *plugins = m_menu->addMenu(QStringLiteral("Plugins"));
     m_menu->addSeparator();
     QAction *preferences = m_menu->addAction(QStringLiteral("Preferences"));
 
@@ -100,6 +104,8 @@ void Window::setupMenu()
     }
     QAction *resetCrusta = tools->addAction(QStringLiteral("Reset Crusta"));
 
+    QAction *loadUnPackedPlugin = plugins->addAction(QStringLiteral("Load unpacked plugin"));
+
     newWindow->setShortcut(QKeySequence::New);
 
     connect(newWindow, &QAction::triggered, this, [this] { emit newMainWindowRequested(); });
@@ -123,6 +129,11 @@ void Window::setupMenu()
         }
 
         QSettings().clear();
+    });
+
+    connect(loadUnPackedPlugin, &QAction::triggered, [] {
+        QString path = QFileDialog::getExistingDirectory(nullptr, QString(), QDir::homePath());
+        Browser::instance()->plugins()->loadPlugin(path);
     });
 
     connect(preferences, &QAction::triggered, [] {
