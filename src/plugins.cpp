@@ -9,8 +9,6 @@ Plugins::Plugins(QObject *parent)
 {
     installTypes();
 
-    //loadPlugin("/Users/tarptaeya/Programming/Projects/crextensions/TestPlugin");
-
     loadAllPlugins();
 }
 
@@ -56,6 +54,7 @@ void Plugins::loadAllPlugins()
 void Plugins::unloadAllPlugins()
 {
     for(Plugin *plugin : m_plugins) {
+        plugin->destroyFn();
     }
 
     m_plugins.clear();

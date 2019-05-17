@@ -9,6 +9,7 @@ class Plugin : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QJSValue create READ create WRITE setCreate CONSTANT)
+    Q_PROPERTY(QJSValue destroy READ destroy WRITE setDestroy CONSTANT)
 public:
     explicit Plugin(QObject *parent = nullptr);
     Plugin *createPlugin(const QString &path);
@@ -17,6 +18,7 @@ public:
     void setMetadata(const QString &path);
 
     void createFn();
+    void destroyFn();
 
 private:
     QQmlEngine *m_engine = nullptr;
@@ -26,7 +28,11 @@ private:
     QSettings *m_metadata = nullptr;
 
     QJSValue m_create;
+    QJSValue m_destroy;
 
     QJSValue create();
     void setCreate(QJSValue value);
+
+    QJSValue destroy();
+    void setDestroy(QJSValue value);
 };

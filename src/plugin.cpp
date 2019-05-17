@@ -46,6 +46,15 @@ void Plugin::createFn()
     m_create.call();
 }
 
+void Plugin::destroyFn()
+{
+    if (!m_destroy.isCallable()) {
+        return;
+    }
+
+    m_destroy.call();
+}
+
 QJSValue Plugin::create()
 {
     return m_create;
@@ -54,4 +63,14 @@ QJSValue Plugin::create()
 void Plugin::setCreate(QJSValue value)
 {
     m_create = value;
+}
+
+QJSValue Plugin::destroy()
+{
+    return m_destroy;
+}
+
+void Plugin::setDestroy(QJSValue value)
+{
+    m_destroy = value;
 }
