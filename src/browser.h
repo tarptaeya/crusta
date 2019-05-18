@@ -4,6 +4,7 @@
 #include <QWebEngineProfile>
 
 class Database;
+class Downloads;
 class MainWindow;
 class Plugins;
 class Tab;
@@ -16,6 +17,7 @@ public:
     void run();
 
     Tab *createMainWindow();
+    Downloads *downloads();
     Plugins *plugins();
     QWebEngineProfile *profile();
 
@@ -27,6 +29,7 @@ private:
     QList<MainWindow *> m_mainWindows;
     QWebEngineProfile *m_profile = nullptr;
     Database *m_database = nullptr;
+    Downloads *m_downloads = nullptr;
     Plugins *m_plugins = nullptr;
 
     void setupProfile();

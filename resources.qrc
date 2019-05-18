@@ -56,5 +56,9 @@
         <file>scripts/stylesheet.js</file>
         <file>icons/breeze/22/configure.svg</file>
         <file>icons/breeze-dark/22/configure.svg</file>
+        <file>icons/breeze/22/media-playback-pause.svg</file>
+        <file>icons/breeze/22/media-playback-start.svg</file>
+        <file>icons/breeze-dark/22/media-playback-pause.svg</file>
+        <file>icons/breeze-dark/22/media-playback-start.svg</file>
     </qresource>
 </RCC>

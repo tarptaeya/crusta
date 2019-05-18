@@ -8,6 +8,7 @@ HEADERS += \
     src/cookies.h \
     src/crscheme.h \
     src/database.h \
+    src/downloads.h \
     src/history.h \
     src/mainwindow.h \
     src/plugin.h \
@@ -33,6 +34,7 @@ SOURCES += \
     src/cookies.cpp \
     src/crscheme.cpp \
     src/database.cpp \
+    src/downloads.cpp \
     src/history.cpp \
     src/mainwindow.cpp \
     src/plugin.cpp \
@@ -57,7 +59,7 @@ RESOURCES += \
 macx {
 LIBS += -framework Foundation -framework Cocoa
 
-OBJECTIVE_HEADERS += \
+HEADERS += \
     mac/mac_utils.h
 
 OBJECTIVE_SOURCES += \

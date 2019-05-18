@@ -1,6 +1,7 @@
 #include "browser.h"
 #include "crscheme.h"
 #include "database.h"
+#include "downloads.h"
 #include "mainwindow.h"
 #include "plugins.h"
 #include "tab.h"
@@ -18,6 +19,7 @@ Browser::Browser(bool isPrivate, QObject *parent)
 {
     m_isPrivate = isPrivate;
     m_database = new Database(isPrivate);
+    m_downloads = new Downloads;
     m_plugins = new Plugins(this);
 
     setupProfile();
@@ -26,6 +28,7 @@ Browser::Browser(bool isPrivate, QObject *parent)
 Browser::~Browser()
 {
     delete m_database;
+    delete m_downloads;
 }
 
 void Browser::run()
@@ -54,6 +57,11 @@ Tab *Browser::createMainWindow()
     }
 
     return tab;
+}
+
+Downloads *Browser::downloads()
+{
+    return m_downloads;
 }
 
 Plugins *Browser::plugins()
@@ -104,4 +112,8 @@ void Browser::setupProfile()
 
         m_profile->scripts()->insert(script);
     }
+
+    connect(m_profile, &QWebEngineProfile::downloadRequested, [this] (QWebEngineDownloadItem *item) {
+        m_downloads->popup(item);
+    });
 }

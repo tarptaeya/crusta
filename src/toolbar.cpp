@@ -1,4 +1,6 @@
 #include "bookmarks.h"
+#include "browser.h"
+#include "downloads.h"
 #include "searchengine.h"
 #include "tabwidget.h"
 #include "tab.h"
@@ -77,6 +79,19 @@ ToolBar::ToolBar(QWidget *parent)
         }
 
         m_tabWidget->currentTab()->webView()->loadHome();
+    });
+    connect(m_downloadButton, &QToolButton::clicked, this, [this] {
+        if (!m_tabWidget) {
+            return ;
+        }
+
+        Downloads *downloads = Browser::instance()->downloads();
+        downloads->show();
+
+        QPoint pos = m_downloadButton->pos();
+        pos.setX(pos.x() + m_downloadButton->width() - downloads->width());
+        pos.setY(pos.y() + m_downloadButton->height());
+        downloads->move(mapToGlobal(pos));
     });
     connect(m_addressBar, &QLineEdit::returnPressed, [this] {
         if (!m_tabWidget) {
