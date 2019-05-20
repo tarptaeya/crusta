@@ -127,6 +127,9 @@ void Window::setupMenu()
 
         m_tabWidget->currentTab()->webView()->load(url);
     });
+    connect(save, &QAction::triggered, this, [this] {
+        m_tabWidget->currentTab()->webView()->triggerPageAction(QWebEnginePage::SavePage);
+    });
 
     connect(toggleSideBar, &QAction::triggered, this, [this] {
         QSettings settings;
