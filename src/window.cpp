@@ -4,6 +4,7 @@
 #include "tabwidget.h"
 #include "tab.h"
 #include "toolbar.h"
+#include "webpage.h"
 #include "webview.h"
 #include "window.h"
 
@@ -13,6 +14,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QSettings>
+#include <QStandardPaths>
 
 Window::Window(QWidget *parent)
     : QMainWindow (parent)
@@ -129,6 +131,20 @@ void Window::setupMenu()
     });
     connect(save, &QAction::triggered, this, [this] {
         m_tabWidget->currentTab()->webView()->triggerPageAction(QWebEnginePage::SavePage);
+    });
+    connect(print, &QAction::triggered, [this] {
+        QFileDialog fd;
+        QUrl fdDirUrl = fd.directoryUrl();
+        if (fdDirUrl.isEmpty()) {
+            fd.setDirectoryUrl(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
+        }
+
+        QString path = fd.getSaveFileUrl().toLocalFile();
+        if (path.isEmpty()) {
+            return ;
+        }
+
+        m_tabWidget->currentTab()->webView()->page()->printToPdf(path);
     });
 
     connect(toggleSideBar, &QAction::triggered, this, [this] {
