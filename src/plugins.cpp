@@ -1,5 +1,7 @@
 #include "plugins.h"
 
+#include "api/qmlwindows.h"
+
 #include <QDir>
 #include <QQmlEngine>
 #include <QStandardPaths>
@@ -33,6 +35,15 @@ void Plugins::installTypes()
 {
     const char *uri = "Crusta";
     qmlRegisterType<Plugin>(uri, 1, 0, "Plugin");
+
+    qmlRegisterUncreatableType<QmlWindow>(uri, 1, 0, "Window", QStringLiteral("Unable to register uncreatable type: Window"));
+    qmlRegisterSingletonType(uri, 1, 0, "Windows", [] (QQmlEngine *engine, QJSEngine *scriptEngine) {
+        Q_UNUSED(scriptEngine);
+
+        QmlWindows *windows = new QmlWindows(engine);
+        QJSValue object = engine->newQObject(windows);
+        return object;
+    });
 }
 
 void Plugins::loadAllPlugins()

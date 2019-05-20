@@ -2,9 +2,8 @@ TEMPLATE = app
 TARGET = crusta
 QT += webenginewidgets sql webchannel
 
-INCLUDEPATH += src/
-
 HEADERS += \
+    api/qmlwindows.h \
     src/bookmarks.h \
     src/browser.h \
     src/cookies.h \
@@ -30,6 +29,7 @@ HEADERS += \
     src/window.h
 
 SOURCES += \
+    api/qmlwindows.cpp \
     src/main.cpp \
     src/bookmarks.cpp \
     src/browser.cpp \
