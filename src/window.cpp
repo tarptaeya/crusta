@@ -4,6 +4,7 @@
 #include "tabwidget.h"
 #include "tab.h"
 #include "toolbar.h"
+#include "webview.h"
 #include "window.h"
 
 #include <QAction>
@@ -107,10 +108,25 @@ void Window::setupMenu()
     QAction *loadUnPackedPlugin = plugins->addAction(QStringLiteral("Load unpacked plugin"));
 
     newWindow->setShortcut(QKeySequence::New);
+    open->setShortcut(QKeySequence::Open);
 
     connect(newWindow, &QAction::triggered, this, [this] { emit newMainWindowRequested(); });
     connect(newPrivateWindow, &QAction::triggered, this, [] { QProcess::startDetached(QStringLiteral("%1 --private").arg(qApp->applicationFilePath())); });
     connect(newSplit, &QAction::triggered, this, [this] { emit newWindowRequested(); });
+    connect(open, &QAction::triggered, this, [this] {
+        QFileDialog fd;
+        QUrl fdDirUrl = fd.directoryUrl();
+        if (fdDirUrl.isEmpty()) {
+            fd.setDirectoryUrl(QDir::homePath());
+        }
+
+        QUrl url = fd.getOpenFileUrl();
+        if (url.isEmpty()) {
+            return ;
+        }
+
+        m_tabWidget->currentTab()->webView()->load(url);
+    });
 
     connect(toggleSideBar, &QAction::triggered, this, [this] {
         QSettings settings;
@@ -133,6 +149,10 @@ void Window::setupMenu()
 
     connect(loadUnPackedPlugin, &QAction::triggered, [] {
         QString path = QFileDialog::getExistingDirectory(nullptr, QString(), QDir::homePath());
+        if (path.isEmpty()) {
+            return ;
+        }
+
         Browser::instance()->plugins()->loadPlugin(path);
     });
 

@@ -2,6 +2,8 @@ TEMPLATE = app
 TARGET = crusta
 QT += webenginewidgets sql webchannel
 
+INCLUDEPATH += src/
+
 HEADERS += \
     src/bookmarks.h \
     src/browser.h \
