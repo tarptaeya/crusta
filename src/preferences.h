@@ -8,9 +8,14 @@
 
 class Preferences : public QWidget
 {
+    Q_OBJECT
 public:
     explicit Preferences(QWidget *parent = nullptr);
     void installWidget(const QString &name, QWidget *widget);
+
+Q_SIGNALS:
+    void browsingSaveRequested();
+    void browsingRestoreRequested();
 
 private:
     QTabWidget *m_tabWidget = nullptr;

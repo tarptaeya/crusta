@@ -5,6 +5,7 @@
 #include "webpage.h"
 
 #include <QMenu>
+#include <QSettings>
 #include <QWebEngineSettings>
 
 WebView::WebView(QWidget *parent)
@@ -50,12 +51,23 @@ bool WebView::isLoading() const
 
 void WebView::loadHome()
 {
-    load(QUrl("crusta:startpage"));
+    QSettings settings;
+    QString url = settings.value(QStringLiteral("browsing/homepage"), QStringLiteral("crusta:startpage")).toString();
+    load(url);
 }
 
 void WebView::loadNewTabPage()
 {
-    load(QUrl("crusta:startpage"));
+    QSettings settings;
+    QString url = settings.value(QStringLiteral("browsing/newtabpage"), QStringLiteral("crusta:startpage")).toString();
+    load(url);
+}
+
+void WebView::loadStart()
+{
+    QSettings settings;
+    QString url = settings.value(QStringLiteral("browsing/startpage"), QStringLiteral("crusta:startpage")).toString();
+    load(url);
 }
 
 WebView *WebView::createWindow(QWebEnginePage::WebWindowType type)
@@ -88,6 +100,8 @@ WebView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 
 void WebView::loadSettings()
 {
+    QSettings qset;
+
     settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls, true);
     settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
 }

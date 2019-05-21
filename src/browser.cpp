@@ -33,7 +33,7 @@ Browser::~Browser()
 
 void Browser::run()
 {
-    createMainWindow()->webView()->loadHome();
+    createMainWindow()->webView()->loadStart();
 }
 
 Tab *Browser::createMainWindow()
@@ -41,7 +41,7 @@ Tab *Browser::createMainWindow()
     MainWindow *mainWindow = new MainWindow;
     m_mainWindows.append(mainWindow);
     connect(mainWindow, &MainWindow::newMainWindowRequested, this, [this] {
-        createMainWindow()->webView()->loadHome();
+        createMainWindow()->webView()->loadStart();
     });
     connect(mainWindow, &MainWindow::mainWindowWillClose, this, [this, mainWindow] { m_mainWindows.removeOne(mainWindow); });
 

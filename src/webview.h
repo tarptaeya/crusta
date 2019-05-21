@@ -18,6 +18,7 @@ public:
     bool isLoading() const;
     void loadHome();
     void loadNewTabPage();
+    void loadStart();
     WebView *createWindow(QWebEnginePage::WebWindowType type);
 
     void loadSettings();

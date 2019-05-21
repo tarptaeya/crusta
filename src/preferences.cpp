@@ -10,6 +10,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QPushButton>
+#include <QSettings>
 #include <QSpinBox>
 #include <QTabWidget>
 #include <QTextCodec>
@@ -119,15 +120,6 @@ QWidget *Preferences::createBrowsingTab()
         QLineEdit *homePage = new QLineEdit;
         QLineEdit *startPage = new QLineEdit;
         QLineEdit *newTabPage = new QLineEdit;
-        QComboBox *zoom = new QComboBox;
-
-        zoom->addItems(QStringList()
-                       << QStringLiteral("25%") << QStringLiteral("33%") << QStringLiteral("50%")
-                       << QStringLiteral("75%") << QStringLiteral("90%") << QStringLiteral("100%")
-                       << QStringLiteral("125%") << QStringLiteral("150%") << QStringLiteral("175%")
-                       << QStringLiteral("200%") << QStringLiteral("225%") << QStringLiteral("250%")
-                       << QStringLiteral("275%") << QStringLiteral("300%") << QStringLiteral("325%")
-                       << QStringLiteral("350%") << QStringLiteral("375%") << QStringLiteral("400%"));
 
         grid->addWidget(new QLabel(QStringLiteral("Home page")), 1, 1);
         grid->addWidget(homePage, 1, 2);
@@ -135,8 +127,33 @@ QWidget *Preferences::createBrowsingTab()
         grid->addWidget(startPage, 2, 2);
         grid->addWidget(new QLabel(QStringLiteral("New tab page")), 3, 1);
         grid->addWidget(newTabPage, 3, 2);
-        grid->addWidget(new QLabel(QStringLiteral("Default zoom on page")), 4, 1);
-        grid->addWidget(zoom, 4, 2);
+
+        QSettings settings;
+        QString homePageUrl = settings.value(QStringLiteral("browsing/homepage"), QStringLiteral("crusta:startpage")).toString();
+        QString startPageUrl = settings.value(QStringLiteral("browsing/startpage"), QStringLiteral("crusta:startpage")).toString();
+        QString newTabPageUrl = settings.value(QStringLiteral("browsing/newtabpage"), QStringLiteral("crusta:startpage")).toString();
+
+        homePage->setText(homePageUrl);
+        startPage->setText(startPageUrl);
+        newTabPage->setText(newTabPageUrl);
+
+        connect(this, &Preferences::browsingSaveRequested, [homePage, startPage, newTabPage] {
+            QSettings settings;
+            settings.setValue(QStringLiteral("browsing/homepage"), homePage->text());
+            settings.setValue(QStringLiteral("browsing/startpage"), startPage->text());
+            settings.setValue(QStringLiteral("browsing/newtabpage"), newTabPage->text());
+        });
+
+        connect(this, &Preferences::browsingRestoreRequested, [homePage, startPage, newTabPage] {
+            QSettings settings;
+            settings.setValue(QStringLiteral("browsing/homepage"), QStringLiteral("crusta:startpage"));
+            settings.setValue(QStringLiteral("browsing/startpage"), QStringLiteral("crusta:startpage"));
+            settings.setValue(QStringLiteral("browsing/newtabpage"), QStringLiteral("crusta:startpage"));
+
+            homePage->setText(QStringLiteral("crusta:startpage"));
+            startPage->setText(QStringLiteral("crusta:startpage"));
+            newTabPage->setText(QStringLiteral("crusta:startpage"));
+        });
     }
 
     QGroupBox *fontGroup = new QGroupBox(QStringLiteral("Font"));
@@ -162,6 +179,16 @@ QWidget *Preferences::createBrowsingTab()
     vboxLayout->addWidget(generalBox, 0);
     vboxLayout->addWidget(fontGroup, 0);
     vboxLayout->addWidget(new QWidget, 1);
+    QHBoxLayout *hboxLayout = new QHBoxLayout;
+    QPushButton *restoreButton = new QPushButton(QStringLiteral("Restore to defaults"));
+    QPushButton *saveButton = new QPushButton(QStringLiteral("Save"));
+    hboxLayout->addWidget(new QWidget, 1);
+    hboxLayout->addWidget(restoreButton, 0);
+    hboxLayout->addWidget(saveButton, 0);
+    vboxLayout->addLayout(hboxLayout);
+
+    connect(saveButton, &QPushButton::clicked, this, [this] { emit browsingSaveRequested(); });
+    connect(restoreButton, &QPushButton::clicked, this, [this] { emit browsingRestoreRequested(); });
 
     return widget;
 }
