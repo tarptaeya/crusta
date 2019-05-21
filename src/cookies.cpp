@@ -99,6 +99,9 @@ void Cookies::addCookie(const QNetworkCookie &cookie)
     item->setText(0, cookie.name());
     item->cookie = cookie;
     parent->addChild(item);
+    if (parent->isHidden()) {
+        parent->setHidden(false);
+    }
 }
 
 void Cookies::removeCookie(const QNetworkCookie &cookie)
@@ -115,6 +118,9 @@ void Cookies::removeCookie(const QNetworkCookie &cookie)
 
             if (cookieItem->cookie.hasSameIdentifier(cookie)) {
                 parent->removeChild(cookieItem);
+                if (!parent->childCount()) {
+                    parent->setHidden(true);
+                }
                 delete cookieItem;
                 return;
             }
