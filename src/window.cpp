@@ -86,9 +86,6 @@ void Window::setupMenu()
     QAction *save = file->addAction(QStringLiteral("Save Page"));
     QAction *print = file->addAction(QStringLiteral("Print to PDF"));
 
-    QAction *cut = edit->addAction(QStringLiteral("Cut"));
-    QAction *copy = edit->addAction(QStringLiteral("Copy"));
-    QAction *paste = edit->addAction(QStringLiteral("Paste"));
     edit->addSeparator();
 
     QAction *toggleSideBar = view->addAction(QStringLiteral("Side bar"));
@@ -110,7 +107,12 @@ void Window::setupMenu()
     QAction *loadUnPackedPlugin = plugins->addAction(QStringLiteral("Load unpacked plugin"));
 
     newWindow->setShortcut(QKeySequence::New);
+    newPrivateWindow->setShortcut(QKeySequence(Qt::SHIFT + Qt::CTRL + Qt::Key_N));
     open->setShortcut(QKeySequence::Open);
+    save->setShortcut(QKeySequence::Save);
+    print->setShortcut(QKeySequence::Print);
+
+    preferences->setShortcut(QKeySequence::Preferences);
 
     connect(newWindow, &QAction::triggered, this, [this] { emit newMainWindowRequested(); });
     connect(newPrivateWindow, &QAction::triggered, this, [] { QProcess::startDetached(QStringLiteral("%1 --private").arg(qApp->applicationFilePath())); });
