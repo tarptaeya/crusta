@@ -15,6 +15,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QWebEngineCookieStore>
 
 Window::Window(QWidget *parent)
     : QMainWindow (parent)
@@ -71,7 +72,25 @@ void Window::setupMenu()
     QMenu *file = m_menu->addMenu(QStringLiteral("File"));
     QMenu *edit = m_menu->addMenu(QStringLiteral("Edit"));
     QMenu *view = m_menu->addMenu(QStringLiteral("View"));
+
+    //![history]
     QMenu *history = m_menu->addMenu(QStringLiteral("History"));
+    QAction *showAllHistory = history->addAction(QStringLiteral("Show All History"));
+    QAction *clearAllHistory = history->addAction(QStringLiteral("Clear All History"));
+    QAction *clearAllVisitedLinks = history->addAction(QStringLiteral("Clear all visited links"));
+
+    connect(clearAllVisitedLinks, &QAction::triggered, [] { Browser::instance()->profile()->clearAllVisitedLinks(); });
+
+    //![cookies]
+    QMenu *cookies = m_menu->addMenu(QStringLiteral("Cookies and Privacy"));
+    QAction *clearHttpCache = cookies->addAction(QStringLiteral("Clear HTTP Cache"));
+    QAction *deleteSessionCookies = cookies->addAction(QStringLiteral("Delete session cookies"));
+    QAction *deleteAllCookies = cookies->addAction(QStringLiteral("Delete all cookies"));
+    connect(clearHttpCache, &QAction::triggered, [] { Browser::instance()->profile()->clearHttpCache(); });
+    connect(deleteSessionCookies, &QAction::triggered, [] { Browser::instance()->profile()->cookieStore()->deleteSessionCookies(); });
+    connect(deleteAllCookies, &QAction::triggered, [] { Browser::instance()->profile()->cookieStore()->deleteAllCookies(); });
+
+
     QMenu *session = m_menu->addMenu(QStringLiteral("Sessions"));
     QMenu *tools = m_menu->addMenu(QStringLiteral("Tools"));
     QMenu *plugins = m_menu->addMenu(QStringLiteral("Plugins"));
@@ -94,9 +113,6 @@ void Window::setupMenu()
     if (!settings.value(QStringLiteral("appearance/sidebar"), false).toBool()) {
         toggleSideBar->setChecked(false);
     }
-
-    QAction *showAllHistory = history->addAction(QStringLiteral("Show All History"));
-    QAction *clearAllHistory = history->addAction(QStringLiteral("Clear All History"));
 
     QAction *responsiveMode = tools->addAction(QStringLiteral("Enter Responsive Design Mode"));
     if (m_tabWidget->currentTab()->isInResponsiveMode()) {
