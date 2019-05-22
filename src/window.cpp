@@ -71,7 +71,38 @@ void Window::setupMenu()
 
     QMenu *file = m_menu->addMenu(QStringLiteral("File"));
     QMenu *edit = m_menu->addMenu(QStringLiteral("Edit"));
+
+    //![view]
     QMenu *view = m_menu->addMenu(QStringLiteral("View"));
+    QAction *toggleSideBar = view->addAction(QStringLiteral("Side bar"));
+    view->addSeparator();
+    QAction *zoomIn = view->addAction(QStringLiteral("Zoom In"));
+    QAction *zoomOut = view->addAction(QStringLiteral("Zoom Out"));
+    QAction *zoomReset = view->addAction(QStringLiteral("Reset Zoom"));
+    toggleSideBar->setCheckable(true);
+    toggleSideBar->setChecked(true);
+    if (!settings.value(QStringLiteral("appearance/sidebar"), false).toBool()) {
+        toggleSideBar->setChecked(false);
+    }
+
+    zoomIn->setShortcut(QKeySequence::ZoomIn);
+    zoomOut->setShortcut(QKeySequence::ZoomOut);
+    zoomReset->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+
+    connect(toggleSideBar, &QAction::triggered, this, [this] {
+        QSettings settings;
+        settings.setValue(QStringLiteral("appearance/sidebar"), !settings.value(QStringLiteral("appearance/sidebar"), false).toBool());
+        emit toggleSideBarRequested();
+    });
+    connect(zoomIn, &QAction::triggered, [this] {
+        m_tabWidget->currentTab()->webView()->zoomIn();
+    });
+    connect(zoomOut, &QAction::triggered, [this] {
+        m_tabWidget->currentTab()->webView()->zoomOut();
+    });
+    connect(zoomReset, &QAction::triggered, [this] {
+        m_tabWidget->currentTab()->webView()->zoomReset();
+    });
 
     //![history]
     QMenu *history = m_menu->addMenu(QStringLiteral("History"));
@@ -106,13 +137,6 @@ void Window::setupMenu()
     QAction *print = file->addAction(QStringLiteral("Print to PDF"));
 
     edit->addSeparator();
-
-    QAction *toggleSideBar = view->addAction(QStringLiteral("Side bar"));
-    toggleSideBar->setCheckable(true);
-    toggleSideBar->setChecked(true);
-    if (!settings.value(QStringLiteral("appearance/sidebar"), false).toBool()) {
-        toggleSideBar->setChecked(false);
-    }
 
     QAction *responsiveMode = tools->addAction(QStringLiteral("Enter Responsive Design Mode"));
     if (m_tabWidget->currentTab()->isInResponsiveMode()) {
@@ -163,12 +187,6 @@ void Window::setupMenu()
         }
 
         m_tabWidget->currentTab()->webView()->page()->printToPdf(path);
-    });
-
-    connect(toggleSideBar, &QAction::triggered, this, [this] {
-        QSettings settings;
-        settings.setValue(QStringLiteral("appearance/sidebar"), !settings.value(QStringLiteral("appearance/sidebar"), false).toBool());
-        emit toggleSideBarRequested();
     });
 
     connect(responsiveMode, &QAction::triggered, [this] {

@@ -21,6 +21,10 @@ public:
     void loadStart();
     WebView *createWindow(QWebEnginePage::WebWindowType type);
 
+    void zoomIn();
+    void zoomOut();
+    void zoomReset();
+
     void loadSettings();
 
 Q_SIGNALS:
