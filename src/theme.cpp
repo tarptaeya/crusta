@@ -1,5 +1,6 @@
 #include "theme.h"
 #include "utils.h"
+#include "mac/mac_utils.h"
 
 #include <QApplication>
 #include <QDir>
@@ -27,5 +28,15 @@ void Theme::setThemeName(const QString &themeName)
     const QString baseContents = Utils::readFile(baseThemePath);
     QString themeContents = Utils::readFile(themePath);
 
-    qApp->setStyleSheet(themeContents.prepend(baseContents));
+    themeContents = themeContents.prepend(baseContents);
+
+#ifdef __APPLE__
+    const QString accentColor = MacUtils::getAccentColor();
+    themeContents.append(QStringLiteral("QPushButton#default {"
+                                        "color: white;"
+                                        "background: %1;"
+                                        "}").arg(accentColor));
+#endif
+
+    qApp->setStyleSheet(themeContents);
 }
