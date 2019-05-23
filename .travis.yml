@@ -8,6 +8,7 @@ compiler:
 
 before_install:
     - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install qt5; fi
+    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile; fi
 
 script:
     - mkdir -p build
