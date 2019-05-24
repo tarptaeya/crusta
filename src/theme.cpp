@@ -31,12 +31,31 @@ void Theme::setThemeName(const QString &themeName)
     themeContents = themeContents.prepend(baseContents);
 
 #ifdef __APPLE__
-    const QString accentColor = MacUtils::getAccentColor();
+    const Color accentColor = MacUtils::getAccentColor();
     themeContents.append(QStringLiteral("QPushButton#default {"
                                         "color: white;"
-                                        "background: %1;"
-                                        "}").arg(accentColor));
+                                        "background: rgb(%1, %2, %3);"
+                                        "}").arg(accentColor.red).arg(accentColor.green).arg(accentColor.blue));
 #endif
 
     qApp->setStyleSheet(themeContents);
+}
+
+void Theme::appendColorToTheme(Color color)
+{
+#ifdef __APPLE__
+    QString theme = qApp->styleSheet();
+    theme = theme.append(QStringLiteral("#sidebar {"
+                                        "background: rgb(%1, %2, %3);"
+                                        "}"
+                                        ""
+                                        "QSplitter:handle {"
+                                        "background: rgb(%1, %2, %3);"
+                                        "}"
+                                        ""
+                                        "QToolBar {"
+                                        "background: rgb(%1, %2, %3);"
+                                        "}").arg(color.red).arg(color.green).arg(color.blue));
+    qApp->setStyleSheet(theme);
+#endif
 }

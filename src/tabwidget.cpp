@@ -15,7 +15,7 @@ TabWidget::TabWidget(QWidget *parent)
     m_newTabButton = new QToolButton;
 
     m_newTabButton->setAutoRaise(true);
-    m_newTabButton->setObjectName(QStringLiteral("NewTabButton"));
+    m_newTabButton->setObjectName(QStringLiteral("newtabbutton"));
     m_newTabButton->setToolTip(QStringLiteral("Click to add tab"));
     m_newTabButton->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
 
@@ -33,7 +33,7 @@ TabWidget::TabWidget(QWidget *parent)
     if (Browser::instance()->isPrivate()) {
         m_privateButton = new QToolButton;
         m_privateButton->setAutoRaise(true);
-        m_privateButton->setObjectName(QStringLiteral("PrivateButton"));
+        m_privateButton->setObjectName(QStringLiteral("privatebutton"));
         m_privateButton->setIcon(QIcon::fromTheme(QStringLiteral("view-private")));
 
         m_privateButton->setAttribute(Qt::WA_TransparentForMouseEvents);

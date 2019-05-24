@@ -6,12 +6,12 @@ QToolButton::menu-indicator {
     image: none;
 }
 
-#NewTabButton {
+#newtabbutton {
     width: 20px;
     height: 40px;
 }
 
-#PrivateButton {
+#privatebutton {
     width: 20px;
     height: 40px;
 }

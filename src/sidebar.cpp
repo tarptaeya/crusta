@@ -10,6 +10,8 @@
 SideBar::SideBar(QWidget *parent)
     : QWidget (parent)
 {
+    setObjectName(QStringLiteral("sidebar"));
+
     m_comboBox = new QComboBox;
     m_widget = new QStackedWidget;
 

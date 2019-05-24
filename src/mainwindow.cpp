@@ -87,6 +87,14 @@ void MainWindow::show()
     QMainWindow::show();
 
     Utils::removeTitleBar(winId());
+#ifdef __APPLE__
+    QSettings settings;
+    // TODO: make it as default behaviour
+    bool useAccentColorForTheme = settings.value(QStringLiteral("appearance/useaccentcolorfortheme"), false).toBool();
+    if (useAccentColorForTheme) {
+        Utils::setAccentColorAsWindowBackground(winId());
+    }
+#endif
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

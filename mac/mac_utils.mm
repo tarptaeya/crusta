@@ -1,6 +1,7 @@
 #import "mac_utils.h"
 
 #import <Cocoa/Cocoa.h>
+#include <QMainWindow>
 
 void MacUtils::removeTitleBar(unsigned long long windowId)
 {
@@ -9,7 +10,7 @@ void MacUtils::removeTitleBar(unsigned long long windowId)
         return;
     }
 
-    [window setTitlebarAppearsTransparent:YES];
+    window.titlebarAppearsTransparent = YES;
 }
 
 void MacUtils::setMovableByBackground(unsigned long long windowId)
@@ -22,7 +23,7 @@ void MacUtils::setMovableByBackground(unsigned long long windowId)
     [window setMovableByWindowBackground:YES];
 }
 
-QString MacUtils::getAccentColor()
+Color MacUtils::getAccentColor()
 {
     NSColor *accentColor;
     if (@available(macOS 10.14, *)) {
@@ -32,11 +33,27 @@ QString MacUtils::getAccentColor()
     }
 
     accentColor = [accentColor colorUsingColorSpace:NSColorSpace.genericRGBColorSpace];
-    int redComponent = static_cast<int>(255 * [accentColor redComponent]);
-    int greenComponent = static_cast<int>(255 * [accentColor greenComponent]);
-    int blueComponent = static_cast<int>(255 * [accentColor blueComponent]);
 
-    return QStringLiteral("rgb(%1, %2, %3)").arg(redComponent).arg(greenComponent).arg(blueComponent);
+    Color color;
+    color.red = static_cast<int>(255 * [accentColor redComponent]);
+    color.green = static_cast<int>(255 * [accentColor greenComponent]);
+    color.blue = static_cast<int>(255 * [accentColor blueComponent]);
+
+    return color;
+}
+
+void MacUtils::setWindowBackground(unsigned long long windowId, Color color)
+{
+    NSWindow *window = reinterpret_cast<NSWindow *>(getWindow(windowId));
+    if (!window) {
+        return;
+    }
+
+    CGFloat red = static_cast<CGFloat>(color.red / 255.0f);
+    CGFloat green = static_cast<CGFloat>(color.green / 255.0f);
+    CGFloat blue = static_cast<CGFloat>(color.blue / 255.0f);
+    NSColor *nsColor = [NSColor colorWithRed:red green:green blue:blue alpha:1.0];
+    window.backgroundColor = nsColor;
 }
 
 void *MacUtils::getWindow(unsigned long long windowId)

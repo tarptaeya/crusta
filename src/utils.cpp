@@ -25,8 +25,6 @@ void Utils::removeTitleBar(WId windowId)
 {
 #ifdef __APPLE__
     MacUtils::removeTitleBar(windowId);
-#else
-    Q_UNUSED(windowId);
 #endif
 }
 
@@ -34,8 +32,15 @@ void Utils::setMovableByBackground(WId windowId)
 {
 #ifdef __APPLE__
     MacUtils::setMovableByBackground(windowId);
-#else
-    Q_UNUSED(windowId);
+#endif
+}
+
+void Utils::setAccentColorAsWindowBackground(WId windowId)
+{
+#ifdef __APPLE__
+    Color color = MacUtils::getAccentColor();
+    MacUtils::setWindowBackground(windowId, color);
+    Theme::appendColorToTheme(color);
 #endif
 }
 
