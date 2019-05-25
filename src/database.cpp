@@ -2,8 +2,10 @@
 #include "browser.h"
 #include "database.h"
 
+#include <QDir>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QStandardPaths>
 #include <iostream>
 
 Database::Database(bool isPrivate)
@@ -15,7 +17,15 @@ Database::Database(bool isPrivate)
     }
 
     m_db = QSqlDatabase::addDatabase(driver);
-    m_db.setDatabaseName(isPrivate ? QStringLiteral("") : QStringLiteral("crdatabase"));
+
+    if (isPrivate) {
+        m_db.setDatabaseName(QStringLiteral(""));
+    } else {
+        const QDir standardLocation(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+        const QString dbPath = standardLocation.absoluteFilePath(QStringLiteral("database"));
+        m_db.setDatabaseName(dbPath);
+    }
+
     if (!m_db.open()) {
         std::cerr << "unable to open database: " << m_db.lastError().text().toStdString() << std::endl;
         return;
