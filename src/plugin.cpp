@@ -55,6 +55,22 @@ void Plugin::destroyFn()
     m_destroy.call();
 }
 
+bool Plugin::acceptNavigationRequestFn(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+    if (!m_acceptNavigationRequest.isCallable()) {
+        return true;
+    }
+
+    QJSValueList args;
+    args << url.toString() << type << isMainFrame;
+    QJSValue result = m_acceptNavigationRequest.call(args);
+    if (!result.isBool()) {
+        return true;
+    }
+
+    return result.toBool();
+}
+
 QJSValue Plugin::create()
 {
     return m_create;
@@ -73,4 +89,14 @@ QJSValue Plugin::destroy()
 void Plugin::setDestroy(QJSValue value)
 {
     m_destroy = value;
+}
+
+QJSValue Plugin::acceptNavigationRequest()
+{
+    return m_acceptNavigationRequest;
+}
+
+void Plugin::setAcceptNavigationRequest(QJSValue value)
+{
+    m_acceptNavigationRequest = value;
 }

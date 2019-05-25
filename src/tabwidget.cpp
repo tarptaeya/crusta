@@ -155,7 +155,7 @@ int TabWidget::addTab(Tab *tab, bool isBackground, const QString &label)
     connect(webView->page(), &WebPage::popupRequested, [this, tab] (QWidget *widget) {
         int index = indexOf(tab);
         if (index != currentIndex()) {
-            setCurrentIndex(index);
+            return ;
         }
 
         emit popupRequested(widget);

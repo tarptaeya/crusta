@@ -31,6 +31,11 @@ void Plugins::loadPlugin(const QString &path)
     m_plugins.append(plugin);
 }
 
+QList<Plugin *> Plugins::plugins()
+{
+    return m_plugins;
+}
+
 void Plugins::installTypes()
 {
     const char *uri = "Crusta";

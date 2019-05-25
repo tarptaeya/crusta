@@ -11,6 +11,7 @@ public:
     ~Plugins();
 
     void loadPlugin(const QString &path);
+    QList<Plugin *> plugins();
 
 private:
     QList<Plugin *> m_plugins;

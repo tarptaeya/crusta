@@ -1,3 +1,5 @@
+#include "browser.h"
+#include "plugins.h"
 #include "webobject.h"
 #include "webpage.h"
 
@@ -24,6 +26,19 @@ WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
         QWidget *widget = featureWidget(this, securityOrigin, feature);
         emit popupRequested(widget);
     });
+}
+
+bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+    QList<Plugin *> plugins = Browser::instance()->plugins()->plugins();
+    for (Plugin *plugin : plugins) {
+        bool result = plugin->acceptNavigationRequestFn(url, type, isMainFrame);
+        if (!result) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 QWidget *WebPage::featureWidget(QWebEnginePage *page, const QUrl &securityOrigin, WebPage::Feature feature)
