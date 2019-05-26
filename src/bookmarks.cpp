@@ -21,13 +21,17 @@ Bookmarks::Bookmarks(QObject *parent)
     : QObject (parent)
 {
     m_widget = new QWidget;
+    m_searchBox = new QLineEdit;
     m_treeWidget = new QTreeWidget;
     m_treeWidget->setHeaderHidden(true);
+
+    m_searchBox->setPlaceholderText(QStringLiteral("Search bookmarks..."));
 
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     m_widget->setLayout(vboxLayout);
 
     vboxLayout->setContentsMargins(0, 0, 0, 0);
+    vboxLayout->addWidget(m_searchBox);
     vboxLayout->addWidget(m_treeWidget);
 
     readBookmarksFile();
@@ -79,6 +83,25 @@ Bookmarks::Bookmarks(QObject *parent)
         }
 
         menu.exec(QCursor::pos());
+    });
+
+    connect(m_searchBox, &QLineEdit::returnPressed, this, [this] {
+        const QString text = m_searchBox->text();
+        QList<QTreeWidgetItem *> allItem = m_treeWidget->findItems(QStringLiteral(""), Qt::MatchContains);
+        for (QTreeWidgetItem *item : allItem) {
+            item->setHidden(true);
+        }
+
+        QList<QTreeWidgetItem *> items = m_treeWidget->findItems(text, Qt::MatchContains | Qt::MatchRecursive);
+        for (QTreeWidgetItem *item : items) {
+            QTreeWidgetItem *parent = item;
+            while (parent) {
+                parent->setHidden(false);
+                parent->setExpanded(true);
+                parent = parent->parent();
+            }
+        }
+
     });
 }
 

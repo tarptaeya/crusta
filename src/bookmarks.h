@@ -46,6 +46,7 @@ private:
 
     QWidget *m_widget = nullptr;
     QTreeWidget *m_treeWidget = nullptr;
+    QLineEdit *m_searchBox = nullptr;
 
     static void readBookmarksFile();
     static void saveBookmarksFile();
