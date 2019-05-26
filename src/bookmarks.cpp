@@ -46,27 +46,37 @@ Bookmarks::Bookmarks(QObject *parent)
     });
 
     connect(m_treeWidget, &QTreeWidget::customContextMenuRequested, [this] {
+        QMenu menu;
+
         QTreeWidgetItem *item = m_treeWidget->currentItem();
         QString address = item->data(0, Qt::ToolTipRole).toString();
         if (!address.isNull()) {
-            return ;
+            QAction *edit = menu.addAction(QStringLiteral("Edit"));
+            connect(edit, &QAction::triggered, [this, address] {
+                QWidget *widget = popupWidget(s_bookmarks.value(address));
+                widget->show();
+                widget->move(QCursor::pos());
+
+                connect(widget, &QWidget::destroyed, [this] {
+                    refreshBookmarks();
+                    refreshBookmarksWidget();
+                });
+            });
+        } else {
+            QAction *remove = menu.addAction(QStringLiteral("Remove Folder"));
+            connect(remove, &QAction::triggered, [this] {
+                QStringList folderPath;
+                QTreeWidgetItem *item = m_treeWidget->currentItem();
+                while (item) {
+                    folderPath.prepend(item->text(0));
+                    item = item->parent();
+                }
+
+                removeBookmarkFolder(folderPath.join(QLatin1Char('/')));
+                refreshBookmarks();
+                refreshBookmarksWidget();
+            });
         }
-
-        QMenu menu;
-
-        QAction *remove = menu.addAction(QStringLiteral("Remove Folder"));
-        connect(remove, &QAction::triggered, [this] {
-            QStringList folderPath;
-            QTreeWidgetItem *item = m_treeWidget->currentItem();
-            while (item) {
-                folderPath.prepend(item->text(0));
-                item = item->parent();
-            }
-
-            removeBookmarkFolder(folderPath.join(QLatin1Char('/')));
-            refreshBookmarks();
-            refreshBookmarksWidget();
-        });
 
         menu.exec(QCursor::pos());
     });
