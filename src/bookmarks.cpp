@@ -107,6 +107,7 @@ void Bookmarks::insertBookmark(const BookmarkItem &item)
 void Bookmarks::removeBookmark(const QString &url)
 {
     removeBookmarkFromXMLDom(url);
+    s_bookmarks.remove(url);
     saveBookmarksFile();
 }
 
