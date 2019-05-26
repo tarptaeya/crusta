@@ -1,13 +1,24 @@
+sudo: required
 language: cpp
-compiler: gcc
+cache: ccache
 dist: xenial
 
+matrix:
+  include:
+    - os: linux
+    
+before_install:
+  - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.12.3-xenial
+  - sudo apt update -qq
+
 install:
-    - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.12.0-xenial
-    - sudo apt-get update -qq
-    - sudo apt-get install -qq qt512tools qt512script qt512webengine qt512webchannel qt512declarative qt512x11extras
-    - sudo apt-get install -qq mesa-common-dev
+  - sudo apt install -qq qt512tools qt512script qt512webengine qt512webchannel qt512declarative
+  - sudo apt install -qq mesa-common-dev
+  - sudo apt install libgl1-mesa-dev
+  - source /opt/qt512/bin/qt512-env.sh
 
 script:
-    - qmake
-    - make
+  - mkdir build
+  - cd build
+  - qmake ..
+  - make
