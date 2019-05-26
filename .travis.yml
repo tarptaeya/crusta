@@ -1,17 +1,20 @@
+sudo: required
 language: cpp
+cache: ccache
 
-os:
-    - osx
-
-compiler:
-    - clang++
-
+matrix:
+  include:
+    - os: linux
+    
 before_install:
-    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install qt5; fi
-    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile; fi
+  - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.12.3-xenial
+  - sudo apt-get update -qq
 
-script:
-    - mkdir -p build
-    - cd build
-    - qmake ..
-    - make -j 4
+install:
+  - sudo apt-get install -qq qt512tools qt512script qt512webengine qt512webchannel qt512declarative
+  - sudo apt-get install -qq mesa-common-dev
+  - source /opt/qt512/bin/qt512-env.sh
+  - mkdir build
+  - cd build
+  - qmake ..
+  - make -j 6
