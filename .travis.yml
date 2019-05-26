@@ -9,11 +9,12 @@ matrix:
     
 before_install:
   - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.12.3-xenial
-  - sudo apt-get update -qq
+  - sudo apt update -qq
 
 install:
-  - sudo apt-get install -qq qt512tools qt512script qt512webengine qt512webchannel qt512declarative
-  - sudo apt-get install -qq mesa-common-dev
+  - sudo apt install -qq qt512tools qt512script qt512webengine qt512webchannel qt512declarative
+  - sudo apt install -qq mesa-common-dev
+  - sudo apt install libgl1-mesa-dev
   - source /opt/qt512/bin/qt512-env.sh
   - mkdir build
   - cd build
