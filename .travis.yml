@@ -16,8 +16,9 @@ install:
   - sudo apt install -qq mesa-common-dev
   - sudo apt install libgl1-mesa-dev
   - source /opt/qt512/bin/qt512-env.sh
+
+script:
   - mkdir build
   - cd build
   - qmake ..
-
-script: make
+  - make
