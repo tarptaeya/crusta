@@ -25,6 +25,7 @@ public:
 
 class Bookmarks : public QObject
 {
+    Q_OBJECT
 public:
     explicit Bookmarks(QObject *parent = nullptr);
 
@@ -34,6 +35,9 @@ public:
     static void insertBookmark(const BookmarkItem &item);
     static void removeBookmark(const QString &url);
     static QWidget *popupWidget(const BookmarkItem &item);
+
+Q_SIGNALS:
+    void newTabRequested(const QUrl &url);
 
 private:
     static QDomDocument s_xmlDom;

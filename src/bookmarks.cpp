@@ -1,19 +1,15 @@
 #include "bookmarks.h"
 #include "utils.h"
 
-#include <QComboBox>
 #include <QCompleter>
 #include <QCursor>
 #include <QDir>
 #include <QGridLayout>
 #include <QHBoxLayout>
-#include <QHeaderView>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMenu>
 #include <QPushButton>
-#include <QSqlError>
-#include <QSqlQuery>
-#include <QSqlRecord>
 #include <QStandardPaths>
 
 #include <iostream>
@@ -36,6 +32,16 @@ Bookmarks::Bookmarks(QObject *parent)
 
     readBookmarksFile();
     refreshBookmarksWidget();
+
+    connect(m_treeWidget, &QTreeWidget::itemDoubleClicked, [this] {
+        QTreeWidgetItem *item = m_treeWidget->currentItem();
+        QString address = item->data(0, Qt::ToolTipRole).toString();
+        if (address.isNull()) {
+            return ;
+        }
+
+        emit newTabRequested(address);
+    });
 }
 
 QWidget *Bookmarks::bookmarksWidget()
@@ -293,6 +299,7 @@ QTreeWidgetItem *Bookmarks::xmlDomTraverse(QDomNode node)
         QTreeWidgetItem *itemItem = new QTreeWidgetItem;
         itemItem->setText(0, node.attributes().namedItem(QStringLiteral("title")).toAttr().value());
         itemItem->setIcon(0, QIcon::fromTheme(QStringLiteral("globe")));
+        itemItem->setData(0, Qt::ToolTipRole, node.attributes().namedItem(QStringLiteral("address")).toAttr().value());
         return itemItem;
     }
 
