@@ -2,6 +2,7 @@
 #include "utils.h"
 
 #include <QComboBox>
+#include <QCompleter>
 #include <QCursor>
 #include <QDir>
 #include <QGridLayout>
@@ -15,28 +16,10 @@
 #include <QSqlRecord>
 #include <QStandardPaths>
 
-#include <QDebug>
-
 #include <iostream>
 
-/*
- * TODO: currently there are multiple calls to Bookmarks::isBookmarked,
- *       please try to reduce them.
- */
-
 QDomDocument Bookmarks::s_xmlDom = QDomDocument();
-
-QStringList Bookmarks::s_folderNames = QStringList() << QStringLiteral("Blogs")
-                                                     << QStringLiteral("Business")
-                                                     << QStringLiteral("Entertainment")
-                                                     << QStringLiteral("General")
-                                                     << QStringLiteral("News")
-                                                     << QStringLiteral("Shopping")
-                                                     << QStringLiteral("Social")
-                                                     << QStringLiteral("Sports")
-                                                     << QStringLiteral("Technology")
-                                                     << QStringLiteral("Tools")
-                                                     << QStringLiteral("Travel");
+QMap<QString, BookmarkItem> Bookmarks::s_bookmarks;
 
 Bookmarks::Bookmarks(QObject *parent)
     : QObject (parent)
@@ -52,43 +35,19 @@ QWidget *Bookmarks::bookmarksWidget()
 
 BookmarkItem Bookmarks::isBookmarked(const QString &url)
 {
-    QSqlQuery sql;
-    sql.prepare(QStringLiteral("select * from bookmarks where url = ?"));
-    sql.addBindValue(url);
-    if (!sql.exec()) {
-        std::cerr << "unable to check if " << url.toStdString() << " is bookmarked: " << sql.lastError().text().toStdString() << std::endl;
-        return BookmarkItem();
-    }
-    if (!sql.next()) {
-        return BookmarkItem();
-    }
-
-    BookmarkItem item;
-    item.title = sql.value(sql.record().indexOf(QStringLiteral("title"))).toString();
-    item.address = sql.value(sql.record().indexOf(QStringLiteral("url"))).toString();
-    item.description = sql.value(sql.record().indexOf(QStringLiteral("description"))).toString();
-    item.folder = sql.value(sql.record().indexOf(QStringLiteral("folder"))).toString();
-
-    return item;
+    return s_bookmarks[url];
 }
 
 void Bookmarks::insertBookmark(const BookmarkItem &item)
 {
+    s_bookmarks.insert(item.address, item);
+
     QDomElement element = s_xmlDom.createElement(QStringLiteral("item"));
     element.setAttribute(QStringLiteral("title"), item.title);
     element.setAttribute(QStringLiteral("address"), item.address);
     element.setAttribute(QStringLiteral("description"), item.description);
 
-    const QDomNodeList xmlItems = s_xmlDom.elementsByTagName(QStringLiteral("item"));
-    for (int i = 0; i < xmlItems.length(); i++) {
-        QDomNode xmlItem = xmlItems.at(i);
-        QString xmlItemAddress = xmlItem.attributes().namedItem("address").toAttr().value();
-        QUrl xmlItemUrl(xmlItemAddress);
-        QUrl itemUrl(item.address);
-        if (xmlItemUrl.matches(itemUrl, QUrl::StripTrailingSlash)) {
-            xmlItem.parentNode().removeChild(xmlItem);
-        }
-    }
+    removeBookmarkFromXMLDom(item.address);
 
     QString nearestParentFolderName;
     QDomNode nearestParentFolder;
@@ -110,6 +69,7 @@ void Bookmarks::insertBookmark(const BookmarkItem &item)
         QString folderName = xmlFolderName.join(QLatin1Char('/'));
         if (folderName == item.folder) {
             xmlFolder.appendChild(element);
+            saveBookmarksFile();
             return;
         }
 
@@ -141,16 +101,13 @@ void Bookmarks::insertBookmark(const BookmarkItem &item)
     }
 
     nearestParentFolder.appendChild(element);
+    saveBookmarksFile();
 }
 
 void Bookmarks::removeBookmark(const QString &url)
 {
-    QSqlQuery sql;
-    sql.prepare(QStringLiteral("delete from bookmarks where url = ?"));
-    sql.addBindValue(url);
-    if (!sql.exec()) {
-        std::cerr << "unable to delete history: " << sql.lastError().text().toStdString() << std::endl;
-    }
+    removeBookmarkFromXMLDom(url);
+    saveBookmarksFile();
 }
 
 QWidget *Bookmarks::popupWidget(const BookmarkItem &item)
@@ -188,6 +145,14 @@ QWidget *Bookmarks::popupWidget(const BookmarkItem &item)
     description->setCursorPosition(0);
 
     folder->setText(item.folder);
+    QStringList folders;
+    for (const BookmarkItem &bookmarksItem : s_bookmarks.values()) {
+        folders << bookmarksItem.folder;
+    }
+    QCompleter *completer = new QCompleter(folders);
+    completer->setCompletionMode(QCompleter::InlineCompletion);
+    completer->setFilterMode(Qt::MatchStartsWith);
+    folder->setCompleter(completer);
 
     save->setObjectName(QStringLiteral("default"));
 
@@ -216,9 +181,18 @@ void Bookmarks::readBookmarksFile()
         return;
     }
 
+    QString data;
+
     QDir standardLocation(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     QFile file(standardLocation.absoluteFilePath(QStringLiteral("bookmarks.xml")));
-    if (!file.exists() || !file.open(QFile::ReadOnly)) {
+    if (file.open(QFile::ReadOnly)) {
+        data = file.readAll();
+        file.close();
+    }
+
+    data = data.trimmed();
+
+    if (data.isEmpty()) {
         s_xmlDom.setContent(QStringLiteral("<bookmarks>"
                                            "    <folder name='blogs'></folder>"
                                            "    <folder name='business'></folder>"
@@ -233,8 +207,55 @@ void Bookmarks::readBookmarksFile()
                                            "    <folder name='travel'></folder>"
                                            "</bookmarks>"));
     } else {
-        s_xmlDom.setContent(&file);
+        s_xmlDom.setContent(data);
+    }
+
+    // put bookmarks to s_bookmarks
+    const QDomNodeList xmlItems = s_xmlDom.elementsByTagName(QStringLiteral("item"));
+    for (int i = 0; i < xmlItems.length(); i++) {
+        QDomNode xmlItem = xmlItems.at(i);
+        BookmarkItem item;
+        item.title = xmlItem.attributes().namedItem("title").toAttr().value();
+        item.address = xmlItem.attributes().namedItem("address").toAttr().value();
+        item.description = xmlItem.attributes().namedItem("description").toAttr().value();
+        QStringList folderPath;
+        QDomNode parentFolder = xmlItem.parentNode();
+        while (!parentFolder.isNull()) {
+            QString parentFolderName = parentFolder.attributes().namedItem("name").toAttr().value();
+            if (parentFolderName.isNull()) {
+                break;
+            }
+            folderPath.prepend(parentFolderName);
+            parentFolder = parentFolder.parentNode();
+        }
+
+        item.folder = folderPath.join(QLatin1Char('/'));
+
+        s_bookmarks.insert(item.address, item);
+    }
+}
+
+void Bookmarks::saveBookmarksFile()
+{
+    QDir standardLocation(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    QFile file(standardLocation.absoluteFilePath(QStringLiteral("bookmarks.xml")));
+    if (file.open(QFile::WriteOnly)) {
+        file.write(s_xmlDom.toString().toUtf8());
         file.close();
+    }
+}
+
+void Bookmarks::removeBookmarkFromXMLDom(const QString &url)
+{
+    const QDomNodeList xmlItems = s_xmlDom.elementsByTagName(QStringLiteral("item"));
+    for (int i = 0; i < xmlItems.length(); i++) {
+        QDomNode xmlItem = xmlItems.at(i);
+        QString xmlItemAddress = xmlItem.attributes().namedItem("address").toAttr().value();
+        QUrl xmlItemUrl(xmlItemAddress);
+        QUrl itemUrl(url);
+        if (xmlItemUrl.matches(itemUrl, QUrl::StripTrailingSlash)) {
+            xmlItem.parentNode().removeChild(xmlItem);
+        }
     }
 }
 
@@ -242,81 +263,11 @@ void Bookmarks::setupBookmarksWidget()
 {
     m_widget = new QWidget;
     m_treeWidget = new QTreeWidget;
-    m_folderBox = new QComboBox;
-    m_addFolderButton = new QToolButton;
-    m_removeFolderButton = new QToolButton;
-    m_refreshButton = new QToolButton;
 
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     m_widget->setLayout(vboxLayout);
 
     vboxLayout->setContentsMargins(0, 0, 0, 0);
 
-    QHBoxLayout *hboxLayout = new QHBoxLayout;
-    hboxLayout->addWidget(m_folderBox);
-    hboxLayout->addWidget(m_addFolderButton);
-    hboxLayout->addWidget(m_removeFolderButton);
-    hboxLayout->addWidget(m_refreshButton);
-    vboxLayout->addLayout(hboxLayout);
     vboxLayout->addWidget(m_treeWidget);
-
-    m_addFolderButton->setAutoRaise(true);
-    m_removeFolderButton->setAutoRaise(true);
-    m_refreshButton->setAutoRaise(true);
-    m_addFolderButton->setToolTip(QStringLiteral("Add folder"));
-    m_removeFolderButton->setToolTip(QStringLiteral("Remove current folder"));
-    m_refreshButton->setToolTip(QStringLiteral("Refresh list"));
-    m_addFolderButton->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
-    m_removeFolderButton->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
-    m_refreshButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
-    m_treeWidget->header()->hide();
-
-    for (const QString &folderName : s_folderNames) {
-        m_folderBox->addItem(folderName);
-    }
-
-    connect(m_refreshButton, &QToolButton::clicked, this, &Bookmarks::showFolderItems);
-    connect(m_folderBox, &QComboBox::currentTextChanged, this, [this] { showFolderItems(); });
-    connect(m_treeWidget, &QTreeWidget::itemDoubleClicked, this, [this] {
-        BookmarkTreeItem *item = dynamic_cast<BookmarkTreeItem *>(m_treeWidget->currentItem());
-        if (!item) {
-            return ;
-        }
-
-        QWidget *widget = Bookmarks::popupWidget(item->bookmarkItem);
-        connect(widget, &QWidget::destroyed, this, &Bookmarks::showFolderItems);
-        widget->show();
-
-        widget->move(QCursor::pos());
-    });
-}
-
-void Bookmarks::showFolderItems()
-{
-    const QString folder = m_folderBox->currentText();
-    QSqlQuery sql;
-    sql.prepare(QStringLiteral("select * from bookmarks where folder = ? order by title"));
-    sql.addBindValue(folder);
-
-    m_treeWidget->clear();
-
-    if (!sql.exec()) {
-        std::cerr << "unable to select bookmarks based on folder: " << sql.lastError().text().toStdString() << std::endl;
-    }
-
-    while (sql.next()) {
-        BookmarkItem bookmarkItem;
-        bookmarkItem.title = sql.value(sql.record().indexOf(QStringLiteral("title"))).toString();
-        bookmarkItem.address = sql.value(sql.record().indexOf(QStringLiteral("url"))).toString();
-        bookmarkItem.description = sql.value(sql.record().indexOf(QStringLiteral("description"))).toString();
-        bookmarkItem.folder = sql.value(sql.record().indexOf(QStringLiteral("folder"))).toString();
-
-        BookmarkTreeItem *item = new BookmarkTreeItem;
-        item->bookmarkItem = bookmarkItem;
-
-        item->setText(0, bookmarkItem.title);
-        item->setToolTip(0, bookmarkItem.description);
-
-        m_treeWidget->addTopLevelItem(item);
-    }
 }
