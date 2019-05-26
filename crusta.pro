@@ -1,6 +1,6 @@
 TEMPLATE = app
-TARGET = crusta
-QT += webenginewidgets sql webchannel
+TARGET = Crusta
+QT += webenginewidgets sql webchannel xml
 
 HEADERS += \
     api/qmlwindows.h \

@@ -115,7 +115,7 @@ void ToolBar::setUrl(const QUrl &url)
         m_siteAction->setIcon(QIcon::fromTheme(QStringLiteral("document-encrypted")));
     }
 
-    bookmarkChanged(!Bookmarks::isBookmarked(url.toString(QUrl::RemoveFragment)).url.isEmpty());
+    bookmarkChanged(!Bookmarks::isBookmarked(url.toString(QUrl::RemoveFragment)).address.isEmpty());
     m_tabWidget->currentTab()->webView()->setFocus();
 }
 
@@ -195,7 +195,7 @@ void ToolBar::bookmarkChanged(const BookmarkItem &item, bool isBookmarked)
     if (isBookmarked) {
         Bookmarks::insertBookmark(item);
     } else {
-        Bookmarks::removeBookmark(item.url);
+        Bookmarks::removeBookmark(item.address);
     }
 }
 
@@ -243,27 +243,25 @@ void ToolBar::setupAddressBar()
             return ;
         }
 
-        const QIcon icon = m_tabWidget->currentTab()->webView()->icon();
         const QString title = m_tabWidget->currentTab()->webView()->title();
         const QString url = m_tabWidget->currentTab()->webView()->url().toString(QUrl::RemoveFragment);
 
         BookmarkItem bookmarkItem = Bookmarks::isBookmarked(url);
 
         BookmarkItem item;
-        item.icon = icon;
-        item.url = url;
+        item.address = url;
         item.title = bookmarkItem.title.isEmpty() ? title : bookmarkItem.title;
         item.description = bookmarkItem.description;
         item.folder = bookmarkItem.folder;
 
-        if (bookmarkItem.url.isEmpty()) {
+        if (bookmarkItem.address.isEmpty()) {
             bookmarkChanged(item, true);
         }
 
         QWidget *widget = Bookmarks::popupWidget(item);
         connect(widget, &QWidget::destroyed, this, [this, item] {
-            BookmarkItem bookmarkItem = Bookmarks::isBookmarked(item.url);
-            if (bookmarkItem.url.isEmpty()) {
+            BookmarkItem bookmarkItem = Bookmarks::isBookmarked(item.address);
+            if (bookmarkItem.address.isEmpty()) {
                 bookmarkChanged(item, false);
             }
         });

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QComboBox>
+#include <QDomDocument>
 #include <QIcon>
 #include <QLineEdit>
 #include <QObject>
@@ -10,11 +11,10 @@
 
 struct BookmarkItem
 {
-    QIcon icon;
     QString title;
-    QString url;
+    QString address;
     QString description;
-    QString folder = QStringLiteral("General");
+    QString folder = QStringLiteral("general");
 };
 
 class BookmarkTreeItem : public QTreeWidgetItem
@@ -38,12 +38,16 @@ public:
     static QStringList s_folderNames;
 
 private:
+    static QDomDocument s_xmlDom;
+
     QWidget *m_widget = nullptr;
     QTreeWidget *m_treeWidget = nullptr;
     QComboBox *m_folderBox = nullptr;
     QToolButton *m_addFolderButton = nullptr;
     QToolButton *m_removeFolderButton = nullptr;
     QToolButton *m_refreshButton = nullptr;
+
+    void readBookmarksFile();
 
     void setupBookmarksWidget();
     void showFolderItems();
