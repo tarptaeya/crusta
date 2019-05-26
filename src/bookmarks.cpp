@@ -356,6 +356,8 @@ void Bookmarks::refreshBookmarksWidget()
         m_treeWidget->addTopLevelItem(treeFolderItem);
         folder = folder.nextSibling();
     }
+
+    m_treeWidget->sortItems(0, Qt::AscendingOrder);
 }
 
 QTreeWidgetItem *Bookmarks::xmlDomTraverse(QDomNode node)
