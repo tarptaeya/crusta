@@ -33,6 +33,8 @@ Bookmarks::Bookmarks(QObject *parent)
     readBookmarksFile();
     refreshBookmarksWidget();
 
+    m_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+
     connect(m_treeWidget, &QTreeWidget::itemDoubleClicked, [this] {
         QTreeWidgetItem *item = m_treeWidget->currentItem();
         QString address = item->data(0, Qt::ToolTipRole).toString();
@@ -41,6 +43,32 @@ Bookmarks::Bookmarks(QObject *parent)
         }
 
         emit newTabRequested(address);
+    });
+
+    connect(m_treeWidget, &QTreeWidget::customContextMenuRequested, [this] {
+        QTreeWidgetItem *item = m_treeWidget->currentItem();
+        QString address = item->data(0, Qt::ToolTipRole).toString();
+        if (!address.isNull()) {
+            return ;
+        }
+
+        QMenu menu;
+
+        QAction *remove = menu.addAction(QStringLiteral("Remove Folder"));
+        connect(remove, &QAction::triggered, [this] {
+            QStringList folderPath;
+            QTreeWidgetItem *item = m_treeWidget->currentItem();
+            while (item) {
+                folderPath.prepend(item->text(0));
+                item = item->parent();
+            }
+
+            removeBookmarkFolder(folderPath.join(QLatin1Char('/')));
+            refreshBookmarks();
+            refreshBookmarksWidget();
+        });
+
+        menu.exec(QCursor::pos());
     });
 }
 
@@ -125,6 +153,31 @@ void Bookmarks::removeBookmark(const QString &url)
     removeBookmarkFromXMLDom(url);
     s_bookmarks.remove(url);
     saveBookmarksFile();
+}
+
+void Bookmarks::removeBookmarkFolder(const QString &name)
+{
+    QDomNodeList folders = s_xmlDom.elementsByTagName(QStringLiteral("folder"));
+    for (int i = 0; i < folders.length(); i++) {
+        QDomNode folder = folders.at(i);
+        QStringList folderPath;
+        QDomNode parentFolder = folder;
+        while (!parentFolder.isNull()) {
+            QString parentFolderName = parentFolder.attributes().namedItem("name").toAttr().value();
+            if (parentFolderName.isNull()) {
+                break;
+            }
+            folderPath.prepend(parentFolderName);
+            parentFolder = parentFolder.parentNode();
+        }
+
+        QString folderName = folderPath.join(QLatin1Char('/'));
+        if (folderName == name) {
+            folder.parentNode().removeChild(folder);
+            saveBookmarksFile();
+            return;
+        }
+    }
 }
 
 QWidget *Bookmarks::popupWidget(const BookmarkItem &item)
@@ -227,29 +280,7 @@ void Bookmarks::readBookmarksFile()
         s_xmlDom.setContent(data);
     }
 
-    // put bookmarks to s_bookmarks
-    const QDomNodeList xmlItems = s_xmlDom.elementsByTagName(QStringLiteral("item"));
-    for (int i = 0; i < xmlItems.length(); i++) {
-        QDomNode xmlItem = xmlItems.at(i);
-        BookmarkItem item;
-        item.title = xmlItem.attributes().namedItem("title").toAttr().value();
-        item.address = xmlItem.attributes().namedItem("address").toAttr().value();
-        item.description = xmlItem.attributes().namedItem("description").toAttr().value();
-        QStringList folderPath;
-        QDomNode parentFolder = xmlItem.parentNode();
-        while (!parentFolder.isNull()) {
-            QString parentFolderName = parentFolder.attributes().namedItem("name").toAttr().value();
-            if (parentFolderName.isNull()) {
-                break;
-            }
-            folderPath.prepend(parentFolderName);
-            parentFolder = parentFolder.parentNode();
-        }
-
-        item.folder = folderPath.join(QLatin1Char('/'));
-
-        s_bookmarks.insert(item.address, item);
-    }
+    refreshBookmarks();
 }
 
 void Bookmarks::saveBookmarksFile()
@@ -273,6 +304,34 @@ void Bookmarks::removeBookmarkFromXMLDom(const QString &url)
         if (xmlItemUrl.matches(itemUrl, QUrl::StripTrailingSlash)) {
             xmlItem.parentNode().removeChild(xmlItem);
         }
+    }
+}
+
+void Bookmarks::refreshBookmarks()
+{
+    s_bookmarks.clear();
+
+    const QDomNodeList xmlItems = s_xmlDom.elementsByTagName(QStringLiteral("item"));
+    for (int i = 0; i < xmlItems.length(); i++) {
+        QDomNode xmlItem = xmlItems.at(i);
+        BookmarkItem item;
+        item.title = xmlItem.attributes().namedItem("title").toAttr().value();
+        item.address = xmlItem.attributes().namedItem("address").toAttr().value();
+        item.description = xmlItem.attributes().namedItem("description").toAttr().value();
+        QStringList folderPath;
+        QDomNode parentFolder = xmlItem.parentNode();
+        while (!parentFolder.isNull()) {
+            QString parentFolderName = parentFolder.attributes().namedItem("name").toAttr().value();
+            if (parentFolderName.isNull()) {
+                break;
+            }
+            folderPath.prepend(parentFolderName);
+            parentFolder = parentFolder.parentNode();
+        }
+
+        item.folder = folderPath.join(QLatin1Char('/'));
+
+        s_bookmarks.insert(item.address, item);
     }
 }
 

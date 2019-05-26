@@ -34,6 +34,7 @@ public:
     static BookmarkItem isBookmarked(const QString &url);
     static void insertBookmark(const BookmarkItem &item);
     static void removeBookmark(const QString &url);
+    static void removeBookmarkFolder(const QString &name);
     static QWidget *popupWidget(const BookmarkItem &item);
 
 Q_SIGNALS:
@@ -51,6 +52,7 @@ private:
 
     static void removeBookmarkFromXMLDom(const QString &url);
 
+    static void refreshBookmarks();
     void refreshBookmarksWidget();
     QTreeWidgetItem *xmlDomTraverse(QDomNode node);
 };
