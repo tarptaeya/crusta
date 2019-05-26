@@ -1,10 +1,20 @@
 #pragma once
 
+#include <QTabBar>
 #include <QToolButton>
 #include <QTabWidget>
 #include <QWebEngineHistory>
 
 class Tab;
+
+class TabBar : public QTabBar
+{
+public:
+    QSize tabSizeHint(int index) const;
+
+private:
+    int m_minTabWidth = 100;
+};
 
 class TabWidget : public QTabWidget
 {

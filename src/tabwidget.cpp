@@ -7,7 +7,6 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QMenu>
-#include <QTabBar>
 
 TabWidget::TabWidget(QWidget *parent)
     : QTabWidget (parent)
@@ -19,8 +18,10 @@ TabWidget::TabWidget(QWidget *parent)
     m_newTabButton->setToolTip(QStringLiteral("Click to add tab"));
     m_newTabButton->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
 
-    QTabBar *tabBar = this->tabBar();
+    TabBar *tabBar = new TabBar;
+    setTabBar(tabBar);
     tabBar->setDocumentMode(true);
+    tabBar->setElideMode(Qt::ElideRight);
     tabBar->setExpanding(true);
     tabBar->setMovable(true);
     tabBar->setTabsClosable(true);
@@ -199,4 +200,13 @@ void TabWidget::createContextMenu(const QPoint &pos)
     connect(copy, &QAction::triggered, this, [tab] { qApp->clipboard()->setText(tab->webView()->title()); });
 
     menu.exec(mapToGlobal(pos));
+}
+
+QSize TabBar::tabSizeHint(int index) const
+{
+    QSize size = QTabBar::tabSizeHint(index);
+    int width = this->width() / (count() > 0 ? count() : 1);
+    width = width > m_minTabWidth ? width : m_minTabWidth;
+    size.setWidth(width);
+    return size;
 }
