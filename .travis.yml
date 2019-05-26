@@ -19,4 +19,5 @@ install:
   - mkdir build
   - cd build
   - qmake ..
-  - make -j 6
+
+script: make
