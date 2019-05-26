@@ -24,8 +24,18 @@ QMap<QString, BookmarkItem> Bookmarks::s_bookmarks;
 Bookmarks::Bookmarks(QObject *parent)
     : QObject (parent)
 {
+    m_widget = new QWidget;
+    m_treeWidget = new QTreeWidget;
+    m_treeWidget->setHeaderHidden(true);
+
+    QVBoxLayout *vboxLayout = new QVBoxLayout;
+    m_widget->setLayout(vboxLayout);
+
+    vboxLayout->setContentsMargins(0, 0, 0, 0);
+    vboxLayout->addWidget(m_treeWidget);
+
     readBookmarksFile();
-    setupBookmarksWidget();
+    refreshBookmarksWidget();
 }
 
 QWidget *Bookmarks::bookmarksWidget()
@@ -260,15 +270,42 @@ void Bookmarks::removeBookmarkFromXMLDom(const QString &url)
     }
 }
 
-void Bookmarks::setupBookmarksWidget()
+void Bookmarks::refreshBookmarksWidget()
 {
-    m_widget = new QWidget;
-    m_treeWidget = new QTreeWidget;
+    m_treeWidget->clear();
 
-    QVBoxLayout *vboxLayout = new QVBoxLayout;
-    m_widget->setLayout(vboxLayout);
+    QDomNode bookmarksNode = s_xmlDom.firstChild();
+    QDomNode folder = bookmarksNode.firstChild();
+    while (!folder.isNull()) {
+        QTreeWidgetItem *treeFolderItem = xmlDomTraverse(folder);
+        m_treeWidget->addTopLevelItem(treeFolderItem);
+        folder = folder.nextSibling();
+    }
+}
 
-    vboxLayout->setContentsMargins(0, 0, 0, 0);
+QTreeWidgetItem *Bookmarks::xmlDomTraverse(QDomNode node)
+{
+    if (node.isNull()) {
+        return nullptr;
+    }
 
-    vboxLayout->addWidget(m_treeWidget);
+    if (node.toElement().tagName() == QStringLiteral("item")) {
+        QTreeWidgetItem *itemItem = new QTreeWidgetItem;
+        itemItem->setText(0, node.attributes().namedItem(QStringLiteral("title")).toAttr().value());
+        itemItem->setIcon(0, QIcon::fromTheme(QStringLiteral("globe")));
+        return itemItem;
+    }
+
+    QTreeWidgetItem *folderItem = new QTreeWidgetItem;
+    folderItem->setText(0, node.attributes().namedItem(QStringLiteral("name")).toAttr().value());
+    folderItem->setIcon(0, QIcon::fromTheme(QStringLiteral("folder")));
+
+    QDomNode childFolder = node.firstChild();
+    while (!childFolder.isNull()) {
+        QTreeWidgetItem *childItem = xmlDomTraverse(childFolder);
+        folderItem->addChild(childItem);
+        childFolder = childFolder.nextSibling();
+    }
+
+    return folderItem;
 }

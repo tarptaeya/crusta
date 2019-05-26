@@ -47,5 +47,6 @@ private:
 
     static void removeBookmarkFromXMLDom(const QString &url);
 
-    void setupBookmarksWidget();
+    void refreshBookmarksWidget();
+    QTreeWidgetItem *xmlDomTraverse(QDomNode node);
 };
