@@ -6,6 +6,7 @@ HEADERS += \
     api/qmlwindows.h \
     src/bookmarks.h \
     src/browser.h \
+    src/completer.h \
     src/cookies.h \
     src/crscheme.h \
     src/database.h \
@@ -33,6 +34,7 @@ SOURCES += \
     src/main.cpp \
     src/bookmarks.cpp \
     src/browser.cpp \
+    src/completer.cpp \
     src/cookies.cpp \
     src/crscheme.cpp \
     src/database.cpp \

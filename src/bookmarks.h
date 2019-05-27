@@ -37,12 +37,13 @@ public:
     static void removeBookmarkFolder(const QString &name);
     static QWidget *popupWidget(const BookmarkItem &item);
 
+    static QMap<QString, BookmarkItem> s_bookmarks;
+
 Q_SIGNALS:
     void newTabRequested(const QUrl &url);
 
 private:
     static QDomDocument s_xmlDom;
-    static QMap<QString, BookmarkItem> s_bookmarks;
 
     QWidget *m_widget = nullptr;
     QTreeWidget *m_treeWidget = nullptr;

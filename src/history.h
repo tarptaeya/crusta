@@ -25,7 +25,7 @@ public:
     static void removeItem(const QString &title);
     QWidget *historyWidget();
 
-    QList<HistoryItem> getAllHistory() const;
+    static QList<HistoryItem> getAllHistory();
     void updateHistoryWidget();
     void updateTopLevelItems();
 

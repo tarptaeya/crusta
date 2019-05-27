@@ -1,5 +1,6 @@
 #include "bookmarks.h"
 #include "browser.h"
+#include "completer.h"
 #include "downloads.h"
 #include "searchengine.h"
 #include "tabwidget.h"
@@ -236,6 +237,8 @@ void ToolBar::setupAddressBar()
     m_addressBar->addAction(m_bookmarksAction, QLineEdit::TrailingPosition);
 
     m_popupButton->setVisible(false);
+
+    Completer::attachCompleterTo(m_addressBar);
 
     connect(m_bookmarksAction, &QAction::triggered, this, [this] {
         if (!m_tabWidget) {

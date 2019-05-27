@@ -69,7 +69,7 @@ QWidget *History::historyWidget()
     return m_historyWidget;
 }
 
-QList<HistoryItem> History::getAllHistory() const
+QList<HistoryItem> History::getAllHistory()
 {
     QSqlQuery query(QStringLiteral("select * from history order by timestamp desc"));
     QList<HistoryItem> list;
