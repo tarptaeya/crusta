@@ -62,5 +62,7 @@
         <file>icons/breeze-dark/22/media-playback-start.svg</file>
         <file>icons/breeze/16/folder.svg</file>
         <file>icons/breeze-dark/16/folder.svg</file>
+        <file>icons/breeze/16/notifications.svg</file>
+        <file>icons/breeze-dark/16/notifications.svg</file>
     </qresource>
 </RCC>

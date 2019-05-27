@@ -201,10 +201,17 @@ void ToolBar::bookmarkChanged(const BookmarkItem &item, bool isBookmarked)
 
 void ToolBar::showPopup(QWidget *widget)
 {
-    m_popupButton->setIcon(m_tabWidget->currentTab()->webView()->icon());
     m_popupButton->setVisible(true);
 
-    QMetaObject::Connection connection = connect(m_tabWidget->currentTab()->webView(), &WebView::iconChanged, [this](const QIcon &icon) { m_popupButton->setIcon(icon); });
+    QMetaObject::Connection connection = connect(m_popupButton, &QAction::triggered, [this, widget] {
+        widget->show();
+        int x = m_addressBar->x();
+        int y = m_addressBar->y() + m_addressBar->height();
+
+        QPoint point = mapToGlobal(QPoint(x, y));
+
+        widget->move(point);
+    });
 
     m_addressBar->update();
 
@@ -212,15 +219,6 @@ void ToolBar::showPopup(QWidget *widget)
         disconnect(connection);
         m_popupButton->setVisible(false);
     });
-
-    widget->show();
-
-    int x = m_addressBar->x();
-    int y = m_addressBar->y() + m_addressBar->height();
-
-    QPoint point = mapToGlobal(QPoint(x, y));
-
-    widget->move(point);
 }
 
 void ToolBar::setupAddressBar()
@@ -230,6 +228,7 @@ void ToolBar::setupAddressBar()
     m_bookmarksAction = new QAction;
 
     m_siteAction->setIcon(QIcon::fromTheme(QStringLiteral("globe")));
+    m_popupButton->setIcon(QIcon::fromTheme(QStringLiteral("notifications")));
     m_bookmarksAction->setIcon(QIcon::fromTheme(QStringLiteral("draw-star")));
 
     m_addressBar->addAction(m_siteAction, QLineEdit::LeadingPosition);
