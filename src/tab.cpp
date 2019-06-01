@@ -57,7 +57,12 @@ void Tab::responsiveControllPane(Tab *tab)
 {
     QWidget *pane = new QWidget;
     pane->setAttribute(Qt::WA_DeleteOnClose);
-    pane->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+#ifdef __APPLE__
+    pane->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+#else
+    pane->setWindowTitle(QStringLiteral("Responsive Mode"));
+    pane->setWindowFlags(Qt::WindowStaysOnTopHint);
+#endif
 
     QGridLayout *grid = new QGridLayout;
     pane->setLayout(grid);

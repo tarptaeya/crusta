@@ -45,7 +45,12 @@ Preferences::Preferences(QWidget *parent)
     installWidget(QStringLiteral("Privacy"), createPrivacyTab());
 
     setAttribute(Qt::WA_DeleteOnClose);
+#ifdef __APPLE__
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+#else
+    setWindowTitle(QStringLiteral("Crusta:Preferences"));
+    setWindowFlags(Qt::WindowStaysOnTopHint);
+#endif
 
     Utils::setMovableByBackground(winId());
 
