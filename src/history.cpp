@@ -173,18 +173,14 @@ void History::updateTopLevelItems()
     m_olderItem = new QTreeWidgetItem;
 
     m_todayItem->setText(0, QStringLiteral("Today"));
-    m_todayItem->setFont(0, QFont("", -1, QFont::Bold));
     m_treeWidget->addTopLevelItem(m_todayItem);
 
     m_weekItem->setText(0, QStringLiteral("This week"));
-    m_weekItem->setFont(0, QFont("", -1, QFont::Bold));
     m_treeWidget->addTopLevelItem(m_weekItem);
 
     m_monthItem->setText(0, QStringLiteral("This month"));
-    m_monthItem->setFont(0, QFont("", -1, QFont::Bold));
     m_treeWidget->addTopLevelItem(m_monthItem);
 
     m_olderItem->setText(0, QStringLiteral("Older"));
-    m_olderItem->setFont(0, QFont("", -1, QFont::Bold));
     m_treeWidget->addTopLevelItem(m_olderItem);
 }
