@@ -89,6 +89,10 @@ void Browser::setupProfile()
 {
     m_profile = m_isPrivate ? new QWebEngineProfile : QWebEngineProfile::defaultProfile();
 
+    QString userAgent = m_profile->httpUserAgent();
+    userAgent = userAgent.replace(QRegExp(QStringLiteral("QtWebEngine/[\\d\\.]+")), QStringLiteral("Crusta/2.0.0"));
+    m_profile->setHttpUserAgent(userAgent);
+
     CRScheme *handler = new CRScheme(this);
     m_profile->installUrlSchemeHandler("crusta", handler);
 
