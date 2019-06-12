@@ -1,3 +1,4 @@
+#include "browser.h"
 #include "preferences.h"
 #include "utils.h"
 
@@ -35,7 +36,7 @@ Preferences::Preferences(QWidget *parent)
     installWidget(QStringLiteral("Browsing"), createBrowsingTab());
     installWidget(QStringLiteral("Search Engine"), createSearchEngineTab());
     installWidget(QStringLiteral("Web Engine"), createWebEngineTab());
-    installWidget(QStringLiteral("Privacy"), createPrivacyTab());
+    installWidget(QStringLiteral("Advanced"), createPrivacyTab());
 
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(QStringLiteral("Crusta:Preferences"));
@@ -147,28 +148,7 @@ QWidget *Preferences::createBrowsingTab()
         });
     }
 
-    QGroupBox *fontGroup = new QGroupBox(QStringLiteral("Font"));
-    {
-        QGridLayout *grid = new QGridLayout;
-        fontGroup->setLayout(grid);
-
-        QSpinBox *minFont = new QSpinBox;
-        QSpinBox *minLogicalFont = new QSpinBox;
-        QSpinBox *defaultFont = new QSpinBox;
-        QSpinBox *defaultFixedFont = new QSpinBox;
-
-        grid->addWidget(new QLabel(QStringLiteral("Minimum font size")), 1, 1);
-        grid->addWidget(minFont, 1, 2);
-        grid->addWidget(new QLabel(QStringLiteral("Minimum logical font size")), 2, 1);
-        grid->addWidget(minLogicalFont, 2, 2);
-        grid->addWidget(new QLabel(QStringLiteral("Default font size")), 3, 1);
-        grid->addWidget(defaultFont, 3, 2);
-        grid->addWidget(new QLabel(QStringLiteral("Default fixed font size")), 4, 1);
-        grid->addWidget(defaultFixedFont, 4, 2);
-    }
-
     vboxLayout->addWidget(generalBox, 0);
-    vboxLayout->addWidget(fontGroup, 0);
     vboxLayout->addWidget(new QWidget, 1);
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     QPushButton *restoreButton = new QPushButton(QStringLiteral("Restore to defaults"));
@@ -316,7 +296,6 @@ QWidget *Preferences::createWebEngineTab()
         vboxLayout->addWidget(screenCaptureEnabled);
         vboxLayout->addWidget(webglEnabled);
         vboxLayout->addWidget(accelerated2DCanvasEnabled);
-        vboxLayout->addWidget(autoLoadImages);
         vboxLayout->addWidget(autoLoadIconsForPage);
         vboxLayout->addWidget(touchIconsEnabled);
         vboxLayout->addWidget(focusOnNavigationEnabled);
@@ -329,6 +308,38 @@ QWidget *Preferences::createWebEngineTab()
         vboxLayout->addWidget(javaScriptCanPaste);
         vboxLayout->addWidget(webRTCPublicInterfacesOnly);
         vboxLayout->addWidget(dnsPrefetchEnabled);
+
+        QWebEngineSettings *webSettings = Browser::instance()->profile()->settings();
+        autoLoadImages->setChecked(webSettings->testAttribute(QWebEngineSettings::AutoLoadImages));
+        javaScriptEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::JavascriptEnabled));
+        javaScriptCanOpenWindows->setChecked(webSettings->testAttribute(QWebEngineSettings::JavascriptCanOpenWindows));
+        javaScriptCanAccessClipboard->setChecked(webSettings->testAttribute(QWebEngineSettings::JavascriptCanAccessClipboard));
+        linksIncludedInFocusChain->setChecked(webSettings->testAttribute(QWebEngineSettings::LinksIncludedInFocusChain));
+        localStorageEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::LocalStorageEnabled));
+        localContentCanAccessRemoteUrls->setChecked(webSettings->testAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls));
+        xssAuditingEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::XSSAuditingEnabled));
+        spatialNavigationEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::SpatialNavigationEnabled));
+        localContentCanAccessFileUrls->setChecked(webSettings->testAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls));
+        hyperLinkAuditingEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::HyperlinkAuditingEnabled));
+        scrollAnimatorEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::ScrollAnimatorEnabled));
+        errorPageEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::ErrorPageEnabled));
+        pluginsEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::PluginsEnabled));
+        fullScreenSupportEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::FullScreenSupportEnabled));
+        screenCaptureEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::ScreenCaptureEnabled));
+        webglEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::WebGLEnabled));
+        accelerated2DCanvasEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled));
+        autoLoadIconsForPage->setChecked(webSettings->testAttribute(QWebEngineSettings::AutoLoadIconsForPage));
+        touchIconsEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::TouchIconsEnabled));
+        focusOnNavigationEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::FocusOnNavigationEnabled));
+        printElementBackgrounds->setChecked(webSettings->testAttribute(QWebEngineSettings::PrintElementBackgrounds));
+        allowRunningInsecureContent->setChecked(webSettings->testAttribute(QWebEngineSettings::AllowRunningInsecureContent));
+        allowGeolocationOnInsecureOrigin->setChecked(webSettings->testAttribute(QWebEngineSettings::AllowGeolocationOnInsecureOrigins));
+        allowWindowActivationFromJavaScript->setChecked(webSettings->testAttribute(QWebEngineSettings::AllowWindowActivationFromJavaScript));
+        showScrollBars->setChecked(webSettings->testAttribute(QWebEngineSettings::ShowScrollBars));
+        playbackRequiresUserGesture->setChecked(webSettings->testAttribute(QWebEngineSettings::PlaybackRequiresUserGesture));
+        javaScriptCanPaste->setChecked(webSettings->testAttribute(QWebEngineSettings::JavascriptCanPaste));
+        webRTCPublicInterfacesOnly->setChecked(webSettings->testAttribute(QWebEngineSettings::WebRTCPublicInterfacesOnly));
+        dnsPrefetchEnabled->setChecked(webSettings->testAttribute(QWebEngineSettings::DnsPrefetchEnabled));
     }
 
     vboxLayout->addWidget(area, 1);
