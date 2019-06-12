@@ -29,7 +29,15 @@ Window::Window(QWidget *parent)
 
     setupMenu();
     m_toolBar->setMenu(m_menu);
-    addToolBar(m_toolBar);
+    addToolBar(([] () -> Qt::ToolBarArea {
+                    QSettings settings;
+                    const QString position = settings.value(QStringLiteral("appearance/toolbarposition"), QStringLiteral("Top")).toString();
+                    if (position == QStringLiteral("Top")) {
+                        return Qt::TopToolBarArea;
+                    }
+
+                    return Qt::BottomToolBarArea;
+                })(), m_toolBar);
     setUnifiedTitleAndToolBarOnMac(true);
 
     centralWidgetLayout->setSpacing(0);

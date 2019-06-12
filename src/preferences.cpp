@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSettings>
@@ -18,6 +19,10 @@
 #include <QTextCodec>
 #include <QVBoxLayout>
 #include <QWebEngineSettings>
+
+#define MESSAGE QMessageBox msg; \
+    msg.setText(QStringLiteral("Changes will take effect from new window")); \
+    msg.exec();
 
 Preferences::Preferences(QWidget *parent)
     : QWidget (parent)
@@ -89,6 +94,21 @@ QWidget *Preferences::createAppearanceTab()
         grid->addWidget(toolbarPosition, 2, 2);
         grid->addWidget(new QLabel(QStringLiteral("Status bar")), 3, 1);
         grid->addWidget(statusBarVisibility, 3, 2);
+
+        QSettings settings;
+        tabsPosition->setCurrentText(settings.value(QStringLiteral("appearance/tabsposition"), QStringLiteral("Top")).toString());
+        toolbarPosition->setCurrentText(settings.value(QStringLiteral("appearance/toolbarposition"), QStringLiteral("Top")).toString());
+
+        connect(tabsPosition, &QComboBox::currentTextChanged, [tabsPosition] {
+            QSettings settings;
+            settings.setValue(QStringLiteral("appearance/tabsposition"), tabsPosition->currentText());
+            MESSAGE
+        });
+        connect(toolbarPosition, &QComboBox::currentTextChanged, [toolbarPosition] {
+            QSettings settings;
+            settings.setValue(QStringLiteral("appearance/toolbarposition"), toolbarPosition->currentText());
+            MESSAGE
+        });
     }
 
     vboxLayout->addWidget(themeBox, 0);

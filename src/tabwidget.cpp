@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QMenu>
+#include <QSettings>
 
 TabWidget::TabWidget(QWidget *parent)
     : QTabWidget (parent)
@@ -43,6 +44,16 @@ TabWidget::TabWidget(QWidget *parent)
     }
 
     addTab(new Tab);
+
+    setTabPosition(([] () -> TabWidget::TabPosition {
+                        QSettings settings;
+                        const QString position = settings.value(QStringLiteral("appearance/tabsposition"), QStringLiteral("Top")).toString();
+                        if (position == QStringLiteral("Top")) {
+                            return North;
+                        }
+
+                        return South;
+                    })());
 
     connect(m_newTabButton, &QToolButton::clicked, this, [this] {
         Tab *tab = new Tab;
