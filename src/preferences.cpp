@@ -60,7 +60,7 @@ QWidget *Preferences::createAppearanceTab()
     QWidget *widget = new QWidget;
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     widget->setLayout(vboxLayout);
-
+#if 0
     QGroupBox *themeBox = new QGroupBox(QStringLiteral("Theme"));
     {
         QVBoxLayout *vboxLayout = new QVBoxLayout;
@@ -74,6 +74,7 @@ QWidget *Preferences::createAppearanceTab()
 
         vboxLayout->addLayout(grid);
     }
+#endif
 
     QGroupBox *generalBox = new QGroupBox(QStringLiteral("General"));
     {
@@ -86,14 +87,10 @@ QWidget *Preferences::createAppearanceTab()
         QComboBox *toolbarPosition = new QComboBox;
         toolbarPosition->addItems(QStringList() << QStringLiteral("Top") << QStringLiteral("Bottom"));
 
-        QCheckBox *statusBarVisibility = new QCheckBox(QStringLiteral("visible"));
-
         grid->addWidget(new QLabel(QStringLiteral("Tabs position")), 1, 1);
         grid->addWidget(tabsPosition, 1, 2);
         grid->addWidget(new QLabel(QStringLiteral("Tool bar position")), 2, 1);
         grid->addWidget(toolbarPosition, 2, 2);
-        grid->addWidget(new QLabel(QStringLiteral("Status bar")), 3, 1);
-        grid->addWidget(statusBarVisibility, 3, 2);
 
         QSettings settings;
         tabsPosition->setCurrentText(settings.value(QStringLiteral("appearance/tabsposition"), QStringLiteral("Top")).toString());
@@ -110,8 +107,9 @@ QWidget *Preferences::createAppearanceTab()
             MESSAGE
         });
     }
-
+#if 0
     vboxLayout->addWidget(themeBox, 0);
+#endif
     vboxLayout->addWidget(generalBox, 0);
     vboxLayout->addWidget(new QWidget, 1);
 
