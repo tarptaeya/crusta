@@ -22,5 +22,5 @@ script:
   - cd build
   - qmake ..
   - make
-  - make install
+  - sudo make install
 
