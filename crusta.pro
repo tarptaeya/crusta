@@ -2,6 +2,8 @@ TEMPLATE = app
 TARGET = Crusta
 QT += webenginewidgets sql webchannel xml
 
+INSTALLS += target
+
 HEADERS += \
     api/qmlwindows.h \
     src/bookmarks.h \
