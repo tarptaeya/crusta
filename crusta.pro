@@ -2,7 +2,6 @@ TEMPLATE = app
 TARGET = Crusta
 QT += webenginewidgets sql webchannel xml
 
-INSTALLS += target
 
 HEADERS += \
     api/qmlwindows.h \
@@ -62,6 +61,8 @@ SOURCES += \
 RESOURCES += \
     resources.qrc \
 
+target.path = /usr/local/bin/
+
 macx {
 LIBS += -framework Foundation -framework Cocoa
 
@@ -73,3 +74,6 @@ OBJECTIVE_SOURCES += \
 
 ICON = mac/logos.icns
 }
+
+INSTALLS += target
+

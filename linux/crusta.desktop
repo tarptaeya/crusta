@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Crusta
+Comment=Crusta Browser
+Exec=Crusta
+Icon=
+Terminal=false
+Categories=Application;WebBrowser;
+Name[en_IN]=Crusta
+
