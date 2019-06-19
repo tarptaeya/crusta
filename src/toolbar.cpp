@@ -52,6 +52,7 @@ ToolBar::ToolBar(QWidget *parent)
     setupAddressBar();
 
     setMovable(false);
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(m_backButton, &QToolButton::clicked, this, [this] {
         if (!m_tabWidget) {
