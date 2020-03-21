@@ -1,4 +1,6 @@
 set(SRCS
+    browser.cpp
+    browser_window.cpp
     main.cpp)
 
 add_executable(Crusta ${SRCS})
