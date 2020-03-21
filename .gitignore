@@ -1,0 +1,4 @@
+*.txt.user
+build
+
+.DS_Store
