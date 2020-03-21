@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../assets/icons/breeze/index.theme</file>
+        <file>../assets/icons/breeze/icons/list-add.svg</file>
+        <file>../assets/icons/breeze/icons/window-close.svg</file>
+    </qresource>
+</RCC>

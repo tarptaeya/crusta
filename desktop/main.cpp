@@ -1,6 +1,7 @@
 #include "browser.h"
 
 #include <QApplication>
+#include <QIcon>
 #include <QStyleFactory>
 
 int main(int argc, char **argv)
@@ -13,6 +14,8 @@ int main(int argc, char **argv)
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
+    QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QStringLiteral(":assets/icons"));
+    QIcon::setThemeName(QStringLiteral("breeze"));
     QApplication::setStyle(QStyleFactory::create(QStringLiteral("fusion")));
 
     Browser browser;
