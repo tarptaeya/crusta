@@ -5,10 +5,13 @@
 #include <QToolBar>
 #include <QToolButton>
 
+class Tab;
+class BrowserTabbar;
+
 class CentralWidget : public QWidget
 {
     QStackedWidget *m_stacked_widget = nullptr;
-    QTabBar *m_tabbar = nullptr;
+    BrowserTabbar *m_tabbar = nullptr;
     QToolBar *m_toolbar = nullptr;
 
     void setup_tabbar();
@@ -16,6 +19,8 @@ class CentralWidget : public QWidget
 
 public:
     explicit CentralWidget(QWidget *parent = nullptr);
+
+    Tab *add_new_tab();
 };
 
 class BrowserTabbar : public QTabBar
@@ -28,6 +33,6 @@ public:
 
     QSize tabSizeHint(int index) const override;
 
-Q_SIGNALS:
+signals:
     void new_tab_requested();
 };

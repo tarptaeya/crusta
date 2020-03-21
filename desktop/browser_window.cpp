@@ -1,5 +1,6 @@
 #include "browser_window.h"
 #include "browser_window_p.h"
+#include "tab.h"
 
 #include <QApplication>
 #include <QVBoxLayout>
@@ -15,7 +16,8 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 
 void CentralWidget::setup_tabbar()
 {
-    connect(m_tabbar, &QTabBar::currentChanged, m_stacked_widget, &QStackedWidget::setCurrentIndex);
+    connect(m_tabbar, &BrowserTabbar::currentChanged, m_stacked_widget, &QStackedWidget::setCurrentIndex);
+    connect(m_tabbar, &BrowserTabbar::new_tab_requested, this, &CentralWidget::add_new_tab);
 }
 
 void CentralWidget::setup_toolbar()
@@ -40,6 +42,17 @@ CentralWidget::CentralWidget(QWidget *parent)
 
     setup_tabbar();
     setup_toolbar();
+
+    add_new_tab();
+}
+
+Tab *CentralWidget::add_new_tab()
+{
+    Tab *tab = new Tab;
+    int index = m_tabbar->addTab(QStringLiteral("New Tab"));
+    m_tabbar->setCurrentIndex(index);
+    m_stacked_widget->addWidget(tab);
+    return tab;
 }
 
 BrowserTabbar::BrowserTabbar(QWidget *parent)
