@@ -18,6 +18,7 @@ public:
     explicit CentralWidget(QWidget *parent = nullptr);
 
     Tab *add_new_tab();
+    QList<Tab *> tabs() const;
 };
 
 class NormalTabbar : public QTabBar

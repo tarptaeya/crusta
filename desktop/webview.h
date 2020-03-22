@@ -13,6 +13,8 @@ class WebView : public QWebEngineView
 public:
     explicit WebView(QWidget *parent = nullptr);
     void home();
+
+    QWebEngineView * createWindow(QWebEnginePage::WebWindowType type) override;
 };
 
 class WebPage : public QWebEnginePage

@@ -27,6 +27,16 @@ BrowserWindow::BrowserWindow(QWidget *parent)
     setup_menubar();
 }
 
+Tab *BrowserWindow::add_new_tab()
+{
+    return m_central_widget->add_new_tab();
+}
+
+QList<Tab *> BrowserWindow::tabs() const
+{
+    return m_central_widget->tabs();
+}
+
 void CentralWidget::setup_tabbar()
 {
     connect(m_tabbar, &NormalTabbar::currentChanged, m_stacked_widget, &QStackedWidget::setCurrentIndex);
@@ -83,6 +93,17 @@ Tab *CentralWidget::add_new_tab()
     });
 
     return tab;
+}
+
+QList<Tab *> CentralWidget::tabs() const
+{
+    QList<Tab *> list;
+    for (int i = 0; i < m_stacked_widget->count(); i++) {
+        Tab *tab = dynamic_cast<Tab *>(m_stacked_widget->widget(i));
+        if (!tab) continue;
+        list.append(tab);
+    }
+    return list;
 }
 
 NormalTabbar::NormalTabbar(QWidget *parent)

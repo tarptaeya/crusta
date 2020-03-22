@@ -8,6 +8,7 @@
 #include <QWidget>
 
 class CentralWidget;
+class Tab;
 
 class BrowserWindow : public QMainWindow
 {
@@ -15,4 +16,6 @@ class BrowserWindow : public QMainWindow
     void setup_menubar();
 public:
     explicit BrowserWindow(QWidget *parent = nullptr);
+    Tab *add_new_tab();
+    QList<Tab *> tabs() const;
 };

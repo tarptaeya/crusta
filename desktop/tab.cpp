@@ -83,6 +83,11 @@ Tab::Tab(QWidget *parent)
     connect(m_webview, &WebView::iconChanged, [this] (const QIcon &icon) { emit icon_changed(icon); });
 }
 
+QToolBar *Tab::toolbar() const
+{
+    return m_toolbar;
+}
+
 WebView *Tab::webview() const
 {
     return m_webview;

@@ -24,6 +24,7 @@ class Tab : public QWidget
     void setup_toolbar();
 public:
     explicit Tab(QWidget *parent = nullptr);
+    QToolBar *toolbar() const;
     WebView *webview() const;
 
 Q_SIGNALS:
