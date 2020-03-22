@@ -1,6 +1,7 @@
 #include "browser.h"
 #include "browser_window.h"
 #include "browser_schemes.h"
+#include "preferences.h"
 
 #include <QApplication>
 #include <QIcon>
@@ -8,13 +9,22 @@
 #include <QWebEngineUrlScheme>
 #include <QWidget>
 
-#include <QDebug>
+void Browser::setup_preferences_window()
+{
+    m_preferences_window = new PreferencesWindow;
+}
+
 void Browser::setup_web_profile()
 {
     m_web_profile = QWebEngineProfile::defaultProfile();
 
     BrowserSchemeHandler *browser_scheme_handler = new BrowserSchemeHandler(m_web_profile);
     m_web_profile->installUrlSchemeHandler("browser", browser_scheme_handler);
+}
+
+Browser::~Browser()
+{
+    delete m_preferences_window;
 }
 
 int Browser::start(int argc, char **argv)
@@ -34,6 +44,7 @@ int Browser::start(int argc, char **argv)
     register_scheme("browser");
 
     QApplication app(argc, argv);
+    setup_preferences_window();
     setup_web_profile();
     create_browser_window();
     return app.exec();
@@ -63,4 +74,9 @@ Browser *Browser::instance()
 {
     static Browser *browser_ = new Browser;
     return browser_;
+}
+
+void Browser::show_preferences_window()
+{
+    m_preferences_window->show();
 }

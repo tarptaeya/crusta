@@ -3,6 +3,7 @@ set(SRCS
     browser_schemes.cpp
     browser_window.cpp
     main.cpp
+    preferences.cpp
     resources.qrc
     tab.cpp
     webview.cpp)

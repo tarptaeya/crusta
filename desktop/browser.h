@@ -6,12 +6,17 @@
 #define browser Browser::instance()
 
 class BrowserWindow;
+class PreferencesWindow;
 
 class Browser
 {
     QWebEngineProfile *m_web_profile = nullptr;
+    PreferencesWindow *m_preferences_window = nullptr;
+
+    void setup_preferences_window();
     void setup_web_profile();
 public:
+    ~Browser();
     int start(int argc, char **argv);
 
     BrowserWindow *create_browser_window() const;
@@ -19,4 +24,6 @@ public:
     QWebEngineProfile *web_profile() const;
 
     static Browser *instance();
+
+    void show_preferences_window();
 };

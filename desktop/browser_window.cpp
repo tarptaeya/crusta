@@ -1,3 +1,4 @@
+#include "browser.h"
 #include "browser_window.h"
 #include "browser_window_p.h"
 #include "tab.h"
@@ -11,6 +12,7 @@ void BrowserWindow::setup_menubar()
     QMenuBar *menu_bar = new QMenuBar;
     QMenu *edit_menu = menu_bar->addMenu(QStringLiteral("Edit"));
     QAction *preferences = edit_menu->addAction(QStringLiteral("Preferences"));
+    connect(preferences, &QAction::triggered, [] { browser->show_preferences_window(); });
     setMenuBar(menu_bar);
 }
 
