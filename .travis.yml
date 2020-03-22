@@ -1,0 +1,24 @@
+sudo: required
+language: cpp
+cache: ccache
+dist: xenial
+
+matrix:
+  include:
+    - os: linux
+    
+before_install:
+  - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.14.1-xenial
+  - sudo apt update -qq
+
+install:
+  - sudo apt install -qq qt514tools qt514script qt514webengine qt514webchannel qt514declarative
+  - sudo apt install -qq mesa-common-dev
+  - sudo apt install libgl1-mesa-dev
+  - source /opt/qt514/bin/qt514-env.sh
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
