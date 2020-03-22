@@ -1,5 +1,6 @@
 set(SRCS
     browser.cpp
+    browser_schemes.cpp
     browser_window.cpp
     main.cpp
     resources.qrc

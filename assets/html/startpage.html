@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start page</title>
+    <link rel="stylesheet" href="qrc:///assets/html/style.css">
+    <style>
+    #search-bar {
+    width: 500px;
+    }
+
+    @media only screen and (max-width: 500px) {
+    #search-bar {
+    width: calc(100% - 16px);
+    }
+    }
+    </style>
+</head>
+<body>
+    <div style="height: 50px;"></div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <input id="search-bar" type="search" placeholder="Search or type address">
+    </div>
+</body>
+</html>
