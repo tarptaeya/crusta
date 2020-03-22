@@ -30,7 +30,20 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 void CentralWidget::setup_tabbar()
 {
     connect(m_tabbar, &NormalTabbar::currentChanged, m_stacked_widget, &QStackedWidget::setCurrentIndex);
+    connect(m_tabbar, &NormalTabbar::tabMoved, [this](int from, int to) {
+        m_stacked_widget->insertWidget(to, m_stacked_widget->widget(from));
+    });
     connect(m_tabbar, &NormalTabbar::new_tab_requested, this, &CentralWidget::add_new_tab);
+    connect(m_tabbar, &NormalTabbar::tabCloseRequested, [this](int index) {
+        Tab *tab = dynamic_cast<Tab *>(m_stacked_widget->widget(index));
+        if (!tab) {
+            return;
+        }
+
+        m_tabbar->removeTab(index);
+        m_stacked_widget->removeWidget(tab);
+        tab->deleteLater();
+    });
 }
 
 CentralWidget::CentralWidget(QWidget *parent)
@@ -58,6 +71,17 @@ Tab *CentralWidget::add_new_tab()
     int index = m_tabbar->addTab(QStringLiteral("New Tab"));
     m_stacked_widget->addWidget(tab);
     m_tabbar->setCurrentIndex(index);
+
+    connect(tab, &Tab::title_changed, [this, tab] (const QString &title) {
+        int index = m_stacked_widget->indexOf(tab);
+        m_tabbar->setTabText(index, title);
+    });
+
+    connect(tab, &Tab::icon_changed, [this, tab] (const QIcon &icon) {
+        int index = m_stacked_widget->indexOf(tab);
+        m_tabbar->setTabIcon(index, icon);
+    });
+
     return tab;
 }
 

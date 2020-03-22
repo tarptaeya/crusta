@@ -9,6 +9,8 @@ class WebView;
 
 class Tab : public QWidget
 {
+    Q_OBJECT
+
     QToolBar *m_toolbar = nullptr;
     WebView *m_webview = nullptr;
 
@@ -23,4 +25,8 @@ class Tab : public QWidget
 public:
     explicit Tab(QWidget *parent = nullptr);
     WebView *webview() const;
+
+Q_SIGNALS:
+    void title_changed(const QString &title);
+    void icon_changed(const QIcon &icon);
 };

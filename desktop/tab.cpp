@@ -45,8 +45,14 @@ void Tab::setup_toolbar()
         } else {
             // TODO: search with default search engine
         }
+
+        m_webview->setFocus();
     });
 
+    connect(m_webview, &WebView::urlChanged, [this] (const QUrl &address) {
+        m_address_bar->setText(address.toDisplayString());
+        m_address_bar->setCursorPosition(0);
+    });
     connect(m_webview, &WebView::loadStarted, [this] {
         m_refresh_button->setIcon(QIcon::fromTheme(QStringLiteral("process-stop")));
     });
@@ -72,6 +78,9 @@ Tab::Tab(QWidget *parent)
     vbox->addWidget(m_webview);
 
     setup_toolbar();
+
+    connect(m_webview, &WebView::titleChanged, [this] (const QString &title) { emit title_changed(title); });
+    connect(m_webview, &WebView::iconChanged, [this] (const QIcon &icon) { emit icon_changed(icon); });
 }
 
 WebView *Tab::webview() const
