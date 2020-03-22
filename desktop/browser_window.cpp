@@ -3,7 +3,16 @@
 #include "tab.h"
 
 #include <QApplication>
+#include <QMenuBar>
 #include <QVBoxLayout>
+
+void BrowserWindow::setup_menubar()
+{
+    QMenuBar *menu_bar = new QMenuBar;
+    QMenu *edit_menu = menu_bar->addMenu(QStringLiteral("Edit"));
+    QAction *preferences = edit_menu->addAction(QStringLiteral("Preferences"));
+    setMenuBar(menu_bar);
+}
 
 BrowserWindow::BrowserWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,6 +21,8 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 
     m_central_widget = new CentralWidget;
     setCentralWidget(m_central_widget);
+
+    setup_menubar();
 }
 
 void CentralWidget::setup_tabbar()

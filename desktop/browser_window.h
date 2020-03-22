@@ -12,6 +12,7 @@ class CentralWidget;
 class BrowserWindow : public QMainWindow
 {
     CentralWidget *m_central_widget = nullptr;
+    void setup_menubar();
 public:
     explicit BrowserWindow(QWidget *parent = nullptr);
 };
