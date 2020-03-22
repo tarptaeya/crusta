@@ -9,8 +9,10 @@ class WebPage;
 class WebView : public QWebEngineView
 {
     WebPage *m_webpage = nullptr;
+    void show_context_menu(const QPoint &pos);
 public:
     explicit WebView(QWidget *parent = nullptr);
+    void home();
 };
 
 class WebPage : public QWebEnginePage

@@ -29,20 +29,15 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 
 void CentralWidget::setup_tabbar()
 {
-    connect(m_tabbar, &BrowserTabbar::currentChanged, m_stacked_widget, &QStackedWidget::setCurrentIndex);
-    connect(m_tabbar, &BrowserTabbar::new_tab_requested, this, &CentralWidget::add_new_tab);
-}
-
-void CentralWidget::setup_toolbar()
-{
+    connect(m_tabbar, &NormalTabbar::currentChanged, m_stacked_widget, &QStackedWidget::setCurrentIndex);
+    connect(m_tabbar, &NormalTabbar::new_tab_requested, this, &CentralWidget::add_new_tab);
 }
 
 CentralWidget::CentralWidget(QWidget *parent)
     : QWidget(parent)
 {
     m_stacked_widget = new QStackedWidget;
-    m_tabbar = new BrowserTabbar;
-    m_toolbar = new QToolBar;
+    m_tabbar = new NormalTabbar;
 
     QVBoxLayout *vbox = new QVBoxLayout;
     vbox->setContentsMargins(0, 0, 0, 0);
@@ -50,11 +45,9 @@ CentralWidget::CentralWidget(QWidget *parent)
     setLayout(vbox);
 
     vbox->addWidget(m_tabbar);
-    vbox->addWidget(m_toolbar);
     vbox->addWidget(m_stacked_widget);
 
     setup_tabbar();
-    setup_toolbar();
 
     add_new_tab();
 }
@@ -63,12 +56,12 @@ Tab *CentralWidget::add_new_tab()
 {
     Tab *tab = new Tab;
     int index = m_tabbar->addTab(QStringLiteral("New Tab"));
-    m_tabbar->setCurrentIndex(index);
     m_stacked_widget->addWidget(tab);
+    m_tabbar->setCurrentIndex(index);
     return tab;
 }
 
-BrowserTabbar::BrowserTabbar(QWidget *parent)
+NormalTabbar::NormalTabbar(QWidget *parent)
     : QTabBar(parent)
 {
     setElideMode(Qt::ElideRight);
@@ -100,7 +93,7 @@ BrowserTabbar::BrowserTabbar(QWidget *parent)
     connect(m_add_tab_button, &QToolButton::clicked, [this] { emit new_tab_requested(); });
 }
 
-QSize BrowserTabbar::tabSizeHint(int index) const
+QSize NormalTabbar::tabSizeHint(int index) const
 {
     QSize size = QTabBar::tabSizeHint(index);
 
