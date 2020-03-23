@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QByteArray>
-#include <QSqlDatabase>
 #include <QWebEngineProfile>
 
 #define browser Browser::instance()
@@ -13,11 +12,9 @@ class Browser
 {
     bool m_is_private = false;
 
-    QSqlDatabase m_database;
     QWebEngineProfile *m_web_profile = nullptr;
     PreferencesWindow *m_preferences_window = nullptr;
 
-    void setup_database();
     void setup_preferences_window();
     void setup_web_profile();
 public:
