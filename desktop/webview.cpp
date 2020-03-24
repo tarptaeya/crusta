@@ -17,6 +17,16 @@ void WebView::show_context_menu(const QPoint &pos)
     menu->exec(mapToGlobal(pos));
 }
 
+void WebView::save_history_entry()
+{
+    HistoryEntry entry;
+    entry.title = title();
+    entry.address = url().toString();
+    entry.icon = icon();
+    entry.last_visited = QDateTime::currentDateTime();
+    browser->history_model()->add_entry(entry);
+}
+
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
 {
@@ -26,28 +36,9 @@ WebView::WebView(QWidget *parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this, &WebView::customContextMenuRequested, this, &WebView::show_context_menu);
-    connect(this, &WebView::loadFinished, this, [this] {
-        HistoryEntry entry;
-        entry.title = title();
-        entry.address = url().toString();
-        entry.icon = icon();
-        entry.last_visited = QDateTime::currentDateTime();
-        browser->history_model()->add_entry(entry);
-    });
-    connect(this, &WebView::titleChanged, this, [this] {
-        HistoryEntry entry;
-        entry.title = title();
-        entry.address = url().toString();
-        entry.icon = icon();
-        browser->history_model()->update_entry(entry);
-    });
-    connect(this, &WebView::iconChanged, this, [this] {
-        HistoryEntry entry;
-        entry.title = title();
-        entry.address = url().toString();
-        entry.icon = icon();
-        browser->history_model()->update_entry(entry);
-    });
+    connect(this, &WebView::loadFinished, this, &WebView::save_history_entry);
+    connect(this, &WebView::titleChanged, this, &WebView::save_history_entry);
+    connect(this, &WebView::iconChanged, this, &WebView::save_history_entry);
 }
 
 void WebView::home()
@@ -65,20 +56,24 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
     BrowserWindow *window = dynamic_cast<BrowserWindow *>(root);
     if (!window) return nullptr;
 
-    Tab *tab;
+    WebTab *tab;
 
     switch (type) {
     case QWebEnginePage::WebBrowserTab:
-        tab = window->add_new_tab();
+        tab = dynamic_cast<WebTab *>(window->add_new_tab());
+        if (!tab) return nullptr;
         return tab->webview();
     case QWebEnginePage::WebBrowserBackgroundTab:
-        tab = window->add_new_tab();
+        tab = dynamic_cast<WebTab *>(window->add_new_tab());
+        if (!tab) return nullptr;
         return tab->webview();
     case QWebEnginePage::WebBrowserWindow:
         window = browser->create_browser_window();
-        return window->tabs().at(0)->webview();
+        tab = dynamic_cast<WebTab *>(window->tabs().at(0));
+        if (!tab) return nullptr;
+        return tab->webview();
     case QWebEnginePage::WebDialog:
-        tab = new Tab;
+        tab = new WebTab;
         tab->setAttribute(Qt::WA_DeleteOnClose);
         tab->toolbar()->setEnabled(false);
         tab->resize(600, 400);

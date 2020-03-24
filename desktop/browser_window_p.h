@@ -18,6 +18,7 @@ public:
     explicit CentralWidget(QWidget *parent = nullptr);
 
     Tab *add_new_tab();
+    Tab *add_existing_tab(Tab *tab);
     QList<Tab *> tabs() const;
 };
 

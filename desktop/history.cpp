@@ -1,9 +1,13 @@
+#include "browser.h"
 #include "history.h"
 
 #include <QBuffer>
 #include <QDebug>
+#include <QMenu>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QStyleFactory>
+#include <QVBoxLayout>
 
 HistoryModel::HistoryModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -76,6 +80,14 @@ QVariant HistoryModel::headerData(int section, Qt::Orientation orientation, int 
 
 void HistoryModel::add_entry(const HistoryEntry &entry)
 {
+    for (int i = 0; i < m_entries.count(); i++) {
+        if (m_entries[i].address == entry.address) {
+            remove_entry(i);
+            add_entry(entry);
+            return;
+        }
+    }
+
     if (m_entries.count() > 0 && m_entries.at(0).address == entry.address) {
         return;
     }
@@ -86,7 +98,7 @@ void HistoryModel::add_entry(const HistoryEntry &entry)
     entry.icon.pixmap(16, 16).save( &in_buffer, "PNG" );
 
     QSqlQuery query;
-    query.prepare(QStringLiteral("INSERT INTO history (title, address, icon, last_visited) VALUES (?, ?, ?, ?)"));
+    query.prepare(QStringLiteral("REPLACE INTO history (title, address, icon, last_visited) VALUES (?, ?, ?, ?)"));
     query.addBindValue(entry.title);
     query.addBindValue(entry.address);
     query.addBindValue(in_byte_array);
@@ -102,30 +114,61 @@ void HistoryModel::add_entry(const HistoryEntry &entry)
     endInsertRows();
 }
 
-void HistoryModel::update_entry(const HistoryEntry &entry)
+void HistoryModel::remove_entry(int offset)
 {
-    QByteArray in_byte_array;
-    QBuffer in_buffer( &in_byte_array );
-    in_buffer.open( QIODevice::WriteOnly );
-    entry.icon.pixmap(16, 16).save( &in_buffer, "PNG" );
+    const QString address = m_entries.at(offset).address;
 
     QSqlQuery query;
-    query.prepare(QStringLiteral("UPDATE history SET title=?, icon=? WHERE address=?"));
-    query.addBindValue(entry.title);
-    query.addBindValue(in_byte_array);
-    query.addBindValue(entry.address);
+    query.prepare(QStringLiteral("DELETE FROM history WHERE address = ?"));
+    query.addBindValue(address);
 
     if (!query.exec()) {
         qDebug() << query.lastError();
         return;
     }
 
-    for (int i = 0; i < m_entries.count(); i++) {
-        if (m_entries[i].address == entry.address) {
-            m_entries[i].title = entry.title;
-            m_entries[i].icon = entry.icon;
-            QModelIndex idx = index(i, 0);
-            emit dataChanged(idx, idx);
+    QMutableVectorIterator<HistoryEntry> it(m_entries);
+    while (it.hasNext()) {
+        HistoryEntry entry = it.next();
+        if (entry.address == address) {
+            int index = m_entries.indexOf(entry);
+            beginRemoveRows(QModelIndex(), index, index);
+            it.remove();
+            endRemoveRows();
         }
     }
+}
+
+void HistoryWidget::show_context_menu(const QPoint &pos)
+{
+    QModelIndex index = m_tree_view->indexAt(pos);
+    if (!index.isValid()) {
+        return;
+    }
+
+    QMenu *menu = new QMenu;
+    QAction *remove_entry = menu->addAction(QStringLiteral("Remove"));
+
+    connect(remove_entry, &QAction::triggered, [index] {
+        browser->history_model()->remove_entry(index.row());
+    });
+
+#ifdef Q_OS_MACOS
+    menu->setStyle(QStyleFactory::create(QStringLiteral("macintosh")));
+#endif
+    menu->exec(m_tree_view->mapToGlobal(pos));
+}
+
+HistoryWidget::HistoryWidget(QWidget *parent)
+    : QWidget(parent)
+{
+    m_tree_view = new QTreeView;
+    m_tree_view->setModel(browser->history_model());
+
+    QVBoxLayout *vbox = new QVBoxLayout;
+    setLayout(vbox);
+    vbox->addWidget(m_tree_view);
+
+    m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_tree_view, &QTreeView::customContextMenuRequested, this, &HistoryWidget::show_context_menu);
 }

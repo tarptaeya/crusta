@@ -46,7 +46,7 @@ void Browser::setup_database()
     }
 
     QSqlQuery query;
-    query.prepare(QStringLiteral("CREATE TABLE IF NOT EXISTS history (title TEXT, address TEXT, icon BLOB, last_visited DATETIME)"));
+    query.prepare(QStringLiteral("CREATE TABLE IF NOT EXISTS history (title TEXT, address TEXT UNIQUE, icon BLOB, last_visited DATETIME)"));
     if (!query.exec()) {
         qDebug() << query.lastError();
     }

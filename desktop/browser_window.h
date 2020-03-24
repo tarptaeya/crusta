@@ -17,5 +17,6 @@ class BrowserWindow : public QMainWindow
 public:
     explicit BrowserWindow(QWidget *parent = nullptr);
     Tab *add_new_tab();
+    Tab *add_existing_tab(Tab *tab);
     QList<Tab *> tabs() const;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QLineEdit>
+#include <QStackedWidget>
 #include <QToolBar>
 #include <QToolButton>
 #include <QWidget>
@@ -10,7 +11,17 @@ class WebView;
 class Tab : public QWidget
 {
     Q_OBJECT
+public:
+    explicit Tab(QWidget *parent = nullptr);
 
+Q_SIGNALS:
+    void title_changed(const QString &title);
+    void icon_changed(const QIcon &icon);
+};
+
+class WebTab : public Tab
+{
+public:
     QToolBar *m_toolbar = nullptr;
     WebView *m_webview = nullptr;
 
@@ -23,11 +34,18 @@ class Tab : public QWidget
 
     void setup_toolbar();
 public:
-    explicit Tab(QWidget *parent = nullptr);
+    explicit WebTab(QWidget *parent = nullptr);
     QToolBar *toolbar() const;
     WebView *webview() const;
+};
 
-Q_SIGNALS:
-    void title_changed(const QString &title);
-    void icon_changed(const QIcon &icon);
+class ManagerTab : public Tab
+{
+    QToolBar *m_toolbar = nullptr;
+    QStackedWidget *m_stacked_widget = nullptr;
+
+    void setup_toolbar();
+    void setup_stacked_widget();
+public:
+    explicit ManagerTab(QWidget *parent = nullptr);
 };

@@ -1,3 +1,4 @@
+#include "history.h"
 #include "tab.h"
 #include "webview.h"
 
@@ -5,7 +6,12 @@
 #include <QVBoxLayout>
 #include <QWebEngineHistory>
 
-void Tab::setup_toolbar()
+Tab::Tab(QWidget *parent)
+    : QWidget(parent)
+{
+}
+
+void WebTab::setup_toolbar()
 {
     auto create_tool_button = [](const QString &name) {
         QToolButton *button = new QToolButton;
@@ -63,8 +69,8 @@ void Tab::setup_toolbar()
     });
 }
 
-Tab::Tab(QWidget *parent)
-    : QWidget(parent)
+WebTab::WebTab(QWidget *parent)
+    : Tab(parent)
 {
     m_toolbar = new QToolBar;
     m_webview = new WebView;
@@ -83,12 +89,39 @@ Tab::Tab(QWidget *parent)
     connect(m_webview, &WebView::iconChanged, [this] (const QIcon &icon) { emit icon_changed(icon); });
 }
 
-QToolBar *Tab::toolbar() const
+QToolBar *WebTab::toolbar() const
 {
     return m_toolbar;
 }
 
-WebView *Tab::webview() const
+WebView *WebTab::webview() const
 {
     return m_webview;
+}
+
+void ManagerTab::setup_toolbar()
+{
+    m_toolbar->addAction(QStringLiteral("History"));
+}
+
+void ManagerTab::setup_stacked_widget()
+{
+    HistoryWidget *history_widget = new HistoryWidget;
+    m_stacked_widget->addWidget(history_widget);
+}
+
+ManagerTab::ManagerTab(QWidget *parent)
+    : Tab(parent)
+{
+    m_toolbar = new QToolBar;
+    m_stacked_widget = new QStackedWidget;
+
+    QVBoxLayout *vbox = new QVBoxLayout;
+    setLayout(vbox);
+
+    vbox->addWidget(m_toolbar);
+    vbox->addWidget(m_stacked_widget);
+
+    setup_toolbar();
+    setup_stacked_widget();
 }

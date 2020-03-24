@@ -29,6 +29,11 @@ Tab *BrowserWindow::add_new_tab()
     return m_central_widget->add_new_tab();
 }
 
+Tab *BrowserWindow::add_existing_tab(Tab *tab)
+{
+    return m_central_widget->add_existing_tab(tab);
+}
+
 QList<Tab *> BrowserWindow::tabs() const
 {
     return m_central_widget->tabs();
@@ -74,7 +79,12 @@ CentralWidget::CentralWidget(QWidget *parent)
 
 Tab *CentralWidget::add_new_tab()
 {
-    Tab *tab = new Tab;
+    WebTab *tab = new WebTab;
+    return add_existing_tab(tab);
+}
+
+Tab *CentralWidget::add_existing_tab(Tab *tab)
+{
     int index = m_tabbar->addTab(QStringLiteral("New Tab"));
     m_stacked_widget->addWidget(tab);
     m_tabbar->setCurrentIndex(index);

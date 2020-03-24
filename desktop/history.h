@@ -4,6 +4,8 @@
 #include <QDateTime>
 #include <QIcon>
 #include <QModelIndex>
+#include <QTreeView>
+#include <QWidget>
 
 struct HistoryEntry
 {
@@ -11,6 +13,10 @@ struct HistoryEntry
     QString address;
     QIcon icon;
     QDateTime last_visited;
+
+    inline bool operator==(const HistoryEntry &entry) {
+        return address == entry.address;
+    }
 };
 
 class HistoryModel : public QAbstractTableModel
@@ -25,5 +31,14 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
     void add_entry(const HistoryEntry &entry);
-    void update_entry(const HistoryEntry &entry);
+    void remove_entry(int offset);
+};
+
+class HistoryWidget : public QWidget
+{
+    QTreeView *m_tree_view = nullptr;
+
+    void show_context_menu(const QPoint &pos);
+public:
+    explicit HistoryWidget(QWidget *parent = nullptr);
 };

@@ -10,6 +10,7 @@ class WebView : public QWebEngineView
 {
     WebPage *m_webpage = nullptr;
     void show_context_menu(const QPoint &pos);
+    void save_history_entry();
 public:
     explicit WebView(QWidget *parent = nullptr);
     void home();
