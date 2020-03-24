@@ -1,22 +1,25 @@
 #pragma once
 
 #include <QByteArray>
+#include <QSqlDatabase>
 #include <QWebEngineProfile>
 
 #define browser Browser::instance()
 
 class BrowserWindow;
-class PreferencesWindow;
+class HistoryModel;
 
 class Browser
 {
     bool m_is_private = false;
 
     QWebEngineProfile *m_web_profile = nullptr;
-    PreferencesWindow *m_preferences_window = nullptr;
 
-    void setup_preferences_window();
+    QSqlDatabase m_database;
+    HistoryModel *m_history_model = nullptr;
+
     void setup_web_profile();
+    void setup_database();
 public:
     ~Browser();
     int start(int argc, char **argv);
@@ -25,7 +28,7 @@ public:
     void register_scheme(const QByteArray &name) const;
     QWebEngineProfile *web_profile() const;
 
-    static Browser *instance();
+    HistoryModel *history_model() const;
 
-    void show_preferences_window();
+    static Browser *instance();
 };

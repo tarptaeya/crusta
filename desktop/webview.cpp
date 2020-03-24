@@ -1,5 +1,6 @@
 #include "browser.h"
 #include "browser_window.h"
+#include "history.h"
 #include "tab.h"
 #include "webview.h"
 #include "webview_p.h"
@@ -25,6 +26,28 @@ WebView::WebView(QWidget *parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this, &WebView::customContextMenuRequested, this, &WebView::show_context_menu);
+    connect(this, &WebView::loadFinished, this, [this] {
+        HistoryEntry entry;
+        entry.title = title();
+        entry.address = url().toString();
+        entry.icon = icon();
+        entry.last_visited = QDateTime::currentDateTime();
+        browser->history_model()->add_entry(entry);
+    });
+    connect(this, &WebView::titleChanged, this, [this] {
+        HistoryEntry entry;
+        entry.title = title();
+        entry.address = url().toString();
+        entry.icon = icon();
+        browser->history_model()->update_entry(entry);
+    });
+    connect(this, &WebView::iconChanged, this, [this] {
+        HistoryEntry entry;
+        entry.title = title();
+        entry.address = url().toString();
+        entry.icon = icon();
+        browser->history_model()->update_entry(entry);
+    });
 }
 
 void WebView::home()

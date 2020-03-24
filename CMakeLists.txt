@@ -11,6 +11,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
-find_package(Qt5 COMPONENTS Widgets WebEngine WebEngineWidgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets WebEngine WebEngineWidgets Sql REQUIRED)
 
 add_subdirectory(desktop)

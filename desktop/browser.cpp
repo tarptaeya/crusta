@@ -1,22 +1,18 @@
 #include "browser.h"
 #include "browser_window.h"
 #include "browser_schemes.h"
-#include "preferences.h"
+#include "history.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QDir>
 #include <QIcon>
+#include <QSqlError>
+#include <QSqlQuery>
 #include <QStandardPaths>
 #include <QStyleFactory>
 #include <QWebEngineUrlScheme>
 #include <QWidget>
-
-#include <iostream>
-
-void Browser::setup_preferences_window()
-{
-    m_preferences_window = new PreferencesWindow;
-}
 
 void Browser::setup_web_profile()
 {
@@ -26,9 +22,41 @@ void Browser::setup_web_profile()
     m_web_profile->installUrlSchemeHandler("browser", browser_scheme_handler);
 }
 
+void Browser::setup_database()
+{
+    const QString driver = QStringLiteral("QSQLITE");
+    if (!QSqlDatabase::isDriverAvailable(driver)) {
+        qDebug() << "Driver not available";
+        return;
+    }
+
+    m_database = QSqlDatabase::addDatabase(driver);
+    if (m_is_private) {
+        m_database.setDatabaseName(QStringLiteral(":memory:"));
+    } else {
+        QDir standardLocation(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+        const QString dbPath = standardLocation.absoluteFilePath(QStringLiteral("database"));
+        m_database.setDatabaseName(dbPath);
+    }
+
+    m_database.open();
+    if (!m_database.isOpen()) {
+        qDebug() << m_database.lastError();
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare(QStringLiteral("CREATE TABLE IF NOT EXISTS history (title TEXT, address TEXT, icon BLOB, last_visited DATETIME)"));
+    if (!query.exec()) {
+        qDebug() << query.lastError();
+    }
+}
+
 Browser::~Browser()
 {
-    delete m_preferences_window;
+    if (m_database.isOpen())
+        m_database.close();
+    delete m_history_model;
 }
 
 int Browser::start(int argc, char **argv)
@@ -48,8 +76,12 @@ int Browser::start(int argc, char **argv)
     register_scheme("browser");
 
     QApplication app(argc, argv);
-    setup_preferences_window();
+
     setup_web_profile();
+    setup_database();
+
+    m_history_model = new HistoryModel;
+
     create_browser_window();
     return app.exec();
 }
@@ -74,13 +106,13 @@ QWebEngineProfile *Browser::web_profile() const
     return m_web_profile;
 }
 
+HistoryModel *Browser::history_model() const
+{
+    return m_history_model;
+}
+
 Browser *Browser::instance()
 {
     static Browser *browser_ = new Browser;
     return browser_;
-}
-
-void Browser::show_preferences_window()
-{
-    m_preferences_window->show();
 }
