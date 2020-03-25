@@ -23,6 +23,9 @@ class HistoryModel : public QAbstractTableModel
 {
     QVector<HistoryEntry> m_entries;
 public:
+    enum Role {
+        AddressRole = Qt::UserRole + 1,
+    };
     explicit HistoryModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent) const;

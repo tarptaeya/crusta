@@ -1,5 +1,8 @@
 #include "browser.h"
+#include "browser_window.h"
 #include "history.h"
+#include "tab.h"
+#include "webview.h"
 
 #include <QBuffer>
 #include <QDebug>
@@ -51,6 +54,8 @@ QVariant HistoryModel::data(const QModelIndex &index, int role) const
     HistoryEntry entry = m_entries.at(index.row());
 
     switch (role) {
+    case AddressRole:
+        return entry.address;
     case Qt::DisplayRole:
         switch (index.column()) {
         case 0: return entry.title;
@@ -147,7 +152,35 @@ void HistoryWidget::show_context_menu(const QPoint &pos)
     }
 
     QMenu *menu = new QMenu;
+    QAction *open_in_tab = menu->addAction(QStringLiteral("Open in new tab"));
+    QAction *open_in_window = menu->addAction(QStringLiteral("Open in new window"));
+    menu->addSeparator();
     QAction *remove_entry = menu->addAction(QStringLiteral("Remove"));
+
+    connect(open_in_tab, &QAction::triggered, [this, index] {
+        QWidget *parent_widget = this;
+        while (parent_widget->parentWidget()) {
+            parent_widget = parent_widget->parentWidget();
+        }
+
+        BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
+        if (!window) return ;
+
+        WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
+        if (!tab) return;
+
+        const QString address = m_tree_view->model()->data(index, HistoryModel::AddressRole).toString();
+        tab->webview()->load(address);
+    });
+
+    connect(open_in_window, &QAction::triggered,[this, index] {
+        BrowserWindow *window = browser->create_browser_window();
+        WebTab *tab = dynamic_cast<WebTab *>(window->tabs().at(0));
+        if (!tab) return ;
+
+        const QString address = m_tree_view->model()->data(index, HistoryModel::AddressRole).toString();
+        tab->webview()->load(address);
+    });
 
     connect(remove_entry, &QAction::triggered, [index] {
         browser->history_model()->remove_entry(index.row());
