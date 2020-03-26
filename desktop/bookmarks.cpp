@@ -318,47 +318,64 @@ BookmarkTreeNode *BookmarkModel::tree_node(const QModelIndex &index) const
 void BookmarkWidget::show_context_menu(const QPoint &pos)
 {
     QModelIndex index = m_tree_view->indexAt(pos);
-    if (!index.isValid()) {
-        return;
-    }
-
-    BookmarkTreeNode *node = browser->bookmark_model()->tree_node(index);
 
     QMenu *menu = new QMenu;
-    if (node->type == BookmarkTreeNode::Address) {
-        QAction *open_in_tab = menu->addAction(QStringLiteral("Open in new tab"));
-        QAction *open_in_window = menu->addAction(QStringLiteral("Open in new window"));
+
+    if (index.isValid()) {
+        BookmarkTreeNode *node = browser->bookmark_model()->tree_node(index);
+
+        if (node->type == BookmarkTreeNode::Address) {
+            QAction *open_in_tab = menu->addAction(QStringLiteral("Open in new tab"));
+            QAction *open_in_window = menu->addAction(QStringLiteral("Open in new window"));
+
+            menu->addSeparator();
+
+            connect(open_in_tab, &QAction::triggered, [this, node] {
+                QWidget *parent_widget = this;
+                while (parent_widget->parentWidget()) {
+                    parent_widget = parent_widget->parentWidget();
+                }
+
+                BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
+                if (!window) return ;
+
+                WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
+                if (!tab) return;
+
+                tab->webview()->load(node->address);
+            });
+
+            connect(open_in_window, &QAction::triggered, [node] {
+                BrowserWindow *window = browser->create_browser_window();
+                WebTab *tab = dynamic_cast<WebTab *>(window->tabs().at(0));
+                if (!tab) return ;
+
+                tab->webview()->load(node->address);
+            });
+        } else {
+            QAction *add_folder = menu->addAction(QStringLiteral("Add folder"));
+            connect(add_folder, &QAction::triggered, [node] {
+                BookmarkTreeNode *folder = new BookmarkTreeNode(BookmarkTreeNode::Folder);
+                folder->title = QStringLiteral("New Folder");
+                browser->bookmark_model()->add_bookmark(node, folder);
+            });
+        }
 
         menu->addSeparator();
 
-        connect(open_in_tab, &QAction::triggered, [this, node] {
-            QWidget *parent_widget = this;
-            while (parent_widget->parentWidget()) {
-                parent_widget = parent_widget->parentWidget();
-            }
-
-            BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
-            if (!window) return ;
-
-            WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
-            if (!tab) return;
-
-            tab->webview()->load(node->address);
+        QAction *remove = menu->addAction(QStringLiteral("Remove"));
+        connect(remove, &QAction::triggered, [node] {
+            browser->bookmark_model()->remove_bookmark(node);
         });
-
-        connect(open_in_window, &QAction::triggered, [node] {
-            BrowserWindow *window = browser->create_browser_window();
-            WebTab *tab = dynamic_cast<WebTab *>(window->tabs().at(0));
-            if (!tab) return ;
-
-            tab->webview()->load(node->address);
+    } else {
+        QAction *add_folder = menu->addAction(QStringLiteral("Add folder"));
+        connect(add_folder, &QAction::triggered, [] {
+            BookmarkTreeNode *folder = new BookmarkTreeNode(BookmarkTreeNode::Folder);
+            folder->title = QStringLiteral("New Folder");
+            browser->bookmark_model()->add_bookmark(nullptr, folder);
         });
     }
 
-    QAction *remove = menu->addAction(QStringLiteral("Remove"));
-    connect(remove, &QAction::triggered, [node] {
-        browser->bookmark_model()->remove_bookmark(node);
-    });
 
 #ifdef Q_OS_MACOS
     menu->setStyle(QStyleFactory::create(QStringLiteral("macintosh")));
@@ -381,7 +398,6 @@ BookmarkWidget::BookmarkWidget(QWidget *parent)
     vbox->addWidget(m_tree_view);
 
     m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
-
     connect(m_tree_view, &QTreeView::customContextMenuRequested, this, &BookmarkWidget::show_context_menu);
 }
 
