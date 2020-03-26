@@ -10,6 +10,26 @@
 void BrowserWindow::setup_menubar()
 {
     QMenuBar *menu_bar = new QMenuBar;
+
+    QMenu *history = menu_bar->addMenu(QStringLiteral("History"));
+    QMenu *bookmarks = menu_bar->addMenu(QStringLiteral("Bookmarks"));
+
+    QAction *show_all_history = history->addAction(QStringLiteral("Show all history"));
+
+    QAction *show_all_bookmarks = bookmarks->addAction(QStringLiteral("Show all bookmarks"));
+
+    connect(show_all_history, &QAction::triggered, [this] {
+        ManagerTab *manager = new ManagerTab;
+        add_existing_tab(manager);
+        manager->open_history();
+    });
+
+    connect(show_all_bookmarks, &QAction::triggered, [this] {
+        ManagerTab *manager = new ManagerTab;
+        add_existing_tab(manager);
+        manager->open_bookmarks();
+    });
+
     setMenuBar(menu_bar);
 }
 

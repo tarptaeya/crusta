@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>../assets/icons/breeze/index.theme</file>
+        <file>../assets/icons/breeze/icons/appointment-new.svg</file>
         <file>../assets/icons/breeze/icons/bookmark-new.svg</file>
         <file>../assets/icons/breeze/icons/folder.svg</file>
         <file>../assets/icons/breeze/icons/go-home.svg</file>

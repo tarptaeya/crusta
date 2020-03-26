@@ -49,4 +49,7 @@ class ManagerTab : public Tab
     void setup_stacked_widget();
 public:
     explicit ManagerTab(QWidget *parent = nullptr);
+
+    void open_history();
+    void open_bookmarks();
 };

@@ -112,7 +112,13 @@ WebView *WebTab::webview() const
 
 void ManagerTab::setup_toolbar()
 {
-    m_toolbar->addAction(QStringLiteral("History"));
+    m_toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+    QAction *history = m_toolbar->addAction(QIcon::fromTheme(QStringLiteral("appointment-new")), QStringLiteral("History"));
+    QAction *bookmarks = m_toolbar->addAction(QIcon::fromTheme(QStringLiteral("bookmark-new")), QStringLiteral("Bookmarks"));
+
+    connect(history, &QAction::triggered, [this] { open_history(); });
+    connect(bookmarks, &QAction::triggered, [this] { open_bookmarks(); });
 }
 
 void ManagerTab::setup_stacked_widget()
@@ -140,4 +146,18 @@ ManagerTab::ManagerTab(QWidget *parent)
 
     setup_toolbar();
     setup_stacked_widget();
+}
+
+void ManagerTab::open_history()
+{
+    m_stacked_widget->setCurrentIndex(0);
+    emit title_changed(QStringLiteral("History"));
+    emit icon_changed(QIcon::fromTheme(QStringLiteral("appointment-new")));
+}
+
+void ManagerTab::open_bookmarks()
+{
+    m_stacked_widget->setCurrentIndex(1);
+    emit title_changed(QStringLiteral("Bookmarks"));
+    emit icon_changed(QIcon::fromTheme(QStringLiteral("bookmark-new")));
 }
