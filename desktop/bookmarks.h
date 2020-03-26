@@ -57,7 +57,9 @@ public:
 
 class BookmarkModel : public QAbstractItemModel
 {
+    bool m_is_dirty = false;
     BookmarkTreeNode *m_root_node = nullptr;
+    void save();
 public:
     explicit BookmarkModel(QObject *parent = nullptr);
     ~BookmarkModel();
@@ -85,7 +87,7 @@ class BookmarkWidget : public QWidget
 {
     QTreeView *m_tree_view = nullptr;
 public:
-    explicit BookmarkWidget(QWidget *parent = nullptr);
+    explicit BookmarkWidget(QWidget *parent = nullptr);    
 };
 
 class XbelReader : public QXmlStreamReader

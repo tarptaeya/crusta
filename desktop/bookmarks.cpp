@@ -3,9 +3,11 @@
 
 #include <QBuffer>
 #include <QDebug>
+#include <QDir>
 #include <QDataStream>
 #include <QFile>
 #include <QMimeData>
+#include <QStandardPaths>
 #include <QVBoxLayout>
 
 BookmarkTreeNode::BookmarkTreeNode(BookmarkTreeNode::Type type, BookmarkTreeNode *parent)
@@ -20,6 +22,7 @@ BookmarkTreeNode::~BookmarkTreeNode()
 {
     if (parent)
         parent->remove(this);
+    parent = nullptr;
     qDeleteAll(children);
 }
 
@@ -40,14 +43,34 @@ void BookmarkTreeNode::remove(BookmarkTreeNode *child)
     children.removeAll(child);
 }
 
+void BookmarkModel::save()
+{
+    QDir standardLocation(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    const QString path = standardLocation.absoluteFilePath(QStringLiteral("bookmarks.xbel"));
+    XbelWriter writer;
+    writer.write(path, m_root_node);
+}
+
 BookmarkModel::BookmarkModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
-    m_root_node = new BookmarkTreeNode(BookmarkTreeNode::Root);
+    QDir standardLocation(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    const QString path = standardLocation.absoluteFilePath(QStringLiteral("bookmarks.xbel"));
+    if (QFile::exists(path)) {
+        XbelReader reader;
+        m_root_node = reader.read(path);
+        if (reader.error() != QXmlStreamReader::NoError) {
+            qDebug() << "Error loading bookmarks file" << reader.errorString();
+        }
+    } else {
+        m_root_node = new BookmarkTreeNode(BookmarkTreeNode::Root);
+    }
 }
 
 BookmarkModel::~BookmarkModel()
 {
+    if (m_is_dirty)
+        save();
     delete m_root_node;
 }
 
@@ -225,20 +248,22 @@ bool BookmarkModel::setData(const QModelIndex &index, const QVariant &value, int
     switch (role) {
     case Qt::EditRole:
     case Qt::DisplayRole:
-        switch (index.column()) {
-        case 0:
+        if (index.column() == 0) {
             node->title = val;
-            return true;
-        case 1:
+            break;
+        } else if (index.column() == 1) {
             node->address = val;
-            return true;
-        case 2:
+            break;
+        } else if (index.column() == 2) {
             node->desc = val;
-            return true;
+            break;
         }
+    default:
+        return false;
     }
 
-    return false;
+    m_is_dirty = true;
+    return true;
 }
 
 void BookmarkModel::add_bookmark(BookmarkTreeNode *parent, BookmarkTreeNode *node, int row)
@@ -260,6 +285,8 @@ void BookmarkModel::add_bookmark(BookmarkTreeNode *parent, BookmarkTreeNode *nod
     beginInsertRows(QModelIndex(), row, row);
     parent->insert(node);
     endInsertRows();
+
+    m_is_dirty = true;
 }
 
 BookmarkTreeNode *BookmarkModel::tree_node(const QModelIndex &index) const
@@ -340,7 +367,7 @@ void XbelReader::readFolder(BookmarkTreeNode *node)
         else if (name() == QLatin1String("bookmark"))
             readBookmarkTreeNode(folder);
         else if (name() == QLatin1String("desc"))
-            continue; // TODO
+            readDescription(folder);
         else
             skipCurrentElement();
     }
@@ -416,8 +443,7 @@ void XbelWriter::write_item(BookmarkTreeNode *node)
         if (!node->address.isEmpty())
             writeAttribute(QLatin1String("href"), node->address);
         writeTextElement(QLatin1String("title"), node->title);
-        if (!node->desc.isEmpty())
-            writeAttribute(QLatin1String("desc"), node->desc);
+        writeTextElement(QLatin1String("desc"), node->desc);
         writeEndElement();
     default:
         break;
