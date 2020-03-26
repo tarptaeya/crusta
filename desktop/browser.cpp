@@ -1,3 +1,4 @@
+#include "bookmarks.h"
 #include "browser.h"
 #include "browser_window.h"
 #include "browser_schemes.h"
@@ -57,6 +58,7 @@ Browser::~Browser()
     if (m_database.isOpen())
         m_database.close();
     delete m_history_model;
+    delete m_bookmark_model;
 }
 
 int Browser::start(int argc, char **argv)
@@ -81,6 +83,7 @@ int Browser::start(int argc, char **argv)
     setup_database();
 
     m_history_model = new HistoryModel;
+    m_bookmark_model = new BookmarkModel;
 
     create_browser_window();
     return app.exec();
@@ -109,6 +112,11 @@ QWebEngineProfile *Browser::web_profile() const
 HistoryModel *Browser::history_model() const
 {
     return m_history_model;
+}
+
+BookmarkModel *Browser::bookmark_model() const
+{
+    return m_bookmark_model;
 }
 
 Browser *Browser::instance()

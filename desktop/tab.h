@@ -31,6 +31,7 @@ public:
     QToolButton *m_home_button = nullptr;
 
     QLineEdit *m_address_bar = nullptr;
+    QAction *m_bookmark_action = nullptr;
 
     void setup_toolbar();
 public:

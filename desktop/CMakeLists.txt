@@ -1,4 +1,5 @@
 set(SRCS
+    bookmarks.cpp
     browser.cpp
     browser_schemes.cpp
     browser_window.cpp

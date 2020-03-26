@@ -1,7 +1,10 @@
+#include "bookmarks.h"
+#include "browser.h"
 #include "history.h"
 #include "tab.h"
 #include "webview.h"
 
+#include <QIcon>
 #include <QRegularExpression>
 #include <QVBoxLayout>
 #include <QWebEngineHistory>
@@ -26,6 +29,7 @@ void WebTab::setup_toolbar()
     m_home_button = create_tool_button(QStringLiteral("go-home"));
 
     m_address_bar = new QLineEdit;
+    m_bookmark_action = m_address_bar->addAction(QIcon::fromTheme(QStringLiteral("bookmark-new")), QLineEdit::TrailingPosition);
 
     m_toolbar->addWidget(m_back_button);
     m_toolbar->addWidget(m_forward_button);
@@ -53,6 +57,13 @@ void WebTab::setup_toolbar()
         }
 
         m_webview->setFocus();
+    });
+
+    connect(m_bookmark_action, &QAction::triggered, [this] {
+        BookmarkTreeNode *node = new BookmarkTreeNode(BookmarkTreeNode::Address);
+        node->title = m_webview->title();
+        node->address = m_webview->url().toString();
+        browser->bookmark_model()->add_bookmark(nullptr, node);
     });
 
     connect(m_webview, &WebView::urlChanged, [this] (const QUrl &address) {
@@ -108,6 +119,11 @@ void ManagerTab::setup_stacked_widget()
 {
     HistoryWidget *history_widget = new HistoryWidget;
     m_stacked_widget->addWidget(history_widget);
+
+    BookmarkWidget *bookmark_widget = new BookmarkWidget;
+    int index = m_stacked_widget->addWidget(bookmark_widget);
+
+    m_stacked_widget->setCurrentIndex(index);
 }
 
 ManagerTab::ManagerTab(QWidget *parent)

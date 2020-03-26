@@ -1,11 +1,14 @@
 <RCC>
     <qresource prefix="/">
         <file>../assets/icons/breeze/index.theme</file>
+        <file>../assets/icons/breeze/icons/bookmark-new.svg</file>
+        <file>../assets/icons/breeze/icons/folder.svg</file>
         <file>../assets/icons/breeze/icons/go-home.svg</file>
         <file>../assets/icons/breeze/icons/go-next.svg</file>
         <file>../assets/icons/breeze/icons/go-previous.svg</file>
         <file>../assets/icons/breeze/icons/list-add.svg</file>
         <file>../assets/icons/breeze/icons/process-stop.svg</file>
+        <file>../assets/icons/breeze/icons/text-html.svg</file>
         <file>../assets/icons/breeze/icons/view-refresh.svg</file>
         <file>../assets/icons/breeze/icons/window-close.svg</file>
         <file>../assets/html/startpage.html</file>

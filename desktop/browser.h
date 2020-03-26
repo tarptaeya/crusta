@@ -8,6 +8,7 @@
 
 class BrowserWindow;
 class HistoryModel;
+class BookmarkModel;
 
 class Browser
 {
@@ -17,6 +18,7 @@ class Browser
 
     QSqlDatabase m_database;
     HistoryModel *m_history_model = nullptr;
+    BookmarkModel *m_bookmark_model = nullptr;
 
     void setup_web_profile();
     void setup_database();
@@ -29,6 +31,7 @@ public:
     QWebEngineProfile *web_profile() const;
 
     HistoryModel *history_model() const;
+    BookmarkModel *bookmark_model() const;
 
     static Browser *instance();
 };
