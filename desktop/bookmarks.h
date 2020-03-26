@@ -78,14 +78,16 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     void add_bookmark(BookmarkTreeNode *parent, BookmarkTreeNode *node, int row = -1);
-
-private:
+    void remove_bookmark(BookmarkTreeNode *node);
     BookmarkTreeNode *tree_node(const QModelIndex &index) const;
 };
 
 class BookmarkWidget : public QWidget
 {
     QTreeView *m_tree_view = nullptr;
+
+    void show_context_menu(const QPoint &pos);
+
 public:
     explicit BookmarkWidget(QWidget *parent = nullptr);    
 };

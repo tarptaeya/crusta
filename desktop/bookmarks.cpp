@@ -1,13 +1,18 @@
 #include "bookmarks.h"
 #include "browser.h"
+#include "browser_window.h"
+#include "tab.h"
+#include "webview.h"
 
 #include <QBuffer>
 #include <QDebug>
 #include <QDir>
 #include <QDataStream>
 #include <QFile>
+#include <QMenu>
 #include <QMimeData>
 #include <QStandardPaths>
+#include <QStyleFactory>
 #include <QVBoxLayout>
 
 BookmarkTreeNode::BookmarkTreeNode(BookmarkTreeNode::Type type, BookmarkTreeNode *parent)
@@ -289,9 +294,76 @@ void BookmarkModel::add_bookmark(BookmarkTreeNode *parent, BookmarkTreeNode *nod
     m_is_dirty = true;
 }
 
+void BookmarkModel::remove_bookmark(BookmarkTreeNode *node)
+{
+    if (!node->parent)
+        return;
+
+    BookmarkTreeNode *parent = node->parent;
+    int row = parent->children.indexOf(node);
+    beginRemoveRows(QModelIndex(), row, row);
+    parent->remove(node);
+    endRemoveRows();
+
+    delete node;
+
+    m_is_dirty = true;
+}
+
 BookmarkTreeNode *BookmarkModel::tree_node(const QModelIndex &index) const
 {
     return static_cast<BookmarkTreeNode *>(index.internalPointer());
+}
+
+void BookmarkWidget::show_context_menu(const QPoint &pos)
+{
+    QModelIndex index = m_tree_view->indexAt(pos);
+    if (!index.isValid()) {
+        return;
+    }
+
+    BookmarkTreeNode *node = browser->bookmark_model()->tree_node(index);
+
+    QMenu *menu = new QMenu;
+    if (node->type == BookmarkTreeNode::Address) {
+        QAction *open_in_tab = menu->addAction(QStringLiteral("Open in new tab"));
+        QAction *open_in_window = menu->addAction(QStringLiteral("Open in new window"));
+
+        menu->addSeparator();
+
+        connect(open_in_tab, &QAction::triggered, [this, node] {
+            QWidget *parent_widget = this;
+            while (parent_widget->parentWidget()) {
+                parent_widget = parent_widget->parentWidget();
+            }
+
+            BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
+            if (!window) return ;
+
+            WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
+            if (!tab) return;
+
+            tab->webview()->load(node->address);
+        });
+
+        connect(open_in_window, &QAction::triggered, [node] {
+            BrowserWindow *window = browser->create_browser_window();
+            WebTab *tab = dynamic_cast<WebTab *>(window->tabs().at(0));
+            if (!tab) return ;
+
+            tab->webview()->load(node->address);
+        });
+    }
+
+    QAction *remove = menu->addAction(QStringLiteral("Remove"));
+    connect(remove, &QAction::triggered, [node] {
+        browser->bookmark_model()->remove_bookmark(node);
+    });
+
+#ifdef Q_OS_MACOS
+    menu->setStyle(QStyleFactory::create(QStringLiteral("macintosh")));
+#endif
+    menu->exec(m_tree_view->mapToGlobal(pos));
 }
 
 BookmarkWidget::BookmarkWidget(QWidget *parent)
@@ -307,6 +379,10 @@ BookmarkWidget::BookmarkWidget(QWidget *parent)
     QVBoxLayout *vbox = new QVBoxLayout;
     setLayout(vbox);
     vbox->addWidget(m_tree_view);
+
+    m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(m_tree_view, &QTreeView::customContextMenuRequested, this, &BookmarkWidget::show_context_menu);
 }
 
 XbelReader::XbelReader()
