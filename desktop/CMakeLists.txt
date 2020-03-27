@@ -5,12 +5,13 @@ set(SRCS
     browser_schemes.cpp
     browser_window.cpp
     history.cpp
+    plugins.cpp
     resources.qrc
     tab.cpp
     webview.cpp)
 
 add_library(crusta-private SHARED ${SRCS})
-target_link_libraries(crusta-private Qt5::Widgets Qt5::WebEngineWidgets Qt5::Sql)
+target_link_libraries(crusta-private Qt5::QuickWidgets Qt5::Sql Qt5::Widgets Qt5::WebEngineWidgets)
 
 add_executable(crusta WIN32 MACOSX_BUNDLE main.cpp)
 target_link_libraries(crusta crusta-private)

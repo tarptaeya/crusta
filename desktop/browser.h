@@ -10,6 +10,7 @@ class Adblock;
 class BookmarkModel;
 class BrowserWindow;
 class HistoryModel;
+class Plugins;
 
 class Browser
 {
@@ -21,6 +22,7 @@ class Browser
     Adblock *m_adblock = nullptr;
     HistoryModel *m_history_model = nullptr;
     BookmarkModel *m_bookmark_model = nullptr;
+    Plugins *m_plugins = nullptr;
 
     void setup_web_profile();
     void setup_database();
@@ -35,6 +37,7 @@ public:
     Adblock *adblock() const;
     HistoryModel *history_model() const;
     BookmarkModel *bookmark_model() const;
+    Plugins *plugins() const;
 
     static Browser *instance();
 };

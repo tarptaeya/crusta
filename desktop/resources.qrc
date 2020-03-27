@@ -17,5 +17,7 @@
         <file>../assets/html/startpage.html</file>
         <file>../assets/html/style.css</file>
         <file>../assets/scripts/styles.js</file>
+        <file>../plugins/userscripts/metadata.desktop</file>
+        <file>../plugins/userscripts/main.qml</file>
     </qresource>
 </RCC>

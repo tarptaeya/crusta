@@ -4,6 +4,7 @@
 #include "browser_window.h"
 #include "browser_schemes.h"
 #include "history.h"
+#include "plugins.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -90,6 +91,7 @@ Browser::~Browser()
     delete m_adblock;
     delete m_history_model;
     delete m_bookmark_model;
+    delete m_plugins;
 }
 
 int Browser::start(int argc, char **argv)
@@ -116,6 +118,7 @@ int Browser::start(int argc, char **argv)
     m_adblock = new Adblock;
     m_history_model = new HistoryModel;
     m_bookmark_model = new BookmarkModel;
+    m_plugins = new Plugins;
 
     create_browser_window();
     return app.exec();
@@ -154,6 +157,11 @@ HistoryModel *Browser::history_model() const
 BookmarkModel *Browser::bookmark_model() const
 {
     return m_bookmark_model;
+}
+
+Plugins *Browser::plugins() const
+{
+    return m_plugins;
 }
 
 Browser *Browser::instance()
