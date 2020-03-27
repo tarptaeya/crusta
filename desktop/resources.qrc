@@ -16,5 +16,6 @@
         <file>../assets/icons/breeze/icons/window-close.svg</file>
         <file>../assets/html/startpage.html</file>
         <file>../assets/html/style.css</file>
+        <file>../assets/scripts/styles.js</file>
     </qresource>
 </RCC>

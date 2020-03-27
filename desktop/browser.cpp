@@ -8,13 +8,17 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDir>
+#include <QFile>
 #include <QIcon>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QStandardPaths>
 #include <QStyleFactory>
+#include <QTextStream>
 #include <QWebEngineUrlScheme>
 #include <QWebEngineCookieStore>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
 #include <QWidget>
 
 void Browser::setup_web_profile()
@@ -27,6 +31,25 @@ void Browser::setup_web_profile()
     m_web_profile->cookieStore()->setCookieFilter([](const QWebEngineCookieStore::FilterRequest &request) {
         return !request.thirdParty;
     });
+
+    QDir scriptsDir(QStringLiteral(":assets/scripts/"));
+    const QStringList scripts = scriptsDir.entryList();
+    for (const QString &path : scripts) {
+        QFile file(QStringLiteral(":assets/scripts/%1").arg(path));
+        if (!file.open(QFile::ReadOnly))
+            continue;
+
+        QTextStream stream(&file);
+        const QString source = stream.readAll();
+
+        QWebEngineScript script;
+        script.setName(QStringLiteral("%1").arg(path));
+        script.setWorldId(QWebEngineScript::ApplicationWorld);
+        script.setSourceCode(source);
+        script.setInjectionPoint(QWebEngineScript::DocumentReady);
+        script.setRunsOnSubFrames(false);
+        m_web_profile->scripts()->insert(script);
+    }
 }
 
 void Browser::setup_database()
