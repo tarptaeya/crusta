@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QLineEdit>
+#include <QSettings>
 #include <QStackedWidget>
 #include <QToolBar>
 #include <QToolButton>
@@ -42,14 +43,18 @@ public:
 
 class ManagerTab : public Tab
 {
+    QSettings m_settings;
+
     QToolBar *m_toolbar = nullptr;
     QStackedWidget *m_stacked_widget = nullptr;
 
     void setup_toolbar();
     void setup_stacked_widget();
+    void setup_settings_widget();
 public:
     explicit ManagerTab(QWidget *parent = nullptr);
 
+    void open_settings();
     void open_history();
     void open_bookmarks();
 };

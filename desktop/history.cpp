@@ -199,6 +199,7 @@ HistoryWidget::HistoryWidget(QWidget *parent)
     m_tree_view->setModel(browser->history_model());
 
     QVBoxLayout *vbox = new QVBoxLayout;
+    vbox->setContentsMargins(0, 0, 0, 0);
     setLayout(vbox);
     vbox->addWidget(m_tree_view);
 

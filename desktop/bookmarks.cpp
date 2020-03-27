@@ -394,6 +394,7 @@ BookmarkWidget::BookmarkWidget(QWidget *parent)
     m_tree_view->setDropIndicatorShown(true);
 
     QVBoxLayout *vbox = new QVBoxLayout;
+    vbox->setContentsMargins(0, 0, 0, 0);
     setLayout(vbox);
     vbox->addWidget(m_tree_view);
 
