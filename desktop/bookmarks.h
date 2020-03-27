@@ -87,6 +87,7 @@ class BookmarkWidget : public QWidget
     QTreeView *m_tree_view = nullptr;
 
     void show_context_menu(const QPoint &pos);
+    void open_in_new_tab(const QModelIndex &index);
 
 public:
     explicit BookmarkWidget(QWidget *parent = nullptr);    

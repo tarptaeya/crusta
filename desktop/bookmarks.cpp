@@ -172,6 +172,10 @@ Qt::ItemFlags BookmarkModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return QAbstractItemModel::flags(index);
 
+    BookmarkTreeNode *node = tree_node(index);
+    if (node->type == BookmarkTreeNode::Address && index.column() != 2)
+        return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | QAbstractItemModel::flags(index);
+
     return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable | QAbstractItemModel::flags(index);
 }
 
@@ -330,19 +334,8 @@ void BookmarkWidget::show_context_menu(const QPoint &pos)
 
             menu->addSeparator();
 
-            connect(open_in_tab, &QAction::triggered, [this, node] {
-                QWidget *parent_widget = this;
-                while (parent_widget->parentWidget()) {
-                    parent_widget = parent_widget->parentWidget();
-                }
-
-                BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
-                if (!window) return ;
-
-                WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
-                if (!tab) return;
-
-                tab->webview()->load(node->address);
+            connect(open_in_tab, &QAction::triggered, [this, index] {
+                open_in_new_tab(index);
             });
 
             connect(open_in_window, &QAction::triggered, [node] {
@@ -383,6 +376,28 @@ void BookmarkWidget::show_context_menu(const QPoint &pos)
     menu->exec(m_tree_view->mapToGlobal(pos));
 }
 
+void BookmarkWidget::open_in_new_tab(const QModelIndex &index)
+{
+    if (!index.isValid())
+        return;
+
+    BookmarkTreeNode *node = browser->bookmark_model()->tree_node(index);
+    if (node->type != BookmarkTreeNode::Address || index.column() == 2) return;
+
+    QWidget *parent_widget = this;
+    while (parent_widget->parentWidget()) {
+        parent_widget = parent_widget->parentWidget();
+    }
+
+    BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
+    if (!window) return ;
+
+    WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
+    if (!tab) return;
+
+    tab->webview()->load(node->address);
+}
+
 BookmarkWidget::BookmarkWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -400,6 +415,7 @@ BookmarkWidget::BookmarkWidget(QWidget *parent)
 
     m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_tree_view, &QTreeView::customContextMenuRequested, this, &BookmarkWidget::show_context_menu);
+    connect(m_tree_view, &QTreeView::doubleClicked, this, &BookmarkWidget::open_in_new_tab);
 }
 
 XbelReader::XbelReader()
