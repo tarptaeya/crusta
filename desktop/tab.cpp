@@ -161,7 +161,7 @@ void ManagerTab::setup_settings_widget()
     vbox->addWidget(name); \
     connect(name, &QCheckBox::clicked, [this, name] { \
         browser->web_profile()->settings()->setAttribute(attribute, name->isChecked()); \
-        m_settings.setValue("websettings/##name", name->isChecked()); \
+        m_settings.setValue("websettings/" #name, name->isChecked()); \
     }); \
 
         ADD_CHECKBOX(auto_load_images, "Auto load images", QWebEngineSettings::AutoLoadImages)

@@ -158,19 +158,7 @@ void HistoryWidget::show_context_menu(const QPoint &pos)
     QAction *remove_entry = menu->addAction(QStringLiteral("Remove"));
 
     connect(open_in_tab, &QAction::triggered, [this, index] {
-        QWidget *parent_widget = this;
-        while (parent_widget->parentWidget()) {
-            parent_widget = parent_widget->parentWidget();
-        }
-
-        BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
-        if (!window) return ;
-
-        WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
-        if (!tab) return;
-
-        const QString address = m_tree_view->model()->data(index, HistoryModel::AddressRole).toString();
-        tab->webview()->load(address);
+        open_in_new_tab(index);
     });
 
     connect(open_in_window, &QAction::triggered,[this, index] {
@@ -192,6 +180,23 @@ void HistoryWidget::show_context_menu(const QPoint &pos)
     menu->exec(m_tree_view->mapToGlobal(pos));
 }
 
+void HistoryWidget::open_in_new_tab(const QModelIndex &index)
+{
+    QWidget *parent_widget = this;
+    while (parent_widget->parentWidget()) {
+        parent_widget = parent_widget->parentWidget();
+    }
+
+    BrowserWindow *window = dynamic_cast<BrowserWindow *>(parent_widget);
+    if (!window) return ;
+
+    WebTab *tab = dynamic_cast<WebTab *>(window->add_new_tab());
+    if (!tab) return;
+
+    const QString address = m_tree_view->model()->data(index, HistoryModel::AddressRole).toString();
+    tab->webview()->load(address);
+}
+
 HistoryWidget::HistoryWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -205,4 +210,5 @@ HistoryWidget::HistoryWidget(QWidget *parent)
 
     m_tree_view->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_tree_view, &QTreeView::customContextMenuRequested, this, &HistoryWidget::show_context_menu);
+    connect(m_tree_view, &QTreeView::doubleClicked, this, &HistoryWidget::open_in_new_tab);
 }
