@@ -21,6 +21,22 @@ void QmlPlugin::unload()
     m_unload.call();
 }
 
+bool QmlPlugin::accept_navigation_request(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+    if (!m_accept_navigation_request.isCallable())
+        return true;
+
+    QJSValueList args;
+    args << url.toString();
+    args << type;
+    args << isMainFrame;
+    QJSValue value = m_accept_navigation_request.call(args);
+    if (!value.isBool())
+        return true;
+
+    return value.toBool();
+}
+
 void Plugins::load_plugin(const QString &path)
 {
     QQmlEngine *engine = new QQmlEngine(this);
@@ -65,4 +81,14 @@ Plugins::~Plugins()
         plugin->unload();
         delete plugin;
     }
+}
+
+QVector<PluginInterface *>::const_iterator Plugins::begin() const
+{
+    return m_plugins.begin();
+}
+
+QVector<PluginInterface *>::const_iterator Plugins::end() const
+{
+    return m_plugins.end();
 }

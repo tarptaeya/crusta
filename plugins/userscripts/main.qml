@@ -2,10 +2,15 @@ import Crusta 1.0
 
 PluginInterface {
     load: function() {
-        console.log("Plugin loaded");
+        return true
     }
 
-    unload: function() {
-        console.log("Plugin unloaded");
+    accept_navigation_request: function(url) {
+        if (url.endsWith(".user.js")) {
+            // TODO: the resource is userscript, install it
+            return false;
+        }
+
+        return true;
     }
 }

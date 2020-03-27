@@ -2,6 +2,7 @@
 #include "browser.h"
 #include "browser_window.h"
 #include "history.h"
+#include "plugins.h"
 #include "tab.h"
 #include "webview.h"
 #include "webview_p.h"
@@ -93,5 +94,13 @@ bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::Navigatio
     Q_UNUSED(type)
     Q_UNUSED(isMainFrame)
 
-    return browser->adblock()->allow_url(url);
+    if (!browser->adblock()->allow_url(url))
+        return false;
+
+    for (PluginInterface *plugin : *browser->plugins()) {
+        if (!plugin->accept_navigation_request(url, type, isMainFrame))
+            return false;
+    }
+
+    return true;
 }
