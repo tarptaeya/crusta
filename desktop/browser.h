@@ -6,9 +6,10 @@
 
 #define browser Browser::instance()
 
+class Adblock;
+class BookmarkModel;
 class BrowserWindow;
 class HistoryModel;
-class BookmarkModel;
 
 class Browser
 {
@@ -17,6 +18,7 @@ class Browser
     QWebEngineProfile *m_web_profile = nullptr;
 
     QSqlDatabase m_database;
+    Adblock *m_adblock = nullptr;
     HistoryModel *m_history_model = nullptr;
     BookmarkModel *m_bookmark_model = nullptr;
 
@@ -30,6 +32,7 @@ public:
     void register_scheme(const QByteArray &name) const;
     QWebEngineProfile *web_profile() const;
 
+    Adblock *adblock() const;
     HistoryModel *history_model() const;
     BookmarkModel *bookmark_model() const;
 

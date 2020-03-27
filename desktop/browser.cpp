@@ -1,3 +1,4 @@
+#include "adblock.h"
 #include "bookmarks.h"
 #include "browser.h"
 #include "browser_window.h"
@@ -13,6 +14,7 @@
 #include <QStandardPaths>
 #include <QStyleFactory>
 #include <QWebEngineUrlScheme>
+#include <QWebEngineCookieStore>
 #include <QWidget>
 
 void Browser::setup_web_profile()
@@ -21,6 +23,10 @@ void Browser::setup_web_profile()
 
     BrowserSchemeHandler *browser_scheme_handler = new BrowserSchemeHandler(m_web_profile);
     m_web_profile->installUrlSchemeHandler("browser", browser_scheme_handler);
+
+    m_web_profile->cookieStore()->setCookieFilter([](const QWebEngineCookieStore::FilterRequest &request) {
+        return !request.thirdParty;
+    });
 }
 
 void Browser::setup_database()
@@ -57,6 +63,8 @@ Browser::~Browser()
 {
     if (m_database.isOpen())
         m_database.close();
+
+    delete m_adblock;
     delete m_history_model;
     delete m_bookmark_model;
 }
@@ -82,6 +90,7 @@ int Browser::start(int argc, char **argv)
     setup_web_profile();
     setup_database();
 
+    m_adblock = new Adblock;
     m_history_model = new HistoryModel;
     m_bookmark_model = new BookmarkModel;
 
@@ -107,6 +116,11 @@ void Browser::register_scheme(const QByteArray &name) const
 QWebEngineProfile *Browser::web_profile() const
 {
     return m_web_profile;
+}
+
+Adblock *Browser::adblock() const
+{
+    return m_adblock;
 }
 
 HistoryModel *Browser::history_model() const

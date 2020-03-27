@@ -1,3 +1,4 @@
+#include "adblock.h"
 #include "browser.h"
 #include "browser_window.h"
 #include "history.h"
@@ -85,4 +86,12 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
 {
+}
+
+bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+    Q_UNUSED(type)
+    Q_UNUSED(isMainFrame)
+
+    return browser->adblock()->allow_url(url);
 }

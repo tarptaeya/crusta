@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>../assets/adblock/hosts</file>
         <file>../assets/icons/breeze/index.theme</file>
         <file>../assets/icons/breeze/icons/appointment-new.svg</file>
         <file>../assets/icons/breeze/icons/bookmark-new.svg</file>

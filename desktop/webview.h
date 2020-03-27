@@ -22,4 +22,5 @@ class WebPage : public QWebEnginePage
 {
 public:
     explicit WebPage(QWebEngineProfile *profile, QObject *parent);
+    bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame) override;
 };
