@@ -18,5 +18,5 @@ class Adblock
     void parse_hosts_file(const QString &path);
 public:
     Adblock();
-    bool allow_url(const QUrl &url);
+    bool has_match(const QUrl &url);
 };

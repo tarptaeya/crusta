@@ -74,7 +74,7 @@ void WebTab::setup_toolbar()
     });
 
     connect(m_webview, &WebView::urlChanged, [this] (const QUrl &address) {
-        m_address_bar->setText(address.toDisplayString());
+        m_address_bar->setText(address.toEncoded());
         m_address_bar->setCursorPosition(0);
     });
     connect(m_webview, &WebView::loadStarted, [this] {

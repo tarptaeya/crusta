@@ -49,8 +49,11 @@ Adblock::Adblock()
     parse_hosts_file(QStringLiteral(":assets/adblock/hosts"));
 }
 
-bool Adblock::allow_url(const QUrl &url)
+bool Adblock::has_match(const QUrl &url)
 {
     const QString domain = url.host();
-    return !m_root->contains(domain);
+    if (domain.isEmpty())
+        return false;
+
+    return m_root->contains(domain);
 }

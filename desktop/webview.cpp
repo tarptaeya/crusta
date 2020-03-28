@@ -94,7 +94,7 @@ bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::Navigatio
     Q_UNUSED(type)
     Q_UNUSED(isMainFrame)
 
-    if (!browser->adblock()->allow_url(url))
+    if (browser->adblock()->has_match(url))
         return false;
 
     for (PluginInterface *plugin : *browser->plugins()) {
