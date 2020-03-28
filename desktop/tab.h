@@ -38,6 +38,7 @@ public:
 public:
     explicit WebTab(QWidget *parent = nullptr);
     QToolBar *toolbar() const;
+    QLineEdit *address_bar() const;
     WebView *webview() const;
 };
 

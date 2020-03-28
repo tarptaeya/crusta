@@ -19,6 +19,9 @@ public:
 
     Tab *add_new_tab();
     Tab *add_existing_tab(Tab *tab);
+    void remove_tab(int index);
+    int current_index() const;
+    Tab *current_tab() const;
     QList<Tab *> tabs() const;
 };
 

@@ -2,8 +2,10 @@
 #include "browser_window.h"
 #include "browser_window_p.h"
 #include "tab.h"
+#include "webview.h"
 
 #include <QApplication>
+#include <QFileDialog>
 #include <QMenuBar>
 #include <QVBoxLayout>
 
@@ -11,19 +13,85 @@ void BrowserWindow::setup_menubar()
 {
     QMenuBar *menu_bar = new QMenuBar;
 
+    QMenu *file = menu_bar->addMenu(QStringLiteral("File"));
     QMenu *history = menu_bar->addMenu(QStringLiteral("History"));
     QMenu *bookmarks = menu_bar->addMenu(QStringLiteral("Bookmarks"));
 
-    QAction *show_all_history = history->addAction(QStringLiteral("Show all history"));
+    QAction *open_new_tab = file->addAction(QStringLiteral("New Tab"));
+    open_new_tab->setShortcut(QKeySequence::AddTab);
+    connect(open_new_tab, &QAction::triggered, this, &BrowserWindow::add_new_tab);
 
-    QAction *show_all_bookmarks = bookmarks->addAction(QStringLiteral("Show all bookmarks"));
+    QAction *open_new_window = file->addAction(QStringLiteral("New Window"));
+    open_new_window->setShortcut(QKeySequence::New);
+    connect(open_new_window, &QAction::triggered, [] {
+        BrowserWindow *window = browser->create_browser_window();
+        WebTab *tab = (WebTab *) window->tabs().at(0);
+        tab->webview()->home();
+    });
 
+    QAction *open_file = file->addAction(QStringLiteral("Open File..."));
+    open_file->setShortcut(QKeySequence::Open);
+    connect(open_file, &QAction::triggered, [this] {
+        QFileDialog fd;
+        const QUrl address = fd.getOpenFileUrl(this);
+        if (address.isEmpty())
+            return ;
+
+        WebTab *tab = new WebTab;
+        add_existing_tab(tab);
+        tab->webview()->load(address);
+    });
+
+    QAction *open_location = file->addAction(QStringLiteral("Open Location..."));
+    connect(open_location, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+
+        tab->address_bar()->setFocus();
+        tab->address_bar()->selectAll();
+    });
+
+    file->addSeparator();
+
+    QAction *close_tab = file->addAction(QStringLiteral("Close Tab"));
+    close_tab->setShortcut(QKeySequence::Close);
+    connect(close_tab, &QAction::triggered, [this] {
+        m_central_widget->remove_tab(m_central_widget->current_index());
+    });
+
+    QAction *close_window = file->addAction(QStringLiteral("Close Window"));
+    close_window->setShortcut(Qt::SHIFT + Qt::CTRL + Qt::Key_W);
+    connect(close_window, &QAction::triggered, this, &BrowserWindow::close);
+
+    QAction *close_all_windows = file->addAction(QStringLiteral("Close All Windows"));
+    connect(close_all_windows, &QAction::triggered, qApp, &QApplication::closeAllWindows);
+
+    file->addSeparator();
+
+    QAction *export_to_pdf = file->addAction(QStringLiteral("Export to PDF"));
+    export_to_pdf->setShortcut(QKeySequence::Print);
+    connect(export_to_pdf, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        QFileDialog fd;
+        QString address = fd.getSaveFileUrl(this).toLocalFile();
+        if (address.isEmpty())
+            return;
+        if (!address.endsWith(QStringLiteral(".pdf")))
+            address.append(QStringLiteral(".pdf"));
+        tab->webview()->page()->printToPdf(address);
+    });
+
+    QAction *show_all_history = history->addAction(QStringLiteral("Show All History"));
     connect(show_all_history, &QAction::triggered, [this] {
         ManagerTab *manager = new ManagerTab;
         add_existing_tab(manager);
         manager->open_history();
     });
 
+    QAction *show_all_bookmarks = bookmarks->addAction(QStringLiteral("Show All Bookmarks"));
     connect(show_all_bookmarks, &QAction::triggered, [this] {
         ManagerTab *manager = new ManagerTab;
         add_existing_tab(manager);
@@ -67,16 +135,7 @@ void CentralWidget::setup_tabbar()
         m_stacked_widget->insertWidget(to, m_stacked_widget->widget(from));
     });
     connect(m_tabbar, &NormalTabbar::new_tab_requested, this, &CentralWidget::add_new_tab);
-    connect(m_tabbar, &NormalTabbar::tabCloseRequested, [this](int index) {
-        Tab *tab = dynamic_cast<Tab *>(m_stacked_widget->widget(index));
-        if (!tab) {
-            return;
-        }
-
-        m_tabbar->removeTab(index);
-        m_stacked_widget->removeWidget(tab);
-        tab->deleteLater();
-    });
+    connect(m_tabbar, &NormalTabbar::tabCloseRequested, this, &CentralWidget::remove_tab);
 }
 
 CentralWidget::CentralWidget(QWidget *parent)
@@ -121,6 +180,28 @@ Tab *CentralWidget::add_existing_tab(Tab *tab)
     });
 
     return tab;
+}
+
+void CentralWidget::remove_tab(int index)
+{
+    Tab *tab = dynamic_cast<Tab *>(m_stacked_widget->widget(index));
+    if (!tab) {
+        return;
+    }
+
+    m_tabbar->removeTab(index);
+    m_stacked_widget->removeWidget(tab);
+    tab->deleteLater();
+}
+
+int CentralWidget::current_index() const
+{
+    return m_stacked_widget->currentIndex();
+}
+
+Tab *CentralWidget::current_tab() const
+{
+    return dynamic_cast<Tab *>(m_stacked_widget->currentWidget());
 }
 
 QList<Tab *> CentralWidget::tabs() const

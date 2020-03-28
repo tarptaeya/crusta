@@ -112,6 +112,11 @@ QToolBar *WebTab::toolbar() const
     return m_toolbar;
 }
 
+QLineEdit *WebTab::address_bar() const
+{
+    return m_address_bar;
+}
+
 WebView *WebTab::webview() const
 {
     return m_webview;
