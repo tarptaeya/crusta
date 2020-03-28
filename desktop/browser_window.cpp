@@ -17,6 +17,7 @@ void BrowserWindow::setup_menubar()
 
     QMenu *file = menu_bar->addMenu(QStringLiteral("File"));
     QMenu *edit = menu_bar->addMenu(QStringLiteral("Edit"));
+    QMenu *view = menu_bar->addMenu(QStringLiteral("View"));
     QMenu *history = menu_bar->addMenu(QStringLiteral("History"));
     QMenu *bookmarks = menu_bar->addMenu(QStringLiteral("Bookmarks"));
 
@@ -203,6 +204,56 @@ void BrowserWindow::setup_menubar()
         if (tab->webview()->hasSelection())
             input->setText(tab->webview()->selectedText());
     });
+
+    QAction *reload = view->addAction(QStringLiteral("Reload Page"));
+    reload->setShortcut(QKeySequence::Refresh);
+    connect(reload, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->reload();
+    });
+
+    view->addSeparator();
+
+    QAction *zoom_in = view->addAction(QStringLiteral("Zoom In"));
+    zoom_in->setShortcut(QKeySequence::ZoomIn);
+    connect(zoom_in, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->setZoomFactor(0.25 + tab->webview()->zoomFactor());
+    });
+
+    QAction *zoom_out = view->addAction(QStringLiteral("Zoom out"));
+    zoom_out->setShortcut(QKeySequence::ZoomOut);
+    connect(zoom_out, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->setZoomFactor(-0.25 + tab->webview()->zoomFactor());
+    });
+
+    QAction *reset_zoom = view->addAction(QStringLiteral("Actual Size"));
+    reset_zoom->setShortcut(Qt::CTRL + Qt::Key_0);
+    connect(reset_zoom, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->setZoomFactor(1.0);
+    });
+
+    view->addSeparator();
+
+    QAction *source = view->addAction(QStringLiteral("View Source"));
+    connect(source, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::ViewSource);
+    });
+
+    view->addSeparator();
 
     QAction *show_all_history = history->addAction(QStringLiteral("Show All History"));
     connect(show_all_history, &QAction::triggered, [this] {
