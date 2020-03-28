@@ -16,6 +16,7 @@ void BrowserWindow::setup_menubar()
     QMenuBar *menu_bar = new QMenuBar;
 
     QMenu *file = menu_bar->addMenu(QStringLiteral("File"));
+    QMenu *edit = menu_bar->addMenu(QStringLiteral("Edit"));
     QMenu *history = menu_bar->addMenu(QStringLiteral("History"));
     QMenu *bookmarks = menu_bar->addMenu(QStringLiteral("Bookmarks"));
 
@@ -89,6 +90,118 @@ void BrowserWindow::setup_menubar()
         if (!address.endsWith(QStringLiteral(".pdf")))
             address.append(QStringLiteral(".pdf"));
         tab->webview()->page()->printToPdf(address);
+    });
+
+    QAction *undo = edit->addAction(QStringLiteral("Undo"));
+    undo->setShortcut(QKeySequence::Undo);
+    connect(undo, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::Undo);
+    });
+
+    QAction *redo = edit->addAction(QStringLiteral("Redo"));
+    redo->setShortcut(QKeySequence::Undo);
+    connect(redo, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::Redo);
+    });
+
+    QAction *cut = edit->addAction(QStringLiteral("Cut"));
+    cut->setShortcut(QKeySequence::Cut);
+    connect(cut, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::Cut);
+    });
+
+    QAction *copy = edit->addAction(QStringLiteral("Copy"));
+    copy->setShortcut(QKeySequence::Copy);
+    connect(copy, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::Copy);
+    });
+
+    QAction *paste = edit->addAction(QStringLiteral("Paste"));
+    paste->setShortcut(QKeySequence::Paste);
+    connect(paste, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::Paste);
+    });
+
+    QAction *paste_and_match_style = edit->addAction(QStringLiteral("Paste And Match Style"));
+    connect(paste_and_match_style, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::PasteAndMatchStyle);
+    });
+
+    QAction *select_all = edit->addAction(QStringLiteral("Select All"));
+    select_all->setShortcut(QKeySequence::SelectAll);
+    connect(select_all, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+        tab->webview()->triggerPageAction(QWebEnginePage::SelectAll);
+    });
+
+    edit->addSeparator();
+
+    QAction *find = edit->addAction(QStringLiteral("Find In Page"));
+    find->setShortcut(QKeySequence::Find);
+    connect(find, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+
+        QDialog *fd = new QDialog(tab->webview());
+        fd->setAttribute(Qt::WA_DeleteOnClose);
+        fd->setModal(true);
+        fd->setWindowTitle(QStringLiteral("Find In Page"));
+        QVBoxLayout *vbox = new QVBoxLayout;
+
+        QLineEdit *input = new QLineEdit;
+        input->setPlaceholderText(QStringLiteral("Find Text"));
+        connect(input, &QLineEdit::textChanged, [tab](const QString &text) {
+            tab->webview()->findText(text);
+        });
+
+        QToolBar *toolbar = new QToolBar;
+        QAction *prev = toolbar->addAction(QStringLiteral("Previous"));
+        connect(prev, &QAction::triggered, [tab, input] {
+            tab->webview()->findText(input->text(), QWebEnginePage::FindBackward);
+        });
+        QAction *next = toolbar->addAction(QStringLiteral("Next"));
+        connect(next, &QAction::triggered, [tab, input] {
+            tab->webview()->findText(input->text());
+        });
+
+        QWidget *spacer = new QWidget;
+        spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        toolbar->addWidget(spacer);
+
+        QAction *done = toolbar->addAction(QStringLiteral("Done"));
+        connect(done, &QAction::triggered, [fd, tab] {
+            fd->close();
+            tab->webview()->findText(QStringLiteral(""));
+        });
+
+        vbox->addWidget(input);
+        vbox->addWidget(toolbar);
+        fd->setLayout(vbox);
+        fd->open();
+
+        if (tab->webview()->hasSelection())
+            input->setText(tab->webview()->selectedText());
     });
 
     QAction *show_all_history = history->addAction(QStringLiteral("Show All History"));
