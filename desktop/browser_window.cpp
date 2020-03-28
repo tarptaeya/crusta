@@ -42,6 +42,7 @@ BrowserWindow::BrowserWindow(QWidget *parent)
     setCentralWidget(m_central_widget);
 
     setup_menubar();
+    setUnifiedTitleAndToolBarOnMac(true);
 }
 
 Tab *BrowserWindow::add_new_tab()

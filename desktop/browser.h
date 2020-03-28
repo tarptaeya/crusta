@@ -26,6 +26,7 @@ class Browser
 
     void setup_web_profile();
     void setup_database();
+    void load_settings();
 public:
     ~Browser();
     int start(int argc, char **argv);

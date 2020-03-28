@@ -11,6 +11,7 @@
 #include <QDir>
 #include <QFile>
 #include <QIcon>
+#include <QSettings>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QStandardPaths>
@@ -20,6 +21,7 @@
 #include <QWebEngineCookieStore>
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
+#include <QWebEngineSettings>
 #include <QWidget>
 
 void Browser::setup_web_profile()
@@ -83,6 +85,49 @@ void Browser::setup_database()
     }
 }
 
+void Browser::load_settings()
+{
+    QSettings settings;
+
+#define LOAD_WEB_ATTRIBUTE(attribute, name) \
+    m_web_profile->settings()->setAttribute(QWebEngineSettings::attribute, \
+    settings.value("websettings/" #name, m_web_profile->settings()->testAttribute(QWebEngineSettings::attribute)).toBool()); \
+
+    LOAD_WEB_ATTRIBUTE(AutoLoadImages, auto_load_images)
+    LOAD_WEB_ATTRIBUTE(JavascriptEnabled, javascript_enabled)
+    LOAD_WEB_ATTRIBUTE(JavascriptCanOpenWindows, javascript_can_open_windows)
+    LOAD_WEB_ATTRIBUTE(JavascriptCanAccessClipboard, javascript_can_access_clipboard)
+    LOAD_WEB_ATTRIBUTE(LinksIncludedInFocusChain, links_included_in_focus_chain)
+    LOAD_WEB_ATTRIBUTE(LocalStorageEnabled, local_storage_enabled)
+    LOAD_WEB_ATTRIBUTE(LocalContentCanAccessRemoteUrls, local_content_can_access_remote_urls)
+    LOAD_WEB_ATTRIBUTE(XSSAuditingEnabled, xss_auditing_enabled)
+    LOAD_WEB_ATTRIBUTE(SpatialNavigationEnabled, spatial_navigation_enabled)
+    LOAD_WEB_ATTRIBUTE(LocalContentCanAccessFileUrls, local_content_can_access_file_urls)
+    LOAD_WEB_ATTRIBUTE(HyperlinkAuditingEnabled, hyperlink_auditing_enabled)
+    LOAD_WEB_ATTRIBUTE(ScrollAnimatorEnabled, scroll_animator_enabled)
+    LOAD_WEB_ATTRIBUTE(ErrorPageEnabled, error_page_enabled);
+    LOAD_WEB_ATTRIBUTE(PluginsEnabled, plugins_enabled)
+    LOAD_WEB_ATTRIBUTE(FullScreenSupportEnabled, fullscreen_support_enabled);
+    LOAD_WEB_ATTRIBUTE(ScreenCaptureEnabled, screen_capture_enabled);
+    LOAD_WEB_ATTRIBUTE(WebGLEnabled, webgl_enabled);
+    LOAD_WEB_ATTRIBUTE(Accelerated2dCanvasEnabled, accelerated_2d_canvas_enabled)
+    LOAD_WEB_ATTRIBUTE(AutoLoadIconsForPage, auto_load_icons_for_page)
+    LOAD_WEB_ATTRIBUTE(TouchIconsEnabled, touch_icons_enabled)
+    LOAD_WEB_ATTRIBUTE(FocusOnNavigationEnabled, focus_on_navigation_enabled)
+    LOAD_WEB_ATTRIBUTE(PrintElementBackgrounds, print_element_backgrounds)
+    LOAD_WEB_ATTRIBUTE(AllowRunningInsecureContent, allow_running_insecure_content)
+    LOAD_WEB_ATTRIBUTE(AllowGeolocationOnInsecureOrigins, allow_geolocation_on_insecure_origin)
+    LOAD_WEB_ATTRIBUTE(AllowWindowActivationFromJavaScript, allow_window_activation_from_javascript)
+    LOAD_WEB_ATTRIBUTE(ShowScrollBars, show_scroll_bars)
+    LOAD_WEB_ATTRIBUTE(PlaybackRequiresUserGesture, playback_requires_user_gesture)
+    LOAD_WEB_ATTRIBUTE(JavascriptCanPaste, javascript_can_paste)
+    LOAD_WEB_ATTRIBUTE(WebRTCPublicInterfacesOnly, webrtc_public_interfaces_only)
+    LOAD_WEB_ATTRIBUTE(DnsPrefetchEnabled, dns_prefetch_enabled)
+    LOAD_WEB_ATTRIBUTE(PdfViewerEnabled, pdf_viewer_enabled)
+
+#undef LOAD_WEB_ATTRIBUTE
+}
+
 Browser::~Browser()
 {
     if (m_database.isOpen())
@@ -120,6 +165,7 @@ int Browser::start(int argc, char **argv)
     m_bookmark_model = new BookmarkModel;
     m_plugins = new Plugins;
 
+    load_settings();
     create_browser_window();
     return app.exec();
 }
