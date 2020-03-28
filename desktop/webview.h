@@ -3,6 +3,7 @@
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWebEngineView>
+#include <QWebEngineUrlRequestInterceptor>
 
 class WebPage;
 

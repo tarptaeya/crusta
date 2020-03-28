@@ -6,6 +6,7 @@ set(SRCS
     browser_window.cpp
     history.cpp
     plugins.cpp
+    request_interceptor.cpp
     resources.qrc
     tab.cpp
     webview.cpp)

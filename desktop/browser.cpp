@@ -5,6 +5,7 @@
 #include "browser_schemes.h"
 #include "history.h"
 #include "plugins.h"
+#include "request_interceptor.h"
 #include "tab.h"
 #include "webview.h"
 
@@ -35,9 +36,18 @@ void Browser::setup_web_profile()
     BrowserSchemeHandler *browser_scheme_handler = new BrowserSchemeHandler(m_web_profile);
     m_web_profile->installUrlSchemeHandler("browser", browser_scheme_handler);
 
-    m_web_profile->cookieStore()->setCookieFilter([](const QWebEngineCookieStore::FilterRequest &request) {
-        return !request.thirdParty;
+    QSettings settings;
+
+    bool allow_third_party_cookies = settings.value(QStringLiteral("privacy/allow_third_party_cookies"), false).toBool();
+    bool block_all_cookies = settings.value(QStringLiteral("privacy/block_all_cookies"), false).toBool();
+
+    m_web_profile->cookieStore()->setCookieFilter([allow_third_party_cookies, block_all_cookies](const QWebEngineCookieStore::FilterRequest &request) {
+        if (block_all_cookies) return false;
+        return !request.thirdParty || allow_third_party_cookies;
     });
+
+    RequestInterceptor *interceptor = new RequestInterceptor(m_web_profile);
+    m_web_profile->setUrlRequestInterceptor(interceptor);
 
     QDir scriptsDir(QStringLiteral(":assets/scripts/"));
     const QStringList scripts = scriptsDir.entryList();

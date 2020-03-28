@@ -173,6 +173,35 @@ void ManagerTab::setup_settings_widget()
         grid->addWidget(homepage, 0, 1);
     }
 
+    QGroupBox *privacy_group = new QGroupBox;
+    privacy_group->setTitle(QStringLiteral("Privacy"));
+    vbox->addWidget(privacy_group);
+    {
+        QVBoxLayout *vbox = new QVBoxLayout;
+        privacy_group->setLayout(vbox);
+
+        QCheckBox *dnt = new QCheckBox(QStringLiteral("Send Do Not Track header"));
+        dnt->setChecked(m_settings.value(QStringLiteral("privacy/dnt"), true).toBool());
+        connect(dnt, &QCheckBox::clicked, [this] (bool checked) {
+            m_settings.setValue(QStringLiteral("privacy/dnt"), checked);
+        });
+        vbox->addWidget(dnt);
+
+        QCheckBox *allow_third_party_cookies = new QCheckBox(QStringLiteral("Allow third party cookies*"));
+        allow_third_party_cookies->setChecked(m_settings.value(QStringLiteral("privacy/allow_third_party_cookies"), false).toBool());
+        connect(allow_third_party_cookies, &QCheckBox::clicked, [this](bool checked) {
+            m_settings.setValue(QStringLiteral("privacy/allow_third_party_cookies"), checked);
+        });
+        vbox->addWidget(allow_third_party_cookies);
+
+        QCheckBox *block_all_cookies = new QCheckBox(QStringLiteral("Block all cookies*"));
+        block_all_cookies->setChecked(m_settings.value(QStringLiteral("privacy/block_all_cookies"), false).toBool());
+        connect(block_all_cookies, &QCheckBox::clicked, [this] (bool checked) {
+            m_settings.setValue(QStringLiteral("privacy/block_all_cookies"), checked);
+        });
+        vbox->addWidget(block_all_cookies);
+    }
+
     QGroupBox *websettings_group = new QGroupBox;
     websettings_group->setTitle(QStringLiteral("Web Engine"));
     vbox->addWidget(websettings_group);
@@ -223,6 +252,9 @@ void ManagerTab::setup_settings_widget()
 
 #undef ADD_CHECKBOX
     }
+
+    QLabel *what_is_star = new QLabel(QStringLiteral("* Restart required"));
+    vbox->addWidget(what_is_star);
 
     scroll_area->setWidget(widget);
     scroll_area->setWidgetResizable(true);
