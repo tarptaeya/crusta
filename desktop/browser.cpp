@@ -5,6 +5,8 @@
 #include "browser_schemes.h"
 #include "history.h"
 #include "plugins.h"
+#include "tab.h"
+#include "webview.h"
 
 #include <QApplication>
 #include <QCommandLineOption>
@@ -182,7 +184,9 @@ int Browser::start(int argc, char **argv)
 BrowserWindow *Browser::create_browser_window() const
 {
     BrowserWindow *window = new BrowserWindow;
-    window->show();
+    WebTab *tab = (WebTab *) window->tabs().at(0);
+    tab->webview()->home();
+    window->show();    
     return window;
 }
 

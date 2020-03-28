@@ -45,7 +45,8 @@ WebView::WebView(QWidget *parent)
 
 void WebView::home()
 {
-    // TODO: load homepage
+    QSettings settings;
+    load(settings.value(QStringLiteral("browsing/homepage"), QStringLiteral("browser:startpage")).toString());
 }
 
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)

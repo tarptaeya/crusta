@@ -153,6 +153,26 @@ void ManagerTab::setup_settings_widget()
     QVBoxLayout *vbox = new QVBoxLayout;
     widget->setLayout(vbox);
 
+    QGroupBox *browsing_group = new QGroupBox;
+    browsing_group->setTitle(QStringLiteral("Browsing"));
+    vbox->addWidget(browsing_group);
+    {
+        QVBoxLayout *vbox = new QVBoxLayout;
+        browsing_group->setLayout(vbox);
+
+        QGridLayout *grid = new QGridLayout;
+        vbox->addLayout(grid);
+
+        QLineEdit *homepage = new QLineEdit;
+        homepage->setText(m_settings.value(QStringLiteral("browsing/homepage"), QStringLiteral("browser:startpage")).toString());
+        connect(homepage, &QLineEdit::textChanged, [this] (const QString &text) {
+            m_settings.setValue(QStringLiteral("browsing/homepage"), text);
+        });
+
+        grid->addWidget(new QLabel(QStringLiteral("Homepage")), 0, 0);
+        grid->addWidget(homepage, 0, 1);
+    }
+
     QGroupBox *websettings_group = new QGroupBox;
     websettings_group->setTitle(QStringLiteral("Web Engine"));
     vbox->addWidget(websettings_group);
