@@ -35,6 +35,8 @@ public:
     void register_scheme(const QByteArray &name) const;
     QWebEngineProfile *web_profile() const;
 
+    bool is_private() const;
+
     Adblock *adblock() const;
     HistoryModel *history_model() const;
     BookmarkModel *bookmark_model() const;

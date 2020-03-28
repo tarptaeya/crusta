@@ -7,6 +7,8 @@
 #include "plugins.h"
 
 #include <QApplication>
+#include <QCommandLineOption>
+#include <QCommandLineParser>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
@@ -157,6 +159,13 @@ int Browser::start(int argc, char **argv)
 
     QApplication app(argc, argv);
 
+    QCommandLineParser parser;
+    QCommandLineOption private_mode_option(QStringList() << QStringLiteral("p") << QStringLiteral("private"));
+    parser.addOption(private_mode_option);
+    parser.process(app);
+
+    m_is_private = parser.isSet(private_mode_option);
+
     setup_web_profile();
     setup_database();
 
@@ -188,6 +197,11 @@ void Browser::register_scheme(const QByteArray &name) const
 QWebEngineProfile *Browser::web_profile() const
 {
     return m_web_profile;
+}
+
+bool Browser::is_private() const
+{
+    return m_is_private;
 }
 
 Adblock *Browser::adblock() const

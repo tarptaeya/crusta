@@ -6,7 +6,9 @@
 
 #include <QApplication>
 #include <QFileDialog>
+#include <QLabel>
 #include <QMenuBar>
+#include <QProcess>
 #include <QVBoxLayout>
 
 void BrowserWindow::setup_menubar()
@@ -27,6 +29,11 @@ void BrowserWindow::setup_menubar()
         BrowserWindow *window = browser->create_browser_window();
         WebTab *tab = (WebTab *) window->tabs().at(0);
         tab->webview()->home();
+    });
+
+    QAction *open_new_private_window = file->addAction(QStringLiteral("New Private Window"));
+    connect(open_new_private_window, &QAction::triggered, [] {
+        QProcess::startDetached(qApp->applicationFilePath(), QStringList() << QStringLiteral("--private"));
     });
 
     QAction *open_file = file->addAction(QStringLiteral("Open File..."));
@@ -144,12 +151,23 @@ CentralWidget::CentralWidget(QWidget *parent)
     m_stacked_widget = new QStackedWidget;
     m_tabbar = new NormalTabbar;
 
+    QToolBar *toolbar = new QToolBar;
+    m_tabbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    if (browser->is_private()) {
+        QLabel *label = new QLabel;
+        label->setPixmap(QIcon::fromTheme(QStringLiteral("view-private")).pixmap(16, 16));
+        label->setFixedWidth(24);
+        label->setAlignment(Qt::AlignCenter);
+        toolbar->addWidget(label);
+    }
+    toolbar->addWidget(m_tabbar);
+
     QVBoxLayout *vbox = new QVBoxLayout;
     vbox->setContentsMargins(0, 0, 0, 0);
     vbox->setSpacing(0);
     setLayout(vbox);
 
-    vbox->addWidget(m_tabbar);
+    vbox->addWidget(toolbar);
     vbox->addWidget(m_stacked_widget);
 
     setup_tabbar();
