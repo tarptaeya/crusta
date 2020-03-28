@@ -20,6 +20,7 @@ void BrowserWindow::setup_menubar()
     QMenu *view = menu_bar->addMenu(QStringLiteral("View"));
     QMenu *history = menu_bar->addMenu(QStringLiteral("History"));
     QMenu *bookmarks = menu_bar->addMenu(QStringLiteral("Bookmarks"));
+    QMenu *tools = menu_bar->addMenu(QStringLiteral("Tools"));
 
     QAction *open_new_tab = file->addAction(QStringLiteral("New Tab"));
     open_new_tab->setShortcut(QKeySequence::AddTab);
@@ -267,6 +268,42 @@ void BrowserWindow::setup_menubar()
         ManagerTab *manager = new ManagerTab;
         add_existing_tab(manager);
         manager->open_bookmarks();
+    });
+
+    QAction *about_crusta = tools->addAction(QStringLiteral("About Crusta"));
+    connect(about_crusta, &QAction::triggered, [] {
+        QDialog *ad = new QDialog;
+        ad->setAttribute(Qt::WA_DeleteOnClose);
+        ad->setSizeGripEnabled(false);
+        QVBoxLayout *vbox = new QVBoxLayout;
+        ad->setLayout(vbox);
+
+        QFont small_font;
+        small_font.setPointSize(10);
+
+        QLabel *name = new QLabel(QStringLiteral("<b>Crusta</b>"));
+        name->setAlignment(Qt::AlignCenter);
+        vbox->addWidget(name);
+
+        QLabel *version = new QLabel(QStringLiteral("Version 2.0.0-alpha"));
+        version->setFont(small_font);
+        version->setAlignment(Qt::AlignCenter);
+        vbox->addWidget(version);
+
+        QLabel *copyright = new QLabel(QStringLiteral("Copyright © 2017-2020 Anmol Gautam.\nGNU GPLv3 License."));
+        copyright->setFont(small_font);
+        copyright->setAlignment(Qt::AlignCenter);
+        vbox->addWidget(copyright);
+
+        ad->setFixedSize(ad->sizeHint());
+        ad->open();
+    });
+
+    QAction *preferences = tools->addAction(QStringLiteral("Preferences"));
+    connect(preferences, &QAction::triggered, [this] {
+        ManagerTab *manager = new ManagerTab;
+        add_existing_tab(manager);
+        manager->open_settings();
     });
 
     setMenuBar(menu_bar);
