@@ -195,6 +195,17 @@ void ManagerTab::setup_settings_widget()
         QVBoxLayout *vbox = new QVBoxLayout;
         privacy_group->setLayout(vbox);
 
+        QHBoxLayout *hbox0 = new QHBoxLayout;
+        vbox->addLayout(hbox0);
+        hbox0->addWidget(new QLabel(QStringLiteral("User Agent")));
+        QLineEdit *user_agent = new QLineEdit;
+        user_agent->setText(browser->web_profile()->httpUserAgent());
+        connect(user_agent, &QLineEdit::textChanged, [this] (const QString &text) {
+            m_settings.setValue(QStringLiteral("privacy/user_agent"), text);
+            browser->web_profile()->setHttpUserAgent(text);
+        });
+        hbox0->addWidget(user_agent);
+
         QCheckBox *dnt = new QCheckBox(QStringLiteral("Send Do Not Track header"));
         dnt->setChecked(m_settings.value(QStringLiteral("privacy/dnt"), true).toBool());
         connect(dnt, &QCheckBox::clicked, [this] (bool checked) {

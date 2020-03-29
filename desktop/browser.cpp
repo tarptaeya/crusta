@@ -39,6 +39,9 @@ void Browser::setup_web_profile()
 
     QSettings settings;
 
+    const QString default_user_string = m_web_profile->httpUserAgent().replace(QRegExp(QStringLiteral("QtWebEngine/[\\d\\.]+")), QStringLiteral("Crusta/2.0.0"));
+    m_web_profile->setHttpUserAgent(settings.value(QStringLiteral("privacy/user_agent"), default_user_string).toString());
+
     bool allow_third_party_cookies = settings.value(QStringLiteral("privacy/allow_third_party_cookies"), false).toBool();
     bool block_all_cookies = settings.value(QStringLiteral("privacy/block_all_cookies"), false).toBool();
 
