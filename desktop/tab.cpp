@@ -75,12 +75,7 @@ void WebTab::setup_toolbar()
         m_webview->setFocus();
     });
 
-    connect(m_bookmark_action, &QAction::triggered, [this] {
-        BookmarkTreeNode *node = new BookmarkTreeNode(BookmarkTreeNode::Address);
-        node->title = m_webview->title();
-        node->address = m_webview->url().toString();
-        browser->bookmark_model()->add_bookmark(nullptr, node);
-    });
+    connect(m_bookmark_action, &QAction::triggered, this, &WebTab::bookmark);
 
     connect(m_webview, &WebView::urlChanged, [this] (const QUrl &address) {
         m_address_bar->setText(address.toEncoded());
@@ -129,6 +124,14 @@ QLineEdit *WebTab::address_bar() const
 WebView *WebTab::webview() const
 {
     return m_webview;
+}
+
+void WebTab::bookmark()
+{
+    BookmarkTreeNode *node = new BookmarkTreeNode(BookmarkTreeNode::Address);
+    node->title = m_webview->title();
+    node->address = m_webview->url().toString();
+    browser->bookmark_model()->add_bookmark(nullptr, node);
 }
 
 void ManagerTab::setup_toolbar()

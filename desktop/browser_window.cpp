@@ -1,3 +1,4 @@
+#include "bookmarks.h"
 #include "browser.h"
 #include "browser_window.h"
 #include "browser_window_p.h"
@@ -326,6 +327,32 @@ void BrowserWindow::setup_menubar()
 
         browser->history_model()->remove_all();
     });
+
+    QAction *bookmark_this_tab = bookmarks->addAction(QStringLiteral("Boomark This Tab"));
+    connect(bookmark_this_tab, &QAction::triggered, [this] {
+        WebTab *tab = dynamic_cast<WebTab *>(m_central_widget->current_tab());
+        if (!tab)
+            return ;
+
+        tab->bookmark();
+    });
+
+    QAction *bookmark_all_tabs = bookmarks->addAction(QStringLiteral("Bookmark All Tabs"));
+    connect(bookmark_all_tabs, &QAction::triggered, [this] {
+        const QList<Tab *> tabs = this->tabs();
+        for (int i = 0; i < tabs.count(); i++) {
+            WebTab *tab = dynamic_cast<WebTab *>(tabs.at(i));
+            if (!tab)
+                continue;
+
+            BookmarkTreeNode *node = new BookmarkTreeNode(BookmarkTreeNode::Address);
+            node->title = tab->webview()->title();
+            node->address = tab->webview()->url().toString();
+            browser->bookmark_model()->add_bookmark(nullptr, node);
+        }
+    });
+
+    bookmarks->addSeparator();
 
     QAction *show_all_bookmarks = bookmarks->addAction(QStringLiteral("Show All Bookmarks"));
     connect(show_all_bookmarks, &QAction::triggered, [this] {

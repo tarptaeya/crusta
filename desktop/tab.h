@@ -40,6 +40,8 @@ public:
     QToolBar *toolbar() const;
     QLineEdit *address_bar() const;
     WebView *webview() const;
+
+    void bookmark();
 };
 
 class ManagerTab : public Tab

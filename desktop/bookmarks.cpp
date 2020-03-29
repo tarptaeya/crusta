@@ -27,7 +27,7 @@ BookmarkTreeNode::~BookmarkTreeNode()
 {
     if (parent)
         parent->remove(this);
-    parent = nullptr;
+
     qDeleteAll(children);
 }
 
@@ -279,6 +279,9 @@ void BookmarkModel::add_bookmark(BookmarkTreeNode *parent, BookmarkTreeNode *nod
 {
     if (!parent)
         parent = m_root_node;
+
+    if (parent == node->parent)
+        return;
 
     if (row == -1)
         row = parent->children.count();
