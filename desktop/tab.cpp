@@ -58,13 +58,20 @@ void WebTab::setup_toolbar()
     connect(m_home_button, &QToolButton::clicked, m_webview, &WebView::home);
     connect(m_address_bar, &QLineEdit::returnPressed, [this] {
         const QString text = m_address_bar->text();
-        if (QUrl::fromUserInput(text).isValid()) {
-            m_webview->load(text);
-        } else {
-            SearchEngine engine = browser->search_model()->default_engine();
-            m_webview->load(engine.query_url.replace(QStringLiteral("{searchTerms}"), text));
+        const QUrl url = QUrl::fromUserInput(text);
+        if (url.isValid()) {
+            if (url.scheme() == QStringLiteral("javascript")) {
+                const QString code = url.toString((QUrl::RemoveScheme | QUrl::FullyDecoded) & ~(QUrl::EncodeSpaces));
+                m_webview->page()->runJavaScript(code);
+                return ;
+            } else if (url.host() == QStringLiteral("localhost") || url.host().split(QStringLiteral(".")).count() > 1) {
+                m_webview->load(url);
+                return ;
+            }
         }
 
+        SearchEngine engine = browser->search_model()->default_engine();
+        m_webview->load(engine.query_url.replace(QStringLiteral("{searchTerms}"), text));
         m_webview->setFocus();
     });
 
