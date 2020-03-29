@@ -144,6 +144,44 @@ void HistoryModel::remove_entry(int offset)
     }
 }
 
+void HistoryModel::remove_entries_by_date(const QDateTime &time)
+{
+    QSqlQuery query;
+    query.prepare(QStringLiteral("DELETE FROM history WHERE last_visited > ?"));
+    query.addBindValue(time);
+
+    if (!query.exec()) {
+        qDebug() << query.lastError();
+        return;
+    }
+
+    QMutableVectorIterator<HistoryEntry> it(m_entries);
+    while (it.hasNext()) {
+        HistoryEntry entry = it.next();
+        if (entry.last_visited > time) {
+            int index = m_entries.indexOf(entry);
+            beginRemoveRows(QModelIndex(), index, index);
+            it.remove();
+            endRemoveRows();
+        }
+    }
+}
+
+void HistoryModel::remove_all()
+{
+    QSqlQuery query;
+    query.prepare(QStringLiteral("DELETE FROM history"));
+
+    if (!query.exec()) {
+        qDebug() << query.lastError();
+        return;
+    }
+
+    beginRemoveRows(QModelIndex(), 0, m_entries.count() - 1);
+    m_entries.clear();
+    endRemoveRows();
+}
+
 void HistoryWidget::show_context_menu(const QPoint &pos)
 {
     QModelIndex index = m_tree_view->indexAt(pos);

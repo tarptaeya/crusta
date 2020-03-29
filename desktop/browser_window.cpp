@@ -1,14 +1,18 @@
 #include "browser.h"
 #include "browser_window.h"
 #include "browser_window_p.h"
+#include "history.h"
 #include "tab.h"
 #include "webview.h"
 
 #include <QApplication>
+#include <QComboBox>
 #include <QFileDialog>
 #include <QLabel>
 #include <QMenuBar>
+#include <QMessageBox>
 #include <QProcess>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 void BrowserWindow::setup_menubar()
@@ -261,6 +265,66 @@ void BrowserWindow::setup_menubar()
         ManagerTab *manager = new ManagerTab;
         add_existing_tab(manager);
         manager->open_history();
+    });
+
+    history->addSeparator();
+
+    QAction *clear_history = history->addAction(QStringLiteral("Clear History..."));
+    connect(clear_history, &QAction::triggered, [this] {
+        QDialog *hd = new QDialog(this);
+        hd->setAttribute(Qt::WA_DeleteOnClose);
+        hd->setModal(true);
+
+        QVBoxLayout *vbox = new QVBoxLayout;
+        hd->setLayout(vbox);
+
+        vbox->addWidget(new QLabel(QStringLiteral("<b>Clear History</b>")));
+
+        QComboBox *date = new QComboBox;
+        date->addItems(QStringList()
+                       << QStringLiteral("The Last Hour")
+                       << QStringLiteral("Last 24 Hours")
+                       << QStringLiteral("All History"));
+        vbox->addWidget(date);
+
+        QHBoxLayout *hbox = new QHBoxLayout;
+        hbox->addWidget(new QWidget);
+        vbox->addLayout(hbox);
+
+        QPushButton *ok = new QPushButton(QStringLiteral("Clear History"));
+        hbox->addWidget(ok);
+        connect(ok, &QPushButton::clicked, [hd, date] {
+            QDateTime time = QDateTime::currentDateTime();
+            switch (date->currentIndex()) {
+            case 0:
+                time = time.addSecs(-60 * 60);
+                break;
+            case 1:
+                time = time.addDays(-1);
+                break;
+            case 2:
+                browser->history_model()->remove_all();
+                hd->close();
+                return;
+            }
+
+            browser->history_model()->remove_entries_by_date(time);
+            hd->close();
+        });
+
+        QPushButton *cancel = new QPushButton(QStringLiteral("Cancel"));
+        hbox->addWidget(cancel);
+        connect(cancel, &QPushButton::clicked, hd, &QDialog::close);
+
+        hd->open();
+    });
+
+    QAction *clear_all_history = history->addAction(QStringLiteral("Clear All History"));
+    connect(clear_all_history, &QAction::triggered, [this] {
+        if (QMessageBox::Yes != QMessageBox::question(this, QStringLiteral("Clear all history"), QStringLiteral("Are you sure to clear all history?")))
+            return ;
+
+        browser->history_model()->remove_all();
     });
 
     QAction *show_all_bookmarks = bookmarks->addAction(QStringLiteral("Show All Bookmarks"));

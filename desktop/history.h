@@ -35,6 +35,8 @@ public:
 
     void add_entry(const HistoryEntry &entry);
     void remove_entry(int offset);
+    void remove_entries_by_date(const QDateTime &time);
+    void remove_all();
 };
 
 class HistoryWidget : public QWidget
