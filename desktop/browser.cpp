@@ -6,6 +6,7 @@
 #include "history.h"
 #include "plugins.h"
 #include "request_interceptor.h"
+#include "search_engine.h"
 #include "tab.h"
 #include "webview.h"
 
@@ -150,6 +151,7 @@ Browser::~Browser()
     delete m_adblock;
     delete m_history_model;
     delete m_bookmark_model;
+    delete m_search_model;
     delete m_plugins;
 }
 
@@ -184,6 +186,7 @@ int Browser::start(int argc, char **argv)
     m_adblock = new Adblock;
     m_history_model = new HistoryModel;
     m_bookmark_model = new BookmarkModel;
+    m_search_model = new SearchModel;
     m_plugins = new Plugins;
 
     load_settings();
@@ -231,6 +234,11 @@ HistoryModel *Browser::history_model() const
 BookmarkModel *Browser::bookmark_model() const
 {
     return m_bookmark_model;
+}
+
+SearchModel *Browser::search_model() const
+{
+    return m_search_model;
 }
 
 Plugins *Browser::plugins() const

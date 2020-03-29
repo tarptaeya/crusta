@@ -1,6 +1,7 @@
 #include "bookmarks.h"
 #include "browser.h"
 #include "history.h"
+#include "search_engine.h"
 #include "tab.h"
 #include "webview.h"
 
@@ -60,7 +61,8 @@ void WebTab::setup_toolbar()
         if (QUrl::fromUserInput(text).isValid()) {
             m_webview->load(text);
         } else {
-            // TODO: search with default search engine
+            SearchEngine engine = browser->search_model()->default_engine();
+            m_webview->load(engine.query_url.replace(QStringLiteral("{searchTerms}"), text));
         }
 
         m_webview->setFocus();
@@ -129,10 +131,12 @@ void ManagerTab::setup_toolbar()
     QAction *settings = m_toolbar->addAction(QIcon::fromTheme(QStringLiteral("configure")), QStringLiteral("Settings"));
     QAction *history = m_toolbar->addAction(QIcon::fromTheme(QStringLiteral("appointment-new")), QStringLiteral("History"));
     QAction *bookmarks = m_toolbar->addAction(QIcon::fromTheme(QStringLiteral("bookmark-new")), QStringLiteral("Bookmarks"));
+    QAction *search = m_toolbar->addAction(QIcon::fromTheme(QStringLiteral("edit-find")), QStringLiteral("Search"));
 
     connect(settings, &QAction::triggered, this, &ManagerTab::open_settings);
     connect(history, &QAction::triggered, this, &ManagerTab::open_history);
     connect(bookmarks, &QAction::triggered, this, &ManagerTab::open_bookmarks);
+    connect(search, &QAction::triggered, this, &ManagerTab::open_search);
 }
 
 void ManagerTab::setup_stacked_widget()
@@ -141,9 +145,10 @@ void ManagerTab::setup_stacked_widget()
     m_stacked_widget->addWidget(history_widget);
 
     BookmarkWidget *bookmark_widget = new BookmarkWidget;
-    int index = m_stacked_widget->addWidget(bookmark_widget);
+    m_stacked_widget->addWidget(bookmark_widget);
 
-    m_stacked_widget->setCurrentIndex(index);
+    SearchWidget *search_widget = new SearchWidget;
+    m_stacked_widget->addWidget(search_widget);
 }
 
 void ManagerTab::setup_settings_widget()
@@ -297,4 +302,11 @@ void ManagerTab::open_bookmarks()
     m_stacked_widget->setCurrentIndex(2);
     emit title_changed(QStringLiteral("Bookmarks"));
     emit icon_changed(QIcon::fromTheme(QStringLiteral("bookmark-new")));
+}
+
+void ManagerTab::open_search()
+{
+    m_stacked_widget->setCurrentIndex(3);
+    emit title_changed(QStringLiteral("Search"));
+    emit icon_changed(QIcon::fromTheme(QStringLiteral("edit-find")));
 }

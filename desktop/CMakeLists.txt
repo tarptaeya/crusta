@@ -8,6 +8,7 @@ set(SRCS
     plugins.cpp
     request_interceptor.cpp
     resources.qrc
+    search_engine.cpp
     tab.cpp
     webview.cpp)
 

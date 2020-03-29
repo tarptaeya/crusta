@@ -58,4 +58,5 @@ public:
     void open_settings();
     void open_history();
     void open_bookmarks();
+    void open_search();
 };
