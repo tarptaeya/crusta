@@ -15,6 +15,7 @@
 #include <QProcess>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QWebEngineCookieStore>
 
 void BrowserWindow::setup_menubar()
 {
@@ -388,6 +389,23 @@ void BrowserWindow::setup_menubar()
 
         ad->setFixedSize(ad->sizeHint());
         ad->open();
+    });
+
+    QAction *delete_session_cookies = tools->addAction(QStringLiteral("Delete Session Cookies"));
+    connect(delete_session_cookies, &QAction::triggered, [] {
+        browser->web_profile()->cookieStore()->deleteSessionCookies();
+    });
+
+    QAction *delete_all_cookies = tools->addAction(QStringLiteral("Delete All Cookies"));
+    connect(delete_all_cookies, &QAction::triggered, [] {
+        browser->web_profile()->cookieStore()->deleteAllCookies();
+    });
+
+    tools->addSeparator();
+
+    QAction *clear_http_cache = tools->addAction(QStringLiteral("Clear HTTP Cache"));
+    connect(clear_http_cache, &QAction::triggered, [] {
+        browser->web_profile()->clearHttpCache();
     });
 
     QAction *preferences = tools->addAction(QStringLiteral("Preferences"));
