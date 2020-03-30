@@ -4,6 +4,7 @@ set(SRCS
     browser.cpp
     browser_schemes.cpp
     browser_window.cpp
+    downloads.cpp
     history.cpp
     plugins.cpp
     request_interceptor.cpp

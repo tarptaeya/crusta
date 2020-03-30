@@ -35,6 +35,7 @@ void WebTab::setup_toolbar()
     m_forward_button = create_tool_button(QStringLiteral("go-next"));
     m_refresh_button = create_tool_button(QStringLiteral("view-refresh"));
     m_home_button = create_tool_button(QStringLiteral("go-home"));
+    m_download_button = create_tool_button(QStringLiteral("edit-download"));
 
     m_address_bar = new QLineEdit;
     m_bookmark_action = m_address_bar->addAction(QIcon::fromTheme(QStringLiteral("bookmark-new")), QLineEdit::TrailingPosition);
@@ -44,6 +45,7 @@ void WebTab::setup_toolbar()
     m_toolbar->addWidget(m_refresh_button);
     m_toolbar->addWidget(m_home_button);
     m_toolbar->addWidget(m_address_bar);
+    m_toolbar->addWidget(m_download_button);
 
     connect(m_back_button, &QToolButton::clicked, m_webview, &WebView::back);
     connect(m_forward_button, &QToolButton::clicked, m_webview, &WebView::forward);
@@ -76,6 +78,14 @@ void WebTab::setup_toolbar()
     });
 
     connect(m_bookmark_action, &QAction::triggered, this, &WebTab::bookmark);
+
+    connect(m_download_button, &QToolButton::clicked, [this] {
+        QWidget *widget = (QWidget *)browser->download_widget();
+        widget->setWindowFlag(Qt::Popup);
+        widget->show();
+        QPoint pos = m_download_button->rect().bottomRight() - QPoint(widget->rect().width(), 0);
+        widget->move(m_download_button->mapToGlobal(pos));
+    });
 
     connect(m_webview, &WebView::urlChanged, [this] (const QUrl &address) {
         m_address_bar->setText(address.toEncoded());

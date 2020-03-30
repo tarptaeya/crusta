@@ -12,6 +12,7 @@ class BrowserWindow;
 class HistoryModel;
 class SearchModel;
 class Plugins;
+class DownloadWidget;
 
 class Browser
 {
@@ -25,6 +26,7 @@ class Browser
     BookmarkModel *m_bookmark_model = nullptr;
     SearchModel *m_search_model = nullptr;
     Plugins *m_plugins = nullptr;
+    DownloadWidget *m_download_widget = nullptr;
 
     void setup_web_profile();
     void setup_database();
@@ -44,6 +46,7 @@ public:
     BookmarkModel *bookmark_model() const;
     SearchModel *search_model() const;
     Plugins *plugins() const;
+    DownloadWidget *download_widget() const;
 
     static Browser *instance();
 };

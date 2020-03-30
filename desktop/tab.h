@@ -30,6 +30,7 @@ public:
     QToolButton *m_forward_button = nullptr;
     QToolButton *m_refresh_button = nullptr;
     QToolButton *m_home_button = nullptr;
+    QToolButton *m_download_button = nullptr;
 
     QLineEdit *m_address_bar = nullptr;
     QAction *m_bookmark_action = nullptr;

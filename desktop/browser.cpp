@@ -3,6 +3,7 @@
 #include "browser.h"
 #include "browser_window.h"
 #include "browser_schemes.h"
+#include "downloads.h"
 #include "history.h"
 #include "plugins.h"
 #include "request_interceptor.h"
@@ -71,6 +72,8 @@ void Browser::setup_web_profile()
         script.setRunsOnSubFrames(false);
         m_web_profile->scripts()->insert(script);
     }
+
+    QObject::connect(m_web_profile, &QWebEngineProfile::downloadRequested, m_download_widget, &DownloadWidget::handle_download);
 }
 
 void Browser::setup_database()
@@ -156,6 +159,7 @@ Browser::~Browser()
     delete m_bookmark_model;
     delete m_search_model;
     delete m_plugins;
+    delete m_download_widget;
 }
 
 int Browser::start(int argc, char **argv)
@@ -183,6 +187,7 @@ int Browser::start(int argc, char **argv)
 
     m_is_private = parser.isSet(private_mode_option);
 
+    m_download_widget = new DownloadWidget;
     setup_web_profile();
     setup_database();
 
@@ -247,6 +252,11 @@ SearchModel *Browser::search_model() const
 Plugins *Browser::plugins() const
 {
     return m_plugins;
+}
+
+DownloadWidget *Browser::download_widget() const
+{
+    return m_download_widget;
 }
 
 Browser *Browser::instance()
