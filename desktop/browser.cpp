@@ -54,6 +54,20 @@ void Browser::setup_web_profile()
     RequestInterceptor *interceptor = new RequestInterceptor(m_web_profile);
     m_web_profile->setUrlRequestInterceptor(interceptor);
 
+    QWebEngineScript web_channel;
+    web_channel.setName(QStringLiteral("qwebchannel"));
+    web_channel.setWorldId(QWebEngineScript::ApplicationWorld);
+    {
+        QFile file(QStringLiteral(":/qtwebchannel/qwebchannel.js"));
+        file.open(QFile::ReadOnly);
+        QTextStream stream(&file);
+        const QString source = stream.readAll();
+        web_channel.setSourceCode(source);
+    }
+    web_channel.setInjectionPoint(QWebEngineScript::DocumentCreation);
+    web_channel.setRunsOnSubFrames(false);
+    m_web_profile->scripts()->insert(web_channel);
+
     QDir scriptsDir(QStringLiteral(":assets/scripts/"));
     const QStringList scripts = scriptsDir.entryList();
     for (const QString &path : scripts) {

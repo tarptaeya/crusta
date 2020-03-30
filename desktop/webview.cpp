@@ -6,9 +6,12 @@
 #include "tab.h"
 #include "webview.h"
 #include "webview_p.h"
+#include "webchannel.h"
 
 #include <QMenu>
 #include <QStyleFactory>
+#include <QWebChannel>
+#include <QWebEngineScript>
 
 void WebView::show_context_menu(const QPoint &pos)
 {
@@ -88,6 +91,10 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
 {
+    QWebChannel *channel = new QWebChannel(this);
+    WebChannelObject *obj = new WebChannelObject(this);
+    channel->registerObject(QStringLiteral("browser"), obj);
+    setWebChannel(channel, QWebEngineScript::ApplicationWorld);
 }
 
 bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)

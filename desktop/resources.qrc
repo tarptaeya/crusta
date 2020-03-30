@@ -20,6 +20,8 @@
         <file>../assets/icons/breeze/icons/window-close.svg</file>
         <file>../assets/html/startpage.html</file>
         <file>../assets/html/style.css</file>
+        <file>../assets/scripts/_channel.js</file>
+        <file>../assets/scripts/startpage.js</file>
         <file>../assets/scripts/styles.js</file>
         <file>../plugins/userscripts/metadata.desktop</file>
         <file>../plugins/userscripts/main.qml</file>

@@ -11,6 +11,7 @@ set(SRCS
     resources.qrc
     search_engine.cpp
     tab.cpp
+    webchannel.cpp
     webview.cpp)
 
 add_library(crusta-private SHARED ${SRCS})
