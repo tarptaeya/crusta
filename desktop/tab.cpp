@@ -198,6 +198,27 @@ void ManagerTab::setup_settings_widget()
         grid->addWidget(homepage, 0, 1);
     }
 
+    QGroupBox *download_group = new QGroupBox;
+    download_group->setTitle(QStringLiteral("Downloads"));
+    vbox->addWidget(download_group);
+    {
+        QVBoxLayout *vbox = new QVBoxLayout;
+        download_group->setLayout(vbox);
+
+        QGridLayout *grid = new QGridLayout;
+        vbox->addLayout(grid);
+
+        QLineEdit *download_path = new QLineEdit;
+        download_path->setText(browser->web_profile()->downloadPath());
+        connect(download_path, &QLineEdit::textChanged, [this] (const QString &text) {
+            m_settings.setValue(QStringLiteral("downloads/path"), text);
+            browser->web_profile()->setDownloadPath(text);
+        });
+
+        grid->addWidget(new QLabel(QStringLiteral("Download Path")), 0, 0);
+        grid->addWidget(download_path, 0, 1);
+    }
+
     QGroupBox *privacy_group = new QGroupBox;
     privacy_group->setTitle(QStringLiteral("Privacy"));
     vbox->addWidget(privacy_group);

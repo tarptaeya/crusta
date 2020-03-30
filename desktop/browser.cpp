@@ -73,6 +73,9 @@ void Browser::setup_web_profile()
         m_web_profile->scripts()->insert(script);
     }
 
+    const QString download_path = settings.value(QStringLiteral("downloads/path"), m_web_profile->downloadPath()).toString();
+    m_web_profile->setDownloadPath(download_path);
+
     QObject::connect(m_web_profile, &QWebEngineProfile::downloadRequested, m_download_widget, &DownloadWidget::handle_download);
 }
 
