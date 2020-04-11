@@ -428,6 +428,11 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 
     setup_menubar();
     setUnifiedTitleAndToolBarOnMac(true);
+
+    QSettings settings;
+    resize(800, 600);
+    restoreGeometry(settings.value(QStringLiteral("browser_window/geometry")).toByteArray());
+    restoreState(settings.value(QStringLiteral("browser_window/window_state")).toByteArray());
 }
 
 Tab *BrowserWindow::add_new_tab()
@@ -443,6 +448,14 @@ Tab *BrowserWindow::add_existing_tab(Tab *tab)
 QList<Tab *> BrowserWindow::tabs() const
 {
     return m_central_widget->tabs();
+}
+
+void BrowserWindow::closeEvent(QCloseEvent *event)
+{
+    QSettings settings;
+    settings.setValue(QStringLiteral("browser_window/geometry"), saveGeometry());
+    settings.setValue(QStringLiteral("browser_window/window_state"), saveState());
+    QMainWindow::closeEvent(event);
 }
 
 void CentralWidget::setup_tabbar()
