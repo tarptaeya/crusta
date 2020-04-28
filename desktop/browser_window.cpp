@@ -16,6 +16,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWebEngineCookieStore>
+#include <QStyleFactory>
 
 void BrowserWindow::setup_menubar()
 {
@@ -466,6 +467,55 @@ void CentralWidget::setup_tabbar()
     });
     connect(m_tabbar, &NormalTabbar::new_tab_requested, this, &CentralWidget::add_new_tab);
     connect(m_tabbar, &NormalTabbar::tabCloseRequested, this, &CentralWidget::remove_tab);
+
+    connect(m_tabbar, &NormalTabbar::customContextMenuRequested, this, &CentralWidget::showNormalTabbarContextMenu);
+}
+
+void CentralWidget::showNormalTabbarContextMenu(const QPoint &pos)
+{
+    const int index = m_tabbar->tabAt(pos);
+    if (index == -1)
+        return;
+
+    Tab *tab = tabs().at(index);
+    WebTab *web_tab = dynamic_cast<WebTab *>(tab);
+
+    QMenu *menu = new QMenu;
+    if (web_tab) {
+        QAction *reload = menu->addAction(QStringLiteral("Reload"));
+        QAction *mute = menu->addAction(QStringLiteral("Mute Tab"));
+        if (web_tab->webview()->page()->isAudioMuted()) {
+            mute->setText(QStringLiteral("Unmute Tab"));
+        }
+
+        menu->addSeparator();
+
+        connect(reload, &QAction::triggered, [web_tab] {
+            web_tab->webview()->reload();
+        });
+        connect(mute, &QAction::triggered, [web_tab] {
+            web_tab->webview()->page()->setAudioMuted(!web_tab->webview()->page()->isAudioMuted());
+        });
+    }
+    QAction *close_tab = menu->addAction(QStringLiteral("Close Tab"));
+    QAction *close_other_tabs = menu->addAction(QStringLiteral("Close Other Tabs"));
+
+    connect(close_tab, &QAction::triggered, [this, index] {
+        remove_tab(index);
+    });
+    connect(close_other_tabs, &QAction::triggered, [this, index] {
+        for (int i = index - 1; i >= 0; i--) {
+            remove_tab(i);
+        }
+        for (int i = tabs().count() - 1; i > 0; i--) {
+            remove_tab(i);
+        }
+    });
+
+#ifdef Q_OS_MACOS
+    menu->setStyle(QStyleFactory::create(QStringLiteral("macintosh")));
+#endif
+    menu->exec(mapToGlobal(pos));
 }
 
 CentralWidget::CentralWidget(QWidget *parent)
@@ -586,6 +636,8 @@ NormalTabbar::NormalTabbar(QWidget *parent)
     });
 
     connect(m_add_tab_button, &QToolButton::clicked, [this] { emit new_tab_requested(); });
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 QSize NormalTabbar::tabSizeHint(int index) const

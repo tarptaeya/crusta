@@ -13,6 +13,7 @@ class CentralWidget : public QWidget
     NormalTabbar *m_tabbar = nullptr;
 
     void setup_tabbar();
+    void showNormalTabbarContextMenu(const QPoint &pos);
 
 public:
     explicit CentralWidget(QWidget *parent = nullptr);
@@ -30,6 +31,7 @@ class NormalTabbar : public QTabBar
     Q_OBJECT
 
     QToolButton *m_add_tab_button = nullptr;
+
 public:
     explicit NormalTabbar(QWidget *parent = nullptr);
 
