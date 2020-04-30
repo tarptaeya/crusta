@@ -217,6 +217,13 @@ void ManagerTab::setup_settings_widget()
 
         grid->addWidget(new QLabel(QStringLiteral("Download Path")), 0, 0);
         grid->addWidget(download_path, 0, 1);
+
+        QCheckBox *ask_for_downloads = new QCheckBox(QStringLiteral("Always ask before downloading"));
+        ask_for_downloads->setChecked(m_settings.value(QStringLiteral("downloads/ask"), true).toBool());
+        connect(ask_for_downloads, &QCheckBox::clicked, [this](bool checked) {
+            m_settings.setValue(QStringLiteral("downloads/ask"), checked);
+        });
+        vbox->addWidget(ask_for_downloads);
     }
 
     QGroupBox *privacy_group = new QGroupBox;
