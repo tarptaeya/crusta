@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Anmol Gautam">
+        <meta name="description" content="Fast, modern and minimal desktop web browser which protects your privacy.">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap');
+
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+
+            body {
+                font-family: 'Roboto', sans-serif;
+                font-weight: 300;
+                margin: 0;
+                font-size: 16px;
+            }
+
+            footer {
+                font-size: 14px;
+                padding: 12px;
+                //background-color: #f4f4f4;
+                border-top: 1px solid rgb(235, 235, 235);
+            }
+
+            footer a {
+                text-decoration: none;
+                color: #444;
+            }
+
+            footer a:hover {
+                text-decoration: underline;
+            }
+
+            footer .items {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            footer .items .item {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+            }
+
+            footer .items .item a {
+                padding: 4px;
+            }
+
+            footer .copyright {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                color: #444;
+            }
+
+            .caption {
+                font-size: 14px;
+                color: #444;
+            }
+
+            button.download {
+                font-size: 16px;
+                font-weight: bolder;
+                color: white;
+                background: rgb(100, 122, 255);
+                padding: 12px 44px;
+                border: 1px solid rgb(100, 122, 255);
+                border-radius: 2em;
+                box-shadow: 0 2px 5px 0 rgba(100, 122, 255, 0.5), 0 4px 10px 0 rgba(100, 122, 255, 0.5);
+                cursor: pointer;
+            }
+
+            button.download:hover {
+                transition: 0.2s;
+                box-shadow: 0 4px 10px 0 rgba(100, 122, 255, 0.5), 0 6px 15px 0 rgba(100, 122, 255, 0.5);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="https://github.com/tarptaeya/crusta"><img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+        
+        <div style='padding: 22px;'>
+            <div style='text-align: center; max-width: 640px; margin: auto;'>
+                <h1 style="font-size: 3em;">Crusta Browser</h1>
+                <div>
+                    <a class="github-button" href="https://github.com/tarptaeya/crusta" data-icon="octicon-star" data-show-count="true" aria-label="Star tarptaeya/crusta on GitHub">Star</a>
+                    &nbsp;
+                    <a class="github-button" href="https://github.com/sponsors/tarptaeya" data-icon="octicon-heart" aria-label="Sponsor @tarptaeya on GitHub">Sponsor</a>
+                </div>
+
+                <h1 style="font-weight: normal;">Fast, modern and minimal desktop web browser which protects your privacy.</h1>
+            </div>
+    
+            <div style='display: flex; flex-direction: column; align-items: center; margin-top: 100px;'>
+                <button id='download-button' class='download'><i class="fa fa-apple"></i> Download</button>
+                <div class='caption' style='margin-top: 8px;'>It's Free!</div>
+                <script>
+                    // os specific download button
+                    var download_button = document.getElementById("download-button");
+                    var user_agent = window.navigator.userAgent;
+                    if (user_agent.indexOf("Mac") !== -1) {
+                        download_button.innerHTML = '<i class="fa fa-apple"></i> &nbsp; Download for Mac';
+                    } else if (user_agent.indexOf("Win") !== -1) {
+                        download_button.innerHTML = '<i class="fa fa-windows"></i> &nbsp; Download for Windows';
+                    } else if (user_agent.indexOf("Linux") !== -1) {
+                        download_button.innerHTML = '<i class="fa fa-linux"></i> &nbsp; Download for Linux';
+                    }
+
+                    download_button.addEventListener('click', function() {
+                        window.location.href = "https://github.com/Tarptaeya/Crusta/releases";
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div style="height: 100px;"></div>
+
+        <div id='features' style="padding: 22px; background: rgb(247, 197, 68);">
+            <center>
+                <h1>Features</h1>
+                <p>Check out the list below for an overview of Crusta's features</p>
+            </center>
+            <div style="display: flex; justify-content: center;">
+                <ul style="margin-right: 22px;">
+                    <li>Do Not Track support</li>
+                    <li>Ability to change user agent</li>
+                    <li>Cookie Management</li>
+                    <li>History, Bookmarks and Download Managers</li>
+                    <li>Custom search engine</li>
+                    <li>Clear browsing data</li>
+                </ul>
+
+                <ul>
+                    <li>Speed dial</li>
+                    <li>Simple Adblock</li>
+                    <li>Tab muting</li>
+                    <li>Built in PDF Viewer</li>
+                    <li>Integrated Color Picker</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id='about' style="padding: 22px; background: rgb(220, 224, 227);">
+            <center>
+                <h1>About</h1>
+            </center>
+            <div style="max-width: 720px; margin: auto;">
+                <p>
+                    Crusta is an open-source web-browser build using QtWebEngine. Crusta aims to
+                    be light-weight privacy focussed web-browser for major desktop platforms.
+                </p>
+            </div>
+        </div>
+
+        <div id='contact' style="padding: 22px;">
+            <center>
+                <h1>Contact</h1>
+            </center>
+            <div style="text-align: center;">
+                <p>
+                    Drop an email at <a href="mailto:tarptaeya@gmail.com">tarptaeya@gmail.com</a>.
+                </p>
+            </div>
+        </div>
+
+        <div style="height: 100px;"></div>
+
+        <footer>
+            <div class='items'>
+                <div class='item'>
+                    <h2>Crusta</h2>
+                    <div>Fast, modern and minimal desktop web browser with rich features.</div>
+                    
+                    <div style='margin-top: 22px;'>
+                        <div>
+                            <!-- Place this tag where you want the button to render. -->
+                            <a class="github-button" href="https://github.com/tarptaeya/crusta" data-icon="octicon-star" data-show-count="true" aria-label="Star tarptaeya/crusta on GitHub">Star</a>
+                        </div>
+                        <div>
+                            <!-- Place this tag where you want the button to render. -->
+                            <a class="github-button" href="https://github.com/sponsors/tarptaeya" data-icon="octicon-heart" aria-label="Sponsor @tarptaeya on GitHub">Sponsor</a>
+                        </div>
+                        <div>
+                            <a href="https://twitter.com/crustabrowser?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @crustabrowser</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class='item'></div>
+        
+                <div class='item'>
+                    <a href="#about">About</a>
+                    <a href="#download-button">Downloads</a>
+                    <a href="#features">Features</a>
+                </div>
+                
+                <div class='item'>
+                    <a href="https://github.com/Tarptaeya/Crusta/wiki">Wiki</a>
+                    <a href="mailto:tarptaeya@gmail.com">Contact</a>
+                    <a href="https://github.com/tarptaeya/crusta">Contribute</a>
+                </div>
+        
+                <div class='item'>
+                    <a href="https://github.com/tarptaeya/crusta">Source Code</a>
+                    <a href="https://github.com/Tarptaeya/Crusta/issues">Report a Bug</a>
+                    <a href="https://github.com/Tarptaeya/Crusta/issues">Request a Feature</a>
+                </div>
+            </div>
+        
+            <hr>
+            <div class='copyright'>
+                <div class='item'>
+                    <div>&copy; 2017 - 2020 Anmol Gautam.</div>
+                    <div>GNU GPLv3 License.</div>
+                </div>
+                <div class='copyright item'>
+                    <div>Built with &#x2764;&#xFE0F; in &#x1F1EE;&#x1F1F3;.</div>
+                </div>
+            </div>
+        </footer>
+        
+    </body>
+</html>
