@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>styles/default.css</file>
+        <file>icons/breeze/AUTHORS</file>
+        <file>icons/breeze/index.theme</file>
+        <file>icons/breeze/LICENSE</file>
+        <file>icons/breeze/icons/window-close.svg</file>
     </qresource>
 </RCC>

@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QStyleFactory>
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,8 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
+    QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << ":/icons");
+    QIcon::setThemeName("breeze");
     QApplication::setStyle(QStyleFactory::create("fusion"));
 
     QApplication app(argc, argv);
