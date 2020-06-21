@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>styles/mac.css</file>
+        <file>styles/default.css</file>
     </qresource>
 </RCC>
