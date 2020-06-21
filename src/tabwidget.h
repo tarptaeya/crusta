@@ -13,6 +13,7 @@ public:
     TabWidget(QWidget *parent = nullptr);
 
     Tab *newTab();
+    void closeTab(int index);
 };
 
 #endif // TABWIDGET_H

@@ -18,6 +18,8 @@ TabWidget::TabWidget(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
 
     newTab();
+
+    connect(this, &TabWidget::tabCloseRequested, this, &TabWidget::closeTab);
 }
 
 Tab *TabWidget::newTab()
@@ -26,4 +28,13 @@ Tab *TabWidget::newTab()
     addTab(tab, tr("New Tab"));
 
     return tab;
+}
+
+void TabWidget::closeTab(int index)
+{
+    Tab *tab = dynamic_cast<Tab *>(widget(index));
+    if (!tab) return;
+
+    removeTab(index);
+    tab->deleteLater();
 }
