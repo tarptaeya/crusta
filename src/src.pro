@@ -8,6 +8,7 @@ mac: TARGET = Crusta
 TEMPLATE += app
 
 SOURCES += \
+    addressbar.cpp \
     browser.cpp \
     main.cpp \
     tab.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
     window.cpp
 
 HEADERS += \
+    addressbar.h \
     browser.h \
     tab.h \
     tabwidget.h \
