@@ -1,4 +1,4 @@
-QT += core gui widgets
+QT += core gui widgets webengine webenginewidgets webchannel
 
 CONFIG += c++14
 
@@ -13,6 +13,7 @@ SOURCES += \
     tab.cpp \
     tabwidget.cpp \
     toolbar.cpp \
+    webview.cpp \
     window.cpp
 
 HEADERS += \
@@ -20,4 +21,5 @@ HEADERS += \
     tab.h \
     tabwidget.h \
     toolbar.h \
+    webview.h \
     window.h
