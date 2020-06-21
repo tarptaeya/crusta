@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QWebEngineProfile>
 
 class Window;
 
@@ -12,6 +13,9 @@ class Browser : public QObject
 {
     Q_OBJECT
     QVector<Window *> m_windows;
+    QWebEngineProfile *m_profile = nullptr;
+
+    void setupProfile();
 public:
     Browser(QObject *parent = nullptr);
 
@@ -19,6 +23,7 @@ public:
     void run();
 
     Window *createWindow();
+    QWebEngineProfile *profile() const;
 };
 
 #endif // BROWSER_H

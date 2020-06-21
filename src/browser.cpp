@@ -1,9 +1,15 @@
 #include "browser.h"
 #include "window.h"
 
+void Browser::setupProfile()
+{
+    m_profile = new QWebEngineProfile("default", this);
+}
+
 Browser::Browser(QObject *parent)
     : QObject(parent)
 {
+    setupProfile();
 }
 
 Browser *Browser::instance()
@@ -26,4 +32,9 @@ Window *Browser::createWindow()
     connect(window, &Window::destroyed, [=]() {m_windows.removeOne(window);});
 
     return window;
+}
+
+QWebEngineProfile *Browser::profile() const
+{
+    return m_profile;
 }

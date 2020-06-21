@@ -13,6 +13,7 @@ SOURCES += \
     tab.cpp \
     tabwidget.cpp \
     toolbar.cpp \
+    webpage.cpp \
     webview.cpp \
     window.cpp
 
@@ -21,5 +22,6 @@ HEADERS += \
     tab.h \
     tabwidget.h \
     toolbar.h \
+    webpage.h \
     webview.h \
     window.h
