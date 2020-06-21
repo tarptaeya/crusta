@@ -9,7 +9,9 @@ TEMPLATE += app
 
 SOURCES += \
     browser.cpp \
-    main.cpp
+    main.cpp \
+    window.cpp
 
 HEADERS += \
-    browser.h
+    browser.h \
+    window.h
