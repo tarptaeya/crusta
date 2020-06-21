@@ -27,3 +27,9 @@ HEADERS += \
     webpage.h \
     webview.h \
     window.h
+
+TRANSLATIONS += \
+    ../translations/Crusta_hi_IN.ts
+
+RESOURCES += \
+    ../assets/assets.qrc

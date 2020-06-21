@@ -1,5 +1,7 @@
-#include <QApplication>
 #include "browser.h"
+
+#include <QApplication>
+#include <QStyleFactory>
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +14,10 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
+    QApplication::setStyle(QStyleFactory::create("fusion"));
+
     QApplication app(argc, argv);
+    app.setStyleSheet(Browser::readFile(":/styles/mac.css"));
 
     crusta->run();
 

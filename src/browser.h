@@ -24,6 +24,8 @@ public:
 
     Window *createWindow();
     QWebEngineProfile *profile() const;
+
+    static QString readFile(const QString &path);
 };
 
 #endif // BROWSER_H

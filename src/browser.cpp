@@ -1,6 +1,8 @@
 #include "browser.h"
 #include "window.h"
 
+#include <QFile>
+
 void Browser::setupProfile()
 {
     m_profile = new QWebEngineProfile("default", this);
@@ -37,4 +39,12 @@ Window *Browser::createWindow()
 QWebEngineProfile *Browser::profile() const
 {
     return m_profile;
+}
+
+QString Browser::readFile(const QString &path)
+{
+    QFile file(path);
+    if (!file.open(QFile::ReadOnly)) return QString();
+
+    return file.readAll();
 }
