@@ -11,6 +11,7 @@ TabWidget::TabWidget(QWidget *parent)
     tabBar()->setExpanding(true);
 
     m_newTabButton = new QToolButton;
+    m_newTabButton->setIcon(QIcon::fromTheme("list-add"));
     m_newTabButton->setAutoRaise(true);
     setCornerWidget(m_newTabButton);
     connect(m_newTabButton, &QToolButton::clicked, this, &TabWidget::newTab);

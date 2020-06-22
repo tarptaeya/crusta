@@ -5,5 +5,6 @@
         <file>icons/breeze/index.theme</file>
         <file>icons/breeze/LICENSE</file>
         <file>icons/breeze/icons/window-close.svg</file>
+        <file>icons/breeze/icons/list-add.svg</file>
     </qresource>
 </RCC>
