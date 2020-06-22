@@ -6,6 +6,4 @@ ToolBar::ToolBar(QWidget *parent)
 {
     m_addressBar = new AddressBar;
     addWidget(m_addressBar);
-
-    setMovable(false);
 }
